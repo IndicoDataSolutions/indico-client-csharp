@@ -16,7 +16,7 @@ namespace Indico.Jobs
         GraphQLHttpClient _graphQLHttpClient;
         public string Id { get; }
 
-        internal Job(GraphQLHttpClient graphQLHttpClient, string id)
+        public Job(GraphQLHttpClient graphQLHttpClient, string id)
         {
             this._graphQLHttpClient = graphQLHttpClient;
             this.Id = id;

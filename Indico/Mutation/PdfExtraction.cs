@@ -17,7 +17,7 @@ namespace Indico.Mutation
         PdfExtractionOptions _options;
         JobOptions _jobOptions;
 
-        internal PdfExtraction(GraphQLHttpClient graphQLHttpClient)
+        public PdfExtraction(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
             this._options = new PdfExtractionOptions();
@@ -45,7 +45,7 @@ namespace Indico.Mutation
         {
             List<string> files = this.Process(this._data);
             string query = @"
-                    mutation PdfExtractionMutation($data: [String]!, $singleColumn: Boolean!, $text: Boolean!, $rawText: Boolean!, $tables: Boolean!, $metadata: Boolean!){
+                    mutation PdfExtraction($data: [String]!, $singleColumn: Boolean!, $text: Boolean!, $rawText: Boolean!, $tables: Boolean!, $metadata: Boolean!){
                         pdfExtraction(data: $data, singleColumn: $singleColumn, text: $text, rawText: $rawText, tables: $tables, metadata: $metadata){
                             jobId
                         }
@@ -53,7 +53,7 @@ namespace Indico.Mutation
                 ";
             GraphQLRequest request = new GraphQLRequest(query)
             {
-                OperationName = "PdfExtractionMutation",
+                OperationName = "PdfExtraction",
                 Variables = new
                 {
                     data = files,

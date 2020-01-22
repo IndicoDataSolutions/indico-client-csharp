@@ -17,7 +17,7 @@ namespace Indico.Mutation
         List<string> _data;
         JobOptions _jobOptions;
 
-        internal ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
+        public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
         }
