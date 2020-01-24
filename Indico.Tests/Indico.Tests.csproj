@@ -13,4 +13,9 @@
     <ProjectReference Include="..\Indico\Indico.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Query\" />
+    <Folder Include="Mutation\" />
+    <Folder Include="Jobs\" />
+  </ItemGroup>
 </Project>

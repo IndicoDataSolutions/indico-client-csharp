@@ -17,33 +17,39 @@ namespace Indico.Tests
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            await Task.Delay(1000);
+            await Task.Delay(0);
             string json = "";
             if (request.RequestUri.AbsolutePath == "/graph/api/graphql")
             {
                 string httpContent = await request.Content.ReadAsStringAsync();
                 JObject jsonObject = JsonConvert.DeserializeObject<JObject>(httpContent);
                 string queryName = (string)jsonObject.GetValue("operationName");
-                if (queryName == "ModelGroupQuery")
+
+                switch (queryName)
                 {
-                    json = this.GetModelGroupQuery();
+                    case "ModelGroupQuery":
+                        json = this.GetModelGroupQuery();
+                        break;
+                    case "LoadModel":
+                        json = this.GetModelGroupLoad();
+                        break;
+                    case "PredictModel":
+                        json = this.GetModelGroupPredict();
+                        break;
+                    case "PdfExtraction":
+                        json = this.GetPdfExtraction();
+                        break;
+                    case "JobResult":
+                    case "JobStatus":
+                        json = this.GetJob();
+                        break;
+                    default:
+                        return new HttpResponseMessage()
+                        {
+                            StatusCode = HttpStatusCode.NotImplemented
+                        };
                 }
-                else if (queryName == "LoadModel")
-                {
-                    json = this.GetModelGroupLoad();
-                }
-                else if (queryName == "PredictModel")
-                {
-                    json = this.GetModelGroupPredict();
-                }
-                else if (queryName == "PdfExtraction")
-                {
-                    json = this.GetPdfExtraction();
-                }
-                else if (queryName == "JobResult" || queryName == "JobStatus")
-                {
-                    json = this.GetJob();
-                }
+
                 return new HttpResponseMessage()
                 {
                     Content = new StringContent(json, Encoding.UTF8, "application/json"),
