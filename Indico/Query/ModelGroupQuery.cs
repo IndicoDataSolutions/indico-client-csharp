@@ -14,7 +14,7 @@ namespace Indico.Query
         int _id;
         string _name;
 
-        internal ModelGroupQuery(GraphQLHttpClient graphQLHttpClient)
+        public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
         }

@@ -11,7 +11,7 @@ namespace Indico.Mutation
         GraphQLHttpClient _graphQLHttpClient;
         int _id;
 
-        internal ModelGroupLoad(GraphQLHttpClient graphQLHttpClient)
+        public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
         }

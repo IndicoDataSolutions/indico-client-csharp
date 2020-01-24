@@ -37,21 +37,18 @@ namespace Indico
 
         private async Task<string> ResolveApiToken(string path)
         {
-            // This Might Not Work On Windows Since Path contains "/" Instead of "\"
             string apiToken;
-            if (File.Exists($"{path}/indico_api_token.txt"))
+            string absolutePath = Path.Combine(path, "indico_api_token.txt");
+            if (File.Exists(absolutePath))
             {
-                FileStream fileStream = new FileStream($"{path}/indico_api_token.txt", FileMode.Open, FileAccess.Read);
+                FileStream fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read);
                 using (StreamReader streamReader = new StreamReader(fileStream))
                 {
                     apiToken = await streamReader.ReadLineAsync();
                 }
                 return apiToken;
             }
-            else
-            {
-                throw new FileNotFoundException("Invalid TokenPath Provided");
-            }
+            throw new FileNotFoundException("Invalid TokenPath Provided");
         }
     }
 }
