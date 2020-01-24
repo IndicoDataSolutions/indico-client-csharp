@@ -56,7 +56,7 @@ namespace Indico.Tests
                 .Execute();
             Assert.AreEqual("jobId_test", job.Id);
             Assert.AreEqual(JobStatus.SUCCESS, job.Status());
-            JObject json = (JObject)job.Results()[0];
+            JObject json = (JObject)job.Results().Result[0];
             Assert.AreEqual("testValue", json.GetValue("testKey"));
         }
 
@@ -69,7 +69,7 @@ namespace Indico.Tests
                 .Execute();
             Assert.AreEqual("jobId_test", job.Id);
             Assert.AreEqual(JobStatus.SUCCESS, job.Status());
-            JObject json = (JObject)job.Results()[0];
+            JObject json = (JObject)job.Results().Result[0];
             Assert.AreEqual("testValue", json.GetValue("testKey"));
         }
 

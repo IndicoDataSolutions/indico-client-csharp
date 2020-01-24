@@ -51,16 +51,24 @@ namespace Indico.Jobs
             return jobStatus;
         }
 
-        public JObject Result()
+        public async Task<JObject> Result()
         {
-            string result = this.FetchResult().Result;
+            while (this.Status() == JobStatus.PENDING)
+            {
+                await Task.Delay(1000);
+            }
+            string result = await this.FetchResult();
             JObject json = JsonConvert.DeserializeObject<JObject>(result);
             return json;
         }
 
-        public JArray Results()
+        public async Task<JArray> Results()
         {
-            string result = this.FetchResult().Result;
+            while (this.Status() == JobStatus.PENDING)
+            {
+                await Task.Delay(1000);
+            }
+            string result = await this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }
@@ -94,8 +102,6 @@ namespace Indico.Jobs
             JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
             if (jobStatus != JobStatus.SUCCESS)
             {
-                //TODO:
-                Console.WriteLine(response.Data.job.result);
                 throw new RuntimeException($"Job finished with status : {status}");
             }
 
