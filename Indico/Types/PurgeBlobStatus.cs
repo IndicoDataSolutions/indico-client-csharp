@@ -2,13 +2,13 @@ namespace Indico.Types
 {
     public enum PurgeBlobStatus
     {
-        /**
-        * Successfully removed blob
-        */
+        /// <summary>
+        /// Successfully removed blob
+        /// </summary>
         SUCCESS,
-        /**
-        * Purge failed
-        */
+        /// <summary>
+        /// Purge failed
+        /// </summary>
         FAILED
     }
 

@@ -6,10 +6,28 @@ using Indico.Exception;
 
 namespace Indico
 {
+    /// <summary>
+    /// Indico client configuration
+    /// </summary>
+    /// <remarks>
+    /// Use the builder to modify the config and pass this object to the IndicoClient constructor
+    /// </remarks>
     public class IndicoConfig
     {
+        /// <summary>
+        /// Gets the host.
+        /// </summary>
+        /// <value>The host.</value>
         public string Host { get; }
+        /// <summary>
+        /// Gets the protocol.
+        /// </summary>
+        /// <value>The protocol.</value>
         public string Protocol { get; }
+        /// <summary>
+        /// Gets the API token.
+        /// </summary>
+        /// <value>The API token.</value>
         public string ApiToken { get; }
 
         public IndicoConfig(

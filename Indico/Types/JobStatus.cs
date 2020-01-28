@@ -2,41 +2,41 @@ namespace Indico.Types
 {
     public enum JobStatus
     {
-        /** 
-        * Task state is unknown (assumed pending since you know the id).
-        */
+        /// <summary>
+        /// Task state is unknown (assumed pending since you know the id).
+        /// </summary>
         PENDING,
-        /**
-        * Task was received by a worker (only used in events).
-        */
+        /// <summary>
+        /// Task was received by a worker (only used in events).
+        /// </summary>
         RECEIVED,
-        /**
-        * Task was started by a worker (:setting:task_track_started).
-        */
+        /// <summary>
+        /// Task was started by a worker (:setting:task_track_started).
+        /// </summary>
         STARTED,
-        /**
-        * Task succeeded
-        */
+        /// <summary>
+        /// Task succeeded
+        /// </summary>
         SUCCESS,
-        /**
-        * Task failed
-        */
+        /// <summary>
+        /// Task failed
+        /// </summary>
         FAILURE,
-        /**
-        * Task was revoked.
-        */
+        /// <summary>
+        /// Task was revoked.
+        /// </summary>
         REVOKED,
-        /**
-        * Task was rejected (only used in events).
-        */
+        /// <summary>
+        /// Task was rejected (only used in events).
+        /// </summary>
         REJECTED,
-        /**
-        * Task is waiting for retry.
-        */
+        /// <summary>
+        /// Task is waiting for retry.
+        /// </summary>
         RETRY,
-        /**
-        * Job Status IGNORED
-        */
+        /// <summary>
+        /// Job Status IGNORED
+        /// </summary>
         IGNORED
     }
 }
