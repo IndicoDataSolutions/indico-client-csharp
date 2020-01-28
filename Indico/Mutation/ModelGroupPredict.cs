@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -23,7 +21,7 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Use to load ModelGroup
+        /// Use to predict ModelGroup
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
         /// <param name="modelGroup">Model group.</param>
@@ -34,7 +32,7 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Use to load ModelGroup by id
+        /// Use to predict ModelGroup by id
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
         /// <param name="modelId">Model identifier.</param>

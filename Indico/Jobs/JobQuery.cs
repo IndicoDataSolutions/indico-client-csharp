@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using GraphQL.Client.Http;
+﻿using GraphQL.Client.Http;
 using Indico.Exception;
 
 namespace Indico.Jobs
@@ -34,6 +33,11 @@ namespace Indico.Jobs
             return new Job(this._graphQLHttpClient, this._id);
         }
 
+        /// <summary>
+        /// Refreshes the Job Object
+        /// </summary>
+        /// <returns>Job</returns>
+        /// <param name="obj">Job</param>
         public Job Refresh(Job obj)
         {
             //TODO:
