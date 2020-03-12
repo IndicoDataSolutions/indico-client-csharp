@@ -11,6 +11,9 @@ using Indico.Types;
 
 namespace Indico.Jobs
 {
+    /// <summary>
+    /// Async Job information
+    /// </summary>
     public class Job
     {
         GraphQLHttpClient _graphQLHttpClient;
@@ -22,6 +25,10 @@ namespace Indico.Jobs
             this.Id = id;
         }
 
+        /// <summary>
+        /// Retrieve job status
+        /// </summary>
+        /// <returns>JobStatus</returns>
         public JobStatus Status()
         {
             string query = @"
@@ -51,6 +58,10 @@ namespace Indico.Jobs
             return jobStatus;
         }
 
+        /// <summary>
+        /// Retrieve result. Status must be success or an error will be thrown.
+        /// </summary>
+        /// <returns>JSON Object</returns>
         public async Task<JObject> Result()
         {
             while (this.Status() == JobStatus.PENDING)
@@ -62,6 +73,10 @@ namespace Indico.Jobs
             return json;
         }
 
+        /// <summary>
+        /// Retrieve results. Status must be success or an error will be thrown.
+        /// </summary>
+        /// <returns>JSON Array</returns>
         public async Task<JArray> Results()
         {
             while (this.Status() == JobStatus.PENDING)
@@ -108,6 +123,10 @@ namespace Indico.Jobs
             return (string)response.Data.job.result;
         }
 
+        /// <summary>
+        /// If job status is FAILURE returns the list of errors encoutered
+        /// </summary>
+        /// <returns>List of errors</returns>
         public List<string> Errors()
         {
             //TODO:

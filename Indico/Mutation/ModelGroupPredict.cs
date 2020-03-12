@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -22,30 +20,54 @@ namespace Indico.Mutation
             this._graphQLHttpClient = graphQLHttpClient;
         }
 
+        /// <summary>
+        /// Use to predict ModelGroup
+        /// </summary>
+        /// <returns>ModelGroupPredict</returns>
+        /// <param name="modelGroup">Model group.</param>
         public ModelGroupPredict ModelGroup(ModelGroup modelGroup)
         {
             this._id = modelGroup.SelectedModel.Id;
             return this;
         }
 
+        /// <summary>
+        /// Use to predict ModelGroup by id
+        /// </summary>
+        /// <returns>ModelGroupPredict</returns>
+        /// <param name="modelId">Model identifier.</param>
         public ModelGroupPredict ModelId(int modelId)
         {
             this._id = modelId;
             return this;
         }
 
+        /// <summary>
+        /// Data to predict
+        /// </summary>
+        /// <returns>ModelGroupPredict</returns>
+        /// <param name="data">Data.</param>
         public ModelGroupPredict Data(List<string> data)
         {
             this._data = data;
             return this;
         }
 
+        /// <summary>
+        /// Job Options for Job
+        /// </summary>
+        /// <returns>ModeGroupPredict</returns>
+        /// <param name="jobOptions">Job options.</param>
         public ModelGroupPredict JobOptions(JobOptions jobOptions)
         {
             this._jobOptions = jobOptions;
             return this;
         }
 
+        /// <summary>
+        /// Executes request and returns job 
+        /// </summary>
+        /// <returns>Job</returns>
         public Job Execute()
         {
             string query = @"

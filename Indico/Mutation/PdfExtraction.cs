@@ -23,24 +23,43 @@ namespace Indico.Mutation
             this._options = new PdfExtractionOptions();
         }
 
+        /// <summary>
+        /// List of PDF File(s)
+        /// </summary>
+        /// <returns>PdfExtraction</returns>
+        /// <param name="data">Data.</param>
         public PdfExtraction Data(List<string> data)
         {
             this._data = data;
             return this;
         }
 
+        /// <summary>
+        /// Options for pdf extraction
+        /// </summary>
+        /// <returns>PdfExtraction</returns>
+        /// <param name="options">Options.</param>
         public PdfExtraction PdfExtractionOptions(PdfExtractionOptions options)
         {
             this._options = options;
             return this;
         }
 
+        /// <summary>
+        /// Job Options for Job
+        /// </summary>
+        /// <returns>PdfExtraction</returns>
+        /// <param name="jobOptions">Job options.</param>
         public PdfExtraction JobOptions(JobOptions jobOptions)
         {
             this._jobOptions = jobOptions;
             return this;
         }
 
+        /// <summary>
+        /// Executes request and returns job 
+        /// </summary>
+        /// <returns>Job</returns>
         public Job Execute()
         {
             List<string> files = this.Process(this._data);

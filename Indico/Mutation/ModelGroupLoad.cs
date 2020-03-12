@@ -16,18 +16,32 @@ namespace Indico.Mutation
             this._graphQLHttpClient = graphQLHttpClient;
         }
 
+        /// <summary>
+        /// Use to load ModelGroup
+        /// </summary>
+        /// <returns>ModelGroupLoad</returns>
+        /// <param name="modelGroup">Model group.</param>
         public ModelGroupLoad ModelGroup(ModelGroup modelGroup)
         {
             this._id = modelGroup.SelectedModel.Id;
             return this;
         }
 
+        /// <summary>
+        /// Use to load ModelGroup by id
+        /// </summary>
+        /// <returns>ModelGroupLoad</returns>
+        /// <param name="modelId">Model identifier.</param>
         public ModelGroupLoad ModelId(int modelId)
         {
             this._id = modelId;
             return this;
         }
 
+        /// <summary>
+        /// Executes request and returns load status  
+        /// </summary>
+        /// <returns>Load status</returns>
         public string Execute()
         {
             string query = @"

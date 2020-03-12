@@ -19,18 +19,32 @@ namespace Indico.Query
             this._graphQLHttpClient = graphQLHttpClient;
         }
 
+        /// <summary>
+        /// Use to query ModelGroup by id
+        /// </summary>
+        /// <returns>ModelGroupQuery</returns>
+        /// <param name="id">Identifier.</param>
         public ModelGroupQuery Id(int id)
         {
             this._id = id;
             return this;
         }
 
+        /// <summary>
+        /// Use to query ModelGroup by name
+        /// </summary>
+        /// <returns>ModelGroupQuery</returns>
+        /// <param name="name">Name.</param>
         public ModelGroupQuery Name(string name)
         {
             this._name = name;
             return this;
         }
 
+        /// <summary>
+        /// Queries the server and returns ModelGroup
+        /// </summary>
+        /// <returns>ModelGroup</returns>
         public ModelGroup Query()
         {
             string query = @"
@@ -73,6 +87,11 @@ namespace Indico.Query
             return new ModelGroup(modelGroup);
         }
 
+        /// <summary>
+        /// Refreshes the ModelGroup Object
+        /// </summary>
+        /// <returns>ModelGroup</returns>
+        /// <param name="obj">ModelGroup</param>
         public ModelGroup Refresh(ModelGroup obj)
         {
             //TODO:
