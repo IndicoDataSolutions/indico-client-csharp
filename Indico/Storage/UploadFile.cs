@@ -20,6 +20,11 @@ namespace Indico.Storage
             this._client = client;
         }
 
+        /// <summary>
+        /// Files to upload
+        /// </summary>
+        /// <returns>UploadFile</returns>
+        /// <param name="filePaths">File paths</param>
         public UploadFile FilePaths(List<string> filePaths)
         {
             foreach (string path in filePaths)
@@ -38,6 +43,10 @@ namespace Indico.Storage
             return this;
         }
 
+        /// <summary>
+        /// Upload files and return metadata
+        /// </summary>
+        /// <returns>JArray</returns>
         public JArray Call()
         {
             string uploadUrl = this._client.Config.GetAppBaseUrl() + "/storage/files/store";

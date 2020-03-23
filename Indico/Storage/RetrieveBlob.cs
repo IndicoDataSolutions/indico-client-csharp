@@ -16,6 +16,11 @@ namespace Indico.Storage
             this._client = client;
         }
 
+        /// <summary>
+        /// Decompresses Gzip Stream
+        /// </summary>
+        /// <returns>Async String</returns>
+        /// <param name="compressed">Compressed Stream</param>
         public async Task<string> GZipDecompress(Stream compressed)
         {
             string uncompressed;
@@ -25,6 +30,11 @@ namespace Indico.Storage
             return uncompressed;
         }
 
+        /// <summary>
+        /// Blob Url
+        /// </summary>
+        /// <returns>RetrieveBlob</returns>
+        /// <param name="url">Bolb Url</param>
         public RetrieveBlob Url(string url)
         {
             url = url.Replace("\"", "");
@@ -62,6 +72,10 @@ namespace Indico.Storage
             }
         }
 
+        /// <summary>
+        /// Retrieves Blob
+        /// </summary>
+        /// <returns>Blob</returns>
         public Blob Execute()
         {
             return new Blob(this.GetStream().Result);

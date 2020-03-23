@@ -30,8 +30,15 @@
         /// </summary>
         /// <value><c>true</c> if metadata; otherwise, <c>false</c>.</value>
         public bool Metadata { get; }
-
+        /// <summary>
+        /// Force rendering to PNG instead of using text from native PDF.
+        /// </summary>
+        /// <value><c>true</c> if force render; otherwise, <c>false</c>.</value>
         public bool ForceRender { get; }
+        /// <summary>
+        /// Include detailed positional information.
+        /// </summary>
+        /// <value><c>true</c> if detailed; otherwise, <c>false</c>.</value>
         public bool Detailed { get; }
 
         public DocumentExtractionOptions(

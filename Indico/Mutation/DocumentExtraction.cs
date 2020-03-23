@@ -22,6 +22,11 @@ namespace Indico.Mutation
             this._options = new DocumentExtractionOptions();
         }
 
+        /// <summary>
+        /// Files to extract
+        /// </summary>
+        /// <returns>DocumentExtraction</returns>
+        /// <param name="files">Files</param>
         public DocumentExtraction Files(List<string> files)
         {
             this._files = files;
@@ -32,12 +37,21 @@ namespace Indico.Mutation
             return this;
         }
 
+        /// <summary>
+        /// JSON configuration for extraction
+        /// </summary>
+        /// <returns>DocumentExtraction</returns>
+        /// <param name="jsonConfig">JSON config</param>
         public DocumentExtraction JsonConfig(JObject jsonConfig)
         {
             this._jsonConfig = jsonConfig;
             return this;
         }
 
+        /// <summary>
+        /// Executes request and returns Jobs
+        /// </summary>
+        /// <returns>Job Array</returns>
         public List<Job> Execute()
         {
             JArray fileMetadata;
@@ -97,7 +111,7 @@ namespace Indico.Mutation
             return jobs;
         }
 
-        private JArray Upload(List<string> filePaths)
+        JArray Upload(List<string> filePaths)
         {
             UploadFile uploadRequest = new UploadFile(this._client);
             return uploadRequest.FilePaths(filePaths).Call();

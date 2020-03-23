@@ -64,6 +64,10 @@ namespace Indico
             return new PdfExtraction(this.GraphQLHttpClient);
         }
 
+        /// <summary>
+        /// Create a new mutation to submit document for extraction
+        /// </summary>
+        /// <returns>DocumentExtraction</returns>
         public DocumentExtraction DocumentExtraction()
         {
             return new DocumentExtraction(this);
@@ -78,11 +82,19 @@ namespace Indico
             return new JobQuery(this.GraphQLHttpClient);
         }
 
+        /// <summary>
+        /// Retrieve a blob from indico blob storage
+        /// </summary>
+        /// <returns>RetrieveBlob</returns>
         public RetrieveBlob RetrieveBlob()
         {
             return new RetrieveBlob(this);
         }
 
+        /// <summary>
+        /// Uploads files
+        /// </summary>
+        /// <returns>UploadFile</returns>
         public UploadFile UploadFile()
         {
             return new UploadFile(this);
