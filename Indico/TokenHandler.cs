@@ -47,6 +47,7 @@ namespace Indico
             request.RequestUri = new System.Uri($"{endpoint}/auth/users/refresh_token");
             request.Content = null;
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+
             HttpResponseMessage httpResponseMessage = await base.SendAsync(request, cancellationToken);
             if (httpResponseMessage.IsSuccessStatusCode)
             {

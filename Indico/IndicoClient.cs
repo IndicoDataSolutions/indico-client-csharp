@@ -2,6 +2,8 @@
 using Indico.Jobs;
 using Indico.Mutation;
 using Indico.Query;
+using Indico.Storage;
+using System.Net.Http;
 
 namespace Indico
 {
@@ -10,24 +12,29 @@ namespace Indico
     /// </summary>
     public class IndicoClient
     {
-
-        GraphQLHttpClient _graphQLHttpClient;
+        public IndicoConfig Config { get; }
+        public HttpClient HttpClient { get; }
+        public GraphQLHttpClient GraphQLHttpClient { get; }
 
         public IndicoClient(IndicoConfig indicoConfig)
         {
+            this.Config = indicoConfig;
+            TokenHandler tokenHandler = new TokenHandler(indicoConfig.ApiToken);
+            this.HttpClient = new HttpClient(tokenHandler);
             string endpoint = $"{indicoConfig.Protocol}://{indicoConfig.Host}";
             GraphQLHttpClientOptions options = new GraphQLHttpClientOptions();
             options.EndPoint = new System.Uri($"{endpoint}/graph/api/graphql");
-            options.HttpMessageHandler = new TokenHandler(indicoConfig.ApiToken);
-            this._graphQLHttpClient = new GraphQLHttpClient(options);
+            options.HttpMessageHandler = tokenHandler;
+            this.GraphQLHttpClient = this.HttpClient.AsGraphQLClient(options);
         }
+
         /// <summary>
         /// Create a new Query for ModelGroup
         /// </summary>
         /// <returns>ModelGroupQuery</returns>
         public ModelGroupQuery ModelGroupQuery()
         {
-            return new ModelGroupQuery(this._graphQLHttpClient);
+            return new ModelGroupQuery(this.GraphQLHttpClient);
         }
 
         /// <summary>
@@ -36,7 +43,7 @@ namespace Indico
         /// <returns>ModelGroupLoad</returns>
         public ModelGroupLoad ModelGroupLoad()
         {
-            return new ModelGroupLoad(this._graphQLHttpClient);
+            return new ModelGroupLoad(this.GraphQLHttpClient);
         }
 
         /// <summary>
@@ -45,7 +52,7 @@ namespace Indico
         /// <returns>ModelGroupPredict</returns>
         public ModelGroupPredict ModelGroupPredict()
         {
-            return new ModelGroupPredict(this._graphQLHttpClient);
+            return new ModelGroupPredict(this.GraphQLHttpClient);
         }
 
         /// <summary>
@@ -54,7 +61,12 @@ namespace Indico
         /// <returns>PdfExtraction</returns>
         public PdfExtraction PdfExtraction()
         {
-            return new PdfExtraction(this._graphQLHttpClient);
+            return new PdfExtraction(this.GraphQLHttpClient);
+        }
+
+        public DocumentExtraction DocumentExtraction()
+        {
+            return new DocumentExtraction(this);
         }
 
         /// <summary>
@@ -63,7 +75,17 @@ namespace Indico
         /// <returns>JobQuery</returns>
         public JobQuery JobQuery()
         {
-            return new JobQuery(this._graphQLHttpClient);
+            return new JobQuery(this.GraphQLHttpClient);
+        }
+
+        public RetrieveBlob RetrieveBlob()
+        {
+            return new RetrieveBlob(this);
+        }
+
+        public UploadFile UploadFile()
+        {
+            return new UploadFile(this);
         }
     }
 }
