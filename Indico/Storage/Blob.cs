@@ -6,16 +6,16 @@ namespace Indico.Storage
 {
     public class Blob
     {
-        Stream data = null;
+        Stream _data = null;
 
         public Blob(Stream data)
         {
-            this.data = data;
+            this._data = data;
         }
 
         public Blob(HttpResponseMessage response)
         {
-            this.data = response.Content.ReadAsStreamAsync().Result;
+            this._data = response.Content.ReadAsStreamAsync().Result;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Indico.Storage
         /// <returns>Stream</returns>
         public Stream AsStream()
         {
-            return this.data;
+            return this._data;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Indico.Storage
         /// <returns>string</returns>
         public string AsString()
         {
-            StreamReader reader = new StreamReader(this.data);
+            StreamReader reader = new StreamReader(this._data);
             return reader.ReadToEndAsync().Result;
         }
 
