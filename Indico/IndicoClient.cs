@@ -37,6 +37,11 @@ namespace Indico
             return new ModelGroupQuery(this.GraphQLHttpClient);
         }
 
+        public TrainingModelWithProgressQuery TrainingModelWithProgressQuery()
+        {
+            return new TrainingModelWithProgressQuery(this);
+        }
+
         /// <summary>
         /// Create a new Mutation to load model in ModelGroup
         /// </summary>

@@ -11,16 +11,27 @@ namespace Indico.Entity
         /// <value>The identifier.</value>
         public int Id { get; }
         /// <summary>
-        /// Gets the Model info.
+        /// Gets the Model status.
         /// </summary>
-        /// <value>The model info.</value>
-        public JObject ModelInfo { get; }
+        /// <value>The model status.</value>
+        public string Status { get; }
+
+        public TrainingProgress TrainingProgress { get; }
 
         public Model(JObject model)
         {
             this.Id = (int)model.GetValue("id");
-            string modelInfo = (string)model.GetValue("modelInfo");
-            this.ModelInfo = JsonConvert.DeserializeObject<JObject>(modelInfo);
+            this.Status = (string)model.GetValue("status");
+            JToken trainingProgress = model.GetValue("trainingProgress");
+            if(trainingProgress != null)
+            {
+                float percentComplete = trainingProgress.Value<float>("percentComplete");
+                this.TrainingProgress = new TrainingProgress(percentComplete);
+            }
+            else
+            {
+                this.TrainingProgress = null;
+            }
         }
     }
 }
