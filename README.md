@@ -11,10 +11,22 @@ IndicoClient indico = new IndicoClient(IndicoConfig config);
 ModelGroup mg = indico.ModelGroupQuery()
                       .Id(int id)
                       .Query();
+
+// Get Training Model With Progress
+ModelGroup mg = indico.TrainingModelWithProgressQuery()
+                      .Id(int id)
+                      .Query();
+
 // Load Model
 String status = indico.ModelGroupLoad()
                       .ModelGroup(mg)
                       .Execute();
+
+// To Upload Files
+JArray metadata = indico.UploadFile()
+                        .FilePaths(List<string>)
+                        .Call();
+
 // Predict Data
 Job job = indico.ModelGroupPredict()
                 .ModelGroup(mg)
@@ -28,4 +40,10 @@ Job job = indico.PdfExtraction()
                 .PdfExtractionOptions(PdfExtractionOptions)
                 .Execute();
 JArray jobResult = await job.Results();
+
+// To Extract Documents
+List<Job> jobs = indico.DocumentExtraction()
+                       .Files(List<string>)
+                       .JsonConfig(JObject)
+                       .Execute();
 ```

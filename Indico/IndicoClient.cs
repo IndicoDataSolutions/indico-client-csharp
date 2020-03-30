@@ -37,6 +37,10 @@ namespace Indico
             return new ModelGroupQuery(this.GraphQLHttpClient);
         }
 
+        /// <summary>
+        /// Create a new Query for TrainingModelWithProgress.
+        /// </summary>
+        /// <returns>TrainingModelWithProgressQuery</returns>
         public TrainingModelWithProgressQuery TrainingModelWithProgressQuery()
         {
             return new TrainingModelWithProgressQuery(this);
