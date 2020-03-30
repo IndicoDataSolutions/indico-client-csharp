@@ -41,7 +41,6 @@ namespace Indico.Storage
             // Drop gzip
             string path = new Uri(url).PathAndQuery;
             this._url = this._client.Config.GetAppBaseUrl() + path;
-            Console.WriteLine(this._url);
             return this;
         }
 
