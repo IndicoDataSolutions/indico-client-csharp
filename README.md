@@ -46,4 +46,9 @@ List<Job> jobs = indico.DocumentExtraction()
                        .Files(List<string>)
                        .JsonConfig(JObject)
                        .Execute();
+
+// To Fetch Result From Storage
+Blob blob = indico.RetrieveBlob()
+                  .Url(string)
+                  .Execute();
 ```
