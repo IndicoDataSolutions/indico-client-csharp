@@ -30,7 +30,6 @@ namespace Indico.Tests.Query
             Assert.AreEqual("testModelGroup", modelGroup.Name);
             Assert.AreEqual(ModelStatus.COMPLETE, modelGroup.Status);
             Assert.AreEqual(1, modelGroup.SelectedModel.Id);
-            Assert.AreEqual("testValue", modelGroup.SelectedModel.ModelInfo.GetValue("testKey"));
         }
     }
 }
