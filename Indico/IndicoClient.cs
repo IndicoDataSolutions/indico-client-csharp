@@ -65,15 +65,6 @@ namespace Indico
         }
 
         /// <summary>
-        /// Create a new mutation to submit PDF(s) to process by a PdfExtraction
-        /// </summary>
-        /// <returns>PdfExtraction</returns>
-        public PdfExtraction PdfExtraction()
-        {
-            return new PdfExtraction(this.GraphQLHttpClient);
-        }
-
-        /// <summary>
         /// Create a new mutation to submit document for extraction
         /// </summary>
         /// <returns>DocumentExtraction</returns>

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
-using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Storage;
@@ -12,14 +11,12 @@ namespace Indico.Mutation
     public class DocumentExtraction : Mutation<List<Job>>
     {
         List<string> _files;
-        DocumentExtractionOptions _options;
         JObject _jsonConfig;
         IndicoClient _client;
 
         public DocumentExtraction(IndicoClient client)
         {
             this._client = client;
-            this._options = new DocumentExtractionOptions();
         }
 
         /// <summary>
