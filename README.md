@@ -34,13 +34,6 @@ Job job = indico.ModelGroupPredict()
                 .Execute();
 JArray jobResult = await job.Results();
 
-// For Pdf Extraction
-Job job = indico.PdfExtraction()
-                .Data(List<string>)
-                .PdfExtractionOptions(PdfExtractionOptions)
-                .Execute();
-JArray jobResult = await job.Results();
-
 // To Extract Documents
 List<Job> jobs = indico.DocumentExtraction()
                        .Files(List<string>)
