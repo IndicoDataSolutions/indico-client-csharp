@@ -56,7 +56,7 @@ namespace Indico.Query
                                 status
                                 selectedModel {
                                     id
-                                    modelInfo
+                                    status
                                 }
                             }
                         }

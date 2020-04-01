@@ -113,14 +113,22 @@ namespace Indico.Jobs
                 throw new GraphQLException(response.Errors);
             }
 
-            string status = (string)response.Data.job.status;
+            var job = response.Data.job;
+            string status = (string)job.status;
             JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
             if (jobStatus != JobStatus.SUCCESS)
             {
                 throw new RuntimeException($"Job finished with status : {status}");
             }
 
-            return (string)response.Data.job.result;
+            var result = job.result;
+            if (result == null)
+            {
+                throw new RuntimeException("Job has finished with no results");
+            }
+
+            string output = (string)result;
+            return output;
         }
 
         /// <summary>

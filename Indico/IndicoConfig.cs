@@ -53,6 +53,11 @@ namespace Indico
             }
         }
 
+        public string GetAppBaseUrl()
+        {
+            return this.Protocol + "://" + this.Host;
+        }
+
         private async Task<string> ResolveApiToken(string path)
         {
             string apiToken;
