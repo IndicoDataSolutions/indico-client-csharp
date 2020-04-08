@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SingleDocExtraction": {
+      "commandName": "Project",
+      "commandLineArgs": "c:\\users\\dzere\\Documents\\datasets\\sec\\aapl_10Q_Q3FY18.pdf"
+    }
+  }
+}
