@@ -62,8 +62,9 @@ namespace Indico.Query
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest(query)
+            GraphQLRequest request = new GraphQLRequest()
             {
+                Query = query,
                 OperationName = "ModelGroupQuery",
                 Variables = new
                 {
