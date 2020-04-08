@@ -51,8 +51,9 @@ namespace Indico.Mutation
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest(query)
+            GraphQLRequest request = new GraphQLRequest()
             {
+                Query = query,
                 OperationName = "LoadModel",
                 Variables = new
                 {

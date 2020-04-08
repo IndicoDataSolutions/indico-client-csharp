@@ -38,8 +38,9 @@ namespace Indico.Jobs
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest(query)
+            GraphQLRequest request = new GraphQLRequest()
             {
+                Query = query,
                 OperationName = "JobStatus",
                 Variables = new
                 {
@@ -98,8 +99,9 @@ namespace Indico.Jobs
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest(query)
+            GraphQLRequest request = new GraphQLRequest()
             {
+                Query = query,
                 OperationName = "JobResult",
                 Variables = new
                 {
