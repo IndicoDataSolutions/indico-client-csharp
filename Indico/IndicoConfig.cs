@@ -43,7 +43,7 @@ namespace Indico
             {
                 if (tokenPath == null)
                 {
-                    throw new RuntimeException("apiToken or tokenPath is missing");
+                    tokenPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
                 }
                 this.ApiToken = this.ResolveApiToken(tokenPath).Result;
             }
@@ -61,7 +61,18 @@ namespace Indico
         private async Task<string> ResolveApiToken(string path)
         {
             string apiToken;
-            string absolutePath = Path.Combine(path, "indico_api_token.txt");
+            string absolutePath;
+            const string ApiTokenFile = "indico_api_token.txt";
+
+            if (path.EndsWith(ApiTokenFile))
+            {
+                absolutePath = path;
+            }
+            else
+            {
+                absolutePath = Path.Combine(path, ApiTokenFile);
+            }
+            
             if (File.Exists(absolutePath))
             {
                 FileStream fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read);
