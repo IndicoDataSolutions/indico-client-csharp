@@ -29,7 +29,7 @@ namespace Indico.Mutation
             this._files = files;
             this._jsonConfig = new JObject
             {
-                { "preset_config", "simple" }
+                { "preset_config", "standard" }
             };
             return this;
         }
