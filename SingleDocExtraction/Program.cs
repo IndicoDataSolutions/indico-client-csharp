@@ -20,8 +20,7 @@ namespace Examples
             }
 
             IndicoConfig config = new IndicoConfig(
-                host: "app.indico.io",
-                tokenPath: "c:\\Users\\dzere"
+                host: "app.indico.io"
             );
             IndicoClient client = new IndicoClient(config);
 
@@ -30,13 +29,13 @@ namespace Examples
                 args[0]
             };
 
-            JObject json = new JObject()
+            JObject extractConfig = new JObject()
             {
-                { "preset_config", "simple" }
+                { "preset_config", "standard" }
             };
 
             DocumentExtraction extraction = client.DocumentExtraction();
-            List<Job> jobs = extraction.Files(files).JsonConfig(json).Execute();
+            List<Job> jobs = extraction.Files(files).JsonConfig(extractConfig).Execute();
             Job job = jobs[0];
             JObject obj = job.Result().Result;
             string url = (string)obj.GetValue("url");
