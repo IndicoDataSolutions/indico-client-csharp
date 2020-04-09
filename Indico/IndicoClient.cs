@@ -2,6 +2,7 @@
 using Indico.Jobs;
 using Indico.Mutation;
 using Indico.Query;
+using Indico.Request;
 using Indico.Storage;
 using System.Net.Http;
 
@@ -26,6 +27,15 @@ namespace Indico
             options.EndPoint = new System.Uri($"{endpoint}/graph/api/graphql");
             options.HttpMessageHandler = tokenHandler;
             this.GraphQLHttpClient = this.HttpClient.AsGraphQLClient(options);
+        }
+
+        /// <summary>
+        /// Create a new GraphQL request
+        /// </summary>
+        /// <returns>GraphQLRequest</returns>
+        public GraphQLRequest GraphQLRequest()
+        {
+            return new GraphQLRequest(this);
         }
 
         /// <summary>
