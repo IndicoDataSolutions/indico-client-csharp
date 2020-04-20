@@ -2,7 +2,7 @@
 
 ## Authentication
 
-The Indico Platform and Client Libraries use JSON Web Tokens (JWT) for user authentication. You can download a token from your [user dashboard](https://app.indico.io/auth/account) by clicking the large, blue “Download new API Token” button. Most browsers will download the API token as indico_api_token.txt and place it in your Downloads directory. You should move the token file from Downloads to either your user profile (C:\Users\my-user) or another location in your development environment. The C# Client Library will look in your user profile directory by default.
+The Indico Platform and Client Libraries use JSON Web Tokens (JWT) for user authentication. You can download a token from your [user dashboard](https://app.indico.io/auth/account) by clicking the large, blue “Download new API Token” button. Most browsers will download the API token as indico_api_token.txt and place it in your Downloads directory. You should move the token file from Downloads to either your user profile `(C:\Users\my-user)` or another location in your development environment. The C# Client Library will look in your user profile directory by default.
 
 ## Configuration
 
@@ -15,10 +15,6 @@ The Indico Platform uses GraphQL to communicate with ALL clients including the c
 ```
 IndicoClient indico = new IndicoClient(IndicoConfig config);
 ```
-The IndicoClient constructor will read configuation options from the environment variables described above. If you would like to manually set configuration options in an IndicoConfig object then you can pass your config to IndicoClient as follows:
-
-client = IndicoClient(config=my_config)
-
 If you want to learn more about GraphQL, the [How to GraphQL](https://www.howtographql.com/) tutorial is a great place to start.
 
 ## Indico GraphQL Schema
