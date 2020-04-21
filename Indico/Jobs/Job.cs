@@ -69,7 +69,7 @@ namespace Indico.Jobs
             {
                 await Task.Delay(1000);
             }
-            string result = await this.FetchResult();
+            string result = this.FetchResult();
             JObject json = JsonConvert.DeserializeObject<JObject>(result);
             return json;
         }
@@ -84,16 +84,18 @@ namespace Indico.Jobs
             {
                 await Task.Delay(1000);
             }
-            string result = await this.FetchResult();
+            string result = this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }
 
-        async Task<string> FetchResult()
+        string FetchResult()
         {
             string query = @"
-                    query JobResult($id: String!) {
+                    query JobStatus($id: String!) {
                         job(id: $id) {
+                            id
+                            ready
                             status
                             result
                         }
@@ -109,7 +111,7 @@ namespace Indico.Jobs
                 }
             };
 
-            GraphQLResponse response = await _graphQLHttpClient.SendQueryAsync(request);
+            GraphQLResponse response = this._graphQLHttpClient.SendQueryAsync(request).Result;
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
