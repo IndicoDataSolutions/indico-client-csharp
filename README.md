@@ -1,5 +1,12 @@
 # indico-client-csharp
 
+## Installation
+
+Install the indico-client-csharp package via the NuGet package manager GUI or command line.
+```
+PM> Install-Package indico-client
+```
+
 ## Authentication
 
 The Indico Platform and Client Libraries use JSON Web Tokens (JWT) for user authentication. You can download a token 
