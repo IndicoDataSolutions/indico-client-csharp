@@ -2,7 +2,7 @@
   "profiles": {
     "SingleDocExtraction": {
       "commandName": "Project",
-      "commandLineArgs": "c:\\users\\dzere\\Documents\\datasets\\sec\\aapl_10Q_Q3FY18.pdf"
+      "commandLineArgs": "C:\\Users\\dzere\\source\\repos\\indico-client-csharp\\SingleDocExtraction\\Amtrack-Financials.pdf"
     }
   }
 }

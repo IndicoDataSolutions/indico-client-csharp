@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Indico;
 using Indico.Jobs;
 using Indico.Entity;
-using Indico.Mutation;
 using Newtonsoft.Json.Linq;
 
 namespace GetPredictions
@@ -52,6 +51,7 @@ namespace GetPredictions
                 .Execute();
 
             JArray jobResult = job.Results();
+            Console.WriteLine(jobResult);
         }
     }
 }
