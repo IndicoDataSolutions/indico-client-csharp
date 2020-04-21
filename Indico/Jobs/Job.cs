@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -63,11 +64,11 @@ namespace Indico.Jobs
         /// Retrieve result. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Object</returns>
-        public async Task<JObject> Result()
+        public JObject Result()
         {
             while (this.Status() == JobStatus.PENDING)
             {
-                await Task.Delay(1000);
+                Thread.Sleep(1000);
             }
             string result = this.FetchResult();
             JObject json = JsonConvert.DeserializeObject<JObject>(result);
@@ -78,18 +79,18 @@ namespace Indico.Jobs
         /// Retrieve results. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Array</returns>
-        public async Task<JArray> Results()
+        public JArray Results()
         {
             while (this.Status() == JobStatus.PENDING)
             {
-                await Task.Delay(1000);
+               Thread.Sleep(1000);
             }
             string result = this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }
 
-        string FetchResult()
+        protected string FetchResult()
         {
             string query = @"
                     query JobStatus($id: String!) {
