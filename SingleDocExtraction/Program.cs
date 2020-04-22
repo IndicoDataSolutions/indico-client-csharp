@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Collections.Generic;
 using Indico;
 using Indico.Mutation;
@@ -37,7 +36,7 @@ namespace Examples
             DocumentExtraction extraction = client.DocumentExtraction();
             List<Job> jobs = extraction.Files(files).JsonConfig(extractConfig).Execute();
             Job job = jobs[0];
-            JObject obj = job.Result().Result;
+            JObject obj = job.Result();
             string url = (string)obj.GetValue("url");
             RetrieveBlob retrieveBlob = client.RetrieveBlob();
             Blob blob = retrieveBlob.Url(url).Execute();
