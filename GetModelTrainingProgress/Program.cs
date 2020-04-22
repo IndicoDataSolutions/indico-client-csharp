@@ -2,6 +2,8 @@
 using Indico;
 using Indico.Query;
 using Indico.Entity;
+using Newtonsoft.Json.Linq;
+
 
 namespace Examples
 {
@@ -25,10 +27,9 @@ namespace Examples
             ModelGroupQuery modelGroupQuery = client.ModelGroupQuery();
             TrainingModelWithProgressQuery trainingModelWithProgress = client.TrainingModelWithProgressQuery();
             ModelGroup modelGroup = modelGroupQuery.Id(model_group_id).Query();
-            Model model = trainingModelWithProgress.Id(model_group_id).Query();
+            JObject trainingStatus = trainingModelWithProgress.Id(model_group_id).Query();
             Console.WriteLine(modelGroup.Name);
-            Console.WriteLine($"training status : {1}", model.Status);
-            Console.WriteLine($"percent complete : {1}", model.TrainingProgress.PercentComplete);
+            Console.WriteLine(trainingStatus);
         }
     }
 }

@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Query
 {
-    public class TrainingModelWithProgressQuery : Query<Model>
+    public class TrainingModelWithProgressQuery : Query<JObject>
     {
         IndicoClient _client;
         int _id;
@@ -41,7 +41,7 @@ namespace Indico.Query
             return this;
         }
 
-        public Model Query()
+        public JObject Query()
         {
             GraphQLHttpClient graphQLHttpClient = this._client.GraphQLHttpClient;
             string query = @"
@@ -80,21 +80,13 @@ namespace Indico.Query
             {
                 throw new RuntimeException("Cannot find Model Group");
             }
-            JArray models = (JArray)modelGroups[0].models;
-
-            JToken last = models.Select(token => (token.Value<int>("id"), Token: token)).Max().Token;
-            if (last == null)
-            {
-                throw new RuntimeException("Cannot find Training Model");
-            }
-
-            JObject model = (JObject)last;
-            return new Model(model);
+            
+            return (JObject)modelGroups[0].models[0];
         }
 
-        public Model Refresh(Model model)
+        public JObject Refresh(JObject obj)
         {
-            return model;
+            return obj;
         }
     }
 }
