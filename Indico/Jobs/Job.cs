@@ -105,7 +105,7 @@ namespace Indico.Jobs
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
-                OperationName = "JobResult",
+                OperationName = "JobStatus",
                 Variables = new
                 {
                     id = Id
