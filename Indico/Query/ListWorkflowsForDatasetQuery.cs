@@ -19,12 +19,21 @@ namespace Indico.Query
 
         }
 
+        /// <summary>
+        /// Use to query workflows by datasetId
+        /// </summary>
+        /// <returns>ListWorkflowsForDatasetQuery</returns>
+        /// <param name="id">Dataset Id</param>
         public ListWorkflowsForDatasetQuery DatasetId(int id)
         {
             this._id = id;
             return this;
         }
 
+        /// <summary>
+        /// Queries the server and returns Workflow List
+        /// </summary>
+        /// <returns>Workflow List</returns>
         public List<Workflow> Query()
         {
             string query = @"

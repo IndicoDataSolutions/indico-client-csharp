@@ -19,18 +19,32 @@ namespace Indico.Mutation
             this._client = client;
         }
 
+        /// <summary>
+        /// Files to submit
+        /// </summary>
+        /// <returns>WorkflowSubmission</returns>
+        /// <param name="files">Files</param>
         public WorkflowSubmisson Files(List<string> files)
         {
             this._files = files;
             return this;
         }
 
+        /// <summary>
+        /// Workflow Id
+        /// </summary>
+        /// <returns>WorkflowSubmission</returns>
+        /// <param name="id">Workflow Id</param>
         public WorkflowSubmisson WorkflowId(int id)
         {
             this._id = id;
             return this;
         }
 
+        /// <summary>
+        /// Executes request and returns Job
+        /// </summary>
+        /// <returns>Job</returns>
         public Job Execute()
         {
             JArray fileMetadata;
