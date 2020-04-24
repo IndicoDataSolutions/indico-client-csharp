@@ -14,15 +14,9 @@ namespace Indico.Mutation
     public class DocumentExtraction : Mutation<List<Job>>
     {
         List<string> _files;
-        JObject _jsonConfig;
         IndicoClient _client;
 
-
-        public JObject JsonConfig
-        { 
-            get => _jsonConfig;
-            set => _jsonConfig = value; 
-        }
+        public JObject JsonConfig { get; set; }
 
         /// <summary>
         /// DocumentExtraction constructor
@@ -41,7 +35,7 @@ namespace Indico.Mutation
         public DocumentExtraction Files(List<string> files)
         {
             this._files = files;
-            this._jsonConfig = new JObject
+            this.JsonConfig = new JObject
             {
                 { "preset_config", "standard" }
             };
@@ -93,7 +87,7 @@ namespace Indico.Mutation
                 Variables = new
                 {
                     files,
-                    JsonConfig = this._jsonConfig.ToString()
+                    JsonConfig = this.JsonConfig.ToString()
                 }
             };
 
@@ -107,7 +101,7 @@ namespace Indico.Mutation
         /// </summary>
         public DocumentExtraction SetJsonConfig(JObject jsonConfig)
         {
-            this._jsonConfig = jsonConfig;
+            this.JsonConfig = jsonConfig;
             return this;
         }
 

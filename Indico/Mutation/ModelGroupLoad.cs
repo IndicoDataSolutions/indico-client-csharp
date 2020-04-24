@@ -12,17 +12,9 @@ namespace Indico.Mutation
     public class ModelGroupLoad : Mutation<string>
     {
         GraphQLHttpClient _graphQLHttpClient;
-        int _id;
-
-        /// <summary>
-        /// Model Group Id
-        /// </summary>
-        public int Id
-        {
-            get => _id;
-            set => this._id = value;
-        }
-
+        
+        public int modelId { get; set; }
+       
         /// <summary>
         /// Model Group Load Constructor
         /// </summary>
@@ -39,7 +31,7 @@ namespace Indico.Mutation
         /// <param name="modelGroup">Model group.</param>
         public ModelGroupLoad ModelGroup(ModelGroup modelGroup)
         {
-            this._id = modelGroup.SelectedModel.Id;
+            this.modelId = modelGroup.SelectedModel.Id;
             return this;
         }
 
@@ -50,7 +42,7 @@ namespace Indico.Mutation
         /// <param name="modelId">The Model ID to load. Often the Selected Model ID for the Model Group</param>
         public ModelGroupLoad SetId(int modelId)
         {
-            this._id = modelId;
+            this.modelId = modelId;
             return this;
         }
 
@@ -74,7 +66,7 @@ namespace Indico.Mutation
                 OperationName = "LoadModel",
                 Variables = new
                 {
-                    model_id = _id
+                    model_id = this.modelId
                 }
             };
 
@@ -87,7 +79,7 @@ namespace Indico.Mutation
             var modelLoad = response.Data.modelLoad;
             if (modelLoad == null)
             {
-                throw new RuntimeException($"Cannot Load Model id : {_id}");
+                throw new RuntimeException($"Cannot Load Model id : {this.modelId}");
             }
 
             string status = (string)modelLoad.status;

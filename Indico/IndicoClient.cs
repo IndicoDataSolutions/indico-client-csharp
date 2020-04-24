@@ -72,7 +72,7 @@ namespace Indico
             ModelGroupQuery mgQuery = new ModelGroupQuery(this.GraphQLHttpClient);
             if (mgId != -1)
             {
-                mgQuery.Id = mgId;
+                mgQuery.mgId = mgId;
             }
             return mgQuery;
         }
@@ -86,7 +86,7 @@ namespace Indico
             TrainingModelWithProgressQuery mgTraining = new TrainingModelWithProgressQuery(this);
             if (mg != null)
             {
-                mgTraining.Id = mg.Id;
+                mgTraining.modelId = mg.Id;
             }
             return mgTraining;
         }
@@ -100,7 +100,7 @@ namespace Indico
             ModelGroupLoad mgLoad = new ModelGroupLoad(this.GraphQLHttpClient);
             if (mg != null)
             {
-                mgLoad.Id = mg.SelectedModel.Id;
+                mgLoad.modelId = mg.SelectedModel.Id;
             }
             return mgLoad;
         }
@@ -114,7 +114,7 @@ namespace Indico
             ModelGroupPredict mgPredict = new ModelGroupPredict(this.GraphQLHttpClient);
             if (mg != null)
             {
-                mgPredict.Id = mg.SelectedModel.Id;
+                mgPredict.modelId = mg.SelectedModel.Id;
             }
             return mgPredict;
         }
