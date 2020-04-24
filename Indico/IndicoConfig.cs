@@ -64,7 +64,7 @@ namespace Indico
             string absolutePath;
             const string ApiTokenFile = "indico_api_token.txt";
 
-            if (path.EndsWith(ApiTokenFile))
+            if (path.EndsWith(ApiTokenFile, System.StringComparison.Ordinal))
             {
                 absolutePath = path;
             }
