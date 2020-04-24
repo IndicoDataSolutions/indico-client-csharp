@@ -8,13 +8,25 @@ using Indico.Jobs;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Class to run Model Group predictions
+    /// </summary>
     public class ModelGroupPredict : Mutation<Job>
     {
         GraphQLHttpClient _graphQLHttpClient;
         int _id;
         List<string> _data;
-        JobOptions _jobOptions;
 
+        public int Id
+        {
+            get => this._id;
+            set => this._id = value;
+        }
+
+        /// <summary>
+        /// ModelGroupPredict constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
@@ -36,7 +48,7 @@ namespace Indico.Mutation
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
         /// <param name="modelId">Model identifier.</param>
-        public ModelGroupPredict ModelId(int modelId)
+        public ModelGroupPredict SetId(int modelId)
         {
             this._id = modelId;
             return this;
@@ -54,21 +66,10 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Job Options for Job
-        /// </summary>
-        /// <returns>ModeGroupPredict</returns>
-        /// <param name="jobOptions">Job options.</param>
-        public ModelGroupPredict JobOptions(JobOptions jobOptions)
-        {
-            this._jobOptions = jobOptions;
-            return this;
-        }
-
-        /// <summary>
         /// Executes request and returns job 
         /// </summary>
         /// <returns>Job</returns>
-        public Job Execute()
+        public Job Exec()
         {
             string query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
@@ -77,6 +78,7 @@ namespace Indico.Mutation
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,

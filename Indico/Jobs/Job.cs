@@ -18,12 +18,67 @@ namespace Indico.Jobs
     public class Job
     {
         GraphQLHttpClient _graphQLHttpClient;
+        
+        /// <summary>
+        /// The Job ID
+        /// </summary>
         public string Id { get; }
 
+        /// <summary>
+        /// Job constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient">GraphQL Client</param>
+        /// <param name="id">Job id</param>
         public Job(GraphQLHttpClient graphQLHttpClient, string id)
         {
             this._graphQLHttpClient = graphQLHttpClient;
             this.Id = id;
+        }
+
+        private string FetchResult()
+        {
+            string query = @"
+                    query JobStatus($id: String!) {
+                        job(id: $id) {
+                            id
+                            ready
+                            status
+                            result
+                        }
+                    }
+                ";
+            GraphQLRequest request = new GraphQLRequest()
+            {
+                Query = query,
+                OperationName = "JobStatus",
+                Variables = new
+                {
+                    id = Id
+                }
+            };
+
+            GraphQLResponse response = this._graphQLHttpClient.SendQueryAsync(request).Result;
+            if (response.Errors != null)
+            {
+                throw new GraphQLException(response.Errors);
+            }
+
+            var job = response.Data.job;
+            string status = (string)job.status;
+            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
+            if (jobStatus != JobStatus.SUCCESS)
+            {
+                throw new RuntimeException($"Job finished with status : {status}");
+            }
+
+            var result = job.result;
+            if (result == null)
+            {
+                throw new RuntimeException("Job has finished with no results");
+            }
+
+            string output = (string)result;
+            return output;
         }
 
         /// <summary>
@@ -88,52 +143,6 @@ namespace Indico.Jobs
             string result = this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
-        }
-
-        protected string FetchResult()
-        {
-            string query = @"
-                    query JobStatus($id: String!) {
-                        job(id: $id) {
-                            id
-                            ready
-                            status
-                            result
-                        }
-                    }
-                ";
-            GraphQLRequest request = new GraphQLRequest()
-            {
-                Query = query,
-                OperationName = "JobStatus",
-                Variables = new
-                {
-                    id = Id
-                }
-            };
-
-            GraphQLResponse response = this._graphQLHttpClient.SendQueryAsync(request).Result;
-            if (response.Errors != null)
-            {
-                throw new GraphQLException(response.Errors);
-            }
-
-            var job = response.Data.job;
-            string status = (string)job.status;
-            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
-            if (jobStatus != JobStatus.SUCCESS)
-            {
-                throw new RuntimeException($"Job finished with status : {status}");
-            }
-
-            var result = job.result;
-            if (result == null)
-            {
-                throw new RuntimeException("Job has finished with no results");
-            }
-
-            string output = (string)result;
-            return output;
         }
 
         /// <summary>

@@ -6,11 +6,27 @@ using Indico.Exception;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Load a Model Group
+    /// </summary>
     public class ModelGroupLoad : Mutation<string>
     {
         GraphQLHttpClient _graphQLHttpClient;
         int _id;
 
+        /// <summary>
+        /// Model Group Id
+        /// </summary>
+        public int Id
+        {
+            get => _id;
+            set => this._id = value;
+        }
+
+        /// <summary>
+        /// Model Group Load Constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
@@ -31,8 +47,8 @@ namespace Indico.Mutation
         /// Use to load ModelGroup by id
         /// </summary>
         /// <returns>ModelGroupLoad</returns>
-        /// <param name="modelId">Model identifier.</param>
-        public ModelGroupLoad ModelId(int modelId)
+        /// <param name="modelId">The Model ID to load. Often the Selected Model ID for the Model Group</param>
+        public ModelGroupLoad SetId(int modelId)
         {
             this._id = modelId;
             return this;
@@ -42,7 +58,7 @@ namespace Indico.Mutation
         /// Executes request and returns load status  
         /// </summary>
         /// <returns>Load status</returns>
-        public string Execute()
+        public string Exec()
         {
             string query = @"
                     mutation LoadModel($model_id: Int!) {
@@ -51,6 +67,7 @@ namespace Indico.Mutation
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,

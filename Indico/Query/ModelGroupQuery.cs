@@ -7,6 +7,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Query
 {
+    /// <summary>
+    /// Get a Model Group
+    /// </summary>
     public class ModelGroupQuery : Query<ModelGroup>
     {
 
@@ -14,19 +17,32 @@ namespace Indico.Query
         int _id;
         string _name;
 
+        /// <summary>
+        /// Model Group ID
+        /// </summary>
+        public int Id
+        {
+            get => _id;
+            set => this._id = value;
+        }
+
+        /// <summary>
+        /// Constructor for Model Group Queries
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
         }
 
         /// <summary>
-        /// Use to query ModelGroup by id
+        /// Used to query ModelGroup by id
         /// </summary>
         /// <returns>ModelGroupQuery</returns>
         /// <param name="id">Identifier.</param>
-        public ModelGroupQuery Id(int id)
+        public ModelGroupQuery SetId(int id)
         {
-            this._id = id;
+            this.Id = id;
             return this;
         }
 
@@ -45,7 +61,7 @@ namespace Indico.Query
         /// Queries the server and returns ModelGroup
         /// </summary>
         /// <returns>ModelGroup</returns>
-        public ModelGroup Query()
+        public ModelGroup Exec()
         {
             string query = @"
                     query ModelGroupQuery($modelGroupIds: [Int]!) {
@@ -62,6 +78,7 @@ namespace Indico.Query
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,

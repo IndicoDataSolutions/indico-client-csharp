@@ -8,12 +8,28 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Query
 {
-    public class TrainingModelWithProgressQuery : Query<Model>
+    /// <summary>
+    /// Find the % complete of a training Model Group
+    /// </summary>
+    public class TrainingModelWithProgressQuery : Query<JArray>
     {
         IndicoClient _client;
         int _id;
         string _name;
 
+        /// <summary>
+        /// The model ID to query. Often this is the selected model Id for a Model Group
+        /// </summary>
+        public int Id
+        {
+            get => this._id;
+            set => this._id = value;
+        }
+
+        /// <summary>
+        /// Find the % complete of a training Model Group
+        /// </summary>
+        /// <param name="client">Indico Client</param>
         public TrainingModelWithProgressQuery(IndicoClient client)
         {
             this._client = client;
@@ -24,7 +40,7 @@ namespace Indico.Query
         /// </summary>
         /// <returns>TrainingModelWithProgressQuery</returns>
         /// <param name="id">Identifier.</param>
-        public TrainingModelWithProgressQuery Id(int id)
+        public TrainingModelWithProgressQuery SetId(int id)
         {
             this._id = id;
             return this;
@@ -41,7 +57,11 @@ namespace Indico.Query
             return this;
         }
 
-        public Model Query()
+        /// <summary>
+        /// Query a Model Group for training % complete
+        /// </summary>
+        /// <returns>JObject with % training complete</returns>
+        public JArray Exec()
         {
             GraphQLHttpClient graphQLHttpClient = this._client.GraphQLHttpClient;
             string query = @"
@@ -59,6 +79,7 @@ namespace Indico.Query
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
@@ -80,21 +101,13 @@ namespace Indico.Query
             {
                 throw new RuntimeException("Cannot find Model Group");
             }
-            JArray models = (JArray)modelGroups[0].models;
-
-            JToken last = models.Select(token => (token.Value<int>("id"), Token: token)).Max().Token;
-            if (last == null)
-            {
-                throw new RuntimeException("Cannot find Training Model");
-            }
-
-            JObject model = (JObject)last;
-            return new Model(model);
+            
+            return (JArray)modelGroups[0].models;
         }
 
-        public Model Refresh(Model model)
+        public JArray Refresh(JArray obj)
         {
-            return model;
+            return obj;
         }
     }
 }

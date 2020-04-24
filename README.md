@@ -19,7 +19,7 @@ environment. The C# Client Library will look in your user profile directory by d
 
 ### IndicoConfig Class
 The IndicoConfig class gives you the maximum control over C# Client Library configuration. Here’s how you might instantiate 
-an IndicoConfig object and set the host and token path:
+an IndicoConfig object and set the host:
 ```
 IndicoConfig config = new IndicoConfig(host: "app.indico.io");
 ```
@@ -36,7 +36,11 @@ IndicoConfig config = new IndicoConfig(host: "app.indico.io");
 
 IndicoClient indico = new IndicoClient(config);
 ```
-If you want to learn more about GraphQL, the [How to GraphQL](https://www.howtographql.com/) tutorial is a great place to start.
+The default config for IndicoClient sets the host to `app.indico.io` and will look for the Token File in your user profile directory.
+
+If you want to learn more about GraphQL, the [How to GraphQL](https://www.howtographql.com/) tutorial is a great place to start. 
+
+
 
 ## Indico GraphQL Schema
 
@@ -58,6 +62,7 @@ Several examples are provided in this repo:
 **SingleDocExtraction** - OCR a single PDF file (a sample PDF is provided)
 **GetPredictions** - Get predictions from a simple classifier. A CSV is provided for you to train the classifier via the Indico App.
 **GetModelTrainingProgress** - Get % complete progress on a training model.
+**OcrPredict** - Pass a directory of files through DocumentExtraction then pass the text to a model for predictions.
 
 The examples are setup as console apps in the repo's Visual Studio project.
 
@@ -73,24 +78,29 @@ IndicoClient indico = new IndicoClient(config);
 
 Note that the model group ID is found on the model's Review page in the Indico App.
 ```
-ModelGroup mg = indico.ModelGroupQuery()
-                      .Id(int mg_id)
-                      .Query();
+ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
 ```
 
 #### Load a Model
 ```
-String status = indico.ModelGroupLoad()
-                      .ModelGroup(mg)
-                      .Execute();
+// Note that you're passing in a ModelGroup object returned from ModelGroupQuery.
+// You get the ModelGroup object through a query and pass the the Model Group ID
+
+ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+String status = client.ModelGroupLoad(mg).Exec();
 ```
 
 #### Get Model Predictions
 ```
-Job job = indico.ModelGroupPredict()
-                .ModelGroup(mg)
-                .Data(List<string>)
-                .Execute();
+// Again, passing in a ModelGroup object. Also passing in a List of the text to predict.
+// It's always much more efficient to pass in a list to predict. A List of 3 or 3,000 samples
+// to predict is fine.
+
+ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+Job job = client.ModelGroupPredict(mg).Data(texts).Exec();
+
+// Retrieve the predictions as a JArray
+
 JArray jobResult = job.Results();
 ```
 
@@ -125,28 +135,30 @@ JObject extractConfig = new JObject()
    { "preset_config", "standard" }
 };
 
-List<Job> jobs = indico.DocumentExtraction()
-                       .Files(List<string>)
-                       .JsonConfig(extractConfig)
-                       .Execute();
+// OCR a Single File
+
+DocumentExtraction ocr = client.DocumentExtraction(extractConfig);
+Job job = ocr.Exec(args[0]);
+
+// OCR a List of files - Currently, no real benefit to doing this.
+
+List<Job> jobs = indico.DocumentExtraction(extractConfig)
+                       .Files(List<string>)                       
+                       .Exec();
 ```
 
 #### Fetch a DocumentExtraction Result From Storage
 ```
-JObject obj = job.Result();
-string url = (string)obj.GetValue("url");
-RetrieveBlob retrieveBlob = client.RetrieveBlob();
-Blob blob = retrieveBlob.Url(url).Execute();
+string url = (string)job.Result().GetValue("url");
+Blob blob = client.RetrieveBlob(url).Exec();
 Console.WriteLine(blob.AsJSONObject());
-
-Blob blob = indico.RetrieveBlob()
-                  .Url(string)
-                  .Execute();
 ```
 
 #### Get Training Model With Progress
 ```
-ModelGroup mg = indico.TrainingModelWithProgressQuery()
-                      .Id(int mg_id)
-                      .Query();
+ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+JArray trainingStatus = client.TrainingModelWithProgressQuery(mg).Exec();
+            
+Console.WriteLine(mg.Name);
+Console.WriteLine(trainingStatus);                     
 ```

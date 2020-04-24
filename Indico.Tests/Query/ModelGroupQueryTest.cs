@@ -25,7 +25,7 @@ namespace Indico.Tests.Query
         public void Test()
         {
             ModelGroupQuery modelGroupQuery = new ModelGroupQuery(_client);
-            Entity.ModelGroup modelGroup = modelGroupQuery.Id(1).Query();
+            Entity.ModelGroup modelGroup = modelGroupQuery.SetId(1).Exec();
             Assert.AreEqual(1, modelGroup.Id);
             Assert.AreEqual("testModelGroup", modelGroup.Name);
             Assert.AreEqual(ModelStatus.COMPLETE, modelGroup.Status);

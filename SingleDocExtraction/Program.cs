@@ -23,23 +23,16 @@ namespace Examples
             );
             IndicoClient client = new IndicoClient(config);
 
-            List<string> files = new List<string>()
-            {
-                args[0]
-            };
-
             JObject extractConfig = new JObject()
             {
                 { "preset_config", "standard" }
             };
 
-            DocumentExtraction extraction = client.DocumentExtraction();
-            List<Job> jobs = extraction.Files(files).JsonConfig(extractConfig).Execute();
-            Job job = jobs[0];
-            JObject obj = job.Result();
-            string url = (string)obj.GetValue("url");
-            RetrieveBlob retrieveBlob = client.RetrieveBlob();
-            Blob blob = retrieveBlob.Url(url).Execute();
+            DocumentExtraction ocr = client.DocumentExtraction(extractConfig);
+            Job job = ocr.Exec(args[0]);
+            
+            string url = (string)job.Result().GetValue("url");
+            Blob blob = client.RetrieveBlob(url).Exec();
             Console.WriteLine(blob.AsJSONObject());
         }
     }

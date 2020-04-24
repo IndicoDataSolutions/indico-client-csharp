@@ -11,6 +11,24 @@ namespace Indico.Storage
         IndicoClient _client;
         string _url;
 
+        /// <summary>
+        /// Url of Blob to retrieve
+        /// </summary>
+        public string Url
+        {
+            get => _url;
+            set {
+                string url = value.Replace("\"", "");
+                // Drop gzip
+                string path = new Uri(url).PathAndQuery;
+                this._url = this._client.Config.GetAppBaseUrl() + path;
+            }
+        }
+
+        /// <summary>
+        /// RetrieveBlob Constructor
+        /// </summary>
+        /// <param name="client"></param>
         public RetrieveBlob(IndicoClient client)
         {
             this._client = client;
@@ -31,16 +49,13 @@ namespace Indico.Storage
         }
 
         /// <summary>
-        /// Blob Url
+        /// Set the Blob Url and return this to call in a chain.
         /// </summary>
         /// <returns>RetrieveBlob</returns>
         /// <param name="url">Bolb Url</param>
-        public RetrieveBlob Url(string url)
+        public RetrieveBlob SetUrl(string url)
         {
-            url = url.Replace("\"", "");
-            // Drop gzip
-            string path = new Uri(url).PathAndQuery;
-            this._url = this._client.Config.GetAppBaseUrl() + path;
+            this.Url = url;
             return this;
         }
 
@@ -57,6 +72,10 @@ namespace Indico.Storage
             }
         }
 
+        /// <summary>
+        /// Retrieve the blob and decompress if needed
+        /// </summary>
+        /// <returns>Stream</returns>
         async Task<Stream> GetStream()
         {
             HttpResponseMessage httpResponseMessage = await this.Retrieve();
@@ -75,7 +94,7 @@ namespace Indico.Storage
         /// Retrieves Blob
         /// </summary>
         /// <returns>Blob</returns>
-        public Blob Execute()
+        public Blob Exec()
         {
             return new Blob(this.GetStream().Result);
         }
