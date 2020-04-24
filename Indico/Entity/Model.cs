@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
 namespace Indico.Entity
@@ -18,20 +18,11 @@ namespace Indico.Entity
 
         public TrainingProgress TrainingProgress { get; }
 
-        public Model(JObject model)
+        public Model(int id, string status, [Optional] TrainingProgress trainingProgress)
         {
-            this.Id = (int)model.GetValue("id");
-            this.Status = (string)model.GetValue("status");
-            JToken trainingProgress = model.GetValue("trainingProgress");
-            if(trainingProgress != null)
-            {
-                float percentComplete = trainingProgress.Value<float>("percentComplete");
-                this.TrainingProgress = new TrainingProgress(percentComplete);
-            }
-            else
-            {
-                this.TrainingProgress = null;
-            }
+            this.Id = id;
+            this.Status = status;
+            this.TrainingProgress = trainingProgress;
         }
     }
 }

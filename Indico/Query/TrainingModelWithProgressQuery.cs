@@ -82,14 +82,18 @@ namespace Indico.Query
             }
             JArray models = (JArray)modelGroups[0].models;
 
-            JToken last = models.Select(token => (token.Value<int>("id"), Token: token)).Max().Token;
-            if (last == null)
+            JToken model = models.Select(token => (token.Value<int>("id"), Token: token)).Max().Token;
+            if (model == null)
             {
                 throw new RuntimeException("Cannot find Training Model");
             }
 
-            JObject model = (JObject)last;
-            return new Model(model);
+            JToken trainingProgress = model.Value<JToken>("trainingProgress");
+            return new Model(
+                id: model.Value<int>("id"),
+                status: model.Value<string>("status"),
+                trainingProgress: new TrainingProgress(trainingProgress.Value<float>("percentComplete"))
+            );
         }
 
         public Model Refresh(Model model)

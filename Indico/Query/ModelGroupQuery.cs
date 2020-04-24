@@ -1,8 +1,10 @@
+using System;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
+using Indico.Types;
 using Newtonsoft.Json.Linq;
 
 namespace Indico.Query
@@ -84,8 +86,18 @@ namespace Indico.Query
                 throw new RuntimeException($"Cannot find the default selected model for model group : {_id}");
             }
 
-            JObject modelGroup = (JObject)modelGroupList[0];
-            return new ModelGroup(modelGroup);
+            JToken mg = modelGroupList[0];
+            JToken model = mg.Value<JToken>("selectedModel");
+
+            return new ModelGroup(
+                id: mg.Value<int>("id"),
+                name: mg.Value<string>("name"),
+                status: (ModelStatus)Enum.Parse(typeof(ModelStatus), mg.Value<string>("status")),
+                selectedModel: new Model(
+                    id: model.Value<int>("id"),
+                    status: model.Value<string>("status")
+                )
+            );
         }
 
         /// <summary>
