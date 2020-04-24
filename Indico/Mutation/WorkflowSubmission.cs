@@ -8,13 +8,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
-    public class WorkflowSubmisson : Mutation<Job>
+    public class WorkflowSubmission : Mutation<Job>
     {
         IndicoClient _client;
         int _id;
         List<string> _files;
 
-        public WorkflowSubmisson(IndicoClient client)
+        public WorkflowSubmission(IndicoClient client)
         {
             this._client = client;
         }
@@ -24,7 +24,7 @@ namespace Indico.Mutation
         /// </summary>
         /// <returns>WorkflowSubmission</returns>
         /// <param name="files">Files</param>
-        public WorkflowSubmisson Files(List<string> files)
+        public WorkflowSubmission Files(List<string> files)
         {
             this._files = files;
             return this;
@@ -35,7 +35,7 @@ namespace Indico.Mutation
         /// </summary>
         /// <returns>WorkflowSubmission</returns>
         /// <param name="id">Workflow Id</param>
-        public WorkflowSubmisson WorkflowId(int id)
+        public WorkflowSubmission WorkflowId(int id)
         {
             this._id = id;
             return this;

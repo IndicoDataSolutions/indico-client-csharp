@@ -69,9 +69,9 @@ namespace Indico
         /// Create a new mutation to submit documents to process by a workflow
         /// </summary>
         /// <returns>WorkflowSubmission</returns>
-        public WorkflowSubmisson WorkflowSubmisson()
+        public WorkflowSubmission WorkflowSubmission()
         {
-            return new WorkflowSubmisson(this);
+            return new WorkflowSubmission(this);
         }
 
         /// <summary>
