@@ -8,6 +8,10 @@ namespace Indico.Storage
     {
         Stream _data = null;
 
+        /// <summary>
+        /// Blob constructor
+        /// </summary>
+        /// <param name="data"></param>
         public Blob(Stream data)
         {
             this._data = data;

@@ -8,6 +8,10 @@ namespace Indico.Jobs
         GraphQLHttpClient _graphQLHttpClient;
         string _id;
 
+        /// <summary>
+        /// Query a Job
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public JobQuery(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
@@ -28,7 +32,7 @@ namespace Indico.Jobs
         /// Returns Job
         /// </summary>
         /// <returns>Job</returns>
-        public Job Query()
+        public Job Exec()
         {
             return new Job(this._graphQLHttpClient, this._id);
         }

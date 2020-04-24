@@ -24,7 +24,7 @@ namespace Indico.Tests.Mutation
         public void Test()
         {
             ModelGroupLoad modelGroupLoad = new ModelGroupLoad(_client);
-            string status = modelGroupLoad.ModelId(1).Execute();
+            string status = modelGroupLoad.SetId(1).Exec();
             Assert.AreEqual("loading", status);
         }
     }

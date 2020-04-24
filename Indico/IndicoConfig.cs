@@ -19,17 +19,26 @@ namespace Indico
         /// </summary>
         /// <value>The host.</value>
         public string Host { get; }
+
         /// <summary>
         /// Gets the protocol.
         /// </summary>
         /// <value>The protocol.</value>
         public string Protocol { get; }
+
         /// <summary>
         /// Gets the API token.
         /// </summary>
         /// <value>The API token.</value>
         public string ApiToken { get; }
 
+        /// <summary>
+        /// Indico Client config constructor
+        /// </summary>
+        /// <param name="apiToken">The actual text of the API Token</param>
+        /// <param name="tokenPath">Path to the API Token file</param>
+        /// <param name="host">Indico Platform host. Defaults to app.indico.io</param>
+        /// <param name="protocol">Defaults to https</param>
         public IndicoConfig(
             [Optional] string apiToken,
             [Optional] string tokenPath,
@@ -53,11 +62,6 @@ namespace Indico
             }
         }
 
-        public string GetAppBaseUrl()
-        {
-            return this.Protocol + "://" + this.Host;
-        }
-
         private async Task<string> ResolveApiToken(string path)
         {
             string apiToken;
@@ -72,7 +76,7 @@ namespace Indico
             {
                 absolutePath = Path.Combine(path, ApiTokenFile);
             }
-            
+
             if (File.Exists(absolutePath))
             {
                 FileStream fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read);
@@ -83,6 +87,15 @@ namespace Indico
                 return apiToken;
             }
             throw new FileNotFoundException("Invalid TokenPath Provided");
+        }
+
+        /// <summary>
+        /// Get the base URL for the Indico Platform host, including protocol
+        /// </summary>
+        /// <returns>base URL string</returns>
+        public string GetAppBaseUrl()
+        {
+            return this.Protocol + "://" + this.Host;
         }
     }
 }

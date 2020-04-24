@@ -2,27 +2,52 @@
 using Indico.Jobs;
 using Indico.Mutation;
 using Indico.Query;
+using Indico.Entity;
 using Indico.Request;
 using Indico.Storage;
 using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Indico
 {
     /// <summary>
-    /// Indico client with all available top level query and mutations
+    /// Indico Client to send all GraphQL requests to the platform
     /// </summary>
     public class IndicoClient
     {
+        /// <summary>
+        /// Gets the client config.
+        /// </summary>
         public IndicoConfig Config { get; }
+
+        /// <summary>
+        /// Gets the underlying http client.
+        /// </summary>
         public HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// Gets the underlying GraphQL client.
+        /// </summary>
         public GraphQLHttpClient GraphQLHttpClient { get; }
 
-        public IndicoClient(IndicoConfig indicoConfig)
+        /// <summary>
+        /// IndicoClient constructor
+        /// </summary>
+        /// <param name="indicoConfig">Client configuration with platform hostname, etc</param>
+        public IndicoClient(IndicoConfig indicoConfig=null)
         {
-            this.Config = indicoConfig;
-            TokenHandler tokenHandler = new TokenHandler(indicoConfig.ApiToken);
+            if (indicoConfig != null)
+            {
+                this.Config = indicoConfig;
+            }
+            else
+            {
+                this.Config = new IndicoConfig();
+            }
+            
+            TokenHandler tokenHandler = new TokenHandler(this.Config.ApiToken);
             this.HttpClient = new HttpClient(tokenHandler);
-            string endpoint = $"{indicoConfig.Protocol}://{indicoConfig.Host}";
+            string endpoint = $"{this.Config.Protocol}://{this.Config.Host}";
             GraphQLHttpClientOptions options = new GraphQLHttpClientOptions();
             options.EndPoint = new System.Uri($"{endpoint}/graph/api/graphql");
             options.HttpMessageHandler = tokenHandler;
@@ -39,48 +64,74 @@ namespace Indico
         }
 
         /// <summary>
-        /// Create a new Query for ModelGroup
+        /// Create a new Query for a ModelGroup
         /// </summary>
         /// <returns>ModelGroupQuery</returns>
-        public ModelGroupQuery ModelGroupQuery()
+        public ModelGroupQuery ModelGroupQuery(int mgId=-1)
         {
-            return new ModelGroupQuery(this.GraphQLHttpClient);
+            ModelGroupQuery mgQuery = new ModelGroupQuery(this.GraphQLHttpClient);
+            if (mgId != -1)
+            {
+                mgQuery.Id = mgId;
+            }
+            return mgQuery;
         }
 
         /// <summary>
-        /// Create a new Query for TrainingModelWithProgress.
+        /// Create a new Query to retrieve TrainingModelWithProgress.
         /// </summary>
         /// <returns>TrainingModelWithProgressQuery</returns>
-        public TrainingModelWithProgressQuery TrainingModelWithProgressQuery()
+        public TrainingModelWithProgressQuery TrainingModelWithProgressQuery(ModelGroup mg=null)
         {
-            return new TrainingModelWithProgressQuery(this);
+            TrainingModelWithProgressQuery mgTraining = new TrainingModelWithProgressQuery(this);
+            if (mg != null)
+            {
+                mgTraining.Id = mg.Id;
+            }
+            return mgTraining;
         }
 
         /// <summary>
-        /// Create a new Mutation to load model in ModelGroup
+        /// Create a new request to load a ModelGroup.
         /// </summary>
         /// <returns>ModelGroupLoad</returns>
-        public ModelGroupLoad ModelGroupLoad()
+        public ModelGroupLoad ModelGroupLoad(ModelGroup mg=null)
         {
-            return new ModelGroupLoad(this.GraphQLHttpClient);
+            ModelGroupLoad mgLoad = new ModelGroupLoad(this.GraphQLHttpClient);
+            if (mg != null)
+            {
+                mgLoad.Id = mg.SelectedModel.Id;
+            }
+            return mgLoad;
         }
 
         /// <summary>
-        /// Create a new Mutation to predict data
+        /// Create a new request to fetch model predictions.
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
-        public ModelGroupPredict ModelGroupPredict()
+        public ModelGroupPredict ModelGroupPredict(ModelGroup mg=null)
         {
-            return new ModelGroupPredict(this.GraphQLHttpClient);
+            ModelGroupPredict mgPredict = new ModelGroupPredict(this.GraphQLHttpClient);
+            if (mg != null)
+            {
+                mgPredict.Id = mg.SelectedModel.Id;
+            }
+            return mgPredict;
         }
 
         /// <summary>
-        /// Create a new mutation to submit document for extraction
+        /// Create a new DocumentExtraction client to OCR files
         /// </summary>
+        /// <param name="jsonConfig">DocumentExtraction passed in as a JSON Object. Defaults to null</param>
         /// <returns>DocumentExtraction</returns>
-        public DocumentExtraction DocumentExtraction()
+        public DocumentExtraction DocumentExtraction(JObject jsonConfig=null)
         {
-            return new DocumentExtraction(this);
+            DocumentExtraction ocr = new DocumentExtraction(this);
+            if (jsonConfig != null)
+            {
+                ocr.JsonConfig = jsonConfig;
+            }
+            return ocr;
         }
 
         /// <summary>
@@ -95,14 +146,20 @@ namespace Indico
         /// <summary>
         /// Retrieve a blob from indico blob storage
         /// </summary>
+        /// <param name="url">URL to retrieve. Defaults to null.</param>
         /// <returns>RetrieveBlob</returns>
-        public RetrieveBlob RetrieveBlob()
+        public RetrieveBlob RetrieveBlob(string url=null)
         {
-            return new RetrieveBlob(this);
+            RetrieveBlob blob = new RetrieveBlob(this);
+            if (url != null)
+            {
+                blob.Url = url;
+            }
+            return blob;
         }
 
         /// <summary>
-        /// Uploads files
+        /// Upload files
         /// </summary>
         /// <returns>UploadFile</returns>
         public UploadFile UploadFile()

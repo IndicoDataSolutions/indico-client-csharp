@@ -27,9 +27,9 @@ namespace Indico.Tests.Mutation
         {
             ModelGroupPredict modelGroupPredict = new ModelGroupPredict(_client);
             Job job = modelGroupPredict
-                .ModelId(1)
+                .SetId(1)
                 .Data(new List<string>())
-                .Execute();
+                .Exec();
             Assert.AreEqual("jobId_test", job.Id);
         }
     }

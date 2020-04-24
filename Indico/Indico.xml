@@ -42,8 +42,29 @@
         </member>
         <member name="T:Indico.IndicoClient">
             <summary>
-            Indico client with all available top level query and mutations
+            Indico Client to send all GraphQL requests to the platform
             </summary>
+        </member>
+        <member name="P:Indico.IndicoClient.Config">
+            <summary>
+            Gets the client config.
+            </summary>
+        </member>
+        <member name="P:Indico.IndicoClient.HttpClient">
+            <summary>
+            Gets the underlying http client.
+            </summary>
+        </member>
+        <member name="P:Indico.IndicoClient.GraphQLHttpClient">
+            <summary>
+            Gets the underlying GraphQL client.
+            </summary>
+        </member>
+        <member name="M:Indico.IndicoClient.#ctor(Indico.IndicoConfig)">
+            <summary>
+            IndicoClient constructor
+            </summary>
+            <param name="indicoConfig">Client configuration with platform hostname, etc</param>
         </member>
         <member name="M:Indico.IndicoClient.GraphQLRequest">
             <summary>
@@ -51,34 +72,35 @@
             </summary>
             <returns>GraphQLRequest</returns>
         </member>
-        <member name="M:Indico.IndicoClient.ModelGroupQuery">
+        <member name="M:Indico.IndicoClient.ModelGroupQuery(System.Int32)">
             <summary>
-            Create a new Query for ModelGroup
+            Create a new Query for a ModelGroup
             </summary>
             <returns>ModelGroupQuery</returns>
         </member>
-        <member name="M:Indico.IndicoClient.TrainingModelWithProgressQuery">
+        <member name="M:Indico.IndicoClient.TrainingModelWithProgressQuery(Indico.Entity.ModelGroup)">
             <summary>
-            Create a new Query for TrainingModelWithProgress.
+            Create a new Query to retrieve TrainingModelWithProgress.
             </summary>
             <returns>TrainingModelWithProgressQuery</returns>
         </member>
-        <member name="M:Indico.IndicoClient.ModelGroupLoad">
+        <member name="M:Indico.IndicoClient.ModelGroupLoad(Indico.Entity.ModelGroup)">
             <summary>
-            Create a new Mutation to load model in ModelGroup
+            Create a new request to load a ModelGroup.
             </summary>
             <returns>ModelGroupLoad</returns>
         </member>
-        <member name="M:Indico.IndicoClient.ModelGroupPredict">
+        <member name="M:Indico.IndicoClient.ModelGroupPredict(Indico.Entity.ModelGroup)">
             <summary>
-            Create a new Mutation to predict data
+            Create a new request to fetch model predictions.
             </summary>
             <returns>ModelGroupPredict</returns>
         </member>
-        <member name="M:Indico.IndicoClient.DocumentExtraction">
+        <member name="M:Indico.IndicoClient.DocumentExtraction(Newtonsoft.Json.Linq.JObject)">
             <summary>
-            Create a new mutation to submit document for extraction
+            Create a new DocumentExtraction client to OCR files
             </summary>
+            <param name="jsonConfig">DocumentExtraction passed in as a JSON Object. Defaults to null</param>
             <returns>DocumentExtraction</returns>
         </member>
         <member name="M:Indico.IndicoClient.JobQuery">
@@ -87,15 +109,16 @@
             </summary>
             <returns>JobQuery</returns>
         </member>
-        <member name="M:Indico.IndicoClient.RetrieveBlob">
+        <member name="M:Indico.IndicoClient.RetrieveBlob(System.String)">
             <summary>
             Retrieve a blob from indico blob storage
             </summary>
+            <param name="url">URL to retrieve. Defaults to null.</param>
             <returns>RetrieveBlob</returns>
         </member>
         <member name="M:Indico.IndicoClient.UploadFile">
             <summary>
-            Uploads files
+            Upload files
             </summary>
             <returns>UploadFile</returns>
         </member>
@@ -125,10 +148,37 @@
             </summary>
             <value>The API token.</value>
         </member>
+        <member name="M:Indico.IndicoConfig.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Indico Client config constructor
+            </summary>
+            <param name="apiToken">The actual text of the API Token</param>
+            <param name="tokenPath">Path to the API Token file</param>
+            <param name="host">Indico Platform host. Defaults to app.indico.io</param>
+            <param name="protocol">Defaults to https</param>
+        </member>
+        <member name="M:Indico.IndicoConfig.GetAppBaseUrl">
+            <summary>
+            Get the base URL for the Indico Platform host, including protocol
+            </summary>
+            <returns>base URL string</returns>
+        </member>
         <member name="T:Indico.Jobs.Job">
             <summary>
             Async Job information
             </summary>
+        </member>
+        <member name="P:Indico.Jobs.Job.Id">
+            <summary>
+            The Job ID
+            </summary>
+        </member>
+        <member name="M:Indico.Jobs.Job.#ctor(GraphQL.Client.Http.GraphQLHttpClient,System.String)">
+            <summary>
+            Job constructor
+            </summary>
+            <param name="graphQLHttpClient">GraphQL Client</param>
+            <param name="id">Job id</param>
         </member>
         <member name="M:Indico.Jobs.Job.Status">
             <summary>
@@ -154,16 +204,11 @@
             </summary>
             <returns>List of errors</returns>
         </member>
-        <member name="T:Indico.Jobs.JobOptions">
+        <member name="M:Indico.Jobs.JobQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
-            Configuration parameters to modify how async jobs are handled
+            Query a Job
             </summary>
-        </member>
-        <member name="P:Indico.Jobs.JobOptions.Priority">
-            <summary>
-            Gets the job priority.
-            </summary>
-            <value>The priority.</value>
+            <param name="graphQLHttpClient"></param>
         </member>
         <member name="M:Indico.Jobs.JobQuery.Id(System.String)">
             <summary>
@@ -172,7 +217,7 @@
             <returns>JobQuery</returns>
             <param name="id">Identifier.</param>
         </member>
-        <member name="M:Indico.Jobs.JobQuery.Query">
+        <member name="M:Indico.Jobs.JobQuery.Exec">
             <summary>
             Returns Job
             </summary>
@@ -185,31 +230,65 @@
             <returns>Job</returns>
             <param name="obj">Job</param>
         </member>
-        <member name="M:Indico.Mutation`1.Execute">
+        <member name="M:Indico.Mutation`1.Exec">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>
             <returns>result of query of type T</returns>
         </member>
+        <member name="T:Indico.Mutation.DocumentExtraction">
+            <summary>
+            OCR PDF, TIF, JPG and PNG files
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.DocumentExtraction.#ctor(Indico.IndicoClient)">
+            <summary>
+            DocumentExtraction constructor
+            <param name="client">IndicoClient client</param>
+            </summary>
+        </member>
         <member name="M:Indico.Mutation.DocumentExtraction.Files(System.Collections.Generic.List{System.String})">
             <summary>
             Files to extract
-            </summary>
             <returns>DocumentExtraction</returns>
-            <param name="files">Files</param>
+            <param name="files">Files to OCR</param>
+            </summary>
         </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.JsonConfig(Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Indico.Mutation.DocumentExtraction.SetJsonConfig(Newtonsoft.Json.Linq.JObject)">
             <summary>
-            JSON configuration for extraction
-            </summary>
-            <returns>DocumentExtraction</returns>
+            Set the JSON configuration for extraction
             <param name="jsonConfig">JSON config</param>
-        </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.Execute">
-            <summary>
-            Executes request and returns Jobs
+            <returns>DocumentExtraction for calling in a chain</returns>
             </summary>
-            <returns>Job Array</returns>
+        </member>
+        <member name="M:Indico.Mutation.DocumentExtraction.Exec">
+            <summary>
+            Executes OCR and returns Jobs
+            <returns>List of Jobs</returns>
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.DocumentExtraction.Exec(System.String)">
+            <summary>
+            Executes a single OCR request
+            <param name="path">pathname of the file to OCR</param>
+            <returns>Job</returns>
+            </summary>
+        </member>
+        <member name="T:Indico.Mutation.ModelGroupLoad">
+            <summary>
+            Load a Model Group
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.ModelGroupLoad.Id">
+            <summary>
+            Model Group Id
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.ModelGroupLoad.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
+            <summary>
+            Model Group Load Constructor
+            </summary>
+            <param name="graphQLHttpClient"></param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.ModelGroup(Indico.Entity.ModelGroup)">
             <summary>
@@ -218,18 +297,29 @@
             <returns>ModelGroupLoad</returns>
             <param name="modelGroup">Model group.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.ModelId(System.Int32)">
+        <member name="M:Indico.Mutation.ModelGroupLoad.SetId(System.Int32)">
             <summary>
             Use to load ModelGroup by id
             </summary>
             <returns>ModelGroupLoad</returns>
-            <param name="modelId">Model identifier.</param>
+            <param name="modelId">The Model ID to load. Often the Selected Model ID for the Model Group</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.Execute">
+        <member name="M:Indico.Mutation.ModelGroupLoad.Exec">
             <summary>
             Executes request and returns load status  
             </summary>
             <returns>Load status</returns>
+        </member>
+        <member name="T:Indico.Mutation.ModelGroupPredict">
+            <summary>
+            Class to run Model Group predictions
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.ModelGroupPredict.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
+            <summary>
+            ModelGroupPredict constructor
+            </summary>
+            <param name="graphQLHttpClient"></param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.ModelGroup(Indico.Entity.ModelGroup)">
             <summary>
@@ -238,7 +328,7 @@
             <returns>ModelGroupPredict</returns>
             <param name="modelGroup">Model group.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.ModelId(System.Int32)">
+        <member name="M:Indico.Mutation.ModelGroupPredict.SetId(System.Int32)">
             <summary>
             Use to predict ModelGroup by id
             </summary>
@@ -252,28 +342,37 @@
             <returns>ModelGroupPredict</returns>
             <param name="data">Data.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.JobOptions(Indico.Jobs.JobOptions)">
-            <summary>
-            Job Options for Job
-            </summary>
-            <returns>ModeGroupPredict</returns>
-            <param name="jobOptions">Job options.</param>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.Execute">
+        <member name="M:Indico.Mutation.ModelGroupPredict.Exec">
             <summary>
             Executes request and returns job 
             </summary>
             <returns>Job</returns>
         </member>
-        <member name="M:Indico.Query`1.Query">
+        <member name="M:Indico.Query`1.Exec">
             <summary>
-            Execute the graphql query and retunrs the results as a specific type
+            Execute the graphql query and returns the results as a specific type
             </summary>
             <returns>result of query of type T</returns>
         </member>
-        <member name="M:Indico.Query.ModelGroupQuery.Id(System.Int32)">
+        <member name="T:Indico.Query.ModelGroupQuery">
             <summary>
-            Use to query ModelGroup by id
+            Get a Model Group
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ModelGroupQuery.Id">
+            <summary>
+            Model Group ID
+            </summary>
+        </member>
+        <member name="M:Indico.Query.ModelGroupQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
+            <summary>
+            Constructor for Model Group Queries
+            </summary>
+            <param name="graphQLHttpClient"></param>
+        </member>
+        <member name="M:Indico.Query.ModelGroupQuery.SetId(System.Int32)">
+            <summary>
+            Used to query ModelGroup by id
             </summary>
             <returns>ModelGroupQuery</returns>
             <param name="id">Identifier.</param>
@@ -285,7 +384,7 @@
             <returns>ModelGroupQuery</returns>
             <param name="name">Name.</param>
         </member>
-        <member name="M:Indico.Query.ModelGroupQuery.Query">
+        <member name="M:Indico.Query.ModelGroupQuery.Exec">
             <summary>
             Queries the server and returns ModelGroup
             </summary>
@@ -298,7 +397,23 @@
             <returns>ModelGroup</returns>
             <param name="obj">ModelGroup</param>
         </member>
-        <member name="M:Indico.Query.TrainingModelWithProgressQuery.Id(System.Int32)">
+        <member name="T:Indico.Query.TrainingModelWithProgressQuery">
+            <summary>
+            Find the % complete of a training Model Group
+            </summary>
+        </member>
+        <member name="P:Indico.Query.TrainingModelWithProgressQuery.Id">
+            <summary>
+            The model ID to query. Often this is the selected model Id for a Model Group
+            </summary>
+        </member>
+        <member name="M:Indico.Query.TrainingModelWithProgressQuery.#ctor(Indico.IndicoClient)">
+            <summary>
+            Find the % complete of a training Model Group
+            </summary>
+            <param name="client">Indico Client</param>
+        </member>
+        <member name="M:Indico.Query.TrainingModelWithProgressQuery.SetId(System.Int32)">
             <summary>
             Use to query TrainingModelWithProgress by id
             </summary>
@@ -311,6 +426,18 @@
             </summary>
             <returns>TrainingModelWithProgressQuery</returns>
             <param name="name">Name.</param>
+        </member>
+        <member name="M:Indico.Query.TrainingModelWithProgressQuery.Exec">
+            <summary>
+            Query a Model Group for training % complete
+            </summary>
+            <returns>JObject with % training complete</returns>
+        </member>
+        <member name="M:Indico.Storage.Blob.#ctor(System.IO.Stream)">
+            <summary>
+            Blob constructor
+            </summary>
+            <param name="data"></param>
         </member>
         <member name="M:Indico.Storage.Blob.AsStream">
             <summary>
@@ -336,6 +463,17 @@
             </summary>
             <returns>JArray</returns>
         </member>
+        <member name="P:Indico.Storage.RetrieveBlob.Url">
+            <summary>
+            Url of Blob to retrieve
+            </summary>
+        </member>
+        <member name="M:Indico.Storage.RetrieveBlob.#ctor(Indico.IndicoClient)">
+            <summary>
+            RetrieveBlob Constructor
+            </summary>
+            <param name="client"></param>
+        </member>
         <member name="M:Indico.Storage.RetrieveBlob.GZipDecompress(System.IO.Stream)">
             <summary>
             Decompresses Gzip Stream
@@ -343,14 +481,20 @@
             <returns>Async String</returns>
             <param name="compressed">Compressed Stream</param>
         </member>
-        <member name="M:Indico.Storage.RetrieveBlob.Url(System.String)">
+        <member name="M:Indico.Storage.RetrieveBlob.SetUrl(System.String)">
             <summary>
-            Blob Url
+            Set the Blob Url and return this to call in a chain.
             </summary>
             <returns>RetrieveBlob</returns>
             <param name="url">Bolb Url</param>
         </member>
-        <member name="M:Indico.Storage.RetrieveBlob.Execute">
+        <member name="M:Indico.Storage.RetrieveBlob.GetStream">
+            <summary>
+            Retrieve the blob and decompress if needed
+            </summary>
+            <returns>Stream</returns>
+        </member>
+        <member name="M:Indico.Storage.RetrieveBlob.Exec">
             <summary>
             Retrieves Blob
             </summary>

@@ -27,7 +27,7 @@ namespace Indico.Tests.Mutation
         public void Test()
         {
             JobQuery jobQuery = new JobQuery(_client);
-            Job job = jobQuery.Id("jobId_test").Query();
+            Job job = jobQuery.Id("jobId_test").Exec();
             Assert.AreEqual(JobStatus.SUCCESS, job.Status());
             //JObject json = (JObject)job.Results().Result[0];
             JArray jsonResults = job.Results();

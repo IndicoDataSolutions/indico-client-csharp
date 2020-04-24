@@ -8,12 +8,26 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// OCR PDF, TIF, JPG and PNG files
+    /// </summary>
     public class DocumentExtraction : Mutation<List<Job>>
     {
         List<string> _files;
         JObject _jsonConfig;
         IndicoClient _client;
 
+
+        public JObject JsonConfig
+        { 
+            get => _jsonConfig;
+            set => _jsonConfig = value; 
+        }
+
+        /// <summary>
+        /// DocumentExtraction constructor
+        /// <param name="client">IndicoClient client</param>
+        /// </summary>
         public DocumentExtraction(IndicoClient client)
         {
             this._client = client;
@@ -21,9 +35,9 @@ namespace Indico.Mutation
 
         /// <summary>
         /// Files to extract
-        /// </summary>
         /// <returns>DocumentExtraction</returns>
-        /// <param name="files">Files</param>
+        /// <param name="files">Files to OCR</param>
+        /// </summary>
         public DocumentExtraction Files(List<string> files)
         {
             this._files = files;
@@ -34,22 +48,13 @@ namespace Indico.Mutation
             return this;
         }
 
-        /// <summary>
-        /// JSON configuration for extraction
-        /// </summary>
-        /// <returns>DocumentExtraction</returns>
-        /// <param name="jsonConfig">JSON config</param>
-        public DocumentExtraction JsonConfig(JObject jsonConfig)
+        private JArray Upload(List<string> filePaths)
         {
-            this._jsonConfig = jsonConfig;
-            return this;
+            UploadFile uploadRequest = new UploadFile(this._client);
+            return uploadRequest.FilePaths(filePaths).Call();
         }
 
-        /// <summary>
-        /// Executes request and returns Jobs
-        /// </summary>
-        /// <returns>Job Array</returns>
-        public List<Job> Execute()
+        private GraphQLResponse ExecRequest()
         {
             JArray fileMetadata;
             List<object> files = new List<object>();
@@ -92,7 +97,27 @@ namespace Indico.Mutation
                 }
             };
 
-            GraphQLResponse response = this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
+            return this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
+        }
+
+        /// <summary>
+        /// Set the JSON configuration for extraction
+        /// <param name="jsonConfig">JSON config</param>
+        /// <returns>DocumentExtraction for calling in a chain</returns>
+        /// </summary>
+        public DocumentExtraction SetJsonConfig(JObject jsonConfig)
+        {
+            this._jsonConfig = jsonConfig;
+            return this;
+        }
+
+        /// <summary>
+        /// Executes OCR and returns Jobs
+        /// <returns>List of Jobs</returns>
+        /// </summary>
+        public List<Job> Exec()
+        {
+            GraphQLResponse response = this.ExecRequest();
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -109,10 +134,25 @@ namespace Indico.Mutation
             return jobs;
         }
 
-        JArray Upload(List<string> filePaths)
+
+        /// <summary>
+        /// Executes a single OCR request
+        /// <param name="path">pathname of the file to OCR</param>
+        /// <returns>Job</returns>
+        /// </summary>
+        public Job Exec(string path)
         {
-            UploadFile uploadRequest = new UploadFile(this._client);
-            return uploadRequest.FilePaths(filePaths).Call();
+            this._files = new List<string>() { path };
+
+            GraphQLResponse response = this.ExecRequest();
+            if (response.Errors != null)
+            {
+                throw new GraphQLException(response.Errors);
+            }
+
+            JArray jobIds = (JArray)response.Data.documentExtraction.jobIds;
+           
+            return new Job(this._client.GraphQLHttpClient, (string)jobIds[0]);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace GetPredictions
     {
         static void Main(string[] args)
         {
-            int mg_id = -1;
+            int mgId = -1;
 
             if (args.Length != 1)
             {
@@ -21,7 +21,7 @@ namespace GetPredictions
             }
             else
             {
-                mg_id = Int32.Parse(args[0]);
+                mgId = Int32.Parse(args[0]);
             }
 
             IndicoConfig config = new IndicoConfig(
@@ -30,14 +30,10 @@ namespace GetPredictions
 
             IndicoClient client = new IndicoClient(config);
 
-            ModelGroup mg = client.ModelGroupQuery()
-                                  .Id(mg_id)
-                                  .Query();
+            ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
 
             // Load Model
-            String status = client.ModelGroupLoad()
-                                  .ModelGroup(mg)
-                                  .Execute();
+            String status = client.ModelGroupLoad(mg).Exec();
 
             List<string> reviews = new List<string>()
             {
@@ -45,10 +41,7 @@ namespace GetPredictions
                 "The service was rude and the food was awful. Don\'t waste your time!"
             };
 
-            Job job = client.ModelGroupPredict()
-                .ModelGroup(mg)
-                .Data(reviews)
-                .Execute();
+            Job job = client.ModelGroupPredict(mg).Data(reviews).Exec();
 
             JArray jobResult = job.Results();
             Console.WriteLine(jobResult);
