@@ -10,13 +10,10 @@ namespace Indico.Storage
     {
         IndicoClient _client;
         string _url;
-
-        /// <summary>
-        /// Url of Blob to retrieve
-        /// </summary>
+        
         public string Url
         {
-            get => _url;
+            get => this._url;
             set {
                 string url = value.Replace("\"", "");
                 // Drop gzip
@@ -61,7 +58,7 @@ namespace Indico.Storage
 
         async Task<HttpResponseMessage> Retrieve()
         {
-            HttpResponseMessage response = await this._client.HttpClient.GetAsync(this._url);
+            HttpResponseMessage response = await this._client.HttpClient.GetAsync(this.Url);
             if (response.IsSuccessStatusCode)
             {
                 return response;
@@ -80,7 +77,7 @@ namespace Indico.Storage
         {
             HttpResponseMessage httpResponseMessage = await this.Retrieve();
             Stream data = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (this._url.Contains(".gz"))
+            if (this.Url.Contains(".gz"))
             {
                 return new GZipStream(data, CompressionMode.Decompress);
             }

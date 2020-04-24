@@ -13,19 +13,10 @@ namespace Indico.Query
     /// </summary>
     public class TrainingModelWithProgressQuery : Query<JArray>
     {
-        IndicoClient _client;
-        int _id;
-        string _name;
-
-        /// <summary>
-        /// The model ID to query. Often this is the selected model Id for a Model Group
-        /// </summary>
-        public int Id
-        {
-            get => this._id;
-            set => this._id = value;
-        }
-
+        IndicoClient _client;       
+       
+        public int modelId { get; set; }
+        
         /// <summary>
         /// Find the % complete of a training Model Group
         /// </summary>
@@ -40,20 +31,9 @@ namespace Indico.Query
         /// </summary>
         /// <returns>TrainingModelWithProgressQuery</returns>
         /// <param name="id">Identifier.</param>
-        public TrainingModelWithProgressQuery SetId(int id)
+        public TrainingModelWithProgressQuery SetId(int modelId)
         {
-            this._id = id;
-            return this;
-        }
-
-        /// <summary>
-        /// Use to query TrainingModelWithProgress by name
-        /// </summary>
-        /// <returns>TrainingModelWithProgressQuery</returns>
-        /// <param name="name">Name.</param>
-        public TrainingModelWithProgressQuery Name(string name)
-        {
-            this._name = name;
+            this.modelId = modelId;
             return this;
         }
 
@@ -86,7 +66,7 @@ namespace Indico.Query
                 OperationName = "ModelGroupProgressQuery",
                 Variables = new
                 {
-                    id = _id
+                    id = this.modelId
                 }
             };
 

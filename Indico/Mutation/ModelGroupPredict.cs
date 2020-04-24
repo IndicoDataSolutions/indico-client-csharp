@@ -14,14 +14,9 @@ namespace Indico.Mutation
     public class ModelGroupPredict : Mutation<Job>
     {
         GraphQLHttpClient _graphQLHttpClient;
-        int _id;
         List<string> _data;
 
-        public int Id
-        {
-            get => this._id;
-            set => this._id = value;
-        }
+        public int modelId { get; set; }
 
         /// <summary>
         /// ModelGroupPredict constructor
@@ -39,7 +34,7 @@ namespace Indico.Mutation
         /// <param name="modelGroup">Model group.</param>
         public ModelGroupPredict ModelGroup(ModelGroup modelGroup)
         {
-            this._id = modelGroup.SelectedModel.Id;
+            this.modelId = modelGroup.SelectedModel.Id;
             return this;
         }
 
@@ -50,7 +45,7 @@ namespace Indico.Mutation
         /// <param name="modelId">Model identifier.</param>
         public ModelGroupPredict SetId(int modelId)
         {
-            this._id = modelId;
+            this.modelId = modelId;
             return this;
         }
 
@@ -85,7 +80,7 @@ namespace Indico.Mutation
                 OperationName = "PredictModel",
                 Variables = new
                 {
-                    modelId = this._id,
+                    modelId = this.modelId,
                     data = this._data
                 }
             };

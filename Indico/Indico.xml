@@ -279,11 +279,6 @@
             Load a Model Group
             </summary>
         </member>
-        <member name="P:Indico.Mutation.ModelGroupLoad.Id">
-            <summary>
-            Model Group Id
-            </summary>
-        </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
             Model Group Load Constructor
@@ -359,11 +354,6 @@
             Get a Model Group
             </summary>
         </member>
-        <member name="P:Indico.Query.ModelGroupQuery.Id">
-            <summary>
-            Model Group ID
-            </summary>
-        </member>
         <member name="M:Indico.Query.ModelGroupQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
             Constructor for Model Group Queries
@@ -376,13 +366,6 @@
             </summary>
             <returns>ModelGroupQuery</returns>
             <param name="id">Identifier.</param>
-        </member>
-        <member name="M:Indico.Query.ModelGroupQuery.Name(System.String)">
-            <summary>
-            Use to query ModelGroup by name
-            </summary>
-            <returns>ModelGroupQuery</returns>
-            <param name="name">Name.</param>
         </member>
         <member name="M:Indico.Query.ModelGroupQuery.Exec">
             <summary>
@@ -402,11 +385,6 @@
             Find the % complete of a training Model Group
             </summary>
         </member>
-        <member name="P:Indico.Query.TrainingModelWithProgressQuery.Id">
-            <summary>
-            The model ID to query. Often this is the selected model Id for a Model Group
-            </summary>
-        </member>
         <member name="M:Indico.Query.TrainingModelWithProgressQuery.#ctor(Indico.IndicoClient)">
             <summary>
             Find the % complete of a training Model Group
@@ -419,13 +397,6 @@
             </summary>
             <returns>TrainingModelWithProgressQuery</returns>
             <param name="id">Identifier.</param>
-        </member>
-        <member name="M:Indico.Query.TrainingModelWithProgressQuery.Name(System.String)">
-            <summary>
-            Use to query TrainingModelWithProgress by name
-            </summary>
-            <returns>TrainingModelWithProgressQuery</returns>
-            <param name="name">Name.</param>
         </member>
         <member name="M:Indico.Query.TrainingModelWithProgressQuery.Exec">
             <summary>
@@ -462,11 +433,6 @@
             Returns Blob as JSONArray
             </summary>
             <returns>JArray</returns>
-        </member>
-        <member name="P:Indico.Storage.RetrieveBlob.Url">
-            <summary>
-            Url of Blob to retrieve
-            </summary>
         </member>
         <member name="M:Indico.Storage.RetrieveBlob.#ctor(Indico.IndicoClient)">
             <summary>

@@ -43,8 +43,7 @@ namespace OcrPredict
             }
 
             ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
-
-            // Load Model
+            
             String status = client.ModelGroupLoad(mg).Exec();
             Console.WriteLine($"Model status = {status}");
 
