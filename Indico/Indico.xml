@@ -241,6 +241,11 @@
             OCR PDF, TIF, JPG and PNG files
             </summary>
         </member>
+        <member name="P:Indico.Mutation.DocumentExtraction.JsonConfig">
+            <summary>
+            Get/Set the JSON Configuration for DocumentExtraction
+            </summary>
+        </member>
         <member name="M:Indico.Mutation.DocumentExtraction.#ctor(Indico.IndicoClient)">
             <summary>
             DocumentExtraction constructor
@@ -252,13 +257,6 @@
             Files to extract
             <returns>DocumentExtraction</returns>
             <param name="files">Files to OCR</param>
-            </summary>
-        </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.SetJsonConfig(Newtonsoft.Json.Linq.JObject)">
-            <summary>
-            Set the JSON configuration for extraction
-            <param name="jsonConfig">JSON config</param>
-            <returns>DocumentExtraction for calling in a chain</returns>
             </summary>
         </member>
         <member name="M:Indico.Mutation.DocumentExtraction.Exec">
@@ -292,13 +290,6 @@
             <returns>ModelGroupLoad</returns>
             <param name="modelGroup">Model group.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.SetId(System.Int32)">
-            <summary>
-            Use to load ModelGroup by id
-            </summary>
-            <returns>ModelGroupLoad</returns>
-            <param name="modelId">The Model ID to load. Often the Selected Model ID for the Model Group</param>
-        </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.Exec">
             <summary>
             Executes request and returns load status  
@@ -310,25 +301,16 @@
             Class to run Model Group predictions
             </summary>
         </member>
+        <member name="P:Indico.Mutation.ModelGroupPredict.ModelId">
+            <summary>
+            Get/Set the Model ID (often Selected Model ID for a Model Group)
+            </summary>
+        </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
             ModelGroupPredict constructor
             </summary>
             <param name="graphQLHttpClient"></param>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.ModelGroup(Indico.Entity.ModelGroup)">
-            <summary>
-            Use to predict ModelGroup
-            </summary>
-            <returns>ModelGroupPredict</returns>
-            <param name="modelGroup">Model group.</param>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.SetId(System.Int32)">
-            <summary>
-            Use to predict ModelGroup by id
-            </summary>
-            <returns>ModelGroupPredict</returns>
-            <param name="modelId">Model identifier.</param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.Data(System.Collections.Generic.List{System.String})">
             <summary>
@@ -354,18 +336,17 @@
             Get a Model Group
             </summary>
         </member>
+        <member name="P:Indico.Query.ModelGroupQuery.MgId">
+            <summary>
+            Get/Set the Model Group ID
+            </summary>
+            <value>Model Group ID</value>
+        </member>
         <member name="M:Indico.Query.ModelGroupQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
             Constructor for Model Group Queries
             </summary>
             <param name="graphQLHttpClient"></param>
-        </member>
-        <member name="M:Indico.Query.ModelGroupQuery.SetId(System.Int32)">
-            <summary>
-            Used to query ModelGroup by id
-            </summary>
-            <returns>ModelGroupQuery</returns>
-            <param name="id">Identifier.</param>
         </member>
         <member name="M:Indico.Query.ModelGroupQuery.Exec">
             <summary>
@@ -385,18 +366,16 @@
             Find the % complete of a training Model Group
             </summary>
         </member>
+        <member name="P:Indico.Query.TrainingModelWithProgressQuery.ModelId">
+            <summary>
+            Get/Set the Model ID (Often, the Selected Model ID for a Model Group)
+            </summary>
+        </member>
         <member name="M:Indico.Query.TrainingModelWithProgressQuery.#ctor(Indico.IndicoClient)">
             <summary>
             Find the % complete of a training Model Group
             </summary>
             <param name="client">Indico Client</param>
-        </member>
-        <member name="M:Indico.Query.TrainingModelWithProgressQuery.SetId(System.Int32)">
-            <summary>
-            Use to query TrainingModelWithProgress by id
-            </summary>
-            <returns>TrainingModelWithProgressQuery</returns>
-            <param name="id">Identifier.</param>
         </member>
         <member name="M:Indico.Query.TrainingModelWithProgressQuery.Exec">
             <summary>
@@ -434,6 +413,11 @@
             </summary>
             <returns>JArray</returns>
         </member>
+        <member name="P:Indico.Storage.RetrieveBlob.Url">
+            <summary>
+            Get/Set the Blob Storage URL
+            </summary>
+        </member>
         <member name="M:Indico.Storage.RetrieveBlob.#ctor(Indico.IndicoClient)">
             <summary>
             RetrieveBlob Constructor
@@ -446,13 +430,6 @@
             </summary>
             <returns>Async String</returns>
             <param name="compressed">Compressed Stream</param>
-        </member>
-        <member name="M:Indico.Storage.RetrieveBlob.SetUrl(System.String)">
-            <summary>
-            Set the Blob Url and return this to call in a chain.
-            </summary>
-            <returns>RetrieveBlob</returns>
-            <param name="url">Bolb Url</param>
         </member>
         <member name="M:Indico.Storage.RetrieveBlob.GetStream">
             <summary>

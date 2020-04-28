@@ -16,7 +16,10 @@ namespace Indico.Mutation
         GraphQLHttpClient _graphQLHttpClient;
         List<string> _data;
 
-        public int modelId { get; set; }
+        /// <summary>
+        /// Get/Set the Model ID (often Selected Model ID for a Model Group)
+        /// </summary>
+        public int ModelId { get; set; }
 
         /// <summary>
         /// ModelGroupPredict constructor
@@ -25,28 +28,6 @@ namespace Indico.Mutation
         public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
-        }
-
-        /// <summary>
-        /// Use to predict ModelGroup
-        /// </summary>
-        /// <returns>ModelGroupPredict</returns>
-        /// <param name="modelGroup">Model group.</param>
-        public ModelGroupPredict ModelGroup(ModelGroup modelGroup)
-        {
-            this.modelId = modelGroup.SelectedModel.Id;
-            return this;
-        }
-
-        /// <summary>
-        /// Use to predict ModelGroup by id
-        /// </summary>
-        /// <returns>ModelGroupPredict</returns>
-        /// <param name="modelId">Model identifier.</param>
-        public ModelGroupPredict SetId(int modelId)
-        {
-            this.modelId = modelId;
-            return this;
         }
 
         /// <summary>
@@ -80,7 +61,7 @@ namespace Indico.Mutation
                 OperationName = "PredictModel",
                 Variables = new
                 {
-                    modelId = this.modelId,
+                    modelId = this.ModelId,
                     data = this._data
                 }
             };

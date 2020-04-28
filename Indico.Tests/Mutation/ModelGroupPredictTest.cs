@@ -25,11 +25,8 @@ namespace Indico.Tests.Mutation
         [TestMethod]
         public void Test()
         {
-            ModelGroupPredict modelGroupPredict = new ModelGroupPredict(_client);
-            Job job = modelGroupPredict
-                .SetId(1)
-                .Data(new List<string>())
-                .Exec();
+            ModelGroupPredict modelGroupPredict = new ModelGroupPredict(_client) { ModelId = 1 };
+            Job job = modelGroupPredict.Data(new List<string>()).Exec();
             Assert.AreEqual("jobId_test", job.Id);
         }
     }

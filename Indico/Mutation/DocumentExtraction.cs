@@ -16,6 +16,9 @@ namespace Indico.Mutation
         List<string> _files;
         IndicoClient _client;
 
+        /// <summary>
+        /// Get/Set the JSON Configuration for DocumentExtraction
+        /// </summary>
         public JObject JsonConfig { get; set; }
 
         /// <summary>
@@ -92,17 +95,6 @@ namespace Indico.Mutation
             };
 
             return this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
-        }
-
-        /// <summary>
-        /// Set the JSON configuration for extraction
-        /// <param name="jsonConfig">JSON config</param>
-        /// <returns>DocumentExtraction for calling in a chain</returns>
-        /// </summary>
-        public DocumentExtraction SetJsonConfig(JObject jsonConfig)
-        {
-            this.JsonConfig = jsonConfig;
-            return this;
         }
 
         /// <summary>

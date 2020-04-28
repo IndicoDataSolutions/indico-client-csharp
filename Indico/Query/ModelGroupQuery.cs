@@ -13,9 +13,13 @@ namespace Indico.Query
     public class ModelGroupQuery : Query<ModelGroup>
     {
 
-        GraphQLHttpClient _graphQLHttpClient;              
+        GraphQLHttpClient _graphQLHttpClient;
 
-        public int mgId { get; set; }
+        /// <summary>
+        /// Get/Set the Model Group ID
+        /// </summary>
+        /// <value>Model Group ID</value>
+        public int MgId { get; set; }
         
         /// <summary>
         /// Constructor for Model Group Queries
@@ -24,17 +28,6 @@ namespace Indico.Query
         public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
-        }
-
-        /// <summary>
-        /// Used to query ModelGroup by id
-        /// </summary>
-        /// <returns>ModelGroupQuery</returns>
-        /// <param name="id">Identifier.</param>
-        public ModelGroupQuery SetId(int mgId)
-        {
-            this.mgId = mgId;
-            return this;
         }
 
         /// <summary>
@@ -65,7 +58,7 @@ namespace Indico.Query
                 OperationName = "ModelGroupQuery",
                 Variables = new
                 {
-                    modelGroupIds = this.mgId
+                    modelGroupIds = this.MgId
                 }
             };
 
@@ -78,7 +71,7 @@ namespace Indico.Query
             var modelGroupList = response.Data.modelGroups.modelGroups;
             if (modelGroupList.Count == 0)
             {
-                throw new RuntimeException($"Cannot find the default selected model for model group : {this.mgId}");
+                throw new RuntimeException($"Cannot find the default selected model for model group : {this.MgId}");
             }
 
             JObject modelGroup = (JObject)modelGroupList[0];

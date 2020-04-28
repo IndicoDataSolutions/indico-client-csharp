@@ -47,6 +47,7 @@ namespace Indico.Jobs
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
