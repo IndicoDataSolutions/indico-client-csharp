@@ -15,32 +15,30 @@ namespace Indico.Storage
         IndicoClient _client;
         List<string> _files = new List<string>();
 
+        /// <summary>
+        /// List of files to upload
+        /// </summary>
+        public List<string> Files 
+        {
+            get => this._files;
+            set {
+                foreach (string path in value)
+                {
+                    if (File.Exists(path))
+                    {
+                        this._files.Add(path);
+                    }
+                    else
+                    {
+                        throw new RuntimeException($"File ({path}) does not exist");
+                    }
+                }
+            }
+        }
+
         public UploadFile(IndicoClient client)
         {
             this._client = client;
-        }
-
-        /// <summary>
-        /// Files to upload
-        /// </summary>
-        /// <returns>UploadFile</returns>
-        /// <param name="filePaths">File paths</param>
-        public UploadFile FilePaths(List<string> filePaths)
-        {
-            foreach (string path in filePaths)
-            {
-                if (File.Exists(path))
-                {
-                    this._files.Add(path);
-                }
-                else
-                {
-                    throw new RuntimeException("File " + path + " does not exist");
-                }
-
-            }
-
-            return this;
         }
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace Indico.Storage
             string uploadUrl = this._client.Config.GetAppBaseUrl() + "/storage/files/store";
             Dictionary<string, FileParameter> parameters = new Dictionary<string, FileParameter>();
 
-            foreach (string file in this._files)
+            foreach (string file in this.Files)
             {
                 FileStream fileStream = File.OpenRead(file);
                 string fileName = Path.GetFileName(file);

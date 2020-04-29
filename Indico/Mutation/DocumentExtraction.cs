@@ -12,9 +12,13 @@ namespace Indico.Mutation
     /// OCR PDF, TIF, JPG and PNG files
     /// </summary>
     public class DocumentExtraction : Mutation<List<Job>>
-    {
-        List<string> _files;
+    {       
         IndicoClient _client;
+
+        /// <summary>
+        /// List of files to process
+        /// </summary>
+        public List<string> Files { get; set; }
 
         /// <summary>
         /// Get/Set the JSON Configuration for DocumentExtraction
@@ -30,32 +34,17 @@ namespace Indico.Mutation
             this._client = client;
         }
 
-        /// <summary>
-        /// Files to extract
-        /// <returns>DocumentExtraction</returns>
-        /// <param name="files">Files to OCR</param>
-        /// </summary>
-        public DocumentExtraction Files(List<string> files)
-        {
-            this._files = files;
-            this.JsonConfig = new JObject
-            {
-                { "preset_config", "standard" }
-            };
-            return this;
-        }
-
         private JArray Upload(List<string> filePaths)
         {
-            UploadFile uploadRequest = new UploadFile(this._client);
-            return uploadRequest.FilePaths(filePaths).Call();
+            UploadFile uploadRequest = new UploadFile(this._client) { Files = filePaths };
+            return uploadRequest.Call();
         }
 
         private GraphQLResponse ExecRequest()
         {
             JArray fileMetadata;
             List<object> files = new List<object>();
-            fileMetadata = this.Upload(this._files);
+            fileMetadata = this.Upload(this.Files);
             foreach (JObject uploadMeta in fileMetadata)
             {
                 JObject meta = new JObject
@@ -128,7 +117,7 @@ namespace Indico.Mutation
         /// </summary>
         public Job Exec(string path)
         {
-            this._files = new List<string>() { path };
+            this.Files = new List<string>() { path };
 
             GraphQLResponse response = this.ExecRequest();
             if (response.Errors != null)

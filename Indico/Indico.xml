@@ -66,7 +66,7 @@
             </summary>
             <param name="indicoConfig">Client configuration with platform hostname, etc</param>
         </member>
-        <member name="M:Indico.IndicoClient.GraphQLRequest">
+        <member name="M:Indico.IndicoClient.GraphQLRequest(System.String,System.String)">
             <summary>
             Create a new GraphQL request
             </summary>
@@ -204,18 +204,16 @@
             </summary>
             <returns>List of errors</returns>
         </member>
+        <member name="P:Indico.Jobs.JobQuery.Id">
+            <summary>
+            Get/Set the Job ID
+            </summary>
+        </member>
         <member name="M:Indico.Jobs.JobQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
             Query a Job
             </summary>
             <param name="graphQLHttpClient"></param>
-        </member>
-        <member name="M:Indico.Jobs.JobQuery.Id(System.String)">
-            <summary>
-            Use to query job by id
-            </summary>
-            <returns>JobQuery</returns>
-            <param name="id">Identifier.</param>
         </member>
         <member name="M:Indico.Jobs.JobQuery.Exec">
             <summary>
@@ -241,6 +239,11 @@
             OCR PDF, TIF, JPG and PNG files
             </summary>
         </member>
+        <member name="P:Indico.Mutation.DocumentExtraction.Files">
+            <summary>
+            List of files to process
+            </summary>
+        </member>
         <member name="P:Indico.Mutation.DocumentExtraction.JsonConfig">
             <summary>
             Get/Set the JSON Configuration for DocumentExtraction
@@ -250,13 +253,6 @@
             <summary>
             DocumentExtraction constructor
             <param name="client">IndicoClient client</param>
-            </summary>
-        </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.Files(System.Collections.Generic.List{System.String})">
-            <summary>
-            Files to extract
-            <returns>DocumentExtraction</returns>
-            <param name="files">Files to OCR</param>
             </summary>
         </member>
         <member name="M:Indico.Mutation.DocumentExtraction.Exec">
@@ -383,6 +379,32 @@
             </summary>
             <returns>JObject with % training complete</returns>
         </member>
+        <member name="T:Indico.Request.GraphQLRequest">
+            <summary>
+            Class to send GraphQL Queries to the Indico Platform
+            </summary>
+        </member>
+        <member name="P:Indico.Request.GraphQLRequest.Query">
+            <summary>
+            Get/Set the GraphQL Query String
+            </summary>
+        </member>
+        <member name="P:Indico.Request.GraphQLRequest.OperationName">
+            <summary>
+            Get/Set the Operation Name
+            </summary>
+        </member>
+        <member name="P:Indico.Request.GraphQLRequest.Variables">
+            <summary>
+            Get/Set the GraphQL Query Variables
+            </summary>
+        </member>
+        <member name="M:Indico.Request.GraphQLRequest.Call">
+            <summary>
+            Run the GraphQL Query
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Indico.Storage.Blob.#ctor(System.IO.Stream)">
             <summary>
             Blob constructor
@@ -443,12 +465,10 @@
             </summary>
             <returns>Blob</returns>
         </member>
-        <member name="M:Indico.Storage.UploadFile.FilePaths(System.Collections.Generic.List{System.String})">
+        <member name="P:Indico.Storage.UploadFile.Files">
             <summary>
-            Files to upload
+            List of files to upload
             </summary>
-            <returns>UploadFile</returns>
-            <param name="filePaths">File paths</param>
         </member>
         <member name="M:Indico.Storage.UploadFile.Call">
             <summary>

@@ -58,9 +58,19 @@ namespace Indico
         /// Create a new GraphQL request
         /// </summary>
         /// <returns>GraphQLRequest</returns>
-        public GraphQLRequest GraphQLRequest()
+        public GraphQLRequest GraphQLRequest(string query=null, string operationName=null)
         {
-            return new GraphQLRequest(this);
+            GraphQLRequest request = new GraphQLRequest(this.GraphQLHttpClient);
+            if (query != null)
+            {
+                request.Query = query;
+            }
+
+            if (operationName != null)
+            {
+                request.OperationName = operationName;
+            }
+            return request;
         }
 
         /// <summary>

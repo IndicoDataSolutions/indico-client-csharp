@@ -15,7 +15,7 @@ namespace Examples
             );
 
             IndicoClient client = new IndicoClient(config);
-            GraphQLRequest request = client.GraphQLRequest();
+            
             string query = @"
               query GetDatasets {
                 datasets {
@@ -31,7 +31,8 @@ namespace Examples
               }
             ";
 
-            JObject response = request.Query(query).OperationName("GetDatasets").Call();
+            GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
+            JObject response = request.Call();
             Console.WriteLine(response);
         }
     }
