@@ -11,8 +11,20 @@ namespace OcrPredict
 {
     class Program
     {
+        /* 
+         * To actually run this example, you'll need to train a sequence
+         * model on the Indico IPA Platform with the labeled-swaps-200.csv
+         * file contained with this repo. Be aware that training will likely
+         * take a couple hours. Once training is complete, you can run the
+         * example by passing in the directory of the two sample PDF files in
+         * the repo (Confirmation letter and Confirmation of Interest Rate Swap).
+         * 
+         * Before running, replace the Model Group ID (mgId) with the
+         * ID for your trained model. You can find it on the model's Review page.
+         */
         static void Main(string[] args)
         {
+            // Replace this with your Model Group ID
             int mgId = 4352;
 
             List<string> targetFiles = GetTargetFiles(args[0]);
@@ -30,12 +42,12 @@ namespace OcrPredict
             };
 
             List<string> texts = new List<string>();
-            DocumentExtraction ocrClient = client.DocumentExtraction(extractConfig);
+            DocumentExtraction ocrQuery = client.DocumentExtraction(extractConfig);
 
             foreach (string path in targetFiles)
             {
                 Console.WriteLine(path);
-                Job ocrJob = ocrClient.Exec(path);
+                Job ocrJob = ocrQuery.Exec(path);
 
                 string resUrl = (string)ocrJob.Result().GetValue("url");
                 JObject obj = client.RetrieveBlob(resUrl).Exec().AsJSONObject();

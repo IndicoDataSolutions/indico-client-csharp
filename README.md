@@ -162,3 +162,30 @@ JArray trainingStatus = client.TrainingModelWithProgressQuery(mg).Exec();
 Console.WriteLine(mg.Name);
 Console.WriteLine(trainingStatus);                     
 ```
+
+#### Send a GraphQL Query
+
+As noted above, the Indico Platform presents a GrapQL interface. In addition
+to using this Client Library, you can also send GraphQL queries to the Platform.
+Here's a snippet to list all of the Datasets in your Indico account.
+
+```
+string query = @"
+    query GetDatasets {
+        datasets {
+            id
+            name
+            status
+            rowCount
+            numModelGroups
+            modelGroups {
+                id
+            }
+        }
+      }
+    ";
+
+    GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
+    JObject response = request.Call();
+    Console.WriteLine(response);
+```

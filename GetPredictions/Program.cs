@@ -10,6 +10,13 @@ namespace GetPredictions
 {
     class Program
     {
+        /*
+         * To actually run this example, you need to train a classifier in
+         * the Indico IPA Platform using the reviews.csv file included in
+         * this repo. After the model is trained, just pass its model group
+         * ID into this sample as a command line arg. You can find the model
+         * group ID on your trained model's Review page.
+         */
         static void Main(string[] args)
         {
             int mgId = -1;
