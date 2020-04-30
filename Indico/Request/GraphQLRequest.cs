@@ -1,50 +1,52 @@
-﻿using Indico.Exception;
+﻿using GraphQL.Client.Http;
+using Indico.Exception;
 using Newtonsoft.Json.Linq;
 using GraphQLHttpRequest = GraphQL.Common.Request.GraphQLRequest;
 using GraphQLHttpResponse = GraphQL.Common.Response.GraphQLResponse;
 
 namespace Indico.Request
 {
+    /// <summary>
+    /// Class to send GraphQL Queries to the Indico Platform
+    /// </summary>
     public class GraphQLRequest : RestRequest<JObject>
     {
-        IndicoClient _client;
-        string _query;
-        string _operationName;
-        dynamic _variables;
+        GraphQLHttpClient _client;
+        
+        /// <summary>
+        /// Get/Set the GraphQL Query String
+        /// </summary>
+        public string Query { get; set; }
 
-        public GraphQLRequest(IndicoClient client)
+        /// <summary>
+        /// Get/Set the Operation Name
+        /// </summary>
+        public string OperationName { get; set; }
+
+        /// <summary>
+        /// Get/Set the GraphQL Query Variables
+        /// </summary>
+        public dynamic Variables { get; set; }
+
+        public GraphQLRequest(GraphQLHttpClient client)
         {
             this._client = client;
         }
 
-        public GraphQLRequest Query(string query)
-        {
-            this._query = query;
-            return this;
-        }
-
-        public GraphQLRequest OperationName(string operationName)
-        {
-            this._operationName = operationName;
-            return this;
-        }
-
-        public GraphQLRequest Variables(dynamic variables)
-        {
-            this._variables = variables;
-            return this;
-        }
-
+        /// <summary>
+        /// Run the GraphQL Query
+        /// </summary>
+        /// <returns></returns>
         public JObject Call()
         {
             GraphQLHttpRequest request = new GraphQLHttpRequest()
             {
-                Query = this._query,
-                OperationName = this._operationName,
-                Variables = this._variables
+                Query = this.Query,
+                OperationName = this.OperationName,
+                Variables = this.Variables
             };
 
-            GraphQLHttpResponse response = this._client.GraphQLHttpClient.SendQueryAsync(request).Result;
+            GraphQLHttpResponse response = this._client.SendQueryAsync(request).Result;
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

@@ -11,6 +11,9 @@ namespace Indico.Storage
         IndicoClient _client;
         string _url;
         
+        /// <summary>
+        /// Get/Set the Blob Storage URL
+        /// </summary>
         public string Url
         {
             get => this._url;
@@ -43,17 +46,6 @@ namespace Indico.Storage
             StreamReader reader = new StreamReader(gis);
             uncompressed = await reader.ReadToEndAsync();
             return uncompressed;
-        }
-
-        /// <summary>
-        /// Set the Blob Url and return this to call in a chain.
-        /// </summary>
-        /// <returns>RetrieveBlob</returns>
-        /// <param name="url">Bolb Url</param>
-        public RetrieveBlob SetUrl(string url)
-        {
-            this.Url = url;
-            return this;
         }
 
         async Task<HttpResponseMessage> Retrieve()

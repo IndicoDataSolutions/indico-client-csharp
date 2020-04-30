@@ -23,8 +23,8 @@ namespace Indico.Tests.Mutation
         [TestMethod]
         public void Test()
         {
-            ModelGroupLoad modelGroupLoad = new ModelGroupLoad(_client);
-            string status = modelGroupLoad.SetId(1).Exec();
+            ModelGroupLoad modelGroupLoad = new ModelGroupLoad(_client) { ModelId = 1 };
+            string status = modelGroupLoad.Exec();
             Assert.AreEqual("loading", status);
         }
     }

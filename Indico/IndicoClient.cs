@@ -58,9 +58,19 @@ namespace Indico
         /// Create a new GraphQL request
         /// </summary>
         /// <returns>GraphQLRequest</returns>
-        public GraphQLRequest GraphQLRequest()
+        public GraphQLRequest GraphQLRequest(string query=null, string operationName=null)
         {
-            return new GraphQLRequest(this);
+            GraphQLRequest request = new GraphQLRequest(this.GraphQLHttpClient);
+            if (query != null)
+            {
+                request.Query = query;
+            }
+
+            if (operationName != null)
+            {
+                request.OperationName = operationName;
+            }
+            return request;
         }
 
         /// <summary>
@@ -72,7 +82,7 @@ namespace Indico
             ModelGroupQuery mgQuery = new ModelGroupQuery(this.GraphQLHttpClient);
             if (mgId != -1)
             {
-                mgQuery.mgId = mgId;
+                mgQuery.MgId = mgId;
             }
             return mgQuery;
         }
@@ -86,7 +96,7 @@ namespace Indico
             TrainingModelWithProgressQuery mgTraining = new TrainingModelWithProgressQuery(this);
             if (mg != null)
             {
-                mgTraining.modelId = mg.Id;
+                mgTraining.ModelId = mg.Id;
             }
             return mgTraining;
         }
@@ -100,7 +110,7 @@ namespace Indico
             ModelGroupLoad mgLoad = new ModelGroupLoad(this.GraphQLHttpClient);
             if (mg != null)
             {
-                mgLoad.modelId = mg.SelectedModel.Id;
+                mgLoad.ModelId = mg.SelectedModel.Id;
             }
             return mgLoad;
         }
@@ -114,7 +124,7 @@ namespace Indico
             ModelGroupPredict mgPredict = new ModelGroupPredict(this.GraphQLHttpClient);
             if (mg != null)
             {
-                mgPredict.modelId = mg.SelectedModel.Id;
+                mgPredict.ModelId = mg.SelectedModel.Id;
             }
             return mgPredict;
         }
