@@ -10,6 +10,10 @@ namespace Examples
 {
     class SingleDocExtraction
     {
+        /*
+         * Run with your own PDF or use the sample Amtrak-Financials file
+         * provided in this repo.
+         */
         static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -28,8 +32,8 @@ namespace Examples
                 { "preset_config", "standard" }
             };
 
-            DocumentExtraction ocr = client.DocumentExtraction(extractConfig);
-            Job job = ocr.Exec(args[0]);
+            DocumentExtraction ocrQuery = client.DocumentExtraction(extractConfig);
+            Job job = ocrQuery.Exec(args[0]);
             
             string url = (string)job.Result().GetValue("url");
             Blob blob = client.RetrieveBlob(url).Exec();

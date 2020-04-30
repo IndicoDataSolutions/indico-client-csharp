@@ -9,6 +9,12 @@ namespace Examples
 {
     class GetTrainingModelProgress
     {
+        /*
+         * Get the progress (% complete) of a training model group. This
+         * is handy as some sequence models can take a very long time (hours)
+         * to train. Pass your model's Model Group ID on the command line.
+         * You can find the model group ID on your model's Review page.
+         */
         static void Main(string[] args)
         {
             if (args.Length == 0)
