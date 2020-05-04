@@ -2,11 +2,6 @@
 {
     public class TrainingProgress
     {
-        public float PercentComplete { get; }
-
-        public TrainingProgress(float percentComplete)
-        {
-            this.PercentComplete = percentComplete;
-        }
+        public float PercentComplete { get; set; }
     }
 }

@@ -11,8 +11,16 @@ namespace Indico.Mutation
     public class WorkflowSubmission : Mutation<Job>
     {
         IndicoClient _client;
-        int _id;
-        List<string> _files;
+        /// <summary>
+        /// Workflow Id
+        /// </summary>
+        /// <value>Workflow Id</value>
+        public int Id { get; set; }
+        /// <summary>
+        /// Files to submit
+        /// </summary>
+        /// <value>Files</value>
+        public List<string> Files { get; set; }
 
         public WorkflowSubmission(IndicoClient client)
         {
@@ -20,36 +28,14 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Files to submit
-        /// </summary>
-        /// <returns>WorkflowSubmission</returns>
-        /// <param name="files">Files</param>
-        public WorkflowSubmission Files(List<string> files)
-        {
-            this._files = files;
-            return this;
-        }
-
-        /// <summary>
-        /// Workflow Id
-        /// </summary>
-        /// <returns>WorkflowSubmission</returns>
-        /// <param name="id">Workflow Id</param>
-        public WorkflowSubmission WorkflowId(int id)
-        {
-            this._id = id;
-            return this;
-        }
-
-        /// <summary>
         /// Executes request and returns Job
         /// </summary>
         /// <returns>Job</returns>
-        public Job Execute()
+        public Job Exec()
         {
             JArray fileMetadata;
             List<object> files = new List<object>();
-            fileMetadata = this.Upload(this._files);
+            fileMetadata = this.Upload(this.Files);
             foreach (JObject uploadMeta in fileMetadata)
             {
                 JObject meta = new JObject
@@ -82,7 +68,7 @@ namespace Indico.Mutation
                 OperationName = "WorkflowSubmission",
                 Variables = new
                 {
-                    workflowId = this._id,
+                    workflowId = this.Id,
                     files
                 }
             };
@@ -96,7 +82,7 @@ namespace Indico.Mutation
             string jobId = (string)response.Data.workflowSubmission.jobId;
             if (jobId == null)
             {
-                throw new RuntimeException($"Failed to submit to workflow {this._id}");
+                throw new RuntimeException($"Failed to submit to workflow {this.Id}");
             }
 
             return new Job(this._client.GraphQLHttpClient, jobId);
@@ -104,8 +90,11 @@ namespace Indico.Mutation
 
         JArray Upload(List<string> filePaths)
         {
-            UploadFile uploadRequest = new UploadFile(this._client);
-            return uploadRequest.FilePaths(filePaths).Call();
+            UploadFile uploadRequest = new UploadFile(this._client)
+            {
+                Files = filePaths
+            };
+            return uploadRequest.Call();
         }
     }
 }

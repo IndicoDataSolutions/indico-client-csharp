@@ -11,7 +11,11 @@ namespace Indico.Query
     public class ListWorkflowsForDatasetQuery : Query<List<Workflow>>
     {
         IndicoClient _client;
-        int _id;
+        /// <summary>
+        /// Use to query workflows by datasetId
+        /// </summary>
+        /// <value>Dataset Id</value>
+        public int Id { get; set; }
 
         public ListWorkflowsForDatasetQuery(IndicoClient client)
         {
@@ -20,21 +24,10 @@ namespace Indico.Query
         }
 
         /// <summary>
-        /// Use to query workflows by datasetId
-        /// </summary>
-        /// <returns>ListWorkflowsForDatasetQuery</returns>
-        /// <param name="id">Dataset Id</param>
-        public ListWorkflowsForDatasetQuery DatasetId(int id)
-        {
-            this._id = id;
-            return this;
-        }
-
-        /// <summary>
         /// Queries the server and returns Workflow List
         /// </summary>
         /// <returns>Workflow List</returns>
-        public List<Workflow> Query()
+        public List<Workflow> Exec()
         {
             string query = @"
                     query ListWorkflows($datasetId: Int){
@@ -52,7 +45,7 @@ namespace Indico.Query
                 OperationName = "ListWorkflows",
                 Variables = new
                 {
-                    datasetId = this._id
+                    datasetId = this.Id
                 }
             };
 
@@ -63,10 +56,11 @@ namespace Indico.Query
             }
 
             JArray wf = (JArray)response.Data.workflows.workflows;
-            List<Workflow> workflows = wf.Select(workflow => new Workflow(
-                id: workflow.Value<int>("id"),
-                name: workflow.Value<string>("name")
-            )).ToList();
+            List<Workflow> workflows = wf.Select(workflow => new Workflow()
+            {
+                Id = workflow.Value<int>("id"),
+                Name = workflow.Value<string>("name")
+            }).ToList();
 
             return workflows;
         }

@@ -79,15 +79,17 @@ namespace Indico.Query
             JToken mg = modelGroupList[0];
             JToken model = mg.Value<JToken>("selectedModel");
 
-            return new ModelGroup(
-                id: mg.Value<int>("id"),
-                name: mg.Value<string>("name"),
-                status: (ModelStatus)Enum.Parse(typeof(ModelStatus), mg.Value<string>("status")),
-                selectedModel: new Model(
-                    id: model.Value<int>("id"),
-                    status: model.Value<string>("status")
-                )
-            );
+            return new ModelGroup()
+            {
+                Id = mg.Value<int>("id"),
+                Name = mg.Value<string>("name"),
+                Status = (ModelStatus)Enum.Parse(typeof(ModelStatus), mg.Value<string>("status")),
+                SelectedModel = new Model()
+                {
+                    Id = model.Value<int>("id"),
+                    Status = model.Value<string>("status")
+                }
+            };
         }
 
         /// <summary>

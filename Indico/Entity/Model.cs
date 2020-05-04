@@ -9,20 +9,16 @@ namespace Indico.Entity
         /// Gets the Model identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public int Id { get; }
+        public int Id { get; set; }
         /// <summary>
         /// Gets the Model status.
         /// </summary>
         /// <value>The model status.</value>
-        public string Status { get; }
-
-        public TrainingProgress TrainingProgress { get; }
-
-        public Model(int id, string status, [Optional] TrainingProgress trainingProgress)
-        {
-            this.Id = id;
-            this.Status = status;
-            this.TrainingProgress = trainingProgress;
-        }
+        public string Status { get; set; }
+        /// <summary>
+        /// Gets training progress.
+        /// </summary>
+        /// <value>The training progress.</value>
+        public TrainingProgress TrainingProgress { get; set; }
     }
 }
