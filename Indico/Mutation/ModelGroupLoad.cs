@@ -6,11 +6,19 @@ using Indico.Exception;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Load a Model Group
+    /// </summary>
     public class ModelGroupLoad : Mutation<string>
     {
         GraphQLHttpClient _graphQLHttpClient;
-        int _id;
-
+        
+        public int ModelId { get; set; }
+       
+        /// <summary>
+        /// Model Group Load Constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
@@ -23,18 +31,7 @@ namespace Indico.Mutation
         /// <param name="modelGroup">Model group.</param>
         public ModelGroupLoad ModelGroup(ModelGroup modelGroup)
         {
-            this._id = modelGroup.SelectedModel.Id;
-            return this;
-        }
-
-        /// <summary>
-        /// Use to load ModelGroup by id
-        /// </summary>
-        /// <returns>ModelGroupLoad</returns>
-        /// <param name="modelId">Model identifier.</param>
-        public ModelGroupLoad ModelId(int modelId)
-        {
-            this._id = modelId;
+            this.ModelId = modelGroup.SelectedModel.Id;
             return this;
         }
 
@@ -42,7 +39,7 @@ namespace Indico.Mutation
         /// Executes request and returns load status  
         /// </summary>
         /// <returns>Load status</returns>
-        public string Execute()
+        public string Exec()
         {
             string query = @"
                     mutation LoadModel($model_id: Int!) {
@@ -51,13 +48,14 @@ namespace Indico.Mutation
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "LoadModel",
                 Variables = new
                 {
-                    model_id = _id
+                    model_id = this.ModelId
                 }
             };
 
@@ -70,7 +68,7 @@ namespace Indico.Mutation
             var modelLoad = response.Data.modelLoad;
             if (modelLoad == null)
             {
-                throw new RuntimeException($"Cannot Load Model id : {_id}");
+                throw new RuntimeException($"Cannot Load Model id : {this.ModelId}");
             }
 
             string status = (string)modelLoad.status;

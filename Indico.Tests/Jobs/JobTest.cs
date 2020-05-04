@@ -1,4 +1,5 @@
-﻿using GraphQL.Client.Http;
+﻿using System;
+using GraphQL.Client.Http;
 using Indico.Jobs;
 using Indico.Types;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,11 +26,15 @@ namespace Indico.Tests.Mutation
         [TestMethod]
         public void Test()
         {
-            JobQuery jobQuery = new JobQuery(_client);
-            Job job = jobQuery.Id("jobId_test").Query();
+            JobQuery jobQuery = new JobQuery(_client) { Id = "jobId_test" };
+            Job job = jobQuery.Exec();
             Assert.AreEqual(JobStatus.SUCCESS, job.Status());
-            JObject json = (JObject)job.Results().Result[0];
-            Assert.AreEqual("testValue", json.GetValue("testKey"));
+            //JObject json = (JObject)job.Results().Result[0];
+            JArray jsonResults = job.Results();
+            foreach (JObject item in jsonResults)
+            {
+                Assert.AreEqual("testValue", item.GetValue("testKey"));
+            }
         }
     }
 }

@@ -6,31 +6,28 @@ namespace Indico.Jobs
     public class JobQuery : Query<Job>
     {
         GraphQLHttpClient _graphQLHttpClient;
-        string _id;
+        
+        /// <summary>
+        /// Get/Set the Job ID
+        /// </summary>
+        public string Id { get; set; }
 
+        /// <summary>
+        /// Query a Job
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public JobQuery(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
         }
 
         /// <summary>
-        /// Use to query job by id
-        /// </summary>
-        /// <returns>JobQuery</returns>
-        /// <param name="id">Identifier.</param>
-        public JobQuery Id(string id)
-        {
-            this._id = id;
-            return this;
-        }
-
-        /// <summary>
         /// Returns Job
         /// </summary>
         /// <returns>Job</returns>
-        public Job Query()
+        public Job Exec()
         {
-            return new Job(this._graphQLHttpClient, this._id);
+            return new Job(this._graphQLHttpClient, this.Id);
         }
 
         /// <summary>

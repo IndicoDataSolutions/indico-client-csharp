@@ -8,38 +8,26 @@ using Indico.Jobs;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Class to run Model Group predictions
+    /// </summary>
     public class ModelGroupPredict : Mutation<Job>
     {
         GraphQLHttpClient _graphQLHttpClient;
-        int _id;
         List<string> _data;
-        JobOptions _jobOptions;
 
+        /// <summary>
+        /// Get/Set the Model ID (often Selected Model ID for a Model Group)
+        /// </summary>
+        public int ModelId { get; set; }
+
+        /// <summary>
+        /// ModelGroupPredict constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient"></param>
         public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
         {
             this._graphQLHttpClient = graphQLHttpClient;
-        }
-
-        /// <summary>
-        /// Use to predict ModelGroup
-        /// </summary>
-        /// <returns>ModelGroupPredict</returns>
-        /// <param name="modelGroup">Model group.</param>
-        public ModelGroupPredict ModelGroup(ModelGroup modelGroup)
-        {
-            this._id = modelGroup.SelectedModel.Id;
-            return this;
-        }
-
-        /// <summary>
-        /// Use to predict ModelGroup by id
-        /// </summary>
-        /// <returns>ModelGroupPredict</returns>
-        /// <param name="modelId">Model identifier.</param>
-        public ModelGroupPredict ModelId(int modelId)
-        {
-            this._id = modelId;
-            return this;
         }
 
         /// <summary>
@@ -54,21 +42,10 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Job Options for Job
-        /// </summary>
-        /// <returns>ModeGroupPredict</returns>
-        /// <param name="jobOptions">Job options.</param>
-        public ModelGroupPredict JobOptions(JobOptions jobOptions)
-        {
-            this._jobOptions = jobOptions;
-            return this;
-        }
-
-        /// <summary>
         /// Executes request and returns job 
         /// </summary>
         /// <returns>Job</returns>
-        public Job Execute()
+        public Job Exec()
         {
             string query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
@@ -77,13 +54,14 @@ namespace Indico.Mutation
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "PredictModel",
                 Variables = new
                 {
-                    modelId = this._id,
+                    modelId = this.ModelId,
                     data = this._data
                 }
             };

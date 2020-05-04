@@ -1,9 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageId>IndicoClient</PackageId>
-        <AssemblyVersion>1.0</AssemblyVersion>
+        <AssemblyVersion>0.7.4</AssemblyVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Description>C# Client Library for the Indico IPA Platform</Description>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageProjectUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</PackageProjectUrl>
+        <PackageIcon>indico-squarelogo-1444064744033.png</PackageIcon>
+        <RepositoryUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</RepositoryUrl>
+        <RepositoryType>Github</RepositoryType>
+        <Version>0.7.4</Version>
+        <PackageTags>Indico</PackageTags>
+        <PackageReleaseNotes>This is the first preview release of the C# client for the Indico IPA Platform V3.x</PackageReleaseNotes>
+        <Product>Indico IPA</Product>
+        <Copyright>2020 Indico, Inc.</Copyright>
+        <NeutralLanguage>en-US</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DocumentationFile>C:\Users\dzere\Source\Repos\indico-client-csharp\Indico\Indico.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DocumentationFile>C:\Users\dzere\Source\Repos\indico-client-csharp\Indico\Indico.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,5 +34,16 @@
     
     <ItemGroup>
       <Folder Include="Request\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Include="..\..\..\..\Pictures\indico-squarelogo-1444064744033.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+      <None Include="..\LICENSE">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 </Project>

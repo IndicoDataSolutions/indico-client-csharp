@@ -8,40 +8,32 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Query
 {
-    public class TrainingModelWithProgressQuery : Query<Model>
+    /// <summary>
+    /// Find the % complete of a training Model Group
+    /// </summary>
+    public class TrainingModelWithProgressQuery : Query<JArray>
     {
-        IndicoClient _client;
-        int _id;
-        string _name;
-
+        IndicoClient _client;       
+       
+        /// <summary>
+        /// Get/Set the Model ID (Often, the Selected Model ID for a Model Group)
+        /// </summary>
+        public int ModelId { get; set; }
+        
+        /// <summary>
+        /// Find the % complete of a training Model Group
+        /// </summary>
+        /// <param name="client">Indico Client</param>
         public TrainingModelWithProgressQuery(IndicoClient client)
         {
             this._client = client;
         }
 
         /// <summary>
-        /// Use to query TrainingModelWithProgress by id
+        /// Query a Model Group for training % complete
         /// </summary>
-        /// <returns>TrainingModelWithProgressQuery</returns>
-        /// <param name="id">Identifier.</param>
-        public TrainingModelWithProgressQuery Id(int id)
-        {
-            this._id = id;
-            return this;
-        }
-
-        /// <summary>
-        /// Use to query TrainingModelWithProgress by name
-        /// </summary>
-        /// <returns>TrainingModelWithProgressQuery</returns>
-        /// <param name="name">Name.</param>
-        public TrainingModelWithProgressQuery Name(string name)
-        {
-            this._name = name;
-            return this;
-        }
-
-        public Model Query()
+        /// <returns>JObject with % training complete</returns>
+        public JArray Exec()
         {
             GraphQLHttpClient graphQLHttpClient = this._client.GraphQLHttpClient;
             string query = @"
@@ -59,13 +51,14 @@ namespace Indico.Query
                         }
                     }
                 ";
+
             GraphQLRequest request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "ModelGroupProgressQuery",
                 Variables = new
                 {
-                    id = _id
+                    id = this.ModelId
                 }
             };
 
@@ -80,25 +73,13 @@ namespace Indico.Query
             {
                 throw new RuntimeException("Cannot find Model Group");
             }
-            JArray models = (JArray)modelGroups[0].models;
-
-            JToken model = models.Select(token => (token.Value<int>("id"), Token: token)).Max().Token;
-            if (model == null)
-            {
-                throw new RuntimeException("Cannot find Training Model");
-            }
-
-            JToken trainingProgress = model.Value<JToken>("trainingProgress");
-            return new Model(
-                id: model.Value<int>("id"),
-                status: model.Value<string>("status"),
-                trainingProgress: new TrainingProgress(trainingProgress.Value<float>("percentComplete"))
-            );
+            
+            return (JArray)modelGroups[0].models;
         }
 
-        public Model Refresh(Model model)
+        public JArray Refresh(JArray obj)
         {
-            return model;
+            return obj;
         }
     }
 }

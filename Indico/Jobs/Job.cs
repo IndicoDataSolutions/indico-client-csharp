@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -17,12 +18,68 @@ namespace Indico.Jobs
     public class Job
     {
         GraphQLHttpClient _graphQLHttpClient;
+        
+        /// <summary>
+        /// The Job ID
+        /// </summary>
         public string Id { get; }
 
+        /// <summary>
+        /// Job constructor
+        /// </summary>
+        /// <param name="graphQLHttpClient">GraphQL Client</param>
+        /// <param name="id">Job id</param>
         public Job(GraphQLHttpClient graphQLHttpClient, string id)
         {
             this._graphQLHttpClient = graphQLHttpClient;
             this.Id = id;
+        }
+
+        private string FetchResult()
+        {
+            string query = @"
+                    query JobStatus($id: String!) {
+                        job(id: $id) {
+                            id
+                            ready
+                            status
+                            result
+                        }
+                    }
+                ";
+
+            GraphQLRequest request = new GraphQLRequest()
+            {
+                Query = query,
+                OperationName = "JobStatus",
+                Variables = new
+                {
+                    id = Id
+                }
+            };
+
+            GraphQLResponse response = this._graphQLHttpClient.SendQueryAsync(request).Result;
+            if (response.Errors != null)
+            {
+                throw new GraphQLException(response.Errors);
+            }
+
+            var job = response.Data.job;
+            string status = (string)job.status;
+            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
+            if (jobStatus != JobStatus.SUCCESS)
+            {
+                throw new RuntimeException($"Job finished with status : {status}");
+            }
+
+            var result = job.result;
+            if (result == null)
+            {
+                throw new RuntimeException("Job has finished with no results");
+            }
+
+            string output = (string)result;
+            return output;
         }
 
         /// <summary>
@@ -63,13 +120,13 @@ namespace Indico.Jobs
         /// Retrieve result. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Object</returns>
-        public async Task<JObject> Result()
+        public JObject Result()
         {
             while (this.Status() == JobStatus.PENDING)
             {
-                await Task.Delay(1000);
+                Thread.Sleep(1000);
             }
-            string result = await this.FetchResult();
+            string result = this.FetchResult();
             JObject json = JsonConvert.DeserializeObject<JObject>(result);
             return json;
         }
@@ -78,59 +135,15 @@ namespace Indico.Jobs
         /// Retrieve results. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Array</returns>
-        public async Task<JArray> Results()
+        public JArray Results()
         {
             while (this.Status() == JobStatus.PENDING)
             {
-                await Task.Delay(1000);
+               Thread.Sleep(1000);
             }
-            string result = await this.FetchResult();
+            string result = this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
-        }
-
-        async Task<string> FetchResult()
-        {
-            string query = @"
-                    query JobResult($id: String!) {
-                        job(id: $id) {
-                            status
-                            result
-                        }
-                    }
-                ";
-            GraphQLRequest request = new GraphQLRequest()
-            {
-                Query = query,
-                OperationName = "JobResult",
-                Variables = new
-                {
-                    id = Id
-                }
-            };
-
-            GraphQLResponse response = await _graphQLHttpClient.SendQueryAsync(request);
-            if (response.Errors != null)
-            {
-                throw new GraphQLException(response.Errors);
-            }
-
-            var job = response.Data.job;
-            string status = (string)job.status;
-            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
-            if (jobStatus != JobStatus.SUCCESS)
-            {
-                throw new RuntimeException($"Job finished with status : {status}");
-            }
-
-            var result = job.result;
-            if (result == null)
-            {
-                throw new RuntimeException("Job has finished with no results");
-            }
-
-            string output = (string)result;
-            return output;
         }
 
         /// <summary>
