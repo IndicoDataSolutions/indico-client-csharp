@@ -49,7 +49,7 @@ namespace Indico.Storage
         {
             string uploadUrl = this._client.Config.GetAppBaseUrl() + "/storage/files/store";
             Dictionary<string, FileParameter> parameters = new Dictionary<string, FileParameter>();
-
+           
             foreach (string file in this.Files)
             {
                 FileStream fileStream = File.OpenRead(file);
@@ -61,6 +61,12 @@ namespace Indico.Storage
             HttpClient client = this._client.HttpClient;
             HttpResponseMessage responseMessage = client.PostAsync(uploadUrl, formData).Result;
             string body = responseMessage.Content.ReadAsStringAsync().Result;
+
+            foreach (KeyValuePair<string, FileParameter> entry in parameters)
+            {
+                entry.Value.Close();
+            }
+
             return JArray.Parse(body);
         }
 
@@ -118,6 +124,14 @@ namespace Indico.Storage
                 File = file;
                 FileName = filename;
                 ContentType = contenttype;
+            }
+
+            public void Close()
+            {
+                if (this.File != null)
+                {
+                    this.File.Close();
+                }
             }
         }
     }

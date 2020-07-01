@@ -185,7 +185,7 @@ string query = @"
       }
     ";
 
-    GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
-    JObject response = request.Call();
-    Console.WriteLine(response);
+GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
+JObject response = request.Call();
+Console.WriteLine(response);
 ```
