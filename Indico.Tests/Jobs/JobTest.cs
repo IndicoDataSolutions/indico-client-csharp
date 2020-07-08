@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using Indico.Jobs;
 using Indico.Types;
@@ -24,13 +25,13 @@ namespace Indico.Tests.Mutation
         }
 
         [TestMethod]
-        public void Test()
+        async public Task Test()
         {
             JobQuery jobQuery = new JobQuery(_client) { Id = "jobId_test" };
             Job job = jobQuery.Exec();
-            Assert.AreEqual(JobStatus.SUCCESS, job.Status());
+            Assert.AreEqual(JobStatus.SUCCESS, await job.Status());
             //JObject json = (JObject)job.Results().Result[0];
-            JArray jsonResults = job.Results();
+            JArray jsonResults = await job.Results();
             foreach (JObject item in jsonResults)
             {
                 Assert.AreEqual("testValue", item.GetValue("testKey"));

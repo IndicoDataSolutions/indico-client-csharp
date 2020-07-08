@@ -5,6 +5,7 @@ using Indico.Mutation;
 using Indico.Jobs;
 using Indico.Storage;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Examples
 {
@@ -14,7 +15,7 @@ namespace Examples
          * Run with your own PDF or use the sample Amtrak-Financials file
          * provided in this repo.
          */
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -33,10 +34,11 @@ namespace Examples
             };
 
             DocumentExtraction ocrQuery = client.DocumentExtraction(extractConfig);
-            Job job = ocrQuery.Exec(args[0]);
-            
-            string url = (string)job.Result().GetValue("url");
-            Blob blob = client.RetrieveBlob(url).Exec();
+            Job job = await ocrQuery.Exec(args[0]);
+
+            JObject result = await job.Result();
+            string url = (string) result.GetValue("url");
+            Blob blob = await client.RetrieveBlob(url).Exec();
             Console.WriteLine(blob.AsJSONObject());
         }
     }

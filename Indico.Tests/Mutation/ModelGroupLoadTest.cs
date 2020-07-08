@@ -1,4 +1,5 @@
-﻿using GraphQL.Client.Http;
+﻿using System.Threading.Tasks;
+using GraphQL.Client.Http;
 using Indico.Mutation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,10 +22,10 @@ namespace Indico.Tests.Mutation
         }
 
         [TestMethod]
-        public void Test()
+        async public Task Test()
         {
             ModelGroupLoad modelGroupLoad = new ModelGroupLoad(_client) { ModelId = 1 };
-            string status = modelGroupLoad.Exec();
+            string status = await modelGroupLoad.Exec();
             Assert.AreEqual("loading", status);
         }
     }
