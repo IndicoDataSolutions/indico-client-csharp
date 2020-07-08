@@ -78,7 +78,7 @@ IndicoClient indico = new IndicoClient(config);
 
 Note that the model group ID is found on the model's Review page in the Indico App.
 ```
-ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
 ```
 
 #### Load a Model
@@ -86,8 +86,8 @@ ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
 // Note that you're passing in a ModelGroup object returned from ModelGroupQuery.
 // You get the ModelGroup object through a query and pass the the Model Group ID
 
-ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
-String status = client.ModelGroupLoad(mg).Exec();
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+String status = await client.ModelGroupLoad(mg).Exec();
 ```
 
 #### Get Model Predictions
@@ -96,12 +96,12 @@ String status = client.ModelGroupLoad(mg).Exec();
 // It's always much more efficient to pass in a list to predict. A List of 3 or 3,000 samples
 // to predict is fine.
 
-ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
-Job job = client.ModelGroupPredict(mg).Data(texts).Exec();
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+Job job = await client.ModelGroupPredict(mg).Data(texts).Exec();
 
 // Retrieve the predictions as a JArray
 
-JArray jobResult = job.Results();
+JArray jobResult = await job.Results();
 ```
 
 #### OCR Documents.
@@ -138,26 +138,27 @@ JObject extractConfig = new JObject()
 // OCR a Single File
 
 DocumentExtraction ocr = client.DocumentExtraction(extractConfig);
-Job job = ocr.Exec(args[0]);
+Job job = await ocr.Exec(args[0]);
 
 // OCR a List of files - Currently, no real benefit to doing this.
 
-List<Job> jobs = indico.DocumentExtraction(extractConfig)
+List<Job> jobs = await indico.DocumentExtraction(extractConfig)
                        .Files(List<string>)                       
                        .Exec();
 ```
 
 #### Fetch a DocumentExtraction Result From Storage
 ```
-string url = (string)job.Result().GetValue("url");
-Blob blob = client.RetrieveBlob(url).Exec();
+JObject obj = await job.Result();
+string url = (string)obj.GetValue("url");
+Blob blob = await client.RetrieveBlob(url).Exec();
 Console.WriteLine(blob.AsJSONObject());
 ```
 
 #### Get Training Model With Progress
 ```
-ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
-JArray trainingStatus = client.TrainingModelWithProgressQuery(mg).Exec();
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+JArray trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
             
 Console.WriteLine(mg.Name);
 Console.WriteLine(trainingStatus);                     
@@ -186,6 +187,6 @@ string query = @"
     ";
 
     GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
-    JObject response = request.Call();
+    JObject response = await request.Call();
     Console.WriteLine(response);
 ```

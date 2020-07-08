@@ -3,7 +3,7 @@ using Indico.Exception;
 
 namespace Indico.Jobs
 {
-    public class JobQuery : Query<Job>
+    public class JobQuery
     {
         GraphQLHttpClient _graphQLHttpClient;
         

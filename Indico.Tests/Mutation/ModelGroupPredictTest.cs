@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using Indico.Jobs;
 using Indico.Mutation;
@@ -23,10 +24,10 @@ namespace Indico.Tests.Mutation
         }
 
         [TestMethod]
-        public void Test()
+        async public Task Test()
         {
             ModelGroupPredict modelGroupPredict = new ModelGroupPredict(_client) { ModelId = 1 };
-            Job job = modelGroupPredict.Data(new List<string>()).Exec();
+            Job job = await modelGroupPredict.Data(new List<string>()).Exec();
             Assert.AreEqual("jobId_test", job.Id);
         }
     }

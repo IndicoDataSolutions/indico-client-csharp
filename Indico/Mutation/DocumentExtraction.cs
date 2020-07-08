@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using Indico.Exception;
@@ -12,7 +13,7 @@ namespace Indico.Mutation
     /// OCR PDF, TIF, JPG and PNG files
     /// </summary>
     public class DocumentExtraction : Mutation<List<Job>>
-    {       
+    {
         IndicoClient _client;
 
         /// <summary>
@@ -34,17 +35,18 @@ namespace Indico.Mutation
             this._client = client;
         }
 
-        private JArray Upload(List<string> filePaths)
+        async private Task<JArray> Upload(List<string> filePaths)
         {
             UploadFile uploadRequest = new UploadFile(this._client) { Files = filePaths };
-            return uploadRequest.Call();
+            var arr = await uploadRequest.Call();
+            return arr;
         }
 
-        private GraphQLResponse ExecRequest()
+        async private Task<GraphQLResponse> ExecRequest()
         {
             JArray fileMetadata;
             List<object> files = new List<object>();
-            fileMetadata = this.Upload(this.Files);
+            fileMetadata = await this.Upload(this.Files);
             foreach (JObject uploadMeta in fileMetadata)
             {
                 JObject meta = new JObject
@@ -83,16 +85,17 @@ namespace Indico.Mutation
                 }
             };
 
-            return this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
+            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
+            return response;
         }
 
         /// <summary>
         /// Executes OCR and returns Jobs
         /// <returns>List of Jobs</returns>
         /// </summary>
-        public List<Job> Exec()
+        async public Task<List<Job>> Exec()
         {
-            GraphQLResponse response = this.ExecRequest();
+            GraphQLResponse response = await this.ExecRequest();
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -115,18 +118,18 @@ namespace Indico.Mutation
         /// <param name="path">pathname of the file to OCR</param>
         /// <returns>Job</returns>
         /// </summary>
-        public Job Exec(string path)
+        async public Task<Job> Exec(string path)
         {
             this.Files = new List<string>() { path };
 
-            GraphQLResponse response = this.ExecRequest();
+            GraphQLResponse response = await this.ExecRequest();
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             JArray jobIds = (JArray)response.Data.documentExtraction.jobIds;
-           
+
             return new Job(this._client.GraphQLHttpClient, (string)jobIds[0]);
         }
     }

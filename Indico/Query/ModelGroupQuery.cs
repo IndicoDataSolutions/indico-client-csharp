@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -34,7 +35,7 @@ namespace Indico.Query
         /// Queries the server and returns ModelGroup
         /// </summary>
         /// <returns>ModelGroup</returns>
-        public ModelGroup Exec()
+        async public Task<ModelGroup> Exec()
         {
             string query = @"
                     query ModelGroupQuery($modelGroupIds: [Int]!) {
@@ -62,7 +63,7 @@ namespace Indico.Query
                 }
             };
 
-            GraphQLResponse response = this._graphQLHttpClient.SendQueryAsync(request).Result;
+            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -83,7 +84,7 @@ namespace Indico.Query
         /// </summary>
         /// <returns>ModelGroup</returns>
         /// <param name="obj">ModelGroup</param>
-        public ModelGroup Refresh(ModelGroup obj)
+        async public Task<ModelGroup> Refresh(ModelGroup obj)
         {
             //TODO:
             throw new RuntimeException("Method Not Implemented");

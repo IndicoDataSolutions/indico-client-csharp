@@ -1,4 +1,5 @@
-﻿using GraphQL.Client.Http;
+﻿using System.Threading.Tasks;
+using GraphQL.Client.Http;
 using Indico.Query;
 using Indico.Types;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,10 +23,10 @@ namespace Indico.Tests.Query
         }
 
         [TestMethod]
-        public void Test()
+        async public Task Test()
         {
             ModelGroupQuery modelGroupQuery = new ModelGroupQuery(_client) { MgId = 1 };
-            Entity.ModelGroup modelGroup = modelGroupQuery.Exec();
+            Entity.ModelGroup modelGroup = await modelGroupQuery.Exec();
             Assert.AreEqual(1, modelGroup.Id);
             Assert.AreEqual("testModelGroup", modelGroup.Name);
             Assert.AreEqual(ModelStatus.COMPLETE, modelGroup.Status);

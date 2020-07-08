@@ -6,6 +6,8 @@ using Indico.Mutation;
 using Indico.Jobs;
 using Indico.Entity;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+using Indico.Storage;
 
 namespace OcrPredict
 {
@@ -22,7 +24,7 @@ namespace OcrPredict
          * Before running, replace the Model Group ID (mgId) with the
          * ID for your trained model. You can find it on the model's Review page.
          */
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             // Replace this with your Model Group ID
             int mgId = 4352;
@@ -47,21 +49,23 @@ namespace OcrPredict
             foreach (string path in targetFiles)
             {
                 Console.WriteLine(path);
-                Job ocrJob = ocrQuery.Exec(path);
+                Job ocrJob = await ocrQuery.Exec(path);
 
-                string resUrl = (string)ocrJob.Result().GetValue("url");
-                JObject obj = client.RetrieveBlob(resUrl).Exec().AsJSONObject();
+                JObject result = await ocrJob.Result();
+                string resUrl = (string)result.GetValue("url");
+                Blob blob = await client.RetrieveBlob(resUrl).Exec();
+                JObject obj = blob.AsJSONObject();
                 texts.Add((string)obj.GetValue("text"));
             }
 
-            ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+            ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
             
-            String status = client.ModelGroupLoad(mg).Exec();
+            string status = await client.ModelGroupLoad(mg).Exec();
             Console.WriteLine($"Model status = {status}");
 
-            Job job = client.ModelGroupPredict(mg).Data(texts).Exec();
+            Job job = await client.ModelGroupPredict(mg).Data(texts).Exec();
 
-            JArray jobResult = job.Results();
+            JArray jobResult = await job.Results();
             Console.WriteLine(jobResult);
         }
 

@@ -1,4 +1,5 @@
-﻿using GraphQL.Client.Http;
+﻿using System.Threading.Tasks;
+using GraphQL.Client.Http;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
 using GraphQLHttpRequest = GraphQL.Common.Request.GraphQLRequest;
@@ -12,7 +13,7 @@ namespace Indico.Request
     public class GraphQLRequest : RestRequest<JObject>
     {
         GraphQLHttpClient _client;
-        
+
         /// <summary>
         /// Get/Set the GraphQL Query String
         /// </summary>
@@ -37,7 +38,7 @@ namespace Indico.Request
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
-        public JObject Call()
+        async public Task<JObject> Call()
         {
             GraphQLHttpRequest request = new GraphQLHttpRequest()
             {
@@ -46,7 +47,7 @@ namespace Indico.Request
                 Variables = this.Variables
             };
 
-            GraphQLHttpResponse response = this._client.SendQueryAsync(request).Result;
+            GraphQLHttpResponse response = await this._client.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
