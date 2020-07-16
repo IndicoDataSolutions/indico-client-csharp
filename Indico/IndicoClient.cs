@@ -44,14 +44,25 @@ namespace Indico
             {
                 this.Config = new IndicoConfig();
             }
-            
-            TokenHandler tokenHandler = new TokenHandler(this.Config.ApiToken);
-            this.HttpClient = new HttpClient(tokenHandler);
+
+            HttpMessageHandler handler = this.GetHandler();
+            this.HttpClient = new HttpClient(handler);
             string endpoint = $"{this.Config.Protocol}://{this.Config.Host}";
             GraphQLHttpClientOptions options = new GraphQLHttpClientOptions();
             options.EndPoint = new System.Uri($"{endpoint}/graph/api/graphql");
-            options.HttpMessageHandler = tokenHandler;
+            options.HttpMessageHandler = handler;
             this.GraphQLHttpClient = this.HttpClient.AsGraphQLClient(options);
+        }
+
+        HttpMessageHandler GetHandler()
+        {
+            HttpClientHandler innerHandler = new HttpClientHandler();
+            if (!this.Config.Verify)
+            {
+                innerHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            }
+            TokenHandler tokenHandler = new TokenHandler(this.Config.ApiToken, innerHandler);
+            return tokenHandler;
         }
 
         /// <summary>

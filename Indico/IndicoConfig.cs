@@ -1,7 +1,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-
 using Indico.Exception;
 
 namespace Indico
@@ -32,6 +31,8 @@ namespace Indico
         /// <value>The API token.</value>
         public string ApiToken { get; }
 
+        public bool Verify { get; }
+
         /// <summary>
         /// Indico Client config constructor
         /// </summary>
@@ -43,11 +44,13 @@ namespace Indico
             [Optional] string apiToken,
             [Optional] string tokenPath,
             string host = "app.indico.io",
-            string protocol = "https"
+            string protocol = "https",
+            bool verify = true
         )
         {
             this.Host = host;
             this.Protocol = protocol;
+            this.Verify = verify;
             if (apiToken == null)
             {
                 if (tokenPath == null)
