@@ -11,10 +11,9 @@ namespace Indico
     {
         string _apiToken;
 
-        public TokenHandler(string apiToken)
+        public TokenHandler(string apiToken, HttpMessageHandler innerHandler) : base(innerHandler)
         {
             this._apiToken = apiToken;
-            this.InnerHandler = new HttpClientHandler();
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
