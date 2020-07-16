@@ -46,7 +46,7 @@ namespace Indico.Mutation
             List<object> files = new List<object>();
             fileMetadata = this.Upload(this.Files);
             foreach (JObject uploadMeta in fileMetadata)
-            {
+            {                
                 JObject meta = new JObject
                 {
                     { "name", (string)uploadMeta.GetValue("name") },
@@ -83,7 +83,7 @@ namespace Indico.Mutation
                 }
             };
 
-            return this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
+            return this._client.GraphQLHttpClient.SendMutationAsync(request).Result;            
         }
 
         /// <summary>
