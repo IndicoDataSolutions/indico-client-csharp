@@ -61,7 +61,20 @@ namespace Indico.Storage
             HttpClient client = this._client.HttpClient;
             HttpResponseMessage responseMessage = await client.PostAsync(uploadUrl, formData);
             string body = await responseMessage.Content.ReadAsStringAsync();
-            return JArray.Parse(body);
+            JArray uploadResult = JArray.Parse(body);
+
+            foreach (JObject uploadMeta in uploadResult)
+            {
+                string error = (string)uploadMeta.GetValue("error");
+                if (error != null)
+                {
+                    string fname = (string)uploadMeta.GetValue("name");
+                    string ferror = (string)uploadMeta.GetValue("error");
+                    throw new RuntimeException($"File upload failed on {fname} with status {ferror}");
+                }
+            }
+
+            return uploadResult;
         }
 
         async Task<HttpContent> MultipartFormDataContent(List<FileParameter> parameters)
