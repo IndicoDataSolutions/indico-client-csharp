@@ -70,7 +70,7 @@ namespace Indico.Storage
                 {
                     string fname = (string)uploadMeta.GetValue("name");
                     string ferror = (string)uploadMeta.GetValue("error");
-                    throw new RuntimeException($"File upload failed on {fname} with status {ferror}");
+                    throw new FileUploadException($"File upload failed on {fname} with status {ferror}");
                 }
             }
 
