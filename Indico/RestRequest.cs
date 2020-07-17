@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Indico
 {
     interface RestRequest<T>
     {
-        T Call();
+        Task<T> Call();
     }
 }

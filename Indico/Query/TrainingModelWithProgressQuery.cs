@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -13,13 +14,13 @@ namespace Indico.Query
     /// </summary>
     public class TrainingModelWithProgressQuery : Query<JArray>
     {
-        IndicoClient _client;       
-       
+        IndicoClient _client;
+
         /// <summary>
         /// Get/Set the Model ID (Often, the Selected Model ID for a Model Group)
         /// </summary>
         public int ModelId { get; set; }
-        
+
         /// <summary>
         /// Find the % complete of a training Model Group
         /// </summary>
@@ -33,7 +34,7 @@ namespace Indico.Query
         /// Query a Model Group for training % complete
         /// </summary>
         /// <returns>JObject with % training complete</returns>
-        public JArray Exec()
+        async public Task<JArray> Exec()
         {
             GraphQLHttpClient graphQLHttpClient = this._client.GraphQLHttpClient;
             string query = @"
@@ -62,7 +63,7 @@ namespace Indico.Query
                 }
             };
 
-            GraphQLResponse response = graphQLHttpClient.SendQueryAsync(request).Result;
+            GraphQLResponse response = await graphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -73,13 +74,14 @@ namespace Indico.Query
             {
                 throw new RuntimeException("Cannot find Model Group");
             }
-            
+
             return (JArray)modelGroups[0].models;
         }
 
-        public JArray Refresh(JArray obj)
+        public Task<JArray> Refresh(JArray obj)
         {
-            return obj;
+            //TODO:
+            throw new RuntimeException("Method Not Implemented");
         }
     }
 }

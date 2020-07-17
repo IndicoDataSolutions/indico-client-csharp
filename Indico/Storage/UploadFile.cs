@@ -18,10 +18,11 @@ namespace Indico.Storage
         /// <summary>
         /// List of files to upload
         /// </summary>
-        public List<string> Files 
+        public List<string> Files
         {
             get => this._files;
-            set {
+            set
+            {
                 foreach (string path in value)
                 {
                     if (File.Exists(path))
@@ -45,26 +46,25 @@ namespace Indico.Storage
         /// Upload files and return metadata
         /// </summary>
         /// <returns>JArray</returns>
-        public JArray Call()
+        async public Task<JArray> Call()
         {
             string uploadUrl = this._client.Config.GetAppBaseUrl() + "/storage/files/store";
-            Dictionary<string, FileParameter> parameters = new Dictionary<string, FileParameter>();
+            List<FileParameter> parameters = new List<FileParameter>();
 
-            foreach (string file in this.Files)
+            foreach (string filepath in this.Files)
             {
-                FileStream fileStream = File.OpenRead(file);
-                string fileName = Path.GetFileName(file);
-                parameters.Add(file, new FileParameter(fileStream, fileName, "application/octet-stream"));
+                string filename = Path.GetFileName(filepath);
+                parameters.Add(new FileParameter(filepath, filename, "application/octet-stream"));
             }
 
-            HttpContent formData = MultipartFormDataContent(parameters).Result;
+            HttpContent formData = await MultipartFormDataContent(parameters);
             HttpClient client = this._client.HttpClient;
-            HttpResponseMessage responseMessage = client.PostAsync(uploadUrl, formData).Result;
-            string body = responseMessage.Content.ReadAsStringAsync().Result;
+            HttpResponseMessage responseMessage = await client.PostAsync(uploadUrl, formData);
+            string body = await responseMessage.Content.ReadAsStringAsync();
             return JArray.Parse(body);
         }
 
-        async Task<HttpContent> MultipartFormDataContent(Dictionary<string, FileParameter> postParameters)
+        async Task<HttpContent> MultipartFormDataContent(List<FileParameter> parameters)
         {
             Stream formDataStream = new MemoryStream();
             Encoding encoding = Encoding.UTF8;
@@ -72,7 +72,7 @@ namespace Indico.Storage
             string boundary = string.Format("----------{0:N}", Guid.NewGuid());
             string contentType = "multipart/form-data; boundary=" + boundary;
 
-            foreach (var param in postParameters)
+            foreach (FileParameter fileToUpload in parameters)
             {
                 // Skip it on the first parameter, add it to subsequent parameters.
                 if (needsCLRF)
@@ -80,15 +80,17 @@ namespace Indico.Storage
 
                 needsCLRF = true;
 
-                FileParameter fileToUpload = param.Value;
                 string header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
                         boundary,
-                        param.Key,
+                        fileToUpload.FilePath,
                         fileToUpload.FileName,
                         fileToUpload.ContentType);
 
                 await formDataStream.WriteAsync(encoding.GetBytes(header), 0, encoding.GetByteCount(header));
-                await fileToUpload.File.CopyToAsync(formDataStream);
+                using (FileStream fs = File.OpenRead(fileToUpload.FilePath))
+                {
+                    await fs.CopyToAsync(formDataStream);
+                }
             }
 
             // Add the end of the request.  Start with a newline
@@ -110,13 +112,13 @@ namespace Indico.Storage
 
         class FileParameter
         {
-            public Stream File { get; }
+            public string FilePath { get; }
             public string FileName { get; }
             public string ContentType { get; }
-            public FileParameter(Stream file, string filename, string contenttype)
+            public FileParameter(string filepath, string filename, string contenttype)
             {
-                File = file;
-                FileName = filename;
+                FilePath = filepath;
+                FileName = Path.GetFileName(filepath);
                 ContentType = contenttype;
             }
         }

@@ -3,7 +3,7 @@ using Indico;
 using Indico.Query;
 using Indico.Entity;
 using Newtonsoft.Json.Linq;
-
+using System.Threading.Tasks;
 
 namespace Examples
 {
@@ -15,7 +15,7 @@ namespace Examples
          * to train. Pass your model's Model Group ID on the command line.
          * You can find the model group ID on your model's Review page.
          */
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -30,8 +30,8 @@ namespace Examples
             );
 
             IndicoClient client = new IndicoClient(config);
-            ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
-            JArray trainingStatus = client.TrainingModelWithProgressQuery(mg).Exec();
+            ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+            JArray trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
             
             Console.WriteLine(mg.Name);
             Console.WriteLine(trainingStatus);                     

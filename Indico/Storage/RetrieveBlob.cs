@@ -83,9 +83,10 @@ namespace Indico.Storage
         /// Retrieves Blob
         /// </summary>
         /// <returns>Blob</returns>
-        public Blob Exec()
+        async public Task<Blob> Exec()
         {
-            return new Blob(this.GetStream().Result);
+            var stream = await this.GetStream();
+            return new Blob(stream);
         }
     }
 }

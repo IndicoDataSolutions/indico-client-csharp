@@ -17,7 +17,7 @@ namespace GetPredictions
          * ID into this sample as a command line arg. You can find the model
          * group ID on your trained model's Review page.
          */
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
             int mgId = -1;
 
@@ -37,10 +37,10 @@ namespace GetPredictions
 
             IndicoClient client = new IndicoClient(config);
 
-            ModelGroup mg = client.ModelGroupQuery(mgId).Exec();
+            ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
 
             // Load Model
-            String status = client.ModelGroupLoad(mg).Exec();
+            string status = await client.ModelGroupLoad(mg).Exec();
 
             List<string> reviews = new List<string>()
             {
@@ -48,9 +48,9 @@ namespace GetPredictions
                 "The service was rude and the food was awful. Don\'t waste your time!"
             };
 
-            Job job = client.ModelGroupPredict(mg).Data(reviews).Exec();
+            Job job = await client.ModelGroupPredict(mg).Data(reviews).Exec();
 
-            JArray jobResult = job.Results();
+            JArray jobResult = await job.Results();
             Console.WriteLine(jobResult);
         }
     }
