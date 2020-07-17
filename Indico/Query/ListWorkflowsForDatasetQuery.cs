@@ -5,6 +5,7 @@ using Indico.Exception;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Indico.Query
 {
@@ -27,7 +28,7 @@ namespace Indico.Query
         /// Queries the server and returns Workflow List
         /// </summary>
         /// <returns>Workflow List</returns>
-        public List<Workflow> Exec()
+        async public Task<List<Workflow>> Exec()
         {
             string query = @"
                     query ListWorkflows($datasetId: Int){
@@ -49,7 +50,7 @@ namespace Indico.Query
                 }
             };
 
-            GraphQLResponse response = this._client.GraphQLHttpClient.SendQueryAsync(request).Result;
+            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -65,7 +66,7 @@ namespace Indico.Query
             return workflows;
         }
 
-        public List<Workflow> Refresh(List<Workflow> obj)
+        async public Task<List<Workflow>> Refresh(List<Workflow> obj)
         {
             //TODO:
             throw new RuntimeException("Method Not Implemented");

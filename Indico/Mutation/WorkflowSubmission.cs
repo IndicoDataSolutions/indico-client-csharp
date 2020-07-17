@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using Indico.Exception;
@@ -31,11 +32,11 @@ namespace Indico.Mutation
         /// Executes request and returns Job
         /// </summary>
         /// <returns>Job</returns>
-        public Job Exec()
+        async public Task<Job> Exec()
         {
             JArray fileMetadata;
             List<object> files = new List<object>();
-            fileMetadata = this.Upload(this.Files);
+            fileMetadata = await this.Upload(this.Files);
             foreach (JObject uploadMeta in fileMetadata)
             {
                 JObject meta = new JObject
@@ -73,7 +74,7 @@ namespace Indico.Mutation
                 }
             };
 
-            GraphQLResponse response = this._client.GraphQLHttpClient.SendMutationAsync(request).Result;
+            GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -88,13 +89,13 @@ namespace Indico.Mutation
             return new Job(this._client.GraphQLHttpClient, jobId);
         }
 
-        JArray Upload(List<string> filePaths)
+        async Task<JArray> Upload(List<string> filePaths)
         {
             UploadFile uploadRequest = new UploadFile(this._client)
             {
                 Files = filePaths
             };
-            return uploadRequest.Call();
+            return await uploadRequest.Call();
         }
     }
 }
