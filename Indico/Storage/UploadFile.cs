@@ -25,9 +25,17 @@ namespace Indico.Storage
             {
                 foreach (string path in value)
                 {
-                    if (File.Exists(path))
+                    string filepath = path;
+                    char seperator = Path.DirectorySeparatorChar;
+                    char alt = Path.AltDirectorySeparatorChar;
+                    if (seperator != alt)
                     {
-                        this._files.Add(path);
+                        filepath = filepath.Replace(alt, seperator);
+                    }
+
+                    if (File.Exists(filepath))
+                    {
+                        this._files.Add(filepath);
                     }
                     else
                     {
