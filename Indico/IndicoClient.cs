@@ -113,6 +113,24 @@ namespace Indico
         }
 
         /// <summary>
+        /// Create a new query to list workflows for dataset
+        /// </summary>
+        /// <returns>ListWorkflowsForDatasetQuery</returns>
+        public ListWorkflowsForDatasetQuery ListWorkflowsForDatasetQuery()
+        {
+            return new ListWorkflowsForDatasetQuery(this);
+        }
+
+        /// <summary>
+        /// Create a new mutation to submit documents to process by a workflow
+        /// </summary>
+        /// <returns>WorkflowSubmission</returns>
+        public WorkflowSubmission WorkflowSubmission()
+        {
+            return new WorkflowSubmission(this);
+        }
+
+        /// <summary>
         /// Create a new request to load a ModelGroup.
         /// </summary>
         /// <returns>ModelGroupLoad</returns>

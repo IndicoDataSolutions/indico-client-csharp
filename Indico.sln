@@ -17,7 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetPredictions", "GetPredictions\GetPredictions.csproj", "{4A314A4A-786A-4D72-A1CB-C6A57F5FA8F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcrPredict", "OcrPredict\OcrPredict.csproj", "{31682601-4777-44AC-8668-DE009F70C131}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcrPredict", "OcrPredict\OcrPredict.csproj", "{31682601-4777-44AC-8668-DE009F70C131}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubmitWorkflows", "WorkflowSubmission\SubmitWorkflows.csproj", "{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +115,18 @@ Global
 		{31682601-4777-44AC-8668-DE009F70C131}.Release|x64.Build.0 = Release|Any CPU
 		{31682601-4777-44AC-8668-DE009F70C131}.Release|x86.ActiveCfg = Release|Any CPU
 		{31682601-4777-44AC-8668-DE009F70C131}.Release|x86.Build.0 = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|x64.Build.0 = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Debug|x86.Build.0 = Debug|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|x64.ActiveCfg = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|x64.Build.0 = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|x86.ActiveCfg = Release|Any CPU
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +137,7 @@ Global
 		{F3510DC3-CDFA-4A54-8DA0-79C67763F790} = {DD4C5530-B244-46CD-B4E8-A0DFE0C6A542}
 		{4A314A4A-786A-4D72-A1CB-C6A57F5FA8F5} = {DD4C5530-B244-46CD-B4E8-A0DFE0C6A542}
 		{31682601-4777-44AC-8668-DE009F70C131} = {DD4C5530-B244-46CD-B4E8-A0DFE0C6A542}
+		{45DCF6F0-6727-4D94-8E72-9A8A3F04733A} = {DD4C5530-B244-46CD-B4E8-A0DFE0C6A542}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38B0065C-774B-4FD4-BB59-14DE16428C2D}

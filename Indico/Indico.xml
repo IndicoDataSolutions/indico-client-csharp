@@ -16,6 +16,12 @@
             </summary>
             <value>The model status.</value>
         </member>
+        <member name="P:Indico.Entity.Model.TrainingProgress">
+            <summary>
+            Gets training progress.
+            </summary>
+            <value>The training progress.</value>
+        </member>
         <member name="P:Indico.Entity.ModelGroup.Id">
             <summary>
             Gets the ModelGroup identifier.
@@ -83,6 +89,18 @@
             Create a new Query to retrieve TrainingModelWithProgress.
             </summary>
             <returns>TrainingModelWithProgressQuery</returns>
+        </member>
+        <member name="M:Indico.IndicoClient.ListWorkflowsForDatasetQuery">
+            <summary>
+            Create a new query to list workflows for dataset
+            </summary>
+            <returns>ListWorkflowsForDatasetQuery</returns>
+        </member>
+        <member name="M:Indico.IndicoClient.WorkflowSubmission">
+            <summary>
+            Create a new mutation to submit documents to process by a workflow
+            </summary>
+            <returns>WorkflowSubmission</returns>
         </member>
         <member name="M:Indico.IndicoClient.ModelGroupLoad(Indico.Entity.ModelGroup)">
             <summary>
@@ -321,11 +339,41 @@
             </summary>
             <returns>Job</returns>
         </member>
+        <member name="P:Indico.Mutation.WorkflowSubmission.Id">
+            <summary>
+            Workflow Id
+            </summary>
+            <value>Workflow Id</value>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmission.Files">
+            <summary>
+            Files to submit
+            </summary>
+            <value>Files</value>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmission.Exec">
+            <summary>
+            Executes request and returns Job
+            </summary>
+            <returns>Job</returns>
+        </member>
         <member name="M:Indico.Query`1.Exec">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>
             <returns>result of query of type T</returns>
+        </member>
+        <member name="P:Indico.Query.ListWorkflowsForDatasetQuery.Id">
+            <summary>
+            Use to query workflows by datasetId
+            </summary>
+            <value>Dataset Id</value>
+        </member>
+        <member name="M:Indico.Query.ListWorkflowsForDatasetQuery.Exec">
+            <summary>
+            Queries the server and returns Workflow List
+            </summary>
+            <returns>Workflow List</returns>
         </member>
         <member name="T:Indico.Query.ModelGroupQuery">
             <summary>

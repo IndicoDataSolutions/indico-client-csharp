@@ -1,6 +1,4 @@
-using System;
 using Indico.Types;
-using Newtonsoft.Json.Linq;
 
 namespace Indico.Entity
 {
@@ -10,31 +8,21 @@ namespace Indico.Entity
         /// Gets the ModelGroup identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public int Id { get; }
+        public int Id { get; set; }
         /// <summary>
         /// Gets the ModelGroup name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; }
+        public string Name { get; set; }
         /// <summary>
         /// Gets the ModelGroup status.
         /// </summary>
         /// <value>The status.</value>
-        public ModelStatus Status { get; }
+        public ModelStatus Status { get; set; }
         /// <summary>
         /// Gets the selected model.
         /// </summary>
         /// <value>The selected model.</value>
-        public Model SelectedModel { get; }
-
-        internal ModelGroup(JObject mg)
-        {
-            this.Id = (int)mg.GetValue("id");
-            this.Name = (string)mg.GetValue("name");
-            string status = (string)mg.GetValue("status");
-            this.Status = (ModelStatus)Enum.Parse(typeof(ModelStatus), status);
-            JObject selectedModel = (JObject)mg.GetValue("selectedModel");
-            this.SelectedModel = new Model(selectedModel);
-        }
+        public Model SelectedModel { get; set; }
     }
 }
