@@ -2,68 +2,40 @@
 using System.Collections.Generic;
 using System.IO;
 using Indico.Exception;
+using System;
 using System.Threading.Tasks;
 
 namespace Indico.Storage
 {
-    public class UploadFile : RestRequest<JArray>
+    public class UploadStream : RestRequest<JArray>
     {
         IndicoClient _client;
-        List<string> _files = new List<string>();
 
         /// <summary>
-        /// List of files to upload
+        /// List of streams to upload
         /// </summary>
-        public List<string> Files
-        {
-            get => this._files;
-            set => CheckFiles(value);
-        }
+        public List<Stream> Streams { get; set; }
 
-        public UploadFile(IndicoClient client)
+        public UploadStream(IndicoClient client)
         {
             this._client = client;
         }
 
-        void CheckFiles(List<string> files)
-        {
-            foreach (string path in files)
-            {
-                string filepath = path;
-                char seperator = Path.DirectorySeparatorChar;
-                char alt = Path.AltDirectorySeparatorChar;
-                if (seperator != alt)
-                {
-                    filepath = filepath.Replace(alt, seperator);
-                }
-
-                if (File.Exists(filepath))
-                {
-                    this._files.Add(filepath);
-                }
-                else
-                {
-                    throw new RuntimeException($"File ({path}) does not exist");
-                }
-            }
-        }
-
         /// <summary>
-        /// Upload files and return metadata
+        /// Upload streams and return metadata
         /// </summary>
         /// <returns>JArray</returns>
         async public Task<JArray> Call()
         {
             List<FileParameter> fileParameters = new List<FileParameter>();
 
-            foreach (string filepath in this.Files)
+            foreach (Stream stream in this.Streams)
             {
-                string filename = Path.GetFileName(filepath);
-                FileStream file = File.OpenRead(filepath);
+                string filename = Guid.NewGuid().ToString();
                 FileParameter param = new FileParameter
                 {
-                    File = file,
-                    FilePath = filepath,
+                    File = stream,
+                    FilePath = $"/tmp/{filename}",
                     FileName = filename,
                     ContentType = "application/octet-stream"
                 };
@@ -75,9 +47,6 @@ namespace Indico.Storage
                 FileParameters = fileParameters
             };
             JArray uploadResult = await formUpload.Call();
-
-            // Dispose FileStreams
-            fileParameters.ForEach(param => param.File.Dispose());
 
             foreach (JObject uploadMeta in uploadResult)
             {
@@ -94,3 +63,4 @@ namespace Indico.Storage
         }
     }
 }
+
