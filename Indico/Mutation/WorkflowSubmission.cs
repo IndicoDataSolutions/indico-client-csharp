@@ -58,7 +58,7 @@ namespace Indico.Mutation
             string query = @"
                     mutation WorkflowSubmission($workflowId: Int!, $files: [FileInput]!) {
                         workflowSubmission(workflowId: $workflowId, files: $files) {
-                            jobId
+                            jobIds
                         }
                     }
                 ";
