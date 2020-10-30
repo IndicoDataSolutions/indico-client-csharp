@@ -113,15 +113,6 @@ namespace Indico
         }
 
         /// <summary>
-        /// Create a new query to list workflows for dataset
-        /// </summary>
-        /// <returns>ListWorkflowsForDatasetQuery</returns>
-        public ListWorkflowsForDatasetQuery ListWorkflowsForDatasetQuery()
-        {
-            return new ListWorkflowsForDatasetQuery(this);
-        }
-
-        /// <summary>
         /// Create a new mutation to submit documents to process by a workflow
         /// </summary>
         /// <returns>WorkflowSubmission</returns>
