@@ -7,7 +7,7 @@ namespace Indico.Entity
     {
         public string InputFilename { get; set; }
         public SubmissionStatus Status { get; set; }
-        public bool? Retrieved { get; set; }
+        public bool Retrieved { get; set; }
         public List<SubmissionFilter> OR { get; set; }
         public List<SubmissionFilter> AND { get; set; }
 
