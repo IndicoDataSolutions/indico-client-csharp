@@ -90,12 +90,6 @@
             </summary>
             <returns>TrainingModelWithProgressQuery</returns>
         </member>
-        <member name="M:Indico.IndicoClient.ListWorkflowsForDatasetQuery">
-            <summary>
-            Create a new query to list workflows for dataset
-            </summary>
-            <returns>ListWorkflowsForDatasetQuery</returns>
-        </member>
         <member name="M:Indico.IndicoClient.WorkflowSubmission">
             <summary>
             Create a new mutation to submit documents to process by a workflow
@@ -339,7 +333,7 @@
             </summary>
             <returns>Job</returns>
         </member>
-        <member name="P:Indico.Mutation.WorkflowSubmission.Id">
+        <member name="P:Indico.Mutation.WorkflowSubmission.WorkflowId">
             <summary>
             Workflow Id
             </summary>
@@ -351,11 +345,35 @@
             </summary>
             <value>Files</value>
         </member>
-        <member name="M:Indico.Mutation.WorkflowSubmission.Exec">
+        <member name="P:Indico.Mutation.WorkflowSubmissionBase.WorkflowId">
+            <summary>
+            Workflow Id
+            </summary>
+            <value>Workflow Id</value>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionBase.Files">
+            <summary>
+            Files to submit
+            </summary>
+            <value>Files</value>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmissionBase.Exec">
             <summary>
             Executes request and returns Job
             </summary>
             <returns>Job</returns>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.WorkflowId">
+            <summary>
+            Workflow Id
+            </summary>
+            <value>Workflow Id</value>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.Files">
+            <summary>
+            Files to submit
+            </summary>
+            <value>Files</value>
         </member>
         <member name="M:Indico.Query`1.Exec">
             <summary>
@@ -363,17 +381,11 @@
             </summary>
             <returns>result of query of type T</returns>
         </member>
-        <member name="P:Indico.Query.ListWorkflowsForDatasetQuery.Id">
+        <member name="M:Indico.Query.GetSubmission.Exec">
             <summary>
-            Use to query workflows by datasetId
+            Queries the server and returns Submission
             </summary>
-            <value>Dataset Id</value>
-        </member>
-        <member name="M:Indico.Query.ListWorkflowsForDatasetQuery.Exec">
-            <summary>
-            Queries the server and returns Workflow List
-            </summary>
-            <returns>Workflow List</returns>
+            <returns>Submission</returns>
         </member>
         <member name="T:Indico.Query.ModelGroupQuery">
             <summary>
@@ -521,6 +533,17 @@
         <member name="M:Indico.Storage.UploadFile.Call">
             <summary>
             Upload files and return metadata
+            </summary>
+            <returns>JArray</returns>
+        </member>
+        <member name="P:Indico.Storage.UploadStream.Streams">
+            <summary>
+            List of streams to upload
+            </summary>
+        </member>
+        <member name="M:Indico.Storage.UploadStream.Call">
+            <summary>
+            Upload streams and return metadata
             </summary>
             <returns>JArray</returns>
         </member>
