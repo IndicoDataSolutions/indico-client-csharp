@@ -20,9 +20,9 @@ namespace Examples
             IndicoClient client = new IndicoClient(config);
 
             // List Workflows for Dataset
-            ListWorkflowsForDatasetQuery listWorkflows = new ListWorkflowsForDatasetQuery(client)
+            ListWorkflows listWorkflows = new ListWorkflows(client)
             {
-                Id = DATASET_ID
+                DatasetIds = new List<int>() { DATASET_ID }
             };
             List<Workflow> workflows = await listWorkflows.Exec();
 
@@ -32,11 +32,11 @@ namespace Examples
             // Submit files to Workflow
             WorkflowSubmission workflowSubmission = new WorkflowSubmission(client)
             {
-                Id = workflow.Id,
+                WorkflowId = workflow.Id,
                 Files = FILE_LIST
             };
 
-            Job job = await workflowSubmission.Exec();
+            List<int> submissionIds = await workflowSubmission.Exec();
         }
     }
 }
