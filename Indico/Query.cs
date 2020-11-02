@@ -9,6 +9,5 @@ namespace Indico
         /// </summary>
         /// <returns>result of query of type T</returns>
         Task<T> Exec();
-        Task<T> Refresh(T obj);
     }
 }

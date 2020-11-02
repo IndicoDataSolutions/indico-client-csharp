@@ -92,16 +92,5 @@ namespace Indico.Query
                 }
             };
         }
-
-        /// <summary>
-        /// Refreshes the ModelGroup Object
-        /// </summary>
-        /// <returns>ModelGroup</returns>
-        /// <param name="obj">ModelGroup</param>
-        async public Task<ModelGroup> Refresh(ModelGroup obj)
-        {
-            //TODO:
-            throw new RuntimeException("Method Not Implemented");
-        }
     }
 }

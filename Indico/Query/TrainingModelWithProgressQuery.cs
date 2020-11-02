@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
-using Indico.Entity;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
 
@@ -76,12 +74,6 @@ namespace Indico.Query
             }
 
             return (JArray)modelGroups[0].models;
-        }
-
-        public Task<JArray> Refresh(JArray obj)
-        {
-            //TODO:
-            throw new RuntimeException("Method Not Implemented");
         }
     }
 }

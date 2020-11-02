@@ -84,11 +84,5 @@ namespace Indico.Query
 
             return submissions;
         }
-
-        async public Task<List<Submission>> Refresh(List<Submission> obj)
-        {
-            //TODO:
-            throw new RuntimeException("Method Not Implemented");
-        }
     }
 }
