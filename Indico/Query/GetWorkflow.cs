@@ -26,10 +26,5 @@ namespace Indico.Query
             }
             return null;
         }
-
-        public Task<Workflow> Refresh(Workflow obj)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

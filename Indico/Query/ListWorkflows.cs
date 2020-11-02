@@ -3,7 +3,6 @@ using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,11 +56,6 @@ namespace Indico.Query
             }).ToList();
 
             return workflows;
-        }
-
-        public async Task<List<Workflow>> Refresh(List<Workflow> obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

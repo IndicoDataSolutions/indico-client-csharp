@@ -66,11 +66,5 @@ namespace Indico.Query
                 Errors = submission.Value<string>("errors")
             };
         }
-
-        async public Task<Submission> Refresh(Submission obj)
-        {
-            //TODO:
-            throw new RuntimeException("Method Not Implemented");
-        }
     }
 }
