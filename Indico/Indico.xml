@@ -410,13 +410,6 @@
             </summary>
             <returns>ModelGroup</returns>
         </member>
-        <member name="M:Indico.Query.ModelGroupQuery.Refresh(Indico.Entity.ModelGroup)">
-            <summary>
-            Refreshes the ModelGroup Object
-            </summary>
-            <returns>ModelGroup</returns>
-            <param name="obj">ModelGroup</param>
-        </member>
         <member name="T:Indico.Query.TrainingModelWithProgressQuery">
             <summary>
             Find the % complete of a training Model Group
