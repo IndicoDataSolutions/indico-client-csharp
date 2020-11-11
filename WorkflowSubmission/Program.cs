@@ -35,7 +35,7 @@ namespace Examples
                 // Submit files to Workflow
                 Files = new List<string>() { "path-to-file" },
                 // Or submit streams to Workflow
-                Streams = // Stream List
+                Streams = null // Stream List
             };
 
             List<int> submissionIds = await workflowSubmission.Exec();
