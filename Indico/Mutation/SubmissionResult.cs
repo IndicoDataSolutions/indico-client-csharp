@@ -1,13 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Query;
 using Indico.Types;
-using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
@@ -30,10 +27,6 @@ namespace Indico.Mutation
             {
                 submission = await getSubmission.Exec();
                 Thread.Sleep(1000);
-                if (!StatusCheck(submission.Status))
-                {
-                    throw new RuntimeException("Request timed out");
-                }
             }
 
             if (!StatusCheck(submission.Status))
