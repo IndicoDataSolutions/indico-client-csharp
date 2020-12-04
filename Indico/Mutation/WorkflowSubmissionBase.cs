@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
@@ -32,15 +33,11 @@ namespace Indico.Mutation
         /// Executes request and returns Job
         /// </summary>
         /// <returns>Job</returns>
-        async public Task<JObject> Exec()
+        public async Task<JObject> Exec()
         {
-            if (this.Files == null && this.Streams == null && this.Urls == null)
+            if (Convert.ToInt16(this.Files != null) + Convert.ToInt16(this.Streams != null) + Convert.ToInt16(this.Urls != null) != 1)
             {
                 throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
-            }
-            else if (this.Files != null && this.Streams != null && this.Urls != null)
-            {
-                throw new InputException("Only one of 'Files', 'Streams' or 'Urls' must be specified");
             }
 
             List<object> files = new List<object>();
