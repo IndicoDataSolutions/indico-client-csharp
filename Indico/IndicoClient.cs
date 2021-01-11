@@ -34,7 +34,10 @@ namespace Indico
         /// IndicoClient constructor
         /// </summary>
         /// <param name="indicoConfig">Client configuration with platform hostname, etc</param>
-        public IndicoClient(IndicoConfig indicoConfig=null)
+        public IndicoClient(IndicoConfig indicoConfig = null) : this(indicoConfig, null) 
+        { }
+
+        protected IndicoClient(IndicoConfig indicoConfig=null, HttpMessageHandler handler = null)
         {
             if (indicoConfig != null)
             {
@@ -45,7 +48,7 @@ namespace Indico
                 this.Config = new IndicoConfig();
             }
 
-            HttpMessageHandler handler = this.GetHandler();
+            handler ??= GetHandler();
             this.HttpClient = new HttpClient(handler);
             string endpoint = $"{this.Config.Protocol}://{this.Config.Host}";
             GraphQLHttpClientOptions options = new GraphQLHttpClientOptions();
@@ -54,7 +57,7 @@ namespace Indico
             this.GraphQLHttpClient = this.HttpClient.AsGraphQLClient(options);
         }
 
-        HttpMessageHandler GetHandler()
+        protected virtual HttpMessageHandler GetHandler()
         {
             HttpClientHandler innerHandler = new HttpClientHandler();
             if (!this.Config.Verify)
