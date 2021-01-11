@@ -1,59 +1,29 @@
-﻿using Indico;
-using Indico.Entity;
-using Indico.Jobs;
-using Indico.Mutation;
-using Indico.Query;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using IndicoV2;
+using IndicoV2.Submissions;
 
 namespace Examples
 {
     class SubmitWorkflows
     {
-        async static Task Main(string[] args)
+        static async Task Main()
         {
-            IndicoConfig config = new IndicoConfig(
-                host: "app.indico.io"
-            );
+            var client = new IndicoClient(new Uri("https://app.indico.io"));
 
-            IndicoClient client = new IndicoClient(config);
+            var dataSets = await client.DataSets().ListAsync();
 
-            // List Workflows for Dataset 1707
-            ListWorkflows listWorkflows = new ListWorkflows(client)
-            {
-                DatasetIds = new List<int>() { 1707 }
-            };
-            List<Workflow> workflows = await listWorkflows.Exec();
+            var workflows = await client.Workflows().ListAsync(dataSets.First().Id);
 
-            // Select Workflow
-            Workflow workflow = workflows[0];
+            var submissionClient = client.Submissions();
 
-            WorkflowSubmission workflowSubmission = new WorkflowSubmission(client)
-            {
-                WorkflowId = workflow.Id,
-                // Submit files to Workflow
-                Files = new List<string>() { "path-to-file" },
-                // Or submit streams to Workflow
-                Streams = null // Stream List
-            };
+            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"SubmitWorkflows.runtimeconfig.json"});
+            var submissionId = submissionIds.Single();
 
-            List<int> submissionIds = await workflowSubmission.Exec();
-
-            // Select Submission
-            int submissionId = submissionIds[0];
-
-            SubmissionResult submissionResult = new SubmissionResult(client)
-            {
-                SubmissionId = submissionId
-            };
-
-            Job job = await submissionResult.Exec();
-
-            // Get Submission result
-            JObject result = await job.Result();
-            // Or results
-            JArray results = await job.Results();
+            var submission = await submissionClient.GetAsync(submissionId);
+            var job = await submissionClient.GetJobWhenReady(submissionId);
+            Console.ReadLine();
         }
     }
 }

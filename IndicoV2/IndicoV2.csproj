@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
+    <ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" />
+  </ItemGroup>
+
+</Project>

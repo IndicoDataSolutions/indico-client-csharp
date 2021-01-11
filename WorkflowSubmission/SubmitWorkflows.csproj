@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Indico\Indico.csproj" />
+    <ProjectReference Include="..\IndicoV2\IndicoV2.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using IndicoV2.Abstractions.Submissions.Models;
+
+namespace IndicoV2.Abstractions.Submissions
+{
+    public interface ISubmissionsClient
+    {
+        Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] streams, CancellationToken cancellationToken = default);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default);
+        
+        Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
+        Task<ISubmission> GetAsync(int submissionId);
+        Task<IJob> GenerateSubmissionResult(int submissionId);
+    }
+}
