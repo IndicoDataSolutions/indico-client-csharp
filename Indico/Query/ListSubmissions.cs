@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Query
@@ -21,7 +22,7 @@ namespace Indico.Query
 
         public ListSubmissions(IndicoClient client) => this._client = client;
 
-        async public Task<List<Submission>> Exec()
+        async public Task<List<Submission>> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     query ListSubmissions(
@@ -61,7 +62,7 @@ namespace Indico.Query
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request);
+            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

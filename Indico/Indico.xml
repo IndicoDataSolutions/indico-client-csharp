@@ -375,13 +375,13 @@
             </summary>
             <value>Files</value>
         </member>
-        <member name="M:Indico.Query`1.Exec">
+        <member name="M:Indico.Query`1.Exec(System.Threading.CancellationToken)">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>
             <returns>result of query of type T</returns>
         </member>
-        <member name="M:Indico.Query.GetSubmission.Exec">
+        <member name="M:Indico.Query.GetSubmission.Exec(System.Threading.CancellationToken)">
             <summary>
             Queries the server and returns Submission
             </summary>
@@ -404,7 +404,7 @@
             </summary>
             <param name="graphQLHttpClient"></param>
         </member>
-        <member name="M:Indico.Query.ModelGroupQuery.Exec">
+        <member name="M:Indico.Query.ModelGroupQuery.Exec(System.Threading.CancellationToken)">
             <summary>
             Queries the server and returns ModelGroup
             </summary>
@@ -426,7 +426,7 @@
             </summary>
             <param name="client">Indico Client</param>
         </member>
-        <member name="M:Indico.Query.TrainingModelWithProgressQuery.Exec">
+        <member name="M:Indico.Query.TrainingModelWithProgressQuery.Exec(System.Threading.CancellationToken)">
             <summary>
             Query a Model Group for training % complete
             </summary>

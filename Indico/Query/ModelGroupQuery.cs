@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -37,7 +38,7 @@ namespace Indico.Query
         /// Queries the server and returns ModelGroup
         /// </summary>
         /// <returns>ModelGroup</returns>
-        async public Task<ModelGroup> Exec()
+        async public Task<ModelGroup> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     query ModelGroupQuery($modelGroupIds: [Int]!) {
@@ -65,7 +66,7 @@ namespace Indico.Query
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request);
+            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
