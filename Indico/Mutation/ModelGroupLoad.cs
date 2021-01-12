@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -40,7 +41,7 @@ namespace Indico.Mutation
         /// Executes request and returns load status  
         /// </summary>
         /// <returns>Load status</returns>
-        async public Task<string> Exec()
+        async public Task<string> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation LoadModel($model_id: Int!) {
@@ -60,7 +61,7 @@ namespace Indico.Mutation
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendMutationAsync(request);
+            GraphQLResponse response = await this._graphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

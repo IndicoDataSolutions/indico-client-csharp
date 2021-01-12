@@ -16,16 +16,16 @@ namespace Indico.Mutation
 
         public SubmissionResult(IndicoClient client) => this._client = client;
 
-        async public Task<Job> Exec()
+        public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             GetSubmission getSubmission = new GetSubmission(this._client)
             {
                 Id = this.SubmissionId
             };
-            Submission submission = await getSubmission.Exec();
+            Submission submission = await getSubmission.Exec(cancellationToken);
             while(!StatusCheck(submission.Status))
             {
-                submission = await getSubmission.Exec();
+                submission = await getSubmission.Exec(cancellationToken);
                 Thread.Sleep(1000);
             }
 

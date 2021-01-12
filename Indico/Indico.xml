@@ -240,7 +240,7 @@
             <returns>Job</returns>
             <param name="obj">Job</param>
         </member>
-        <member name="M:Indico.Mutation`1.Exec">
+        <member name="M:Indico.Mutation`1.Exec(System.Threading.CancellationToken)">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>
@@ -267,7 +267,7 @@
             <param name="client">IndicoClient client</param>
             </summary>
         </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.Exec">
+        <member name="M:Indico.Mutation.DocumentExtraction.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes OCR and returns Jobs
             <returns>List of Jobs</returns>
@@ -298,7 +298,7 @@
             <returns>ModelGroupLoad</returns>
             <param name="modelGroup">Model group.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.Exec">
+        <member name="M:Indico.Mutation.ModelGroupLoad.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes request and returns load status  
             </summary>
@@ -327,7 +327,7 @@
             <returns>ModelGroupPredict</returns>
             <param name="data">Data.</param>
         </member>
-        <member name="M:Indico.Mutation.ModelGroupPredict.Exec">
+        <member name="M:Indico.Mutation.ModelGroupPredict.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes request and returns job 
             </summary>
@@ -357,7 +357,7 @@
             </summary>
             <value>Files</value>
         </member>
-        <member name="M:Indico.Mutation.WorkflowSubmissionBase.Exec">
+        <member name="M:Indico.Mutation.WorkflowSubmissionBase.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes request and returns Job
             </summary>

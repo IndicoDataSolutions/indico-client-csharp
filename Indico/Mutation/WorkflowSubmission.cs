@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Mutation
@@ -23,9 +24,9 @@ namespace Indico.Mutation
 
         public WorkflowSubmission(IndicoClient client) : base(client) { }
 
-        public async Task<List<int>> Exec()
+        public async Task<List<int>> Exec(CancellationToken cancellationToken = default)
         {
-            JObject response = await base.Exec();
+            JObject response = await base.Exec(cancellationToken);
             JArray ids = (JArray)response.GetValue("submissionIds");
 
             List<int> submissionIds = new List<int>();
