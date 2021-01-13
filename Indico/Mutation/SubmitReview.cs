@@ -17,7 +17,7 @@ namespace Indico.Mutation
         public JObject Changes { get; set; }
         public bool Rejected { get; set; } = false;
         public bool? ForceComplete { get; set; }
-                
+
         public SubmitReview(IndicoClient client) => this._client = client;
 
         async public Task<Job> Exec()
@@ -43,10 +43,10 @@ namespace Indico.Mutation
                 vars.forceComplete = ForceComplete;
             }
 
-            string queryArgs = string.Join(", ", args.Select(pair => $"${pair.Key}: {pair.Value}"));
-            string autoReviewArgs = string.Join(", ", args.Select(pair => $"{pair.Key}: ${pair.Key}"));
+            var queryArgs = string.Join(", ", args.Select(pair => $"${pair.Key}: {pair.Value}"));
+            var autoReviewArgs = string.Join(", ", args.Select(pair => $"{pair.Key}: ${pair.Key}"));
 
-            string query = $@"
+            var query = $@"
                 mutation SubmitReview({queryArgs}) {{
                     submitAutoReview({autoReviewArgs}) {{
                         jobId
@@ -54,22 +54,22 @@ namespace Indico.Mutation
                 }}
             ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "SubmitReview",
                 Variables = vars
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             var submitAutoReview = response.Data.submitAutoReview;
-            string jobId = (string)submitAutoReview.jobId;
-            
+            var jobId = (string)submitAutoReview.jobId;
+
             return new Job(this._client.GraphQLHttpClient, jobId);
         }
     }
