@@ -9,40 +9,39 @@ using System.Threading.Tasks;
 
 namespace Indico.Storage
 {
-    class MultipartFormUpload : RestRequest<JArray>
+    internal class MultipartFormUpload : RestRequest<JArray>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public List<FileParameter> FileParameters { get; set; }
 
-        public MultipartFormUpload(IndicoClient client)
-        {
-            this._client = client;
-        }
+        public MultipartFormUpload(IndicoClient client) => _client = client;
 
         public async Task<JArray> Call()
         {
-            string uploadUrl = this._client.Config.GetAppBaseUrl() + "/storage/files/store";
-            HttpContent formData = await MultipartFormDataContent(this.FileParameters);
-            HttpClient client = this._client.HttpClient;
-            HttpResponseMessage responseMessage = await client.PostAsync(uploadUrl, formData);
+            string uploadUrl = _client.Config.GetAppBaseUrl() + "/storage/files/store";
+            var formData = await MultipartFormDataContent(FileParameters);
+            var client = _client.HttpClient;
+            var responseMessage = await client.PostAsync(uploadUrl, formData);
             string body = await responseMessage.Content.ReadAsStringAsync();
-            JArray uploadResult = JArray.Parse(body);
+            var uploadResult = JArray.Parse(body);
             return uploadResult;
         }
 
-        async Task<HttpContent> MultipartFormDataContent(List<FileParameter> parameters)
+        private async Task<HttpContent> MultipartFormDataContent(List<FileParameter> parameters)
         {
             Stream formDataStream = new MemoryStream();
-            Encoding encoding = Encoding.UTF8;
+            var encoding = Encoding.UTF8;
             bool needsCLRF = false;
             string boundary = string.Format("----------{0:N}", Guid.NewGuid());
             string contentType = "multipart/form-data; boundary=" + boundary;
 
-            foreach (FileParameter fileToUpload in parameters)
+            foreach (var fileToUpload in parameters)
             {
                 // Skip it on the first parameter, add it to subsequent parameters.
                 if (needsCLRF)
+                {
                     await formDataStream.WriteAsync(encoding.GetBytes("\r\n"), 0, encoding.GetByteCount("\r\n"));
+                }
 
                 needsCLRF = true;
 

@@ -8,20 +8,20 @@ namespace Indico.Storage
 {
     public class RetrieveBlob
     {
-        IndicoClient _client;
-        string _url;
+        private readonly IndicoClient _client;
+        private string _url;
         
         /// <summary>
         /// Get/Set the Blob Storage URL
         /// </summary>
         public string Url
         {
-            get => this._url;
+            get => _url;
             set {
                 string url = value.Replace("\"", "");
                 // Drop gzip
                 string path = new Uri(url).PathAndQuery;
-                this._url = this._client.Config.GetAppBaseUrl() + path;
+                _url = _client.Config.GetAppBaseUrl() + path;
             }
         }
 
@@ -29,10 +29,7 @@ namespace Indico.Storage
         /// RetrieveBlob Constructor
         /// </summary>
         /// <param name="client"></param>
-        public RetrieveBlob(IndicoClient client)
-        {
-            this._client = client;
-        }
+        public RetrieveBlob(IndicoClient client) => _client = client;
 
         /// <summary>
         /// Decompresses Gzip Stream
@@ -42,15 +39,15 @@ namespace Indico.Storage
         public async Task<string> GZipDecompress(Stream compressed)
         {
             string uncompressed;
-            GZipStream gis = new GZipStream(compressed, CompressionMode.Decompress);
-            StreamReader reader = new StreamReader(gis);
+            var gis = new GZipStream(compressed, CompressionMode.Decompress);
+            var reader = new StreamReader(gis);
             uncompressed = await reader.ReadToEndAsync();
             return uncompressed;
         }
 
-        async Task<HttpResponseMessage> Retrieve()
+        private async Task<HttpResponseMessage> Retrieve()
         {
-            HttpResponseMessage response = await this._client.HttpClient.GetAsync(this.Url);
+            var response = await _client.HttpClient.GetAsync(Url);
             if (response.IsSuccessStatusCode)
             {
                 return response;
@@ -65,11 +62,11 @@ namespace Indico.Storage
         /// Retrieve the blob and decompress if needed
         /// </summary>
         /// <returns>Stream</returns>
-        async Task<Stream> GetStream()
+        private async Task<Stream> GetStream()
         {
-            HttpResponseMessage httpResponseMessage = await this.Retrieve();
-            Stream data = await httpResponseMessage.Content.ReadAsStreamAsync();
-            if (this.Url.Contains(".gz"))
+            var httpResponseMessage = await Retrieve();
+            var data = await httpResponseMessage.Content.ReadAsStreamAsync();
+            if (Url.Contains(".gz"))
             {
                 return new GZipStream(data, CompressionMode.Decompress);
             }
@@ -83,9 +80,9 @@ namespace Indico.Storage
         /// Retrieves Blob
         /// </summary>
         /// <returns>Blob</returns>
-        async public Task<Blob> Exec()
+        public async Task<Blob> Exec()
         {
-            var stream = await this.GetStream();
+            var stream = await GetStream();
             return new Blob(stream);
         }
     }

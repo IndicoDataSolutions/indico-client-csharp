@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Indico.Mutation
 {
-    public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, Mutation<List<Submission>>
+    public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, IMutation<List<Submission>>
     {
         /// <summary>
         /// Workflow Id
@@ -28,11 +28,12 @@ namespace Indico.Mutation
 
         public async Task<List<Submission>> Exec()
         {
-            JObject response = await base.Exec();
-            JArray subs = (JArray)response.GetValue("submissions");
+            var response = await base.Exec();
+            var subs = (JArray)response.GetValue("submissions");
 
-            List<Submission> submissions = new List<Submission>();
-            foreach (JToken submission in subs)
+            var submissions = new List<Submission>();
+            foreach (var submission in subs)
+            {
                 submissions.Add(new Submission()
                 {
                     Id = submission.Value<int>("id"),
@@ -45,6 +46,7 @@ namespace Indico.Mutation
                     Retrieved = submission.Value<bool>("retrieved"),
                     Errors = submission.Value<string>("errors")
                 });
+            }
 
             return submissions;
         }

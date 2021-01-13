@@ -12,12 +12,13 @@ namespace Indico.Exception
         protected GraphQLException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-        static string SerializeGraphQLErrors(GraphQLError[] errors)
+
+        private static string SerializeGraphQLErrors(GraphQLError[] errors)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             int i = 0;
             builder.AppendLine();
-            foreach (GraphQLError err in errors)
+            foreach (var err in errors)
             {
                 builder.AppendLine($"{++i} : {err.Message}");
             }

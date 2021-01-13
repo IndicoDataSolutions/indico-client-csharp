@@ -38,30 +38,32 @@ namespace Indico
         {
             if (indicoConfig != null)
             {
-                this.Config = indicoConfig;
+                Config = indicoConfig;
             }
             else
             {
-                this.Config = new IndicoConfig();
+                Config = new IndicoConfig();
             }
 
-            HttpMessageHandler handler = this.GetHandler();
-            this.HttpClient = new HttpClient(handler);
-            string endpoint = $"{this.Config.Protocol}://{this.Config.Host}";
-            GraphQLHttpClientOptions options = new GraphQLHttpClientOptions();
-            options.EndPoint = new System.Uri($"{endpoint}/graph/api/graphql");
-            options.HttpMessageHandler = handler;
-            this.GraphQLHttpClient = this.HttpClient.AsGraphQLClient(options);
+            var handler = GetHandler();
+            HttpClient = new HttpClient(handler);
+            string endpoint = $"{Config.Protocol}://{Config.Host}";
+            var options = new GraphQLHttpClientOptions
+            {
+                EndPoint = new System.Uri($"{endpoint}/graph/api/graphql"),
+                HttpMessageHandler = handler
+            };
+            GraphQLHttpClient = HttpClient.AsGraphQLClient(options);
         }
 
-        HttpMessageHandler GetHandler()
+        private HttpMessageHandler GetHandler()
         {
-            HttpClientHandler innerHandler = new HttpClientHandler();
-            if (!this.Config.Verify)
+            var innerHandler = new HttpClientHandler();
+            if (!Config.Verify)
             {
                 innerHandler.ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;
             }
-            TokenHandler tokenHandler = new TokenHandler(this.Config.ApiToken, innerHandler);
+            var tokenHandler = new TokenHandler(Config.ApiToken, innerHandler);
             return tokenHandler;
         }
 
@@ -71,7 +73,7 @@ namespace Indico
         /// <returns>GraphQLRequest</returns>
         public GraphQLRequest GraphQLRequest(string query=null, string operationName=null)
         {
-            GraphQLRequest request = new GraphQLRequest(this.GraphQLHttpClient);
+            var request = new GraphQLRequest(GraphQLHttpClient);
             if (query != null)
             {
                 request.Query = query;
@@ -90,7 +92,7 @@ namespace Indico
         /// <returns>ModelGroupQuery</returns>
         public ModelGroupQuery ModelGroupQuery(int mgId=-1)
         {
-            ModelGroupQuery mgQuery = new ModelGroupQuery(this.GraphQLHttpClient);
+            var mgQuery = new ModelGroupQuery(GraphQLHttpClient);
             if (mgId != -1)
             {
                 mgQuery.MgId = mgId;
@@ -104,7 +106,7 @@ namespace Indico
         /// <returns>TrainingModelWithProgressQuery</returns>
         public TrainingModelWithProgressQuery TrainingModelWithProgressQuery(ModelGroup mg=null)
         {
-            TrainingModelWithProgressQuery mgTraining = new TrainingModelWithProgressQuery(this);
+            var mgTraining = new TrainingModelWithProgressQuery(this);
             if (mg != null)
             {
                 mgTraining.ModelId = mg.Id;
@@ -116,10 +118,7 @@ namespace Indico
         /// Create a new mutation to submit documents to process by a workflow
         /// </summary>
         /// <returns>WorkflowSubmission</returns>
-        public WorkflowSubmission WorkflowSubmission()
-        {
-            return new WorkflowSubmission(this);
-        }
+        public WorkflowSubmission WorkflowSubmission() => new WorkflowSubmission(this);
 
         /// <summary>
         /// Create a new request to load a ModelGroup.
@@ -127,7 +126,7 @@ namespace Indico
         /// <returns>ModelGroupLoad</returns>
         public ModelGroupLoad ModelGroupLoad(ModelGroup mg=null)
         {
-            ModelGroupLoad mgLoad = new ModelGroupLoad(this.GraphQLHttpClient);
+            var mgLoad = new ModelGroupLoad(GraphQLHttpClient);
             if (mg != null)
             {
                 mgLoad.ModelId = mg.SelectedModel.Id;
@@ -141,7 +140,7 @@ namespace Indico
         /// <returns>ModelGroupPredict</returns>
         public ModelGroupPredict ModelGroupPredict(ModelGroup mg=null)
         {
-            ModelGroupPredict mgPredict = new ModelGroupPredict(this.GraphQLHttpClient);
+            var mgPredict = new ModelGroupPredict(GraphQLHttpClient);
             if (mg != null)
             {
                 mgPredict.ModelId = mg.SelectedModel.Id;
@@ -156,7 +155,7 @@ namespace Indico
         /// <returns>DocumentExtraction</returns>
         public DocumentExtraction DocumentExtraction(JObject jsonConfig=null)
         {
-            DocumentExtraction ocr = new DocumentExtraction(this);
+            var ocr = new DocumentExtraction(this);
             if (jsonConfig != null)
             {
                 ocr.JsonConfig = jsonConfig;
@@ -168,10 +167,7 @@ namespace Indico
         /// Create a query to retrieve async job info
         /// </summary>
         /// <returns>JobQuery</returns>
-        public JobQuery JobQuery()
-        {
-            return new JobQuery(this.GraphQLHttpClient);
-        }
+        public JobQuery JobQuery() => new JobQuery(GraphQLHttpClient);
 
         /// <summary>
         /// Retrieve a blob from indico blob storage
@@ -180,7 +176,7 @@ namespace Indico
         /// <returns>RetrieveBlob</returns>
         public RetrieveBlob RetrieveBlob(string url=null)
         {
-            RetrieveBlob blob = new RetrieveBlob(this);
+            var blob = new RetrieveBlob(this);
             if (url != null)
             {
                 blob.Url = url;
@@ -192,9 +188,6 @@ namespace Indico
         /// Upload files
         /// </summary>
         /// <returns>UploadFile</returns>
-        public UploadFile UploadFile()
-        {
-            return new UploadFile(this);
-        }
+        public UploadFile UploadFile() => new UploadFile(this);
     }
 }

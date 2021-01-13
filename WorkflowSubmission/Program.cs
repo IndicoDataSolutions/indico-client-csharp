@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    class SubmitWorkflows
+    internal class SubmitWorkflows
     {
-        async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            IndicoConfig config = new IndicoConfig(
+            var config = new IndicoConfig(
                 host: "app.indico.io"
             );
 
-            IndicoClient client = new IndicoClient(config);
+            var client = new IndicoClient(config);
 
             // List Workflows for Dataset 1707
-            ListWorkflows listWorkflows = new ListWorkflows(client)
+            var listWorkflows = new ListWorkflows(client)
             {
                 DatasetIds = new List<int>() { 1707 }
             };
-            List<Workflow> workflows = await listWorkflows.Exec();
+            var workflows = await listWorkflows.Exec();
 
             // Select Workflow
-            Workflow workflow = workflows[0];
+            var workflow = workflows[0];
 
-            WorkflowSubmission workflowSubmission = new WorkflowSubmission(client)
+            var workflowSubmission = new WorkflowSubmission(client)
             {
                 WorkflowId = workflow.Id,
                 // Submit files to Workflow
@@ -38,22 +38,22 @@ namespace Examples
                 Streams = null // Stream List
             };
 
-            List<int> submissionIds = await workflowSubmission.Exec();
+            var submissionIds = await workflowSubmission.Exec();
 
             // Select Submission
             int submissionId = submissionIds[0];
 
-            SubmissionResult submissionResult = new SubmissionResult(client)
+            var submissionResult = new SubmissionResult(client)
             {
                 SubmissionId = submissionId
             };
 
-            Job job = await submissionResult.Exec();
+            var job = await submissionResult.Exec();
 
             // Get Submission result
-            JObject result = await job.Result();
+            var result = await job.Result();
             // Or results
-            JArray results = await job.Results();
+            var results = await job.Results();
         }
     }
 }
