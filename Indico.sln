@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetPredictions", "GetPredic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcrPredict", "OcrPredict\OcrPredict.csproj", "{31682601-4777-44AC-8668-DE009F70C131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubmitWorkflows", "WorkflowSubmission\SubmitWorkflows.csproj", "{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubmitWorkflows", "WorkflowSubmission\SubmitWorkflows.csproj", "{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E0AB63FE-E9CD-4EDD-848F-87AB335BAF0A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
