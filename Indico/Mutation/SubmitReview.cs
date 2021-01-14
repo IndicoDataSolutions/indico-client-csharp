@@ -34,7 +34,7 @@ namespace Indico.Mutation
 
             dynamic vars = new ExpandoObject();
             vars.submissionId = SubmissionId;
-            vars.changes = Changes.ToString();
+            vars.changes = Changes?.ToString();
             vars.rejected = Rejected;
 
             if (ForceComplete != null)
