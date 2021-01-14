@@ -23,4 +23,14 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=lcov
+    - name: Copy test coverage file
+      uses: canastro/copy-file-action@master
+      with:
+        source: "coverage/*/coverage.info"
+        target: "coverage/lcov.info"
+    - name: Post code coverage report
+      uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: ./coverage/lcov.info
