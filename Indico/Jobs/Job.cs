@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -124,7 +123,7 @@ namespace Indico.Jobs
         {
             while (await this.Status() == JobStatus.PENDING)
             {
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
             string result = await this.FetchResult();
             JObject json = JsonConvert.DeserializeObject<JObject>(result);
@@ -139,7 +138,7 @@ namespace Indico.Jobs
         {
             while (await this.Status() == JobStatus.PENDING)
             {
-               Thread.Sleep(1000);
+               await Task.Delay(1000);
             }
             string result = await this.FetchResult();
             JArray json = JsonConvert.DeserializeObject<JArray>(result);
