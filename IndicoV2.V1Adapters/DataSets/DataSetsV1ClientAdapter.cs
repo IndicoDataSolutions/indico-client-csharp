@@ -20,7 +20,7 @@ namespace IndicoV2.V1Adapters.DataSets
         }
         
 
-        public async Task<IEnumerable<DataSet>> ListAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default)
         {
             string query = @"
               query GetDatasets {

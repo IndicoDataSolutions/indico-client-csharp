@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.DataSets.Models
 {
-    class V1DataSetAdapter : DataSet
+    class V1DataSetAdapter : IDataSet
     {
         private readonly JToken _jToken;
 
@@ -12,6 +12,6 @@ namespace IndicoV2.V1Adapters.DataSets.Models
             _jToken = jToken;
         }
 
-        public override int Id => _jToken.Value<int>("id");
+        public int Id => _jToken.Value<int>("id");
     }
 }

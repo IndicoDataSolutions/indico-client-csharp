@@ -7,6 +7,6 @@ namespace IndicoV2.Abstractions.DataSets
 {
     public interface IDataSetClient
     {
-        Task<IEnumerable<DataSet>> ListAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default);
     }
 }
