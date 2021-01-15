@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Indico;
 using Indico.Mutation;
 using Indico.Query;
-using IndicoV2.Abstractions.Submissions;
-using IndicoV2.Abstractions.Submissions.Models;
+using IndicoV2.Submissions;
+using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Submissions.Models;
 
 namespace IndicoV2.V1Adapters.Submissions

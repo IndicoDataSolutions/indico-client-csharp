@@ -10,7 +10,8 @@ namespace Examples
     {
         static async Task Main()
         {
-            var client = new IndicoClient(new Uri("https://app.indico.io"));
+            // null token will be replaced with an actual token by V1 config mechanism
+            var client = new IndicoClient(new Uri("https://app.indico.io"), null);
 
             var dataSets = await client.DataSets().ListAsync();
 

@@ -1,4 +1,4 @@
-﻿using IndicoV2.Abstractions.Submissions.Models;
+﻿using IndicoV2.Submissions.Models;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {

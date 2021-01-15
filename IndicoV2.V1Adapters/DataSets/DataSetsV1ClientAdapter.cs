@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Indico;
-using IndicoV2.Abstractions.DataSets;
-using IndicoV2.Abstractions.DataSets.Models;
+using IndicoV2.DataSets;
+using IndicoV2.DataSets.Models;
 using IndicoV2.V1Adapters.DataSets.Models;
 using Newtonsoft.Json.Linq;
 

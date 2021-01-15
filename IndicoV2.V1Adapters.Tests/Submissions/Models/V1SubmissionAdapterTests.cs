@@ -5,18 +5,18 @@ using Indico.Entity;
 using IndicoV2.V1Adapters.Submissions.Models;
 using NUnit.Framework;
 using V1Status = Indico.Types.SubmissionStatus;
-using V2Status = IndicoV2.Abstractions.Submissions.Models.SubmissionStatus;
+using V2Status = IndicoV2.Submissions.Models.SubmissionStatus;
 
 namespace IndicoV2.V1Adapters.Tests.Submissions.Models
 {
     public class V1SubmissionAdapterTests
     {
-        private static object[][] Status_ShouldCorrectlyMapV1Status_TestCaseSources = Enum.GetValues(typeof(V1Status))
+        private static object[][] _v1StatusToV2StatusMap = Enum.GetValues(typeof(V1Status))
             .OfType<V1Status>()
             .Select(s => new object[] {s, Enum.Parse<V2Status>(s.ToString())})
             .ToArray();
 
-        [TestCaseSource(nameof(Status_ShouldCorrectlyMapV1Status_TestCaseSources))]
+        [TestCaseSource(nameof(_v1StatusToV2StatusMap))]
         public void Status_ShouldCorrectlyMapV1Status(V1Status v1Status, V2Status expectedV2Status)
         {
             // Arrange

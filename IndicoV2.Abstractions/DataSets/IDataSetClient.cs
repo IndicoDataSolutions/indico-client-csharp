@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using IndicoV2.Abstractions.DataSets.Models;
+using IndicoV2.DataSets.Models;
 
-namespace IndicoV2.Abstractions.DataSets
+namespace IndicoV2.DataSets
 {
     public interface IDataSetClient
     {

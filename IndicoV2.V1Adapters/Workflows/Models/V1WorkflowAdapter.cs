@@ -1,8 +1,8 @@
-﻿using IndicoV2.Abstractions.Workflows.Models;
+﻿using IndicoV2.Workflows.Models;
 
 namespace IndicoV2.V1Adapters.Workflows.Models
 {
-    public class V1WorkflowAdapter : Workflow
+    public class V1WorkflowAdapter : IWorkflow
     {
         private readonly Indico.Entity.Workflow _workflowV1;
 
@@ -11,6 +11,6 @@ namespace IndicoV2.V1Adapters.Workflows.Models
             _workflowV1 = workflowV1;
         }
 
-        public override int Id => _workflowV1.Id;
+        public int Id => _workflowV1.Id;
     }
 }

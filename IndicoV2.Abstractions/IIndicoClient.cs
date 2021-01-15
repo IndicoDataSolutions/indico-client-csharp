@@ -1,4 +1,4 @@
-﻿namespace IndicoV2.Abstractions
+﻿namespace IndicoV2
 {
     public interface IIndicoClient
     {

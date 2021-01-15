@@ -1,7 +1,8 @@
-﻿namespace IndicoV2.Abstractions.Submissions.Models
+﻿namespace IndicoV2.Submissions.Models
 {
     public interface ISubmission
     {
+        int Id { get; }
         SubmissionStatus Status { get; }
     }
 }

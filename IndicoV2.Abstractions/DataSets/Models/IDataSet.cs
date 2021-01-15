@@ -1,4 +1,4 @@
-﻿namespace IndicoV2.Abstractions.DataSets.Models
+﻿namespace IndicoV2.DataSets.Models
 {
     public interface IDataSet
     {

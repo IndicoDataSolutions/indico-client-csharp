@@ -1,4 +1,4 @@
-﻿using IndicoV2.Abstractions.DataSets.Models;
+﻿using IndicoV2.DataSets.Models;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.DataSets.Models

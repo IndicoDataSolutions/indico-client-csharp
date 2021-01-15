@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using IndicoV2.Abstractions.Submissions.Models;
+using IndicoV2.Submissions.Models;
 
-namespace IndicoV2.Abstractions.Submissions
+namespace IndicoV2.Submissions
 {
     public interface ISubmissionsClient
     {

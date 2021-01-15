@@ -1,5 +1,5 @@
-﻿using IndicoV2.Abstractions.Workflows;
-using IndicoV2.V1Adapters.Workflows;
+﻿using IndicoV2.V1Adapters.Workflows;
+using IndicoV2.Workflows;
 
 namespace IndicoV2
 {

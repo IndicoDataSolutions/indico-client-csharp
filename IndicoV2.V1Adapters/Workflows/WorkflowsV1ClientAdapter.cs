@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Indico;
 using Indico.Query;
-using IndicoV2.Abstractions.Workflows;
-using IndicoV2.Abstractions.Workflows.Models;
 using IndicoV2.V1Adapters.Workflows.Models;
+using IndicoV2.Workflows;
+using IndicoV2.Workflows.Models;
 
 namespace IndicoV2.V1Adapters.Workflows
 {
@@ -19,10 +19,10 @@ namespace IndicoV2.V1Adapters.Workflows
             _indicoClientLegacy = indicoClientLegacy;
         }
 
-        public Task<IEnumerable<Workflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default) =>
+        public Task<IEnumerable<IWorkflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default) =>
             ListAsync(new[] {dataSetId}, cancellationToken);
 
-        public async Task<IEnumerable<Workflow>> ListAsync(int[] datasetIds, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IWorkflow>> ListAsync(int[] datasetIds, CancellationToken cancellationToken = default)
         {
             var workflows = await new ListWorkflows(_indicoClientLegacy)
             {

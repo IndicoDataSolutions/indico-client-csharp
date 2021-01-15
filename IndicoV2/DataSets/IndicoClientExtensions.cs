@@ -1,4 +1,4 @@
-﻿using IndicoV2.Abstractions.DataSets;
+﻿using IndicoV2.DataSets;
 using IndicoV2.V1Adapters.DataSets;
 
 namespace IndicoV2
