@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Abstractions.Submissions;
 using IndicoV2.Abstractions.Submissions.Models;
@@ -14,22 +15,26 @@ namespace IndicoV2.Submissions.LongRunning
             _submissionsClient = submissionsClient;
         }
 
-        public async Task<IJob> WaitReady(int submissionId, TimeSpan checkInterval, TimeSpan timeout)
+        public async Task<IJob> WaitReady(int submissionId, TimeSpan checkInterval, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            var stopTime = DateTime.Now + timeout;
+            var stopTime = GetStopTime(timeout);
+
             do
             {
-                var submission = await _submissionsClient.GetAsync(submissionId);
+                var submission = await _submissionsClient.GetAsync(submissionId, cancellationToken);
 
                 if (submission.Status != SubmissionStatus.PROCESSING)
                 {
-                    return await _submissionsClient.GenerateSubmissionResult(submissionId);
+                    return await _submissionsClient.GenerateSubmissionResult(submissionId, cancellationToken);
                 }
 
-                await Task.Delay(checkInterval);
+                await Task.Delay(checkInterval, cancellationToken);
             } while (DateTime.Now < stopTime);
 
             throw new TimeoutException($"Timeout exceeded ({timeout}).");
         }
+
+        private DateTime GetStopTime(TimeSpan timeout) =>
+            timeout == TimeSpan.MaxValue ? DateTime.MaxValue : DateTime.Now + timeout;
     }
 }

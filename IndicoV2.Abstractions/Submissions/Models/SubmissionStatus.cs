@@ -4,5 +4,8 @@
     {
         PROCESSING,
         FAILED,
+        COMPLETE,
+        PENDING_ADMIN_REVIEW,
+        PENDING_REVIEW,
     }
 }

@@ -19,6 +19,10 @@ namespace IndicoV2.V1Adapters.Submissions.Models
                 {
                     case Indico.Types.SubmissionStatus.PROCESSING: return SubmissionStatus.PROCESSING;
                     case Indico.Types.SubmissionStatus.FAILED: return SubmissionStatus.FAILED;
+                    case Indico.Types.SubmissionStatus.COMPLETE: return SubmissionStatus.COMPLETE;
+                    case Indico.Types.SubmissionStatus.PENDING_ADMIN_REVIEW: return SubmissionStatus.PENDING_ADMIN_REVIEW;
+                    case Indico.Types.SubmissionStatus.PENDING_REVIEW: return SubmissionStatus.PENDING_REVIEW;
+
                     default: throw new NotImplementedException();
                 }
             }

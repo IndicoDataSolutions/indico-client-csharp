@@ -36,7 +36,7 @@ namespace IndicoV2.V1Adapters.Submissions
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) {WorkflowId = workflowId, Files = paths.ToList()};
             var submissionIds = await submissionMutation.Exec();
@@ -44,13 +44,13 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<ISubmission> GetAsync(int submissionId)
+        public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
         {
             var submission = await new GetSubmission(_indicoClient) {Id = submissionId}.Exec();
             return new V1SubmissionAdapter(submission);
         }
 
-        public async Task<IJob> GenerateSubmissionResult(int submissionId)
+        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken)
         {
             var job = await new GenerateSubmissionResult(_indicoClient) {SubmissionId = submissionId}.Exec();
 
