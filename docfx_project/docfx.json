@@ -20,6 +20,11 @@
   "build": {
     "content": [
       {
+        "src": "../",
+        "files": "README.md",
+        "dest": "api"
+      },
+      {
         "files": [
           "api/**.yml",
           "api/index.md"
