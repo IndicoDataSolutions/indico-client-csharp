@@ -1,0 +1,22 @@
+#!/bin/bash
+FILES_STAGED=`git diff --name-only --cached | wc -l`
+
+if [[ $FILES_STAGED -le 0 ]]
+then
+	exit
+fi
+
+echo "GENERATING DOCFX DOCUMENTATION"
+DOCFX="$HOME/.nuget/packages/docfx.console/2.56.6/tools/docfx.exe"
+DOCFX_ROOT="./docfx_project"
+DOCFX_CONF="$DOCFX_ROOT/docfx.json"
+SITE="docs"
+
+if [[ ! -f $DOCFX ]]
+then
+	echo "Cannot find docfx.exe ($DOCFX)."
+	exit
+fi
+
+$DOCFX "$DOCFX_CONF" --build > /dev/null
+git add $SITE/** -f
