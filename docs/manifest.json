@@ -1,0 +1,750 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/r/indico/indico-client-csharp/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "../README.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/README.html",
+          "hash": "/RejKoQLJ7XKR+MvS4MM7w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.Filter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.Filter.html",
+          "hash": "lRETVxS+sNq4VNK9WQxcDQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.Model.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.Model.html",
+          "hash": "Gqo3GcC+9EUbu0O0cv5Zsw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.ModelGroup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.ModelGroup.html",
+          "hash": "4G2u39JYOIog80CgBZbzjA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.Submission.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.Submission.html",
+          "hash": "1i4HcFeao5G2CTYU6kb7hQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.SubmissionFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.SubmissionFilter.html",
+          "hash": "CxPwjwDYyTsuRlGik4ZW2g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.TrainingProgress.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.TrainingProgress.html",
+          "hash": "c9L1ZW8zmU2HMjw9DwXbzQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.Workflow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.Workflow.html",
+          "hash": "uTBQhOMT5x7JY3wZBssorQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Entity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Entity.html",
+          "hash": "+lwIEPkTd7Tut1TR3a3Gyg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Exception.FileUploadException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Exception.FileUploadException.html",
+          "hash": "AvE3kBQ2GbaEckhtYeqe/w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Exception.GraphQLException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Exception.GraphQLException.html",
+          "hash": "1+lAb1GXFlxCYK23Wy4azg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Exception.InputException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Exception.InputException.html",
+          "hash": "bTcp8VFXu4dsf5lnNrWmeQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Exception.RuntimeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Exception.RuntimeException.html",
+          "hash": "UawCjewhmenlpg0hNU2xIg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Exception.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Exception.html",
+          "hash": "Jiaqcxxhavfs94KuLQq2+Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.IndicoClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.IndicoClient.html",
+          "hash": "0ltHsy6fIN3ojG4MJWICag=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.IndicoConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.IndicoConfig.html",
+          "hash": "qpZTTLYNG5JlHGOKz8z1gA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Jobs.Job.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Jobs.Job.html",
+          "hash": "5MB9FYk3GQrDUXIAhK3UlA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Jobs.JobQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Jobs.JobQuery.html",
+          "hash": "ZTIuCUFSF3thptoJMchhvQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Jobs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Jobs.html",
+          "hash": "xKPxHwdiQEvq67isi94xTw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.DocumentExtraction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.DocumentExtraction.html",
+          "hash": "zgc5O9YlmwO1pGzpMYV3ig=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.GenerateSubmissionResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.GenerateSubmissionResult.html",
+          "hash": "dSREEtXW5vGZ/naUgEwxJQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.ModelGroupLoad.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.ModelGroupLoad.html",
+          "hash": "WLMwb7ZDnQaje9sp9yCIiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.ModelGroupPredict.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.ModelGroupPredict.html",
+          "hash": "RtehasDMMHB3B718TvIGrQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.SubmissionResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.SubmissionResult.html",
+          "hash": "NgBtTrt5IJ80Sp5ZPkvF0w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.UpdateSubmission.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.UpdateSubmission.html",
+          "hash": "+08w7BRDAmd9vA7dbsDKOA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.WorkflowSubmission.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.WorkflowSubmission.html",
+          "hash": "5XdSFKybD3QvDki9iJzCHQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.WorkflowSubmissionBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.WorkflowSubmissionBase.html",
+          "hash": "fb52GZI2bEOWkwUz0LCUzg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.WorkflowSubmissionDetailed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.WorkflowSubmissionDetailed.html",
+          "hash": "BvvQQkV1JvfkGdXhvalZHA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Mutation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Mutation.html",
+          "hash": "Px8p58Wk+toPqNxUBQ6UVg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.GetSubmission.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.GetSubmission.html",
+          "hash": "NviQNNKJ6SwsAvkCqUTdQA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.GetWorkflow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.GetWorkflow.html",
+          "hash": "PSXwuJkNlg1to8QjQyomAQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.ListSubmissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.ListSubmissions.html",
+          "hash": "RnOgnAfPFnhLHXyA6zThPA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.ListWorkflows.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.ListWorkflows.html",
+          "hash": "M/tsdW9owMWeUB/uRwfiIQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.ModelGroupQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.ModelGroupQuery.html",
+          "hash": "LBcU2hcK1COcx0LgmhUzhw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.TrainingModelWithProgressQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.TrainingModelWithProgressQuery.html",
+          "hash": "BJJhacAfn2OBdwLQ+FYByQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Query.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Query.html",
+          "hash": "9+EKxljoC6IVWVUmRsff5g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Request.GraphQLRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Request.GraphQLRequest.html",
+          "hash": "0okWDjPxwrrbwMxocWx+2w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Request.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Request.html",
+          "hash": "tWr1u6K/mSswNXyyufcrkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Storage.Blob.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Storage.Blob.html",
+          "hash": "O9ughyR2Lr8U48pZZ014YA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Storage.RetrieveBlob.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Storage.RetrieveBlob.html",
+          "hash": "sIIVgagJtG0qpLM1jeqtLA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Storage.UploadFile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Storage.UploadFile.html",
+          "hash": "fnXEimAWAS+HLMP/6SITmQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Storage.UploadStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Storage.UploadStream.html",
+          "hash": "1j+LDTRjk+MG8IeSvFBYfg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Storage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Storage.html",
+          "hash": "ftfGp6ed3C1ahsE6eJrYjA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Mutation.JobTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Mutation.JobTest.html",
+          "hash": "zFyXeSR/UF7oEiJ9qMsUrw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Mutation.ModelGroupPredictTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Mutation.ModelGroupPredictTest.html",
+          "hash": "U79KcYanU9+e4gkROhTRVg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Mutation.ModelGroupQueryTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Mutation.ModelGroupQueryTest.html",
+          "hash": "IKVjNmcSJkI7aIvB/9myDQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Mutation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Mutation.html",
+          "hash": "coitSqYYTaEvq0IiFwp0Tw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Query.ModelGroupQueryTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Query.ModelGroupQueryTest.html",
+          "hash": "z4ohVTJXWgiyz3FVWYiqXw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Tests.Query.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Tests.Query.html",
+          "hash": "xcA/fTdNag6IxXEUHt0bvQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Types.JobStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Types.JobStatus.html",
+          "hash": "wTL7/9/SK11cWFMe51QgeQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Types.ModelStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Types.ModelStatus.html",
+          "hash": "cEDHt6lQb7ZCsMJjHcADcQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Types.PurgeBlobStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Types.PurgeBlobStatus.html",
+          "hash": "+oS2ET47mh01mcDeDP4TAA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Types.SubmissionStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Types.SubmissionStatus.html",
+          "hash": "EyyRczQrk4U3MO6pKkCzJg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.Types.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.Types.html",
+          "hash": "nmEVPjOK/sXFZup+0DrGbg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Indico.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Indico.html",
+          "hash": "GFf3Jod7Ans8Yf/UH2xMWw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "jBC0OFai+1ojAnASKQSTEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "ubZd2RCsYz3S2d4a6QOAeA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "vGWCxav3ORijRwQDVlZp8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 2,
+          "skipped_file_count": 2
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 54,
+          "skipped_file_count": 54
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

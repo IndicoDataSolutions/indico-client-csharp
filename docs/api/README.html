@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>indico-client-csharp </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="indico-client-csharp ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="indico-client-csharp">indico-client-csharp</h1>
+
+<h2 id="installation">Installation</h2>
+<p>Install the indico-client-csharp package via the NuGet package manager GUI or command line.</p>
+<pre><code>PM&gt; Install-Package indico-client
+</code></pre>
+<h2 id="authentication">Authentication</h2>
+<p>The Indico Platform and Client Libraries use JSON Web Tokens (JWT) for user authentication. You can download a token
+from your <a href="https://app.indico.io/auth/account">user dashboard</a> by clicking the large, blue “Download new API Token” button.
+Most browsers will download the API token as indico_api_token.txt and place it in your Downloads directory. You should move
+the token file from Downloads to either your user profile <code>(C:\Users\my-user)</code> or another location in your development
+environment. The C# Client Library will look in your user profile directory by default.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="indicoconfig-class">IndicoConfig Class</h3>
+<p>The IndicoConfig class gives you the maximum control over C# Client Library configuration. Here’s how you might instantiate
+an IndicoConfig object and set the host:</p>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+</code></pre>
+<p>You will most often provide a <code>host</code> argument to IndicoConfig. The class constructor also accepts tokenPath (path to a token file),
+apiToken (the actual token string) and protocol (https).</p>
+<h2 id="api-client">API Client</h2>
+<p>The Indico Platform uses GraphQL to communicate with ALL clients including the company’s own web application and also the
+Indico Python Client. You’ll use an IndicoClient object to pass GraphQL queries to the Indico Platform. Here’s a simple way
+to create a client:</p>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+
+IndicoClient indico = new IndicoClient(config);
+</code></pre>
+<p>The default config for IndicoClient sets the host to <code>app.indico.io</code> and will look for the Token File in your user profile directory.</p>
+<p>If you want to learn more about GraphQL, the <a href="https://www.howtographql.com/">How to GraphQL</a> tutorial is a great place to start.</p>
+<h2 id="indico-graphql-schema">Indico GraphQL Schema</h2>
+<p>The Indico Platform ships with a built-in sandbox environment that both documents and allows you to interactively explore
+the Platform’s GraphQL schema. You can find the sandbox at <code>/graph/api/graphql</code> on your Indico Platform installation. If your
+Platform’s host is <code>indico.my_company.com</code> then the full sandbox URL would be <code>https://indico.my_company.com/graph/api/graphql</code>.</p>
+<h2 id="pre-built-graphql-queries">Pre-Built GraphQL Queries</h2>
+<p>GraphQL is extremely powerful, flexible and efficient but can be a bit verbose. To make things easier for day-to-day use of the
+Platform and Client Library, the developers at Indico created a collection of Python Classes to generate the most often used
+queries for you. You can find the collection documented in the Reference section of the Client Libreary Docs.</p>
+<h2 id="examples">Examples</h2>
+<p>Several examples are provided in this repo:</p>
+<p><strong>GraphqlCall</strong> - Place a GraphQL call to list your datasets
+<strong>SingleDocExtraction</strong> - OCR a single PDF file (a sample PDF is provided)
+<strong>GetPredictions</strong> - Get predictions from a simple classifier. A CSV is provided for you to train the classifier via the Indico App.
+<strong>GetModelTrainingProgress</strong> - Get % complete progress on a training model.
+<strong>OcrPredict</strong> - Pass a directory of files through DocumentExtraction then pass the text to a model for predictions.</p>
+<p>The examples are setup as console apps in the repo's Visual Studio project.</p>
+<h2 id="example-snippets">Example Snippets</h2>
+<h4 id="create-a-client">Create a Client</h4>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+IndicoClient indico = new IndicoClient(config);
+</code></pre>
+<h4 id="get-a-model-group">Get a Model Group</h4>
+<p>Note that the model group ID is found on the model's Review page in the Indico App.</p>
+<pre><code>ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+</code></pre>
+<h4 id="load-a-model">Load a Model</h4>
+<pre><code>// Note that you're passing in a ModelGroup object returned from ModelGroupQuery.
+// You get the ModelGroup object through a query and pass the the Model Group ID
+
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+String status = await client.ModelGroupLoad(mg).Exec();
+</code></pre>
+<h4 id="get-model-predictions">Get Model Predictions</h4>
+<pre><code>// Again, passing in a ModelGroup object. Also passing in a List of the text to predict.
+// It's always much more efficient to pass in a list to predict. A List of 3 or 3,000 samples
+// to predict is fine.
+
+ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+Job job = await client.ModelGroupPredict(mg).Data(texts).Exec();
+
+// Retrieve the predictions as a JArray
+
+JArray jobResult = await job.Results();
+</code></pre>
+<h4 id="ocr-documents">OCR Documents.</h4>
+<p>DocumentExtraction is extremely configurable. Five pre-set configurations are provided: <code>standard</code>, <code>legacy</code>, <code>simple</code>, <code>detailed</code> and <code>ondocument</code>.</p>
+<p>Most users will only need to use “standard” to get both document and page-level text and block positions in a nested
+response format (returned object is a nested dictionary).</p>
+<p>The “simple” configuration provides a basic and fast (3-5x faster) OCR option for native PDFs- i.e. it will not work
+with scanned documents. Returns document, page, and block-level text and the returned object is a nested dictionary.</p>
+<p>The “legacy” configuration is principally intended for users who ran Indico’s original pdf_extraction function to
+extract text and train models. Use “legacy” if you are adding samples to models that were trained with data using
+the original pdf_extraction. It returns a dictionary containing only the extracted text at the document-level.</p>
+<p>The “detailed” configuration provides OCR metrics and details down to the character level- it’s a lot of data. In
+addition to document, page, and block-level text, it provides information on the text font/size, confidence level
+for extracted characters, alternative characters (i.e. second most probable character), character position information,
+and more. It returns a nested dictionary.</p>
+<p>“ondocument” provides similar information to “detailed” but does not include text/metadata at the document-level. It
+returns a list of dictionaries where each dictionary is page data.</p>
+<p>If the pre-set configurations don't suit your use case then you can create custom DocumentExtraction configurations.
+All of the available configuration options are described <a href="https://indicodatasolutions.github.io/indico-client-python/docextract_settings.html">here</a>.</p>
+<pre><code>JObject extractConfig = new JObject()
+{
+   { &quot;preset_config&quot;, &quot;standard&quot; }
+};
+
+// OCR a Single File
+
+DocumentExtraction ocr = client.DocumentExtraction(extractConfig);
+Job job = await ocr.Exec(args[0]);
+
+// OCR a List of files - Currently, no real benefit to doing this.
+
+List&lt;Job&gt; jobs = await indico.DocumentExtraction(extractConfig)
+                       .Files(List&lt;string&gt;)                       
+                       .Exec();
+</code></pre>
+<h4 id="fetch-a-documentextraction-result-from-storage">Fetch a DocumentExtraction Result From Storage</h4>
+<pre><code>JObject obj = await job.Result();
+string url = (string)obj.GetValue(&quot;url&quot;);
+Blob blob = await client.RetrieveBlob(url).Exec();
+Console.WriteLine(blob.AsJSONObject());
+</code></pre>
+<h4 id="get-training-model-with-progress">Get Training Model With Progress</h4>
+<pre><code>ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
+JArray trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
+            
+Console.WriteLine(mg.Name);
+Console.WriteLine(trainingStatus);                     
+</code></pre>
+<h4 id="send-a-graphql-query">Send a GraphQL Query</h4>
+<p>As noted above, the Indico Platform presents a GrapQL interface. In addition
+to using this Client Library, you can also send GraphQL queries to the Platform.
+Here's a snippet to list all of the Datasets in your Indico account.</p>
+<pre><code>string query = @&quot;
+    query GetDatasets {
+        datasets {
+            id
+            name
+            status
+            rowCount
+            numModelGroups
+            modelGroups {
+                id
+            }
+        }
+      }
+    &quot;;
+
+    GraphQLRequest request = client.GraphQLRequest(query, &quot;GetDatasets&quot;);            
+    JObject response = await request.Call();
+    Console.WriteLine(response);
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/IndicoDataSolutions/indico-client-csharp/blob/vd/INT-35-documentation/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
