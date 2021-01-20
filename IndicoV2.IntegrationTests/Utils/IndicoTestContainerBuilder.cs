@@ -12,7 +12,7 @@ namespace IndicoV2.IntegrationTests.Utils
 {
     internal class IndicoTestContainerBuilder
     {
-        private string BaseUrl => Environment.GetEnvironmentVariable("INDICO_HOST") ?? "https://app.indico.io";
+        private string BaseUrl => Environment.GetEnvironmentVariable("INDICO_HOST");
         private string ApiToken => Environment.GetEnvironmentVariable("INDICO_TOKEN");
 
         public IUnityContainer Build()
