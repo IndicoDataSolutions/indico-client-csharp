@@ -31,7 +31,7 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uri, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
