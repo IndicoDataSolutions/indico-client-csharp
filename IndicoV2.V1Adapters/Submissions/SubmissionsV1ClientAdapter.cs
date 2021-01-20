@@ -44,6 +44,12 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
+        public async Task<IEnumerable<ISubmission>> ListAsync(CancellationToken cancellationToken = default)
+        {
+            var submissions = await new ListSubmissions(_indicoClient).Exec();
+            return submissions.Select(s => new V1SubmissionAdapter(s)).ToList();
+        }
+
         public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
         {
             var submission = await new GetSubmission(_indicoClient) {Id = submissionId}.Exec();
