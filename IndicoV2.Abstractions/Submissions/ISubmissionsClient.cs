@@ -10,7 +10,7 @@ namespace IndicoV2.Submissions
     public interface ISubmissionsClient
     {
         Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default);
-        Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] streams, CancellationToken cancellationToken = default);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default);
         Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default);
         
         Task<IEnumerable<ISubmission>> ListAsync(CancellationToken cancellationToken = default);
