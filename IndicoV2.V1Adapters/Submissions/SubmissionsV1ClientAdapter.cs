@@ -11,6 +11,7 @@ using Indico.Query;
 
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
+using IndicoV2.V1Adapters.Converters;
 using IndicoV2.V1Adapters.Submissions.Models;
 
 namespace IndicoV2.V1Adapters.Submissions
@@ -45,13 +46,13 @@ namespace IndicoV2.V1Adapters.Submissions
 
             return submissionIds;
         }
-        public async Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default)
         {
             var listSubmissionQuery = new ListSubmissions(_indicoClient)
             {
                 SubmissionIds = submissionIds,
                 WorkflowIds = workflowIds,
-                Filters = new V1SubmissionFilterAdapter(filters).FilterLegacy,
+                Filters = filters?.ConvertToLegacy(),
                 Limit = limit
             };
 
