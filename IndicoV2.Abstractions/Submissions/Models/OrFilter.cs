@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IndicoV2.Submissions.Models
 {
-    public class OrFilter : MergeableFilter
+    public class OrFilter : IFilter
     {
         public List<IFilter> Or { get; set; }
     }
