@@ -6,6 +6,5 @@ namespace IndicoV2.Submissions.Models
 {
     public interface IMergableFilter : IFilter
     {
-        List<dynamic> MergeFilters(IReadOnlyList<IFilter> filters);
     }
 }
