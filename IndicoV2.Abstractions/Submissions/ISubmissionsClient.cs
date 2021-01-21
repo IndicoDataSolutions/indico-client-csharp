@@ -13,7 +13,7 @@ namespace IndicoV2.Submissions
         Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default);
         Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default);
         
-        Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit, CancellationToken cancellationToken = default);
+        Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default);
         Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
         Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
         Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
