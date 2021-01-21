@@ -19,7 +19,7 @@ namespace IndicoV2.V1Adapters.Submissions
 
         public SubmissionsV1ClientAdapter(IndicoClient indicoClient)
         {
-            this._indicoClient = indicoClient;
+            _indicoClient = indicoClient;
         }
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default)
