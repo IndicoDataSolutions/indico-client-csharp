@@ -52,7 +52,7 @@ namespace IndicoV2.V1Adapters.Submissions
             {
                 SubmissionIds = submissionIds,
                 WorkflowIds = workflowIds,
-                Filters = filters?.ConvertToLegacy(),
+                Filters = filters != null ? filters.ConvertToLegacy() : new Indico.Entity.SubmissionFilter(),
                 Limit = limit
             };
 
