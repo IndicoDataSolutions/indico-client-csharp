@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net461</TargetFramework>
         <PackageId>IndicoClient</PackageId>
         <AssemblyVersion>0.9.0</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -17,6 +17,8 @@
         <Product>Indico IPA</Product>
         <Copyright>2020 Indico, Inc.</Copyright>
         <NeutralLanguage>en-US</NeutralLanguage>
+		<DependsOnNETStandard>true</DependsOnNETStandard>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
