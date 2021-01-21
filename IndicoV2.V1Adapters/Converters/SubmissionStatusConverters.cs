@@ -11,21 +11,22 @@ namespace IndicoV2.V1Adapters.Converters
             if (!status.HasValue)
                 return null;
 
-            if (!Enum.IsDefined(typeof(Indico.Types.SubmissionStatus), status))
+            if (!Enum.TryParse(status.ToString(), out Indico.Types.SubmissionStatus parsed))
+            {
                 throw new NotImplementedException();
+            }
 
-            return (Indico.Types.SubmissionStatus)status;
+            return parsed;
         }
 
-        public static SubmissionStatus? ConvertFromLegacy(this Indico.Types.SubmissionStatus? legacyStatus)
+        public static SubmissionStatus ConvertFromLegacy(this Indico.Types.SubmissionStatus legacyStatus)
         {
-            if (!legacyStatus.HasValue)
-                return null;
-
-            if (!Enum.IsDefined(typeof(SubmissionStatus), legacyStatus))
+            if (!Enum.TryParse(legacyStatus.ToString(), out SubmissionStatus parsed))
+            {
                 throw new NotImplementedException();
+            }
 
-            return (SubmissionStatus)legacyStatus;
+            return parsed;
         }
     }
 }
