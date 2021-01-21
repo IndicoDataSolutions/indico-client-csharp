@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
@@ -21,6 +23,17 @@ namespace IndicoV2.IntegrationTests.Submissions
             var container = new IndicoTestContainerBuilder().Build();
             _submissionsClient = container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldCreateSubmission_FromStream()
+        {
+            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+            await using var fileStream = await _dataHelper.Files().GetSampleFileStream();
+            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new [] {fileStream });
+            var submissionId = submissionIds.Single();
+
+            submissionId.Should().BeGreaterThan(0);
         }
 
         [Test]
