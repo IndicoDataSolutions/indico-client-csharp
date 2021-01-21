@@ -9,4 +9,10 @@
     <ProjectReference Include="..\IndicoV2\IndicoV2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="workflow-sample.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

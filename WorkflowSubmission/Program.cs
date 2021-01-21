@@ -23,7 +23,7 @@ namespace Examples
             var submissionId = submissionIds.Single();
 
             var submission = await submissionClient.GetAsync(submissionId);
-            var job = await submissionClient.GetJobWhenReady(submissionId);
+            var job = await submissionClient.GetJobWhenReady(submissionId, timeout: TimeSpan.FromSeconds(5));
             Console.ReadLine();
         }
     }
