@@ -3,15 +3,18 @@ using System.Linq;
 
 using IndicoV2.Submissions.Models;
 
+using v1SubmissionFilter = Indico.Entity.SubmissionFilter;
+using v2SubmissionFilter = IndicoV2.Submissions.Models.SubmissionFilter;
+
 namespace IndicoV2.V1Adapters.Converters
 {
     public static class SubmissionFilterConverters
     {
-        public static Indico.Entity.SubmissionFilter ConvertToLegacy(this IFilter filter)
+        public static v1SubmissionFilter ConvertToLegacy(this IFilter filter)
         {
-            if (filter is SubmissionFilter submissionFilter)
+            if (filter is v2SubmissionFilter submissionFilter)
             {
-                return new Indico.Entity.SubmissionFilter()
+                return new v1SubmissionFilter()
                 {
                     InputFilename = submissionFilter.InputFilename,
                     Retrieved = submissionFilter.Retrieved,
@@ -20,14 +23,14 @@ namespace IndicoV2.V1Adapters.Converters
             }
             else if (filter is AndFilter andFilter)
             {
-                return new Indico.Entity.SubmissionFilter()
+                return new v1SubmissionFilter()
                 {
                     AND = andFilter.And.Select(a => a.ConvertToLegacy()).ToList()
                 };
             }
             else if (filter is OrFilter orFilter)
             {
-                return new Indico.Entity.SubmissionFilter()
+                return new v1SubmissionFilter()
                 {
                     OR = orFilter.Or.Select(a => a.ConvertToLegacy()).ToList()
                 };
