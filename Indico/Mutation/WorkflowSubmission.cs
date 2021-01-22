@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Indico.Mutation
 {
@@ -28,13 +29,7 @@ namespace Indico.Mutation
             var response = await base.Exec();
             var ids = (JArray)response.GetValue("submissionIds");
 
-            var submissionIds = new List<int>();
-            foreach (var submissionId in ids)
-            {
-                submissionIds.Add((int)submissionId);
-            }
-
-            return submissionIds;
+            return ids.Select(submissionId => (int)submissionId).ToList();
         }
     }
 }

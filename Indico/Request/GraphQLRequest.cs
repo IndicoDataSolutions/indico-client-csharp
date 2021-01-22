@@ -10,7 +10,7 @@ namespace Indico.Request
     /// <summary>
     /// Class to send GraphQL Queries to the Indico Platform
     /// </summary>
-    public class GraphQLRequest : RestRequest<JObject>
+    public class GraphQLRequest : IRestRequest<JObject>
     {
         private readonly GraphQLHttpClient _client;
 

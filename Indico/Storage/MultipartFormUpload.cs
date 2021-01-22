@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Indico.Storage
 {
-    internal class MultipartFormUpload : RestRequest<JArray>
+    internal class MultipartFormUpload : IRestRequest<JArray>
     {
         private readonly IndicoClient _client;
         public List<FileParameter> FileParameters { get; set; }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Indico.Mutation
 {
@@ -31,24 +32,18 @@ namespace Indico.Mutation
             var response = await base.Exec();
             var subs = (JArray)response.GetValue("submissions");
 
-            var submissions = new List<Submission>();
-            foreach (var submission in subs)
+            return subs.Select(submission => new Submission()
             {
-                submissions.Add(new Submission()
-                {
-                    Id = submission.Value<int>("id"),
-                    DatasetId = submission.Value<int>("datasetId"),
-                    WorkflowId = submission.Value<int>("workflowId"),
-                    Status = (SubmissionStatus)Enum.Parse(typeof(SubmissionStatus), submission.Value<string>("status")),
-                    InputFile = submission.Value<string>("inputFile"),
-                    InputFilename = submission.Value<string>("inputFilename"),
-                    ResultFile = submission.Value<string>("resultFile"),
-                    Retrieved = submission.Value<bool>("retrieved"),
-                    Errors = submission.Value<string>("errors")
-                });
-            }
-
-            return submissions;
+                Id = submission.Value<int>("id"),
+                DatasetId = submission.Value<int>("datasetId"),
+                WorkflowId = submission.Value<int>("workflowId"),
+                Status = (SubmissionStatus)Enum.Parse(typeof(SubmissionStatus), submission.Value<string>("status")),
+                InputFile = submission.Value<string>("inputFile"),
+                InputFilename = submission.Value<string>("inputFilename"),
+                ResultFile = submission.Value<string>("resultFile"),
+                Retrieved = submission.Value<bool>("retrieved"),
+                Errors = submission.Value<string>("errors")
+            }).ToList();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Indico.Storage
 {
-    public class UploadFile : RestRequest<JArray>
+    public class UploadFile : IRestRequest<JArray>
     {
         private readonly IndicoClient _client;
         private readonly List<string> _files = new List<string>();
