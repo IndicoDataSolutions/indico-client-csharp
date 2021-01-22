@@ -28,12 +28,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.V1Adapters", "IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj", "{F4AF7C87-BF9E-492F-8668-696EEC0D27FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AEF44DBE-F74E-49C3-BF43-4E748CF2235B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\Branch build.yml = .github\workflows\Branch build.yml
+		.github\workflows\PR build.yml = .github\workflows\PR build.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Abstractions", "IndicoV2.Abstractions\IndicoV2.Abstractions.csproj", "{397F6987-E258-49BE-BF97-1BF949EC5840}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Tests", "IndicoV2.Tests\IndicoV2.Tests.csproj", "{8540888D-294C-46F7-BAD0-44A2B6F94E0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndicoV2.V1Adapters.Tests", "IndicoV2.V1Adapters.Tests\IndicoV2.V1Adapters.Tests.csproj", "{77D93F6B-65F6-462E-95F1-027A48ADD3D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.V1Adapters.Tests", "IndicoV2.V1Adapters.Tests\IndicoV2.V1Adapters.Tests.csproj", "{77D93F6B-65F6-462E-95F1-027A48ADD3D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.IntegrationTests", "IndicoV2.IntegrationTests\IndicoV2.IntegrationTests.csproj", "{3FA8C489-FA71-4B85-8D02-76D96A6BD673}"
 EndProject
