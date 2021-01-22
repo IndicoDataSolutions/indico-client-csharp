@@ -3,15 +3,15 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
         <PackageId>IndicoClient</PackageId>
-        <AssemblyVersion>0.9.0</AssemblyVersion>
+        <AssemblyVersion>0.9.1</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>C# Client Library for the Indico IPA Platform</Description>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</PackageProjectUrl>
-        <PackageIcon>indico-squarelogo-1444064744033.png</PackageIcon>
+        <PackageIcon>indico-square-icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
-        <Version>0.9.0</Version>
+        <Version>0.9.1</Version>
         <PackageTags>Indico</PackageTags>
         <PackageReleaseNotes>This is the first preview release of the C# client for the Indico IPA Platform V3.x</PackageReleaseNotes>
         <Product>Indico IPA</Product>
@@ -37,11 +37,11 @@
     </ItemGroup>
     
     <ItemGroup>
-      <None Include="..\..\..\..\Pictures\indico-squarelogo-1444064744033.png">
+      <None Include="..\LICENSE">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
-      <None Include="..\LICENSE">
+      <None Include="indico-square-icon.png">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
