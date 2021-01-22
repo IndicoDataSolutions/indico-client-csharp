@@ -2,7 +2,7 @@
 
 namespace Indico.Storage
 {
-    class FileParameter
+    internal class FileParameter
     {
         public Stream File { get; set; }
         public string FilePath { get; set; }

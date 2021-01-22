@@ -233,14 +233,14 @@
             </summary>
             <returns>Job</returns>
         </member>
-        <member name="M:Indico.Jobs.JobQuery.Refresh(Indico.Jobs.Job)">
+        <member name="M:Indico.Jobs.JobQuery.Refresh">
             <summary>
             Refreshes the Job Object
             </summary>
             <returns>Job</returns>
             <param name="obj">Job</param>
         </member>
-        <member name="M:Indico.Mutation`1.Exec">
+        <member name="M:Indico.IMutation`1.Exec">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>
@@ -375,7 +375,7 @@
             </summary>
             <value>Files</value>
         </member>
-        <member name="M:Indico.Query`1.Exec">
+        <member name="M:Indico.IQuery`1.Exec">
             <summary>
             Execute the graphql query and returns the results as a specific type
             </summary>

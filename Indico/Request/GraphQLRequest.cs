@@ -10,9 +10,9 @@ namespace Indico.Request
     /// <summary>
     /// Class to send GraphQL Queries to the Indico Platform
     /// </summary>
-    public class GraphQLRequest : RestRequest<JObject>
+    public class GraphQLRequest : IRestRequest<JObject>
     {
-        GraphQLHttpClient _client;
+        private readonly GraphQLHttpClient _client;
 
         /// <summary>
         /// Get/Set the GraphQL Query String
@@ -29,31 +29,28 @@ namespace Indico.Request
         /// </summary>
         public dynamic Variables { get; set; }
 
-        public GraphQLRequest(GraphQLHttpClient client)
-        {
-            this._client = client;
-        }
+        public GraphQLRequest(GraphQLHttpClient client) => _client = client;
 
         /// <summary>
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
-        async public Task<JObject> Call()
+        public async Task<JObject> Call()
         {
-            GraphQLHttpRequest request = new GraphQLHttpRequest()
+            var request = new GraphQLHttpRequest()
             {
-                Query = this.Query,
-                OperationName = this.OperationName,
-                Variables = this.Variables
+                Query = Query,
+                OperationName = OperationName,
+                Variables = Variables
             };
 
-            GraphQLHttpResponse response = await this._client.SendQueryAsync(request);
+            var response = await _client.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
-            JObject data = (JObject)response.Data;
+            var data = (JObject)response.Data;
             return data;
         }
     }

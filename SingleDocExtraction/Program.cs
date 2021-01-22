@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    class SingleDocExtraction
+    internal class SingleDocExtraction
     {
         /*
          * Run with your own PDF or use the sample Amtrak-Financials file
          * provided in this repo.
          */
-        async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -23,22 +23,22 @@ namespace Examples
                 Environment.Exit(0);
             }
 
-            IndicoConfig config = new IndicoConfig(
+            var config = new IndicoConfig(
                 host: "app.indico.io"
             );
-            IndicoClient client = new IndicoClient(config);
+            var client = new IndicoClient(config);
 
-            JObject extractConfig = new JObject()
+            var extractConfig = new JObject()
             {
                 { "preset_config", "standard" }
             };
 
-            DocumentExtraction ocrQuery = client.DocumentExtraction(extractConfig);
-            Job job = await ocrQuery.Exec(args[0]);
+            var ocrQuery = client.DocumentExtraction(extractConfig);
+            var job = await ocrQuery.Exec(args[0]);
 
-            JObject result = await job.Result();
+            var result = await job.Result();
             string url = (string) result.GetValue("url");
-            Blob blob = await client.RetrieveBlob(url).Exec();
+            var blob = await client.RetrieveBlob(url).Exec();
             Console.WriteLine(blob.AsJSONObject());
         }
     }

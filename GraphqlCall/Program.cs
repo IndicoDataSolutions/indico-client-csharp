@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    class GraphQL
+    internal class GraphQL
     {
-        async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            IndicoConfig config = new IndicoConfig(
+            var config = new IndicoConfig(
                 host: "app.indico.io"
             );
 
-            IndicoClient client = new IndicoClient(config);
+            var client = new IndicoClient(config);
             
             string query = @"
               query GetDatasets {
@@ -32,8 +32,8 @@ namespace Examples
               }
             ";
 
-            GraphQLRequest request = client.GraphQLRequest(query, "GetDatasets");            
-            JObject response = await request.Call();
+            var request = client.GraphQLRequest(query, "GetDatasets");            
+            var response = await request.Call();
             Console.WriteLine(response);
         }
     }

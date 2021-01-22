@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Indico
 {
-    interface RestRequest<T>
+    internal interface IRestRequest<T>
     {
         Task<T> Call();
     }
