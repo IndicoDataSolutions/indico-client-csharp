@@ -30,6 +30,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AEF44DBE-F74E-49C3-BF43-4E748CF2235B}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.github\workflows\Branch build.yml = .github\workflows\Branch build.yml
+		.github\workflows\PR build.yml = .github\workflows\PR build.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Abstractions", "IndicoV2.Abstractions\IndicoV2.Abstractions.csproj", "{397F6987-E258-49BE-BF97-1BF949EC5840}"
