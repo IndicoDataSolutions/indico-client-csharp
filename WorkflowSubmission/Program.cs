@@ -6,9 +6,9 @@ using IndicoV2.Submissions;
 
 namespace Examples
 {
-    class SubmitWorkflows
+    internal class SubmitWorkflows
     {
-        static async Task Main()
+        public static async Task Main()
         {
             // null token will be replaced with an actual token by V1 config mechanism
             var client = new IndicoClient(null, new Uri("https://app.indico.io"));
@@ -20,7 +20,7 @@ namespace Examples
             var submissionClient = client.Submissions();
 
             var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf"});
-            var submissionId = submissionIds.Single();
+            int submissionId = submissionIds.Single();
 
             var submission = await submissionClient.GetAsync(submissionId);
             var job = await submissionClient.GetJobWhenReady(submissionId, timeout: TimeSpan.FromSeconds(5));

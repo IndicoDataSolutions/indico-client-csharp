@@ -12,9 +12,9 @@ namespace Indico.Mutation
     /// <summary>
     /// OCR PDF, TIF, JPG and PNG files
     /// </summary>
-    public class DocumentExtraction : Mutation<List<Job>>
+    public class DocumentExtraction : IMutation<List<Job>>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
 
         /// <summary>
         /// List of files to process
@@ -30,26 +30,23 @@ namespace Indico.Mutation
         /// DocumentExtraction constructor
         /// <param name="client">IndicoClient client</param>
         /// </summary>
-        public DocumentExtraction(IndicoClient client)
-        {
-            this._client = client;
-        }
+        public DocumentExtraction(IndicoClient client) => _client = client;
 
-        async private Task<JArray> Upload(List<string> filePaths)
+        private async Task<JArray> Upload(List<string> filePaths)
         {
-            UploadFile uploadRequest = new UploadFile(this._client) { Files = filePaths };
+            var uploadRequest = new UploadFile(_client) { Files = filePaths };
             var arr = await uploadRequest.Call();
             return arr;
         }
 
-        async private Task<GraphQLResponse> ExecRequest()
+        private async Task<GraphQLResponse> ExecRequest()
         {
             JArray fileMetadata;
-            List<object> files = new List<object>();
-            fileMetadata = await this.Upload(this.Files);
+            var files = new List<object>();
+            fileMetadata = await Upload(Files);
             foreach (JObject uploadMeta in fileMetadata)
             {
-                JObject meta = new JObject
+                var meta = new JObject
                 {
                     { "name", (string)uploadMeta.GetValue("name") },
                     { "path", (string)uploadMeta.GetValue("path") },
@@ -74,18 +71,18 @@ namespace Indico.Mutation
                 ";
 
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "DocumentExtraction",
                 Variables = new
                 {
                     files,
-                    JsonConfig = this.JsonConfig.ToString()
+                    JsonConfig = JsonConfig.ToString()
                 }
             };
 
-            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
             return response;
         }
 
@@ -93,19 +90,19 @@ namespace Indico.Mutation
         /// Executes OCR and returns Jobs
         /// <returns>List of Jobs</returns>
         /// </summary>
-        async public Task<List<Job>> Exec()
+        public async Task<List<Job>> Exec()
         {
-            GraphQLResponse response = await this.ExecRequest();
+            var response = await ExecRequest();
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
-            JArray jobIds = (JArray)response.Data.documentExtraction.jobIds;
-            List<Job> jobs = new List<Job>();
+            var jobIds = (JArray)response.Data.documentExtraction.jobIds;
+            var jobs = new List<Job>();
             foreach (string id in jobIds)
             {
-                Job job = new Job(this._client.GraphQLHttpClient, id);
+                var job = new Job(_client.GraphQLHttpClient, id);
                 jobs.Add(job);
             }
 
@@ -118,19 +115,19 @@ namespace Indico.Mutation
         /// <param name="path">pathname of the file to OCR</param>
         /// <returns>Job</returns>
         /// </summary>
-        async public Task<Job> Exec(string path)
+        public async Task<Job> Exec(string path)
         {
-            this.Files = new List<string>() { path };
+            Files = new List<string>() { path };
 
-            GraphQLResponse response = await this.ExecRequest();
+            var response = await ExecRequest();
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
-            JArray jobIds = (JArray)response.Data.documentExtraction.jobIds;
+            var jobIds = (JArray)response.Data.documentExtraction.jobIds;
 
-            return new Job(this._client.GraphQLHttpClient, (string)jobIds[0]);
+            return new Job(_client.GraphQLHttpClient, (string)jobIds[0]);
         }
     }
 }
