@@ -27,13 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2", "IndicoV2\Indico
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.V1Adapters", "IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj", "{F4AF7C87-BF9E-492F-8668-696EEC0D27FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AEF44DBE-F74E-49C3-BF43-4E748CF2235B}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-		.github\workflows\Branch build.yml = .github\workflows\Branch build.yml
-		.github\workflows\PR build.yml = .github\workflows\PR build.yml
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Abstractions", "IndicoV2.Abstractions\IndicoV2.Abstractions.csproj", "{397F6987-E258-49BE-BF97-1BF949EC5840}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Tests", "IndicoV2.Tests\IndicoV2.Tests.csproj", "{8540888D-294C-46F7-BAD0-44A2B6F94E0A}"
@@ -45,6 +38,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E0AB63FE-E9CD-4EDD-848F-87AB335BAF0A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.github\workflows\Branch build.yml = .github\workflows\Branch build.yml
+		.github\workflows\PR build.yml = .github\workflows\PR build.yml
 	EndProjectSection
 EndProject
 Global
