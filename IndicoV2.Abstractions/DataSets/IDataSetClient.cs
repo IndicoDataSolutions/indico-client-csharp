@@ -7,6 +7,9 @@ namespace IndicoV2.DataSets
 {
     public interface IDataSetClient
     {
+        /// <summary>
+        /// Lists all <seealso cref="IDataSet"/>s
+        /// </summary>
         Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default);
     }
 }

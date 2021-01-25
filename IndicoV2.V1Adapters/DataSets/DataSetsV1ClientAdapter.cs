@@ -14,11 +14,8 @@ namespace IndicoV2.V1Adapters.DataSets
     {
         private readonly IndicoClient _indicoClientLegacy;
 
-        public DataSetsV1ClientAdapter(Indico.IndicoClient indicoClientLegacy)
-        {
-            _indicoClientLegacy = indicoClientLegacy;
-        }
-        
+        public DataSetsV1ClientAdapter(Indico.IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
+
 
         public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default)
         {

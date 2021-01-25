@@ -7,10 +7,7 @@ namespace IndicoV2.V1Adapters.Submissions.Models
     {
         private readonly Indico.Entity.Submission _submissionLegacy;
 
-        public V1SubmissionAdapter(Indico.Entity.Submission submissionLegacy)
-        {
-            _submissionLegacy = submissionLegacy;
-        }
+        public V1SubmissionAdapter(Indico.Entity.Submission submissionLegacy) => _submissionLegacy = submissionLegacy;
 
         public int Id => _submissionLegacy.Id;
 
