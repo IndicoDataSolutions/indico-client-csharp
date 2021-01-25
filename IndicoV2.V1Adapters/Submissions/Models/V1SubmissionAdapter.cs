@@ -3,7 +3,7 @@ using IndicoV2.Submissions.Models;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {
-    public class V1SubmissionAdapter : ISubmission
+    internal class V1SubmissionAdapter : ISubmission
     {
         private readonly Indico.Entity.Submission _submissionLegacy;
 

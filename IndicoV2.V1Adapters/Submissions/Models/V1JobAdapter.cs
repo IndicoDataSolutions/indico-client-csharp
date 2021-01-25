@@ -2,7 +2,7 @@
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {
-    public class V1JobAdapter : IJob
+    internal class V1JobAdapter : IJob
     {
         private readonly Indico.Jobs.Job _job;
 

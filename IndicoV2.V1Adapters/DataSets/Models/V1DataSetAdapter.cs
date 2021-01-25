@@ -10,5 +10,6 @@ namespace IndicoV2.V1Adapters.DataSets.Models
         public V1DataSetAdapter(JToken jToken) => _jToken = jToken;
 
         public int Id => _jToken.Value<int>("id");
+        public string Name => _jToken.Value<string>("name");
     }
 }

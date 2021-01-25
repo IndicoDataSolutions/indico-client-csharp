@@ -24,12 +24,6 @@ namespace IndicoV2.V1Adapters.DataSets
                 datasets {
                   id
                   name
-                  status
-                  rowCount
-                  numModelGroups
-                  modelGroups {
-                    id
-                  }
                 }
               }
             ";
