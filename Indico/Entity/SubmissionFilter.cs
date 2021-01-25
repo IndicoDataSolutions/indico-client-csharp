@@ -15,11 +15,31 @@ namespace Indico.Entity
         public override dynamic ToAnonymousType()
         {
             dynamic anonymousType = new ExpandoObject();
-            if (InputFilename != null) anonymousType.inputFilename = InputFilename;
-            if (Status != null) anonymousType.status = Status.ToString();
-            if (Retrieved != null) anonymousType.retrieved = Retrieved;
-            if (OR != null) anonymousType.ors = MergeFilters(OR);
-            if (AND != null) anonymousType.ands = MergeFilters(AND);
+            if (InputFilename != null)
+            {
+                anonymousType.inputFilename = InputFilename;
+            }
+
+            if (Status != null)
+            {
+                anonymousType.status = Status.ToString();
+            }
+
+            if (Retrieved != null)
+            {
+                anonymousType.retrieved = Retrieved;
+            }
+
+            if (OR != null)
+            {
+                anonymousType.ors = MergeFilters(OR);
+            }
+
+            if (AND != null)
+            {
+                anonymousType.ands = MergeFilters(AND);
+            }
+
             return anonymousType;
         }
     }

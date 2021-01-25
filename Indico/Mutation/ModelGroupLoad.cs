@@ -10,20 +10,17 @@ namespace Indico.Mutation
     /// <summary>
     /// Load a Model Group
     /// </summary>
-    public class ModelGroupLoad : Mutation<string>
+    public class ModelGroupLoad : IMutation<string>
     {
-        GraphQLHttpClient _graphQLHttpClient;
+        private readonly GraphQLHttpClient _graphQLHttpClient;
         
         public int ModelId { get; set; }
-       
+
         /// <summary>
         /// Model Group Load Constructor
         /// </summary>
         /// <param name="graphQLHttpClient"></param>
-        public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient)
-        {
-            this._graphQLHttpClient = graphQLHttpClient;
-        }
+        public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
         /// Use to load ModelGroup
@@ -32,7 +29,7 @@ namespace Indico.Mutation
         /// <param name="modelGroup">Model group.</param>
         public ModelGroupLoad ModelGroup(ModelGroup modelGroup)
         {
-            this.ModelId = modelGroup.SelectedModel.Id;
+            ModelId = modelGroup.SelectedModel.Id;
             return this;
         }
 
@@ -40,7 +37,7 @@ namespace Indico.Mutation
         /// Executes request and returns load status  
         /// </summary>
         /// <returns>Load status</returns>
-        async public Task<string> Exec()
+        public async Task<string> Exec()
         {
             string query = @"
                     mutation LoadModel($model_id: Int!) {
@@ -50,17 +47,17 @@ namespace Indico.Mutation
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "LoadModel",
                 Variables = new
                 {
-                    model_id = this.ModelId
+                    model_id = ModelId
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendMutationAsync(request);
+            var response = await _graphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -69,7 +66,7 @@ namespace Indico.Mutation
             var modelLoad = response.Data.modelLoad;
             if (modelLoad == null)
             {
-                throw new RuntimeException($"Cannot Load Model id : {this.ModelId}");
+                throw new RuntimeException($"Cannot Load Model id : {ModelId}");
             }
 
             string status = (string)modelLoad.status;

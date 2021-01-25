@@ -48,20 +48,20 @@ namespace Indico
             bool verify = true
         )
         {
-            this.Host = host;
-            this.Protocol = protocol;
-            this.Verify = verify;
+            Host = host;
+            Protocol = protocol;
+            Verify = verify;
             if (apiToken == null)
             {
                 if (tokenPath == null)
                 {
                     tokenPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
                 }
-                this.ApiToken = this.ResolveApiToken(tokenPath).Result;
+                ApiToken = ResolveApiToken(tokenPath).Result;
             }
             else
             {
-                this.ApiToken = apiToken;
+                ApiToken = apiToken;
             }
         }
 
@@ -82,8 +82,8 @@ namespace Indico
 
             if (File.Exists(absolutePath))
             {
-                FileStream fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read);
-                using (StreamReader streamReader = new StreamReader(fileStream))
+                var fileStream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read);
+                using (var streamReader = new StreamReader(fileStream))
                 {
                     apiToken = await streamReader.ReadLineAsync();
                 }
@@ -96,9 +96,6 @@ namespace Indico
         /// Get the base URL for the Indico Platform host, including protocol
         /// </summary>
         /// <returns>base URL string</returns>
-        public string GetAppBaseUrl()
-        {
-            return this.Protocol + "://" + this.Host;
-        }
+        public string GetAppBaseUrl() => Protocol + "://" + Host;
     }
 }

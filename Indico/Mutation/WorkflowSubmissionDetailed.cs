@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Indico.Mutation
 {
-    public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, Mutation<List<Submission>>
+    public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, IMutation<List<Submission>>
     {
         /// <summary>
         /// Workflow Id
@@ -28,25 +29,21 @@ namespace Indico.Mutation
 
         public async Task<List<Submission>> Exec()
         {
-            JObject response = await base.Exec();
-            JArray subs = (JArray)response.GetValue("submissions");
+            var response = await base.Exec();
+            var subs = (JArray)response.GetValue("submissions");
 
-            List<Submission> submissions = new List<Submission>();
-            foreach (JToken submission in subs)
-                submissions.Add(new Submission()
-                {
-                    Id = submission.Value<int>("id"),
-                    DatasetId = submission.Value<int>("datasetId"),
-                    WorkflowId = submission.Value<int>("workflowId"),
-                    Status = (SubmissionStatus)Enum.Parse(typeof(SubmissionStatus), submission.Value<string>("status")),
-                    InputFile = submission.Value<string>("inputFile"),
-                    InputFilename = submission.Value<string>("inputFilename"),
-                    ResultFile = submission.Value<string>("resultFile"),
-                    Retrieved = submission.Value<bool>("retrieved"),
-                    Errors = submission.Value<string>("errors")
-                });
-
-            return submissions;
+            return subs.Select(submission => new Submission()
+            {
+                Id = submission.Value<int>("id"),
+                DatasetId = submission.Value<int>("datasetId"),
+                WorkflowId = submission.Value<int>("workflowId"),
+                Status = (SubmissionStatus)Enum.Parse(typeof(SubmissionStatus), submission.Value<string>("status")),
+                InputFile = submission.Value<string>("inputFile"),
+                InputFilename = submission.Value<string>("inputFilename"),
+                ResultFile = submission.Value<string>("resultFile"),
+                Retrieved = submission.Value<bool>("retrieved"),
+                Errors = submission.Value<string>("errors")
+            }).ToList();
         }
     }
 }

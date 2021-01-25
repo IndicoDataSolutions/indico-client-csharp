@@ -12,10 +12,10 @@ namespace Indico.Mutation
     /// <summary>
     /// Class to run Model Group predictions
     /// </summary>
-    public class ModelGroupPredict : Mutation<Job>
+    public class ModelGroupPredict : IMutation<Job>
     {
-        GraphQLHttpClient _graphQLHttpClient;
-        List<string> _data;
+        private readonly GraphQLHttpClient _graphQLHttpClient;
+        private List<string> _data;
 
         /// <summary>
         /// Get/Set the Model ID (often Selected Model ID for a Model Group)
@@ -26,10 +26,7 @@ namespace Indico.Mutation
         /// ModelGroupPredict constructor
         /// </summary>
         /// <param name="graphQLHttpClient"></param>
-        public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient)
-        {
-            this._graphQLHttpClient = graphQLHttpClient;
-        }
+        public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
         /// Data to predict
@@ -38,7 +35,7 @@ namespace Indico.Mutation
         /// <param name="data">Data.</param>
         public ModelGroupPredict Data(List<string> data)
         {
-            this._data = data;
+            _data = data;
             return this;
         }
 
@@ -46,7 +43,7 @@ namespace Indico.Mutation
         /// Executes request and returns job 
         /// </summary>
         /// <returns>Job</returns>
-        async public Task<Job> Exec()
+        public async Task<Job> Exec()
         {
             string query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
@@ -56,25 +53,25 @@ namespace Indico.Mutation
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "PredictModel",
                 Variables = new
                 {
-                    modelId = this.ModelId,
-                    data = this._data
+                    modelId = ModelId,
+                    data = _data
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendMutationAsync(request);
+            var response = await _graphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             string jobId = (string)response.Data.modelPredict.jobId;
-            Job job = new Job(this._graphQLHttpClient, jobId);
+            var job = new Job(_graphQLHttpClient, jobId);
             return job;
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Examples
 {
-    class GetTrainingModelProgress
+    internal class GetTrainingModelProgress
     {
         /*
          * Get the progress (% complete) of a training model group. This
@@ -15,7 +15,7 @@ namespace Examples
          * to train. Pass your model's Model Group ID on the command line.
          * You can find the model group ID on your model's Review page.
          */
-        async static Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             if (args.Length == 0)
             {
@@ -25,13 +25,13 @@ namespace Examples
 
             int mgId = Int32.Parse(args[0]);
 
-            IndicoConfig config = new IndicoConfig(
+            var config = new IndicoConfig(
                 host: "app.indico.io"             
             );
 
-            IndicoClient client = new IndicoClient(config);
-            ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
-            JArray trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
+            var client = new IndicoClient(config);
+            var mg = await client.ModelGroupQuery(mgId).Exec();
+            var trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
             
             Console.WriteLine(mg.Name);
             Console.WriteLine(trainingStatus);                     
