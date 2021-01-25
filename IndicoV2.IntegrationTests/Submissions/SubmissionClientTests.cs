@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
@@ -24,10 +24,40 @@ namespace IndicoV2.IntegrationTests.Submissions
         }
 
         [Test]
+        public async Task CreateAsync_ShouldCreateSubmission_FromStream()
+        {
+            // Arrange
+            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+            await using var fileStream = await _dataHelper.Files().GetSampleFileStream();
+
+            // Act
+            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { fileStream });
+
+            // Assert
+            var submissionId = submissionIds.Single();
+            submissionId.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldCreateSubmission_FromFilePath()
+        {
+            // Arrange
+            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+            var filePath = _dataHelper.Files().GetSampleFilePath();
+
+            // Act
+            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { filePath });
+
+            // Assert
+            var submissionId = submissionIds.Single();
+            submissionId.Should().BeGreaterThan(0);
+        }
+
+        [Test]
         public async Task GetAsync_ShouldFetchSubmission()
         {
             // Arrange
-            var submissionId = (await _dataHelper.Submissions().GetAnyAsync(new MemoryStream(new byte[5]))).Id;
+            var submissionId = (await _dataHelper.Submissions().GetAnyAsync()).Id;
 
             // Act
             var submission = await _submissionsClient.GetAsync(submissionId);

@@ -14,19 +14,16 @@ namespace IndicoV2.V1Adapters.Workflows
     {
         private readonly IndicoClient _indicoClientLegacy;
 
-        public WorkflowsV1ClientAdapter(Indico.IndicoClient indicoClientLegacy)
-        {
-            _indicoClientLegacy = indicoClientLegacy;
-        }
+        public WorkflowsV1ClientAdapter(IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
 
         public Task<IEnumerable<IWorkflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default) =>
             ListAsync(new[] {dataSetId}, cancellationToken);
 
-        public async Task<IEnumerable<IWorkflow>> ListAsync(int[] datasetIds, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IWorkflow>> ListAsync(int[] dataSetIds, CancellationToken cancellationToken = default)
         {
             var workflows = await new ListWorkflows(_indicoClientLegacy)
             {
-                DatasetIds = datasetIds.ToList()
+                DatasetIds = dataSetIds.ToList()
             }.Exec();
 
             return workflows.Select(wf => new V1WorkflowAdapter(wf));
