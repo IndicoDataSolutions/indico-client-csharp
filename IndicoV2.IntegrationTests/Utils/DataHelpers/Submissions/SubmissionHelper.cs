@@ -22,7 +22,6 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
             return await GetAnyAsync(fileStream);
         }
 
-
         public async Task<ISubmission> GetAnyAsync(Stream content)
         {
             var workflow = await _workflowHelper.GetAnyWorkflow();

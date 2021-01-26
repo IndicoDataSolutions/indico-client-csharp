@@ -4,12 +4,11 @@ using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.Jobs.Models
 {
-    public class V1JobResultAdapter : IJobResult
+    internal class V1JobResultAdapter : IJobResult
     {
-        private readonly JObject _jobResult;
+        public Uri Url { get; set; }
 
-        public V1JobResultAdapter(JObject jobResult) => _jobResult = jobResult;
-
-        public Uri Url => new Uri(_jobResult.Value<string>("url"));
+        public static V1JobResultAdapter FromJson(JObject jObject) =>
+            jObject.ToObject<V1JobResultAdapter>();
     }
 }

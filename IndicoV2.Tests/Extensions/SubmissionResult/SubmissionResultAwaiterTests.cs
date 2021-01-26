@@ -29,7 +29,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
         [Test, Combinatorial]
-        public async Task WaitReady_ShouldReturnJob_WhenNotPending(
+        public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(
             [ValueSource(nameof(_submissionStatusesExceptProcessing))]
             SubmissionStatus status,
             [ValueSource(nameof(_jobStatusesExceptPending))]

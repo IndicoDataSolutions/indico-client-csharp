@@ -33,7 +33,7 @@ namespace IndicoV2.V1Adapters.Jobs
         public async Task<IJobResult> GetResult(Guid jobId)
         {
             var jobResultV1 = await new Job(_indicoClient.GraphQLHttpClient, jobId.ToString()).Result();
-            return new V1JobResultAdapter(jobResultV1);
+            return V1JobResultAdapter.FromJson(jobResultV1);
         }
 
         public async Task<JobStatus> GetStatusAsync(Guid jobId, CancellationToken cancellationToken) =>
