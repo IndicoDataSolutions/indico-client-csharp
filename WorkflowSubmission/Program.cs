@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using IndicoV2;
-using IndicoV2.Submissions;
 
 namespace Examples
 {

@@ -13,20 +13,20 @@ namespace IndicoV2.Jobs
         /// </summary>
         /// <param name="submissionId"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns>Created <seealso cref="IJob"/>'s Id</returns>
+        /// <returns>Created Job's Id</returns>
         Task<Guid> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default);
         
         /// <summary>
-        /// Gets <seealso cref="IJob"/>'s status
+        /// Gets Job's status
         /// </summary>
         /// <param name="jobId"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns><seealso cref="IJob"/>'s Status</returns>
+        /// <returns>Job's Status</returns>
         Task<JobStatus> GetStatusAsync(Guid jobId, CancellationToken cancellationToken = default);
         //Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
         
         /// <summary>
-        /// Gets <seealso cref="IJob"/>'s result
+        /// Gets Job's result
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>

@@ -5,6 +5,6 @@ namespace IndicoV2
 {
     public static partial class IndicoClientExtensions
     {
-        public static IJobsClient Jobs(this IndicoClient indicoClient) => new V1JobsClientAdapter(indicoClient.LegacyClient);
+        public static IJobsClient Jobs(this IndicoClient indicoClient) => new V1JobsClientAdapter(indicoClient.LegacyClient, new JobStatusConverter());
     }
 }

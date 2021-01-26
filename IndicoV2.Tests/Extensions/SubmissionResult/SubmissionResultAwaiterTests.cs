@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -16,22 +17,22 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 {
     public class SubmissionResultAwaiterTests
     {
+        private static readonly SubmissionStatus[] _submissionStatusesExceptProcessing =
+            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING).ToArray();
+        private static readonly JobStatus[] _jobStatusesExceptPending =
+            Enum.GetValues(typeof(JobStatus)).Cast<JobStatus>().Where(s => s != JobStatus.PENDING).ToArray();
         private readonly TimeSpan _timeoutDefault = TimeSpan.FromSeconds(5);
         private readonly TimeSpan _timeoutMax = TimeSpan.FromHours(1);
-
         private IFixture _fixture;
 
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
-
         [Test, Combinatorial]
         public async Task WaitReady_ShouldReturnJob_WhenNotPending(
-            [Values(SubmissionStatus.COMPLETE, SubmissionStatus.FAILED, SubmissionStatus.PENDING_ADMIN_REVIEW,
-                SubmissionStatus.PENDING_REVIEW)]
+            [ValueSource(nameof(_submissionStatusesExceptProcessing))]
             SubmissionStatus status,
-            [Values(JobStatus.FAILURE, JobStatus.IGNORED, JobStatus.RECEIVED, JobStatus.REJECTED, JobStatus.RETRY,
-                JobStatus.REVOKED, JobStatus.STARTED, JobStatus.SUCCESS)]
+            [ValueSource(nameof(_jobStatusesExceptPending))]
             JobStatus jobStatus)
         {
             // Arrange
@@ -60,7 +61,8 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public async Task WaitReady_ShouldWait_UntilSubmissionProcessed()
         {
             // Arrange
-            const int submissionId = 1; var jobId = Guid.NewGuid();
+            const int submissionId = 1;
+            var jobId = Guid.NewGuid();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             submissionClientMock
                 .SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
