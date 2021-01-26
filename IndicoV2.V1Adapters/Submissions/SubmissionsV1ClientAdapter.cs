@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Indico;
 using Indico.Mutation;
 using Indico.Query;
+using IndicoV2.Jobs.Models;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Submissions.Models;
@@ -40,21 +40,6 @@ namespace IndicoV2.V1Adapters.Submissions
         {
             var submission = await new GetSubmission(_indicoClient) {Id = submissionId}.Exec();
             return new V1SubmissionAdapter(submission);
-        }
-
-        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken)
-        {
-            var job = await new GenerateSubmissionResult(_indicoClient) {SubmissionId = submissionId}.Exec();
-
-            return new V1JobAdapter(job);
-        }
-
-        public async Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken)
-        {
-            var job = await new SubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec();
-            // TODO: handle cancellation token
-
-            return new V1JobAdapter(job);
         }
     }
 }

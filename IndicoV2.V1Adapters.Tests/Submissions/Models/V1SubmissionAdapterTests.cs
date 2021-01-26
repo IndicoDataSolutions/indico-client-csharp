@@ -11,7 +11,7 @@ namespace IndicoV2.V1Adapters.Tests.Submissions.Models
 {
     public class V1SubmissionAdapterTests
     {
-        private static object[][] _v1StatusToV2StatusMap = Enum.GetValues(typeof(V1Status))
+        private static readonly object[][] _v1StatusToV2StatusMap = Enum.GetValues(typeof(V1Status))
             .OfType<V1Status>()
             .Select(s => new object[] {s, Enum.Parse<V2Status>(s.ToString())})
             .ToArray();

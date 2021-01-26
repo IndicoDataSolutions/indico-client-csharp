@@ -1,4 +1,4 @@
-﻿namespace IndicoV2.Submissions.Models
+﻿namespace IndicoV2.Jobs.Models
 {
     public interface IJob
     {

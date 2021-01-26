@@ -1,4 +1,4 @@
-﻿using IndicoV2.Submissions.Models;
+﻿using IndicoV2.Jobs.Models;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {

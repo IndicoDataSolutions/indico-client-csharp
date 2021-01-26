@@ -21,9 +21,8 @@ namespace Examples
 
             var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf"});
             int submissionId = submissionIds.Single();
-
             var submission = await submissionClient.GetAsync(submissionId);
-            var job = await submissionClient.GetJobWhenReady(submissionId, timeout: TimeSpan.FromSeconds(5));
+            var jobResult = await client.GetResultWhenReady(submissionId, timeout: TimeSpan.FromSeconds(5));
             Console.ReadLine();
         }
     }

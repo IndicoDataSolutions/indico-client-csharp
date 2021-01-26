@@ -4,7 +4,6 @@ using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Submissions;
-using IndicoV2.Submissions.Models;
 using NUnit.Framework;
 using Unity;
 
@@ -64,7 +63,6 @@ namespace IndicoV2.IntegrationTests.Submissions
 
             // Assert
             submission.Id.Should().BeGreaterThan(0);
-            submission.Status.Should().BeOfType<SubmissionStatus>();
         }
     }
 }

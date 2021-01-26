@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,8 +23,6 @@ namespace IndicoV2.Submissions
         /// <returns>List of created <see cref="ISubmission"/>.Ids</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default);
         
-        Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
         Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
-        Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
     }
 }
