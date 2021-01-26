@@ -28,10 +28,10 @@ namespace IndicoV2.IntegrationTests.Jobs
             var submissionId = (await _dataHelper.Submissions().GetAnyAsync()).Id;
 
             // Act
-            var job = await _jobsClient.GenerateSubmissionResultAsync(submissionId);
+            var jobId = await _jobsClient.GenerateSubmissionResultAsync(submissionId);
 
             // Assert
-            job.Id.Should().BeGreaterThan(0);
+            jobId.Should().NotBeEmpty();
         }
     }
 }

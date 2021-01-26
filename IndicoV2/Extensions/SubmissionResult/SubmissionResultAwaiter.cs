@@ -39,14 +39,14 @@ namespace IndicoV2.Extensions.SubmissionResult
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var job = await _jobsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
+            var jobId = await _jobsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
 
-            while (JobStatus.PENDING == await _jobsClient.GetStatusAsync(job.Id, cancellationToken))
+            while (JobStatus.PENDING == await _jobsClient.GetStatusAsync(jobId, cancellationToken))
             {
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var jobResult = await _jobsClient.GetResult(job.Id);
+            var jobResult = await _jobsClient.GetResult(jobId);
 
             return jobResult;
         }

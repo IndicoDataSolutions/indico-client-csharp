@@ -35,13 +35,14 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             JobStatus jobStatus)
         {
             // Arrange
-            const int submissionId = 1, jobId = 2;
+            const int submissionId = 1;
+            var jobId = Guid.NewGuid();
             _fixture.Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));
             _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<IJob>(j => j.Id == jobId));
+                .ReturnsAsync(jobId);
             _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobStatus);
@@ -59,7 +60,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public async Task WaitReady_ShouldWait_UntilSubmissionProcessed()
         {
             // Arrange
-            const int submissionId = 1, jobId = 2;
+            const int submissionId = 1; var jobId = Guid.NewGuid();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             submissionClientMock
                 .SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
@@ -69,9 +70,9 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
             jobsClientMock
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<IJob>(j => j.Id == jobId));
+                .ReturnsAsync(jobId);
             jobsClientMock
-                .Setup(jbs => jbs.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
+                .Setup(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JobStatus.SUCCESS);
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
@@ -89,7 +90,8 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public async Task WaitReady_ShouldWait_UntilJobProcessed()
         {
             // Arrange
-            const int submissionId = 1, jobId = 2;
+            const int submissionId = 1;
+            var jobId = Guid.NewGuid();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             submissionClientMock
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
@@ -98,7 +100,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
             jobsClientMock
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<IJob>(j => j.Id == jobId));
+                .ReturnsAsync(jobId);
             jobsClientMock
                 .SetupSequence(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JobStatus.PENDING)
