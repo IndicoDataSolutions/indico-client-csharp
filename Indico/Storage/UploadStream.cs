@@ -7,32 +7,29 @@ using System.Threading.Tasks;
 
 namespace Indico.Storage
 {
-    public class UploadStream : RestRequest<JArray>
+    public class UploadStream : IRestRequest<JArray>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
 
         /// <summary>
         /// List of streams to upload
         /// </summary>
         public List<Stream> Streams { get; set; }
 
-        public UploadStream(IndicoClient client)
-        {
-            this._client = client;
-        }
+        public UploadStream(IndicoClient client) => _client = client;
 
         /// <summary>
         /// Upload streams and return metadata
         /// </summary>
         /// <returns>JArray</returns>
-        async public Task<JArray> Call()
+        public async Task<JArray> Call()
         {
-            List<FileParameter> fileParameters = new List<FileParameter>();
+            var fileParameters = new List<FileParameter>();
 
-            foreach (Stream stream in this.Streams)
+            foreach (var stream in Streams)
             {
                 string filename = Guid.NewGuid().ToString();
-                FileParameter param = new FileParameter
+                var param = new FileParameter
                 {
                     File = stream,
                     FilePath = $"/tmp/{filename}",
@@ -42,11 +39,11 @@ namespace Indico.Storage
                 fileParameters.Add(param);
             }
 
-            MultipartFormUpload formUpload = new MultipartFormUpload(this._client)
+            var formUpload = new MultipartFormUpload(_client)
             {
                 FileParameters = fileParameters
             };
-            JArray uploadResult = await formUpload.Call();
+            var uploadResult = await formUpload.Call();
 
             foreach (JObject uploadMeta in uploadResult)
             {

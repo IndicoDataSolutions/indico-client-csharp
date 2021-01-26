@@ -8,12 +8,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Tests
 {
-    class MockHttpHandler : DelegatingHandler
+    internal class MockHttpHandler : DelegatingHandler
     {
-        public MockHttpHandler()
-        {
-            this.InnerHandler = new HttpClientHandler();
-        }
+        public MockHttpHandler() => InnerHandler = new HttpClientHandler();
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -22,26 +19,26 @@ namespace Indico.Tests
             if (request.RequestUri.AbsolutePath == "/graph/api/graphql")
             {
                 string httpContent = await request.Content.ReadAsStringAsync();
-                JObject jsonObject = JsonConvert.DeserializeObject<JObject>(httpContent);
+                var jsonObject = JsonConvert.DeserializeObject<JObject>(httpContent);
                 string queryName = (string)jsonObject.GetValue("operationName");
 
                 switch (queryName)
                 {
                     case "ModelGroupQuery":
-                        json = this.GetModelGroupQuery();
+                        json = GetModelGroupQuery();
                         break;
                     case "LoadModel":
-                        json = this.GetModelGroupLoad();
+                        json = GetModelGroupLoad();
                         break;
                     case "PredictModel":
-                        json = this.GetModelGroupPredict();
+                        json = GetModelGroupPredict();
                         break;
                     case "PdfExtraction":
-                        json = this.GetPdfExtraction();
+                        json = GetPdfExtraction();
                         break;
                     case "JobResult":
                     case "JobStatus":
-                        json = this.GetJob();
+                        json = GetJob();
                         break;
                     default:
                         return new HttpResponseMessage()
@@ -63,9 +60,7 @@ namespace Indico.Tests
             };
         }
 
-        string GetModelGroupQuery()
-        {
-            return @"
+        private string GetModelGroupQuery() => @"
             {
                 data: {
                     modelGroups: {
@@ -86,11 +81,8 @@ namespace Indico.Tests
                     }
                 }
             }";
-        }
 
-        string GetModelGroupLoad()
-        {
-            return @"
+        private string GetModelGroupLoad() => @"
             {
                 data: {
                     modelLoad: {
@@ -99,11 +91,8 @@ namespace Indico.Tests
                     }
                 }
             }";
-        }
 
-        string GetModelGroupPredict()
-        {
-            return @"
+        private string GetModelGroupPredict() => @"
             {
                 data: {
                     modelPredict: {
@@ -112,11 +101,8 @@ namespace Indico.Tests
                     }
                 }
             }";
-        }
 
-        string GetPdfExtraction()
-        {
-            return @"
+        private string GetPdfExtraction() => @"
             {
                 data: {
                     pdfExtraction: {
@@ -125,11 +111,8 @@ namespace Indico.Tests
                     }
                 }
             }";
-        }
 
-        string GetJob()
-        {
-            return @"
+        private string GetJob() => @"
             {
                 data: {
                     job: {
@@ -141,6 +124,5 @@ namespace Indico.Tests
                     }
                 }
             }";
-        }
     }
 }

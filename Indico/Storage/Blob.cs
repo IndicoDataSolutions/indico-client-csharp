@@ -6,30 +6,21 @@ namespace Indico.Storage
 {
     public class Blob
     {
-        Stream _data = null;
+        private readonly Stream _data = null;
 
         /// <summary>
         /// Blob constructor
         /// </summary>
         /// <param name="data"></param>
-        public Blob(Stream data)
-        {
-            this._data = data;
-        }
+        public Blob(Stream data) => _data = data;
 
-        public Blob(HttpResponseMessage response)
-        {
-            this._data = response.Content.ReadAsStreamAsync().Result;
-        }
+        public Blob(HttpResponseMessage response) => _data = response.Content.ReadAsStreamAsync().Result;
 
         /// <summary>
         /// Returns Blob as Stream
         /// </summary>
         /// <returns>Stream</returns>
-        public Stream AsStream()
-        {
-            return this._data;
-        }
+        public Stream AsStream() => _data;
 
         /// <summary>
         /// Returns Blob as string
@@ -37,7 +28,7 @@ namespace Indico.Storage
         /// <returns>string</returns>
         public string AsString()
         {
-            StreamReader reader = new StreamReader(this._data);
+            var reader = new StreamReader(_data);
             return reader.ReadToEndAsync().Result;
         }
 
@@ -47,7 +38,7 @@ namespace Indico.Storage
         /// <returns>JObject</returns>
         public JObject AsJSONObject()
         {
-            string jsonString = this.AsString();
+            string jsonString = AsString();
             return JObject.Parse(jsonString);
         }
 
@@ -57,7 +48,7 @@ namespace Indico.Storage
         /// <returns>JArray</returns>
         public JArray AsJSONArray()
         {
-            string jsonString = this.AsString();
+            string jsonString = AsString();
             return JArray.Parse(jsonString);
         }
     }

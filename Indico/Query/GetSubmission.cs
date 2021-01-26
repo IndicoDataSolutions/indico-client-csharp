@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
-    public class GetSubmission : Query<Submission>
+    public class GetSubmission : IQuery<Submission>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int Id { get; set; }
 
-        public GetSubmission(IndicoClient client) => this._client = client;
+        public GetSubmission(IndicoClient client) => _client = client;
 
         /// <summary>
         /// Queries the server and returns Submission
         /// </summary>
         /// <returns>Submission</returns>
-        async public Task<Submission> Exec()
+        public async Task<Submission> Exec()
         {
             string query = @"
                     query GetSubmission($submissionId: Int!){
@@ -36,17 +36,17 @@ namespace Indico.Query
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "GetSubmission",
                 Variables = new
                 {
-                    submissionId = this.Id
+                    submissionId = Id
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

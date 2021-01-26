@@ -4,11 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Indico;
 using Indico.Mutation;
 using Indico.Query;
-
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Converters;
@@ -20,10 +18,7 @@ namespace IndicoV2.V1Adapters.Submissions
     {
         private readonly IndicoClient _indicoClient;
 
-        public SubmissionsV1ClientAdapter(IndicoClient indicoClient)
-        {
-            _indicoClient = indicoClient;
-        }
+        public SubmissionsV1ClientAdapter(IndicoClient indicoClient) => _indicoClient = indicoClient;
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default)
         {
@@ -34,10 +29,7 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken)
         {

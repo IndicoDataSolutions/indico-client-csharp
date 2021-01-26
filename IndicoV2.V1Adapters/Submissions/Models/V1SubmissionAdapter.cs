@@ -4,14 +4,11 @@ using IndicoV2.V1Adapters.Converters;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {
-    public class V1SubmissionAdapter : ISubmission
+    internal class V1SubmissionAdapter : ISubmission
     {
         private readonly Indico.Entity.Submission _submissionLegacy;
 
-        public V1SubmissionAdapter(Indico.Entity.Submission submissionLegacy)
-        {
-            _submissionLegacy = submissionLegacy;
-        }
+        public V1SubmissionAdapter(Indico.Entity.Submission submissionLegacy) => _submissionLegacy = submissionLegacy;
 
         public int Id => _submissionLegacy.Id;
 
