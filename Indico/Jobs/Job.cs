@@ -16,7 +16,7 @@ namespace Indico.Jobs
     /// </summary>
     public class Job
     {
-        GraphQLHttpClient _graphQLHttpClient;
+        private readonly GraphQLHttpClient _graphQLHttpClient;
         
         /// <summary>
         /// The Job ID
@@ -30,11 +30,11 @@ namespace Indico.Jobs
         /// <param name="id">Job id</param>
         public Job(GraphQLHttpClient graphQLHttpClient, string id)
         {
-            this._graphQLHttpClient = graphQLHttpClient;
-            this.Id = id;
+            _graphQLHttpClient = graphQLHttpClient;
+            Id = id;
         }
 
-        async private Task<string> FetchResult()
+        private async Task<string> FetchResult()
         {
             string query = @"
                     query JobStatus($id: String!) {
@@ -47,7 +47,7 @@ namespace Indico.Jobs
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "JobStatus",
@@ -57,7 +57,7 @@ namespace Indico.Jobs
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request);
+            var response = await _graphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -65,7 +65,7 @@ namespace Indico.Jobs
 
             var job = response.Data.job;
             string status = (string)job.status;
-            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
+            var jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
             if (jobStatus != JobStatus.SUCCESS)
             {
                 throw new RuntimeException($"Job finished with status : {status}");
@@ -85,7 +85,7 @@ namespace Indico.Jobs
         /// Retrieve job status
         /// </summary>
         /// <returns>JobStatus</returns>
-        async public Task<JobStatus> Status()
+        public async Task<JobStatus> Status()
         {
             string query = @"
                     query JobStatus($id: String!) {
@@ -94,7 +94,7 @@ namespace Indico.Jobs
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "JobStatus",
@@ -104,14 +104,14 @@ namespace Indico.Jobs
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request);
+            var response = await _graphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             string status = (string)response.Data.job.status;
-            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
+            var jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), status);
             return jobStatus;
         }
 
@@ -119,14 +119,14 @@ namespace Indico.Jobs
         /// Retrieve result. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Object</returns>
-        async public Task<JObject> Result()
+        public async Task<JObject> Result()
         {
-            while (await this.Status() == JobStatus.PENDING)
+            while (await Status() == JobStatus.PENDING)
             {
                 await Task.Delay(1000);
             }
-            string result = await this.FetchResult();
-            JObject json = JsonConvert.DeserializeObject<JObject>(result);
+            string result = await FetchResult();
+            var json = JsonConvert.DeserializeObject<JObject>(result);
             return json;
         }
 
@@ -134,14 +134,14 @@ namespace Indico.Jobs
         /// Retrieve results. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Array</returns>
-        async public Task<JArray> Results()
+        public async Task<JArray> Results()
         {
-            while (await this.Status() == JobStatus.PENDING)
+            while (await Status() == JobStatus.PENDING)
             {
                await Task.Delay(1000);
             }
-            string result = await this.FetchResult();
-            JArray json = JsonConvert.DeserializeObject<JArray>(result);
+            string result = await FetchResult();
+            var json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }
 
@@ -149,10 +149,8 @@ namespace Indico.Jobs
         /// If job status is FAILURE returns the list of errors encoutered
         /// </summary>
         /// <returns>List of errors</returns>
-        public List<string> Errors()
-        {
+        public List<string> Errors() =>
             //TODO:
-            return new List<string>();
-        }
+            new List<string>();
     }
 }

@@ -10,12 +10,12 @@ namespace Indico.Tests.Mutation
     [TestClass]
     public class ModelGroupPredictTest
     {
-        GraphQLHttpClient _client;
+        private GraphQLHttpClient _client;
 
         [TestInitialize]
         public void Initialize()
         {
-            GraphQLHttpClientOptions options = new GraphQLHttpClientOptions()
+            var options = new GraphQLHttpClientOptions()
             {
                 EndPoint = new System.Uri("http://www.example.com/graph/api/graphql"),
                 HttpMessageHandler = new MockHttpHandler()
@@ -24,10 +24,10 @@ namespace Indico.Tests.Mutation
         }
 
         [TestMethod]
-        async public Task Test()
+        public async Task Test()
         {
-            ModelGroupPredict modelGroupPredict = new ModelGroupPredict(_client) { ModelId = 1 };
-            Job job = await modelGroupPredict.Data(new List<string>()).Exec();
+            var modelGroupPredict = new ModelGroupPredict(_client) { ModelId = 1 };
+            var job = await modelGroupPredict.Data(new List<string>()).Exec();
             Assert.AreEqual("jobId_test", job.Id);
         }
     }

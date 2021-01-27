@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -13,31 +14,27 @@ namespace Indico.Query
     /// <summary>
     /// Get a Model Group
     /// </summary>
-    public class ModelGroupQuery : Query<ModelGroup>
+    public class ModelGroupQuery : IQuery<ModelGroup>
     {
-
-        GraphQLHttpClient _graphQLHttpClient;
+        private readonly GraphQLHttpClient _graphQLHttpClient;
 
         /// <summary>
         /// Get/Set the Model Group ID
         /// </summary>
         /// <value>Model Group ID</value>
         public int MgId { get; set; }
-        
+
         /// <summary>
         /// Constructor for Model Group Queries
         /// </summary>
         /// <param name="graphQLHttpClient"></param>
-        public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient)
-        {
-            this._graphQLHttpClient = graphQLHttpClient;
-        }
+        public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
         /// Queries the server and returns ModelGroup
         /// </summary>
         /// <returns>ModelGroup</returns>
-        async public Task<ModelGroup> Exec()
+        public async Task<ModelGroup> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     query ModelGroupQuery($modelGroupIds: [Int]!) {
@@ -55,17 +52,17 @@ namespace Indico.Query
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "ModelGroupQuery",
                 Variables = new
                 {
-                    modelGroupIds = this.MgId
+                    modelGroupIds = MgId
                 }
             };
 
-            GraphQLResponse response = await this._graphQLHttpClient.SendQueryAsync(request);
+            var response = await this._graphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -74,11 +71,11 @@ namespace Indico.Query
             var modelGroupList = response.Data.modelGroups.modelGroups;
             if (modelGroupList.Count == 0)
             {
-                throw new RuntimeException($"Cannot find the default selected model for model group : {this.MgId}");
+                throw new RuntimeException($"Cannot find the default selected model for model group : {MgId}");
             }
 
             JToken mg = modelGroupList[0];
-            JToken model = mg.Value<JToken>("selectedModel");
+            var model = mg.Value<JToken>("selectedModel");
 
             return new ModelGroup()
             {

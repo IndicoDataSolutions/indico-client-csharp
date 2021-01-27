@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Indico.Mutation
 {
-    public class WorkflowSubmission : WorkflowSubmissionBase, Mutation<List<int>>
+    public class WorkflowSubmission : WorkflowSubmissionBase, IMutation<List<int>>
     {
         /// <summary>
         /// Workflow Id
@@ -23,16 +25,12 @@ namespace Indico.Mutation
 
         public WorkflowSubmission(IndicoClient client) : base(client) { }
 
-        public async Task<List<int>> Exec()
+        public async Task<List<int>> Exec(CancellationToken cancellationToken = default)
         {
-            JObject response = await base.Exec();
-            JArray ids = (JArray)response.GetValue("submissionIds");
+            var response = await base.Exec(cancellationToken);
+            var ids = (JArray)response.GetValue("submissionIds");
 
-            List<int> submissionIds = new List<int>();
-            foreach (JToken submissionId in ids)
-                submissionIds.Add((int)submissionId);
-
-            return submissionIds;
+            return ids.Select(submissionId => (int)submissionId).ToList();
         }
     }
 }

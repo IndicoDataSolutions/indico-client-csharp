@@ -5,19 +5,20 @@ using Indico.Exception;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Query
 {
-    public class ListWorkflows : Query<List<Workflow>>
+    public class ListWorkflows : IQuery<List<Workflow>>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public List<int> DatasetIds { get; set; }
         public List<int> WorkflowIds { get; set; }
 
-        public ListWorkflows(IndicoClient client) => this._client = client;
+        public ListWorkflows(IndicoClient client) => _client = client;
 
-        public async Task<List<Workflow>> Exec()
+        public async Task<List<Workflow>> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     query ListWorkflows($datasetIds: [Int], $workflowIds:[Int]){
@@ -30,25 +31,25 @@ namespace Indico.Query
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "ListWorkflows",
                 Variables = new
                 {
-                    datasetIds = this.DatasetIds,
-                    workflowIds = this.WorkflowIds
+                    datasetIds = DatasetIds,
+                    workflowIds = WorkflowIds
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             JArray wfs = response.Data.workflows.workflows;
-            List<Workflow> workflows = wfs.Select(workflow => new Workflow()
+            var workflows = wfs.Select(workflow => new Workflow()
             {
                 Id = workflow.Value<int>("id"),
                 Name = workflow.Value<string>("name"),
