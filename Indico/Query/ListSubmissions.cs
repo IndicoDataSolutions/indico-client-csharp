@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
-    public class ListSubmissions : Query<List<Submission>>
+    public class ListSubmissions : IQuery<List<Submission>>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public List<int> SubmissionIds { get; set; }
         public List<int> WorkflowIds { get; set; }
         public SubmissionFilter Filters { get; set; } = new SubmissionFilter();
         public int Limit { get; set; } = 1000;
 
-        public ListSubmissions(IndicoClient client) => this._client = client;
+        public ListSubmissions(IndicoClient client) => _client = client;
 
-        async public Task<List<Submission>> Exec()
+        public async Task<List<Submission>> Exec()
         {
             string query = @"
                     query ListSubmissions(
@@ -48,27 +48,27 @@ namespace Indico.Query
                         }
                     }
                 ";
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "ListSubmissions",
                 Variables = new
                 {
-                    submissionIds = this.SubmissionIds,
-                    workflowIds = this.WorkflowIds,
-                    filters = this.Filters.ToAnonymousType(),
-                    limit = this.Limit
+                    submissionIds = SubmissionIds,
+                    workflowIds = WorkflowIds,
+                    filters = Filters.ToAnonymousType(),
+                    limit = Limit
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendQueryAsync(request);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
-            JArray subs = (JArray)response.Data.submissions.submissions;
-            List<Submission> submissions = subs.Select(submission => new Submission()
+            var subs = (JArray)response.Data.submissions.submissions;
+            var submissions = subs.Select(submission => new Submission()
             {
                 Id = submission.Value<int>("id"),
                 DatasetId = submission.Value<int>("datasetId"),

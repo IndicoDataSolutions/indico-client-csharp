@@ -10,9 +10,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
-    public class WorkflowSubmissionBase : Mutation<JObject>
+    public class WorkflowSubmissionBase : IMutation<JObject>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         /// <summary>
         /// Workflow Id
         /// </summary>
@@ -27,7 +27,7 @@ namespace Indico.Mutation
         public virtual List<string> Urls { get; set; }
         protected virtual bool Detailed { get; set; }
 
-        protected WorkflowSubmissionBase(IndicoClient client) => this._client = client;
+        protected WorkflowSubmissionBase(IndicoClient client) => _client = client;
 
         /// <summary>
         /// Executes request and returns Job
@@ -40,10 +40,10 @@ namespace Indico.Mutation
                 throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
             }
 
-            List<object> files = new List<object>();
+            var files = new List<object>();
             string arg, type, mutationName;
 
-            if(this.Files != null || this.Streams != null)
+            if(Files != null || Streams != null)
             {
                 arg = "files";
                 type = "[FileInput]!";
@@ -51,26 +51,26 @@ namespace Indico.Mutation
 
                 JArray fileMetadata;
 
-                if (this.Files != null)
+                if (Files != null)
                 {
-                    UploadFile uploadRequest = new UploadFile(this._client)
+                    var uploadRequest = new UploadFile(_client)
                     {
-                        Files = this.Files
+                        Files = Files
                     };
                     fileMetadata = await uploadRequest.Call();
                 }
                 else
                 {
-                    UploadStream uploadRequest = new UploadStream(this._client)
+                    var uploadRequest = new UploadStream(_client)
                     {
-                        Streams = this.Streams
+                        Streams = Streams
                     };
                     fileMetadata = await uploadRequest.Call();
                 }
 
                 foreach (JObject uploadMeta in fileMetadata)
                 {
-                    JObject meta = new JObject
+                    var meta = new JObject
                     {
                         { "name", uploadMeta.Value<string>("name") },
                         { "path", uploadMeta.Value<string>("path") },
@@ -121,19 +121,19 @@ namespace Indico.Mutation
                     }}
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
-                Query = this.Detailed ? queryDetailed : query,
+                Query = Detailed ? queryDetailed : query,
                 OperationName = "WorkflowSubmission",
                 Variables = new
                 {
-                    workflowId = this.WorkflowId,
+                    workflowId = WorkflowId,
                     files = files,
-                    urls = this.Urls
+                    urls = Urls
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
