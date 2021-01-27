@@ -35,11 +35,8 @@ namespace Indico.Mutation
                 }
             };
 
-<<<<<<< HEAD
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
-=======
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
->>>>>>> master
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
