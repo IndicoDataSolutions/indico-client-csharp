@@ -8,24 +8,58 @@ using IndicoV2.Submissions.Models;
 namespace IndicoV2.Submissions
 {
     /// <summary>
-    /// Client responsible for creating and listing <seealso cref="ISubmission"/>.
+    /// <c>ISubmissionClient</c> defines all operations on <c><see cref="ISubmission">ISubmission</see></c>.
     /// </summary>
     public interface ISubmissionsClient
     {
         /// <summary>
-        /// Submits new FileStreams to the workflow.
+        /// Method creates <c><see cref="ISubmission"/></c>.
         /// </summary>
-        /// <returns>List of created <see cref="ISubmission"/>.Ids</returns>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="streams"><c><see cref="Stream">Stream array</see></c> to create submissions from.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default);
-        
+
         /// <summary>
-        /// Submits files to the workflow.
+        /// Method creates <c><see cref="ISubmission"/></c>.
         /// </summary>
-        /// <returns>List of created <see cref="ISubmission"/>.Ids</returns>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="uris"><c><see cref="Uri">Uri array</see></c> to create submissions from.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
+        Task<IEnumerable<int>> CreateAsync(int workflowId, Uri[] uris, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Method creates <c><see cref="ISubmission"/></c>.
+        /// </summary>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="paths">Filepaths array to create submissions from.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}"/></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Method lists <c><see cref="ISubmission"/></c>.
+        /// </summary>
+        /// <param name="submissionIds">Submissions ids.</param>
+        /// <param name="workflowIds">Workflows ids.</param>
+        /// <param name="filters">Submission filter. Use <c><see cref="SubmissionFilter"/></c> or composite filters with <c><see cref="AndFilter"/></c> and <c><see cref="OrFilter"/></c></param>
+        /// <param name="limit">Limit of returned submissions. Default value is 1000.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}"/></c> of <c><see cref="ISubmission"/></c></returns>
+        Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Method gets certain <c><see cref="ISubmission"/></c>.
+        /// </summary>
+        /// <param name="submissionId">Submission id.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <returns><c><see cref="ISubmission"/></c> with provided id.</returns>
+        Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
+        
+        Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
         
         Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
-        Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
-        Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
     }
 }
