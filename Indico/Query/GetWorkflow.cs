@@ -1,6 +1,7 @@
 ﻿using Indico.Entity;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Query
@@ -12,14 +13,14 @@ namespace Indico.Query
 
         public GetWorkflow(IndicoClient client) => _client = client;
 
-        public async Task<Workflow> Exec()
+        public async Task<Workflow> Exec(CancellationToken cancellationToken = default)
         {
             var listWorkflows = new ListWorkflows(_client)
             {
                 WorkflowIds = new List<int> { WorkflowId }
             };
 
-            var workflows = await listWorkflows.Exec();
+            var workflows = await listWorkflows.Exec(cancellationToken);
             if (workflows.Count != 0)
             {
                 return workflows[0];

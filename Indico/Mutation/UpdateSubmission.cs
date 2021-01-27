@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -17,7 +18,7 @@ namespace Indico.Mutation
 
         public UpdateSubmission(IndicoClient client) => _client = client;
 
-        public async Task<Submission> Exec()
+        public async Task<Submission> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation UpdateSubmission($submissionId: Int!, $retrieved: Boolean) {
@@ -45,7 +46,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

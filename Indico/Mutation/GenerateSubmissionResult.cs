@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using Indico.Exception;
@@ -14,7 +15,7 @@ namespace Indico.Mutation
 
         public GenerateSubmissionResult(IndicoClient client) => _client = client;
 
-        public async Task<Job> Exec()
+        public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation CreateSubmissionResults($submissionId: Int!) {
@@ -34,7 +35,8 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

@@ -5,6 +5,7 @@ using Indico.Exception;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Query
@@ -17,7 +18,7 @@ namespace Indico.Query
 
         public ListWorkflows(IndicoClient client) => _client = client;
 
-        public async Task<List<Workflow>> Exec()
+        public async Task<List<Workflow>> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     query ListWorkflows($datasetIds: [Int], $workflowIds:[Int]){

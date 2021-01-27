@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -39,7 +40,7 @@ namespace Indico.Mutation
             return arr;
         }
 
-        private async Task<GraphQLResponse> ExecRequest()
+        private async Task<GraphQLResponse> ExecRequest(CancellationToken cancellationToken = default)
         {
             JArray fileMetadata;
             var files = new List<object>();
@@ -90,9 +91,9 @@ namespace Indico.Mutation
         /// Executes OCR and returns Jobs
         /// <returns>List of Jobs</returns>
         /// </summary>
-        public async Task<List<Job>> Exec()
+        public async Task<List<Job>> Exec(CancellationToken cancellationToken = default)
         {
-            var response = await ExecRequest();
+            var response = await ExecRequest(cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
