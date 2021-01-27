@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
-    public class SubmitReview : Mutation<Job>
+    public class SubmitReview : IMutation<Job>
     {
         IndicoClient _client;
         public int SubmissionId { get; set; }
