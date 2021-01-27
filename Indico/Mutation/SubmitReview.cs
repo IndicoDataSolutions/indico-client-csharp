@@ -12,18 +12,20 @@ namespace Indico.Mutation
 {
     public class SubmitReview : IMutation<Job>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
         public JObject Changes { get; set; }
         public bool Rejected { get; set; } = false;
         public bool? ForceComplete { get; set; }
 
-        public SubmitReview(IndicoClient client) => this._client = client;
+        public SubmitReview(IndicoClient client) => _client = client;
 
-        async public Task<Job> Exec()
+        public async Task<Job> Exec()
         {
             if (Changes == null && !Rejected)
+            {
                 throw new RuntimeException("Must provide Changes or Reject=true");
+            }
 
             var args = new Dictionary<string, string>
             {
@@ -61,7 +63,7 @@ namespace Indico.Mutation
                 Variables = vars
             };
 
-            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -70,7 +72,7 @@ namespace Indico.Mutation
             var submitAutoReview = response.Data.submitAutoReview;
             var jobId = (string)submitAutoReview.jobId;
 
-            return new Job(this._client.GraphQLHttpClient, jobId);
+            return new Job(_client.GraphQLHttpClient, jobId);
         }
     }
 }
