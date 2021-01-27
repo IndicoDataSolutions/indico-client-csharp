@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Query;
@@ -26,7 +25,7 @@ namespace Indico.Mutation
             while(!StatusCheck(submission.Status))
             {
                 submission = await getSubmission.Exec(cancellationToken);
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
 
             if (!StatusCheck(submission.Status))
