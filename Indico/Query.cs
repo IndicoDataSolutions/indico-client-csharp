@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Indico
 {
-    interface Query<T>
+    internal interface IQuery<T>
     {
         /// <summary>
         /// Execute the graphql query and returns the results as a specific type

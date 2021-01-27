@@ -8,12 +8,12 @@ namespace Indico.Tests.Mutation
     [TestClass]
     public class ModelGroupQueryTest
     {
-        GraphQLHttpClient _client;
+        private GraphQLHttpClient _client;
 
         [TestInitialize]
         public void Initialize()
         {
-            GraphQLHttpClientOptions options = new GraphQLHttpClientOptions()
+            var options = new GraphQLHttpClientOptions()
             {
                 EndPoint = new System.Uri("http://www.example.com/graph/api/graphql"),
                 HttpMessageHandler = new MockHttpHandler()
@@ -22,9 +22,9 @@ namespace Indico.Tests.Mutation
         }
 
         [TestMethod]
-        async public Task Test()
+        public async Task Test()
         {
-            ModelGroupLoad modelGroupLoad = new ModelGroupLoad(_client) { ModelId = 1 };
+            var modelGroupLoad = new ModelGroupLoad(_client) { ModelId = 1 };
             string status = await modelGroupLoad.Exec();
             Assert.AreEqual("loading", status);
         }

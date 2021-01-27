@@ -8,14 +8,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
-    public class GenerateSubmissionResult : Mutation<Job>
+    public class GenerateSubmissionResult : IMutation<Job>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
 
-        public GenerateSubmissionResult(IndicoClient client) => this._client = client;
+        public GenerateSubmissionResult(IndicoClient client) => _client = client;
 
-        async public Task<Job> Exec(CancellationToken cancellationToken = default)
+        public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation CreateSubmissionResults($submissionId: Int!) {
@@ -25,17 +25,21 @@ namespace Indico.Mutation
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "CreateSubmissionResults",
                 Variables = new
                 {
-                    submissionId = this.SubmissionId
+                    submissionId = SubmissionId
                 }
             };
 
+<<<<<<< HEAD
             GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+=======
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
+>>>>>>> master
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -43,7 +47,7 @@ namespace Indico.Mutation
 
             JObject submissionResults = response.Data.submissionResults;
             string jobId = submissionResults.Value<string>("jobId");
-            return new Job(this._client.GraphQLHttpClient, jobId);
+            return new Job(_client.GraphQLHttpClient, jobId);
         }
     }
 }

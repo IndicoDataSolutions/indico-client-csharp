@@ -11,9 +11,9 @@ namespace Indico.Query
     /// <summary>
     /// Find the % complete of a training Model Group
     /// </summary>
-    public class TrainingModelWithProgressQuery : Query<JArray>
+    public class TrainingModelWithProgressQuery : IQuery<JArray>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
 
         /// <summary>
         /// Get/Set the Model ID (Often, the Selected Model ID for a Model Group)
@@ -24,18 +24,15 @@ namespace Indico.Query
         /// Find the % complete of a training Model Group
         /// </summary>
         /// <param name="client">Indico Client</param>
-        public TrainingModelWithProgressQuery(IndicoClient client)
-        {
-            this._client = client;
-        }
+        public TrainingModelWithProgressQuery(IndicoClient client) => _client = client;
 
         /// <summary>
         /// Query a Model Group for training % complete
         /// </summary>
         /// <returns>JObject with % training complete</returns>
-        async public Task<JArray> Exec(CancellationToken cancellationToken = default)
+        public async Task<JArray> Exec(CancellationToken cancellationToken = default)
         {
-            GraphQLHttpClient graphQLHttpClient = this._client.GraphQLHttpClient;
+            var graphQLHttpClient = _client.GraphQLHttpClient;
             string query = @"
                     query ModelGroupProgressQuery($id: Int) {
                         modelGroups(modelGroupIds: [$id]) {
@@ -52,17 +49,17 @@ namespace Indico.Query
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "ModelGroupProgressQuery",
                 Variables = new
                 {
-                    id = this.ModelId
+                    id = ModelId
                 }
             };
 
-            GraphQLResponse response = await graphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await graphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

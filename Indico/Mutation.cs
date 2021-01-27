@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Indico
 {
-    interface Mutation<T>
+    internal interface IMutation<T>
     {
         /// <summary>
         /// Execute the graphql query and returns the results as a specific type

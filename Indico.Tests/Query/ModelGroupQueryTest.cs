@@ -9,12 +9,12 @@ namespace Indico.Tests.Query
     [TestClass]
     public class ModelGroupQueryTest
     {
-        GraphQLHttpClient _client;
+        private GraphQLHttpClient _client;
 
         [TestInitialize]
         public void Initialize()
         {
-            GraphQLHttpClientOptions options = new GraphQLHttpClientOptions()
+            var options = new GraphQLHttpClientOptions()
             {
                 EndPoint = new System.Uri("http://www.example.com/graph/api/graphql"),
                 HttpMessageHandler = new MockHttpHandler()
@@ -23,10 +23,10 @@ namespace Indico.Tests.Query
         }
 
         [TestMethod]
-        async public Task Test()
+        public async Task Test()
         {
-            ModelGroupQuery modelGroupQuery = new ModelGroupQuery(_client) { MgId = 1 };
-            Entity.ModelGroup modelGroup = await modelGroupQuery.Exec();
+            var modelGroupQuery = new ModelGroupQuery(_client) { MgId = 1 };
+            var modelGroup = await modelGroupQuery.Exec();
             Assert.AreEqual(1, modelGroup.Id);
             Assert.AreEqual("testModelGroup", modelGroup.Name);
             Assert.AreEqual(ModelStatus.COMPLETE, modelGroup.Status);

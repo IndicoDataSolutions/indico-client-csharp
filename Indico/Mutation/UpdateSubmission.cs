@@ -10,15 +10,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
-    public class UpdateSubmission : Mutation<Submission>
+    public class UpdateSubmission : IMutation<Submission>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
         public bool Retrieved { get; set; }
 
-        public UpdateSubmission(IndicoClient client) => this._client = client;
+        public UpdateSubmission(IndicoClient client) => _client = client;
 
-        async public Task<Submission> Exec(CancellationToken cancellationToken = default)
+        public async Task<Submission> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation UpdateSubmission($submissionId: Int!, $retrieved: Boolean) {
@@ -35,18 +35,18 @@ namespace Indico.Mutation
                     }
                 ";
 
-            GraphQLRequest request = new GraphQLRequest()
+            var request = new GraphQLRequest()
             {
                 Query = query,
                 OperationName = "UpdateSubmission",
                 Variables = new
                 {
-                    submissionId = this.SubmissionId,
-                    retrieved = this.Retrieved   
+                    submissionId = SubmissionId,
+                    retrieved = Retrieved   
                 }
             };
 
-            GraphQLResponse response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

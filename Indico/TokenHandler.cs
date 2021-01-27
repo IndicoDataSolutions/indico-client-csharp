@@ -7,26 +7,23 @@ using Newtonsoft.Json;
 
 namespace Indico
 {
-    class TokenHandler : DelegatingHandler
+    internal class TokenHandler : DelegatingHandler
     {
-        string _apiToken;
+        private readonly string _apiToken;
 
-        public TokenHandler(string apiToken, HttpMessageHandler innerHandler) : base(innerHandler)
-        {
-            this._apiToken = apiToken;
-        }
+        public TokenHandler(string apiToken, HttpMessageHandler innerHandler) : base(innerHandler) => _apiToken = apiToken;
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken);
             if (response.IsSuccessStatusCode)
             {
                 return response;
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                HttpContent httpContent = request.Content;
-                System.Uri requestUri = request.RequestUri;
+                var httpContent = request.Content;
+                var requestUri = request.RequestUri;
                 string token = await GetToken(request, cancellationToken);
                 request.Content = httpContent;
                 request.RequestUri = requestUri;
@@ -40,18 +37,18 @@ namespace Indico
             }
         }
 
-        async Task<string> GetToken(HttpRequestMessage request, CancellationToken cancellationToken)
+        private async Task<string> GetToken(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string endpoint = request.RequestUri.GetLeftPart(System.UriPartial.Authority);
             request.RequestUri = new System.Uri($"{endpoint}/auth/users/refresh_token");
             request.Content = null;
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this._apiToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiToken);
 
-            HttpResponseMessage httpResponseMessage = await base.SendAsync(request, cancellationToken);
+            var httpResponseMessage = await base.SendAsync(request, cancellationToken);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 string json = await httpResponseMessage.Content.ReadAsStringAsync();
-                Response response = JsonConvert.DeserializeObject<Response>(json);
+                var response = JsonConvert.DeserializeObject<Response>(json);
                 return response.Token;
             }
             else
@@ -60,7 +57,7 @@ namespace Indico
             }
         }
 
-        class Response
+        private class Response
         {
             [JsonProperty("auth_token")]
             public string Token { get; set; }

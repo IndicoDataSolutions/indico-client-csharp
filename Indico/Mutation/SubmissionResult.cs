@@ -8,21 +8,21 @@ using Indico.Types;
 
 namespace Indico.Mutation
 {
-    public class SubmissionResult : Mutation<Job>
+    public class SubmissionResult : IMutation<Job>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
         public SubmissionStatus? CheckStatus { get; set; }
 
-        public SubmissionResult(IndicoClient client) => this._client = client;
+        public SubmissionResult(IndicoClient client) => _client = client;
 
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
-            GetSubmission getSubmission = new GetSubmission(this._client)
+            var getSubmission = new GetSubmission(_client)
             {
-                Id = this.SubmissionId
+                Id = SubmissionId
             };
-            Submission submission = await getSubmission.Exec(cancellationToken);
+            var submission = await getSubmission.Exec(cancellationToken);
             while(!StatusCheck(submission.Status))
             {
                 submission = await getSubmission.Exec(cancellationToken);
@@ -34,19 +34,19 @@ namespace Indico.Mutation
                 throw new RuntimeException($"Submission {submission.Id} does not meet status requirements");
             }
 
-            GenerateSubmissionResult generateSubmissionResult = new GenerateSubmissionResult(this._client)
+            var generateSubmissionResult = new GenerateSubmissionResult(_client)
             {
                 SubmissionId = submission.Id
             };
-            Job job = await generateSubmissionResult.Exec();
+            var job = await generateSubmissionResult.Exec();
             return job;
         }
 
-        bool StatusCheck(SubmissionStatus status)
+        private bool StatusCheck(SubmissionStatus status)
         {
-            if(this.CheckStatus != null)
+            if(CheckStatus != null)
             {
-                return status.Equals(this.CheckStatus);
+                return status.Equals(CheckStatus);
             }
             return !status.Equals(SubmissionStatus.PROCESSING);
         }
