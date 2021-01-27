@@ -10,7 +10,9 @@ namespace IndicoV2.V1Adapters.Converters
         public static v1SubmissionStatus? ConvertToLegacy(this v2SubmissionStatus? status)
         {
             if (!status.HasValue)
+            {
                 return null;
+            }
 
             if (!Enum.TryParse(status.ToString(), out v1SubmissionStatus parsed))
             {
