@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Indico.Entity;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Query;
