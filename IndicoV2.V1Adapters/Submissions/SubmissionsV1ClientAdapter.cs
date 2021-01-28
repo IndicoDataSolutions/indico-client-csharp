@@ -19,7 +19,7 @@ namespace IndicoV2.V1Adapters.Submissions
 
         public SubmissionsV1ClientAdapter(IndicoClient indicoClient) => _indicoClient = indicoClient;
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, Stream[] streams, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) { Streams = streams.ToList(), WorkflowId = workflowId };
             // TODO: handle cancellation token
@@ -28,7 +28,7 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, string[] paths, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) {WorkflowId = workflowId, Files = paths.ToList()};
             var submissionIds = await submissionMutation.Exec();
