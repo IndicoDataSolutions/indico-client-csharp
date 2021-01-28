@@ -21,6 +21,14 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
             return submission;
         }
 
+        public async Task<(int workflowId, int submissionId)> ListAnyAsync(Stream content = null)
+        {
+            var workflow = await _workflowHelper.GetAnyWorkflow();
+            var submissionIds = await _submissions.CreateAsync(workflow.Id, new[] { content ?? new MemoryStream() });
+
+            return (workflow.Id, submissionIds.First());
+        }
+
         public SubmissionHelper(WorkflowHelper workflowHelper, ISubmissionsClient submissions)
         {
             _workflowHelper = workflowHelper;
