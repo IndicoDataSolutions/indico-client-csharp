@@ -1,1 +1,1 @@
-# Please read [the API documentation](/api/README.html)
+# [API documentation](api/README.html)

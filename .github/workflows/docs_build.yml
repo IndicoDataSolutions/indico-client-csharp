@@ -1,8 +1,8 @@
 name: Build DocFX documentation
 
 on:
-  pull_request:
-    branches: [ master, develop ]
+  push:
+    branches: [ master ]
 
 jobs:
   build:
