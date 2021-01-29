@@ -1,6 +1,7 @@
 ﻿using System;
 using Indico;
 using IndicoV2.DataSets;
+using IndicoV2.Reviews;
 using IndicoV2.Submissions;
 using IndicoV2.Workflows;
 using Unity;
@@ -22,9 +23,11 @@ namespace IndicoV2.IntegrationTests.Utils
                 host: new Uri(BaseUrl).Host)));
             container.RegisterFactory<V2Client>(c => new V2Client(ApiToken, new Uri(BaseUrl)));
             container.RegisterType<IIndicoClient, V2Client>();
+            
             container.RegisterFactory<IDataSetClient>(c => c.Resolve<V2Client>().DataSets());
             container.RegisterFactory<IWorkflowsClient>(c => c.Resolve<V2Client>().Workflows());
             container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<V2Client>().Submissions());
+            container.RegisterFactory<IReviewsClient>(c => c.Resolve<V2Client>().Reviews());
 
             return container;
         }
