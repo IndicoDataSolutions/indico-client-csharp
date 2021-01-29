@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
@@ -43,7 +44,7 @@ namespace Indico.Mutation
         /// Executes request and returns job 
         /// </summary>
         /// <returns>Job</returns>
-        public async Task<Job> Exec()
+        public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             string query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
@@ -64,7 +65,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _graphQLHttpClient.SendMutationAsync(request);
+            var response = await this._graphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

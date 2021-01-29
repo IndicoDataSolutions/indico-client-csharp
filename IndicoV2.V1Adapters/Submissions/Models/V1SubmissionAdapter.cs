@@ -1,5 +1,6 @@
 ﻿using System;
 using IndicoV2.Submissions.Models;
+using IndicoV2.V1Adapters.Converters;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {
@@ -11,20 +12,20 @@ namespace IndicoV2.V1Adapters.Submissions.Models
 
         public int Id => _submissionLegacy.Id;
 
-        public SubmissionStatus Status
-        {
-            get {
-                switch (_submissionLegacy.Status)
-                {
-                    case Indico.Types.SubmissionStatus.PROCESSING: return SubmissionStatus.PROCESSING;
-                    case Indico.Types.SubmissionStatus.FAILED: return SubmissionStatus.FAILED;
-                    case Indico.Types.SubmissionStatus.COMPLETE: return SubmissionStatus.COMPLETE;
-                    case Indico.Types.SubmissionStatus.PENDING_ADMIN_REVIEW: return SubmissionStatus.PENDING_ADMIN_REVIEW;
-                    case Indico.Types.SubmissionStatus.PENDING_REVIEW: return SubmissionStatus.PENDING_REVIEW;
+        public SubmissionStatus Status => _submissionLegacy.Status.ConvertFromLegacy();
 
-                    default: throw new NotImplementedException();
-                }
-            }
-        }
+        public int DatasetId => _submissionLegacy.DatasetId;
+
+        public int WorkflowId => _submissionLegacy.WorkflowId;
+
+        public string InputFile => _submissionLegacy.InputFile;
+
+        public string InputFilename => _submissionLegacy.InputFilename;
+
+        public string ResultFile => _submissionLegacy.ResultFile;
+
+        public bool Retrieved => _submissionLegacy.Retrieved;
+
+        public string Errors => _submissionLegacy.Errors;
     }
 }

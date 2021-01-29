@@ -24,7 +24,7 @@ namespace IndicoV2.V1Adapters.Workflows
             var workflows = await new ListWorkflows(_indicoClientLegacy)
             {
                 DatasetIds = dataSetIds.ToList()
-            }.Exec();
+            }.Exec(cancellationToken);
 
             return workflows.Select(wf => new V1WorkflowAdapter(wf));
         }
