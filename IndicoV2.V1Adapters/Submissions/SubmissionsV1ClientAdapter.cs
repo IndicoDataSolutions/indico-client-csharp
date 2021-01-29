@@ -24,7 +24,7 @@ namespace IndicoV2.V1Adapters.Submissions
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) { Streams = streams.ToList(), WorkflowId = workflowId };
             // TODO: handle cancellation token
-            var submissionIds = await submissionMutation.Exec();
+            var submissionIds = await submissionMutation.Exec(cancellationToken);
 
             return submissionIds;
         }
@@ -34,7 +34,7 @@ namespace IndicoV2.V1Adapters.Submissions
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) { WorkflowId = workflowId, Files = paths.ToList() };
-            var submissionIds = await submissionMutation.Exec();
+            var submissionIds = await submissionMutation.Exec(cancellationToken);
 
             return submissionIds;
         }
@@ -48,27 +48,27 @@ namespace IndicoV2.V1Adapters.Submissions
                 Limit = limit
             };
 
-            var submissions = await listSubmissionQuery.Exec();
+            var submissions = await listSubmissionQuery.Exec(cancellationToken);
 
             return submissions.Select(s => new V1SubmissionAdapter(s));
         }
 
         public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
         {
-            var submission = await new GetSubmission(_indicoClient) { Id = submissionId }.Exec();
+            var submission = await new GetSubmission(_indicoClient) { Id = submissionId }.Exec(cancellationToken);
             return new V1SubmissionAdapter(submission);
         }
 
-        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken)
+        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default)
         {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec();
+            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
 
             return new V1JobAdapter(job);
         }
 
-        public async Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken)
+        public async Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default)
         {
-            var job = await new SubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec();
+            var job = await new SubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
             // TODO: handle cancellation token
 
             return new V1JobAdapter(job);
