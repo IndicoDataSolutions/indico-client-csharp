@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Query;
@@ -16,17 +15,17 @@ namespace Indico.Mutation
 
         public SubmissionResult(IndicoClient client) => _client = client;
 
-        public async Task<Job> Exec()
+        public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             var getSubmission = new GetSubmission(_client)
             {
                 Id = SubmissionId
             };
-            var submission = await getSubmission.Exec();
+            var submission = await getSubmission.Exec(cancellationToken);
             while(!StatusCheck(submission.Status))
             {
-                submission = await getSubmission.Exec();
-                Thread.Sleep(1000);
+                submission = await getSubmission.Exec(cancellationToken);
+                await Task.Delay(1000);
             }
 
             if (!StatusCheck(submission.Status))

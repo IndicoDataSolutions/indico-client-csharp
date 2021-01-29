@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
@@ -29,7 +30,7 @@ namespace Indico.Query
         /// Query a Model Group for training % complete
         /// </summary>
         /// <returns>JObject with % training complete</returns>
-        public async Task<JArray> Exec()
+        public async Task<JArray> Exec(CancellationToken cancellationToken = default)
         {
             var graphQLHttpClient = _client.GraphQLHttpClient;
             string query = @"
@@ -58,7 +59,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await graphQLHttpClient.SendQueryAsync(request);
+            var response = await graphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
