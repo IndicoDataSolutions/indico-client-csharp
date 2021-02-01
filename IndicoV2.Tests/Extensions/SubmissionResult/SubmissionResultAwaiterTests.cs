@@ -49,7 +49,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             jobsClientMock
                 .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobStatus);
-            jobsClientMock.Setup(cli => cli.GetResult(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
+            jobsClientMock.Setup(cli => cli.GetResultAsync(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
@@ -74,11 +74,12 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 
             var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
             jobsClientMock
-                .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
+                .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
             jobsClientMock
-                .Setup(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
+                .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JobStatus.SUCCESS);
+            jobsClientMock.Setup(cli => cli.GetResultAsync(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test""}"));
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
@@ -110,6 +111,9 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 .SetupSequence(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JobStatus.PENDING)
                 .ReturnsAsync(JobStatus.FAILURE);
+            jobsClientMock
+                .Setup(cli => cli.GetResultAsync(jobId))
+                .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test"" }"));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
@@ -118,7 +122,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             // Assert
             jobsClientMock.Verify(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()), Times.Once);
             jobsClientMock.Verify(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Exactly(2));
-            jobsClientMock.Verify(j => j.GetResult(jobId), Times.Once);
+            jobsClientMock.Verify(j => j.GetResultAsync(jobId), Times.Once);
             jobsClientMock.VerifyNoOtherCalls();
         }
 

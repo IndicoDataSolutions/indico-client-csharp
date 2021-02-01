@@ -50,7 +50,7 @@ namespace IndicoV2.Extensions.SubmissionResult
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var jobResultJson = await _jobsClient.GetResult(jobId);
+            var jobResultJson = await _jobsClient.GetResultAsync(jobId);
             var jobResult = _jobResultBuilder.GetSubmissionJobResult((JObject)jobResultJson);
 
             return jobResult;

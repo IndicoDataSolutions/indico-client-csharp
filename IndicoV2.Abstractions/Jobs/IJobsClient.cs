@@ -31,6 +31,6 @@ namespace IndicoV2.Jobs
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        Task<JToken> GetResult(string jobId);
+        Task<JToken> GetResultAsync(string jobId);
     }
 }

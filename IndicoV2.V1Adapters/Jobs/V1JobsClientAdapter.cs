@@ -29,7 +29,7 @@ namespace IndicoV2.V1Adapters.Jobs
             return job.Id;
         }
 
-        public async Task<JToken> GetResult(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
+        public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
 
         public async Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken) =>
             _jobStatusConverter.Map(await new Job(_indicoClient.GraphQLHttpClient, jobId).Status());
