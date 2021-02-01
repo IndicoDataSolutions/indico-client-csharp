@@ -38,7 +38,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         {
             // Arrange
             const int submissionId = 1;
-            var jobId = Guid.NewGuid();
+            var jobId = Guid.NewGuid().ToString();
             _fixture.Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));
@@ -65,7 +65,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         {
             // Arrange
             const int submissionId = 1;
-            var jobId = Guid.NewGuid();
+            var jobId = Guid.NewGuid().ToString();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             submissionClientMock
                 .SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
@@ -96,7 +96,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         {
             // Arrange
             const int submissionId = 1;
-            var jobId = Guid.NewGuid();
+            var jobId = Guid.NewGuid().ToString();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             submissionClientMock
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))

@@ -22,17 +22,17 @@ namespace IndicoV2.V1Adapters.Jobs
             _jobStatusConverter = jobStatusConverter;
         }
 
-        public async Task<Guid> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
+        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
         {
             var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec();
 
-            return Guid.Parse(job.Id);
+            return job.Id;
         }
 
-        public async Task<JToken> GetResult(Guid jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId.ToString()).Result();
+        public async Task<JToken> GetResult(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
 
-        public async Task<JobStatus> GetStatusAsync(Guid jobId, CancellationToken cancellationToken) =>
-            _jobStatusConverter.Map(await new Job(_indicoClient.GraphQLHttpClient, jobId.ToString()).Status());
+        public async Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken) =>
+            _jobStatusConverter.Map(await new Job(_indicoClient.GraphQLHttpClient, jobId).Status());
 
         private JobStatus Map(V1Types.JobStatus status) => (JobStatus)Enum.Parse(typeof(JobStatus), status.ToString());
     }

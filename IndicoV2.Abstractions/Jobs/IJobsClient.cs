@@ -15,7 +15,7 @@ namespace IndicoV2.Jobs
         /// <param name="submissionId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>Created Job's Id</returns>
-        Task<Guid> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default);
+        Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default);
         
         /// <summary>
         /// Gets Job's status
@@ -23,7 +23,7 @@ namespace IndicoV2.Jobs
         /// <param name="jobId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>Job's Status</returns>
-        Task<JobStatus> GetStatusAsync(Guid jobId, CancellationToken cancellationToken = default);
+        Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken = default);
         //Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
         
         /// <summary>
@@ -31,6 +31,6 @@ namespace IndicoV2.Jobs
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        Task<JToken> GetResult(Guid jobId);
+        Task<JToken> GetResult(string jobId);
     }
 }
