@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Extensions.SubmissionResult;
-using IndicoV2.Jobs.Models;
+using IndicoV2.Jobs.Models.Results;
 using IndicoV2.Submissions.Models;
 
 namespace IndicoV2
@@ -15,7 +15,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="checkInterval">Interval between <see cref="ISubmission"/> status checks requests.</param>
         /// <exception cref="TaskCanceledException"></exception>
-        public static Task<IJobResult> GetResultWhenReady(this IndicoClient indicoClient, int submissionId,
+        public static Task<IUrlJobResult> GetResultWhenReady(this IndicoClient indicoClient, int submissionId,
             TimeSpan? checkInterval = default, TimeSpan? timeout = default,
             CancellationToken cancellationToken = default) =>
             new SubmissionResultAwaiter(indicoClient.Submissions(), indicoClient.Jobs()).WaitReady(submissionId, checkInterval ?? TimeSpan.FromSeconds(1),

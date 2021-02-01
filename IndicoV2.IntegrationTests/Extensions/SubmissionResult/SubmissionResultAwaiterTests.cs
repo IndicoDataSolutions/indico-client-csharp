@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using FluentAssertions;
-
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
-
 using NUnit.Framework;
 using Unity;
 
@@ -21,7 +18,7 @@ namespace IndicoV2.IntegrationTests.Extensions.SubmissionResult
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
-            
+
             _sut = container.Resolve<SubmissionResultAwaiter>();
             _dataHelper = container.Resolve<DataHelper>();
         }

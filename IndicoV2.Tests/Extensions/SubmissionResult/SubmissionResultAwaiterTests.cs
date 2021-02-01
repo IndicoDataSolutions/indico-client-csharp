@@ -11,6 +11,7 @@ using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
 using IndicoV2.Tests.Automock;
 using Moq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace IndicoV2.Tests.Extensions.SubmissionResult
@@ -44,9 +45,11 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            _fixture.Freeze<Mock<IJobsClient>>()
+            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
+            jobsClientMock
                 .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobStatus);
+            jobsClientMock.Setup(cli => cli.GetResult(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 

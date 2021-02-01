@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IndicoV2.Extensions.JobResultBuilders;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
+using IndicoV2.Jobs.Models.Results;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Extensions.SubmissionResult
 {
@@ -12,6 +15,7 @@ namespace IndicoV2.Extensions.SubmissionResult
     {
         private readonly ISubmissionsClient _submissionsClient;
         private readonly IJobsClient _jobsClient;
+        private readonly JobResultBuilder _jobResultBuilder = new JobResultBuilder();
 
         public SubmissionResultAwaiter(ISubmissionsClient submissionsClient, IJobsClient jobsClient)
         {
@@ -19,7 +23,7 @@ namespace IndicoV2.Extensions.SubmissionResult
             _jobsClient = jobsClient;
         }
 
-        public async Task<IJobResult> WaitReady(int submissionId, TimeSpan checkInterval, TimeSpan timeout,
+        public async Task<IUrlJobResult> WaitReady(int submissionId, TimeSpan checkInterval, TimeSpan timeout,
             CancellationToken cancellationToken)
         {
             using (var innerCancellationTokenSource = new CancellationTokenSource(timeout))
@@ -32,7 +36,7 @@ namespace IndicoV2.Extensions.SubmissionResult
             }
         }
 
-        private async Task<IJobResult> RepeatUntilReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
+        private async Task<IUrlJobResult> RepeatUntilReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
             while (SubmissionStatus.PROCESSING == (await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status)
             {
@@ -46,7 +50,8 @@ namespace IndicoV2.Extensions.SubmissionResult
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var jobResult = await _jobsClient.GetResult(jobId);
+            var jobResultJson = await _jobsClient.GetResult(jobId);
+            var jobResult = _jobResultBuilder.GetSubmissionJobResult((JObject)jobResultJson);
 
             return jobResult;
         }

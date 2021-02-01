@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Jobs.Models;
 using IndicoV2.Submissions.Models;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Jobs
 {
@@ -30,6 +31,6 @@ namespace IndicoV2.Jobs
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        Task<IJobResult> GetResult(Guid jobId);
+        Task<JToken> GetResult(Guid jobId);
     }
 }
