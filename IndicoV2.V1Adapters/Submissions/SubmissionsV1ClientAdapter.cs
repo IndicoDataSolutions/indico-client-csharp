@@ -29,15 +29,22 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default)
+        {
+            var submissionMutation = new WorkflowSubmission(_indicoClient) { WorkflowId = workflowId, Urls = uris.Select(u => u.ToString()).ToList() };
+            var submissionIds = await submissionMutation.Exec(cancellationToken);
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken)
+            return submissionIds;
+        }
+
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) { WorkflowId = workflowId, Files = paths.ToList() };
             var submissionIds = await submissionMutation.Exec(cancellationToken);
 
             return submissionIds;
         }
+
         public async Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default)
         {
             var listSubmissionQuery = new ListSubmissions(_indicoClient)
