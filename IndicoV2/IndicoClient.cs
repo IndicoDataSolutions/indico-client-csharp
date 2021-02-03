@@ -8,22 +8,33 @@ namespace IndicoV2
     /// </summary>
     public class IndicoClient : IIndicoClient
     {
-        private readonly Uri _baseUri;
-        private readonly string _apiToken;
+        /// <summary>https://app.indico.io</summary>
+        private const string _defaultUrl = "https://app.indico.io";
+
+        internal readonly string _apiToken;
         private Indico.IndicoClient _legacyClient;
 
+        internal Uri BaseUri { get; }
         internal Indico.IndicoClient LegacyClient =>
-            _legacyClient ?? (_legacyClient = new Indico.IndicoClient(new IndicoConfig(host: _baseUri.Host, apiToken:_apiToken)));
+            _legacyClient ?? (_legacyClient =
+                new Indico.IndicoClient(new IndicoConfig(host: BaseUri.Host, apiToken: _apiToken)));
+
+        /// <summary>
+        /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
+        /// </summary>
+        /// <param name="apiToken">Authentication token (You can generate one at "<see cref="baseUri"/>/auth/account" )</param>
+        public IndicoClient(string apiToken): this(apiToken, new Uri(_defaultUrl))
+        { }
 
         /// <summary>
         /// Creates IndicoClient
         /// </summary>
         /// <param name="apiToken">Authentication token (You can generate one at "<see cref="baseUri"/>/auth/account" )</param>
         /// <param name="baseUri">indico.io base addres (Default values is "https://app.indico.io")</param>
-        public IndicoClient(string apiToken, Uri baseUri = default)
+        public IndicoClient(string apiToken, Uri baseUri)
         {
-            _baseUri = baseUri ?? new Uri("https://app.indico.io");
-            _apiToken = apiToken;
+            _apiToken = apiToken  ?? throw new ArgumentNullException(nameof(apiToken));
+            BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
         }
     }
 }
