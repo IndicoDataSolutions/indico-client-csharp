@@ -58,6 +58,21 @@ namespace IndicoV2.IntegrationTests.Submissions
         }
 
         [Test]
+        public async Task CreateAsync_ShouldCreateSubmission_FromUri()
+        {
+            // Arrange
+            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+            var uri = _dataHelper.Uris().GetSampleUri();
+
+            // Act
+            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { uri });
+
+            // Assert
+            var submissionId = submissionIds.Single();
+            submissionId.Should().BeGreaterThan(0);
+        }
+
+        [Test]
         public async Task GetAsync_ShouldFetchSubmission()
         {
             // Arrange
