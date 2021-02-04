@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Indico.Exception;
 using Indico.Jobs;
@@ -10,18 +11,27 @@ namespace Indico.Mutation
     public class SubmissionResult : IMutation<Job>
     {
         private readonly IndicoClient _client;
-        public int SubmissionId { get; set; }
+
+        public int? SubmissionId { get; set; }
+
         public SubmissionStatus? CheckStatus { get; set; }
 
         public SubmissionResult(IndicoClient client) => _client = client;
 
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
+            if (!SubmissionId.HasValue)
+            {
+                throw new ArgumentNullException("Submission id was not provided.");
+            }
+
             var getSubmission = new GetSubmission(_client)
             {
-                Id = SubmissionId
+                Id = SubmissionId.Value
             };
+
             var submission = await getSubmission.Exec(cancellationToken);
+            
             while(!StatusCheck(submission.Status))
             {
                 submission = await getSubmission.Exec(cancellationToken);
@@ -37,6 +47,7 @@ namespace Indico.Mutation
             {
                 SubmissionId = submission.Id
             };
+
             var job = await generateSubmissionResult.Exec();
             return job;
         }
