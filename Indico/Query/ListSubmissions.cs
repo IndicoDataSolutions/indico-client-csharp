@@ -18,7 +18,7 @@ namespace Indico.Query
         public List<int> SubmissionIds { get; set; }
         public List<int> WorkflowIds { get; set; }
         public SubmissionFilter Filters { get; set; } = new SubmissionFilter();
-        public int Limit { get; set; }
+        public int Limit { get; set; } = 1000;
 
         public ListSubmissions(IndicoClient client) => _client = client;
 
