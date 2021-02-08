@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Indico;
 using Indico.Jobs;
@@ -7,7 +6,6 @@ using Indico.Mutation;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
 using Newtonsoft.Json.Linq;
-using V1Types = Indico.Types;
 
 namespace IndicoV2.V1Adapters.Jobs
 {
@@ -24,7 +22,7 @@ namespace IndicoV2.V1Adapters.Jobs
 
         public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
         {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec();
+            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
 
             return job.Id;
         }
@@ -33,7 +31,5 @@ namespace IndicoV2.V1Adapters.Jobs
 
         public async Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken) =>
             _jobStatusConverter.Map(await new Job(_indicoClient.GraphQLHttpClient, jobId).Status());
-
-        private JobStatus Map(V1Types.JobStatus status) => (JobStatus)Enum.Parse(typeof(JobStatus), status.ToString());
     }
 }
