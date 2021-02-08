@@ -65,20 +65,5 @@ namespace IndicoV2.V1Adapters.Submissions
             var submission = await new GetSubmission(_indicoClient) { Id = submissionId }.Exec(cancellationToken);
             return new V1SubmissionAdapter(submission);
         }
-
-        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default)
-        {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-
-            return new V1JobAdapter(job);
-        }
-
-        public async Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default)
-        {
-            var job = await new SubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-            // TODO: handle cancellation token
-
-            return new V1JobAdapter(job);
-        }
     }
 }

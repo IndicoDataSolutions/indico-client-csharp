@@ -57,9 +57,5 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
         /// <returns><c><see cref="ISubmission"/></c> with provided id.</returns>
         Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
-        
-        Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
-        
-        Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
     }
 }
