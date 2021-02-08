@@ -48,7 +48,7 @@ namespace IndicoV2.Submissions
         /// <param name="limit">Limit of returned submissions. Default value is 1000.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}"/></c> of <c><see cref="ISubmission"/></c></returns>
-        Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default);
+        Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Method gets certain <c><see cref="ISubmission"/></c>.
@@ -57,9 +57,5 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
         /// <returns><c><see cref="ISubmission"/></c> with provided id.</returns>
         Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default);
-        
-        Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default);
-        
-        Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
     }
 }

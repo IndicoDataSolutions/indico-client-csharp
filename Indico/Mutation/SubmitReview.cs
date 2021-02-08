@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Exception;
 using Indico.Jobs;
 using Newtonsoft.Json.Linq;
@@ -13,7 +12,7 @@ namespace Indico.Mutation
 {
     public class SubmitReview : IMutation<Job>
     {
-        IndicoClient _client;
+        private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
         public JObject Changes { get; set; }
         public bool Rejected { get; set; } = false;
@@ -21,7 +20,7 @@ namespace Indico.Mutation
 
         public SubmitReview(IndicoClient client) => _client = client;
 
-        public async Task<Job> Exec(CancellationToken cancellationToken = default)
+        public async Task<Job> Exec(CancellationToken cancellationToken)
         {
             if (Changes == null && !Rejected)
             {

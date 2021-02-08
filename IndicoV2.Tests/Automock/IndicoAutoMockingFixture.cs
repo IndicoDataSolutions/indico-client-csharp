@@ -5,9 +5,6 @@ namespace IndicoV2.Tests.Automock
 {
     public class IndicoAutoMockingFixture : Fixture
     {
-        public IndicoAutoMockingFixture()
-        {
-            Customize(new AutoMoqCustomization());
-        }
+        public IndicoAutoMockingFixture() => Customize(new AutoMoqCustomization());
     }
 }

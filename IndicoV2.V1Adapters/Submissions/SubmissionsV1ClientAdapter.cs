@@ -29,21 +29,28 @@ namespace IndicoV2.V1Adapters.Submissions
             return submissionIds;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default)
+        {
+            var submissionMutation = new WorkflowSubmission(_indicoClient) { WorkflowId = workflowId, Urls = uris.Select(u => u.ToString()).ToList() };
+            var submissionIds = await submissionMutation.Exec(cancellationToken);
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken)
+            return submissionIds;
+        }
+
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default)
         {
             var submissionMutation = new WorkflowSubmission(_indicoClient) { WorkflowId = workflowId, Files = paths.ToList() };
             var submissionIds = await submissionMutation.Exec(cancellationToken);
 
             return submissionIds;
         }
-        public async Task<IEnumerable<ISubmission>> ListAsync(List<int> submissionIds, List<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default)
+
+        public async Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default)
         {
             var listSubmissionQuery = new ListSubmissions(_indicoClient)
             {
-                SubmissionIds = submissionIds,
-                WorkflowIds = workflowIds,
+                SubmissionIds = submissionIds.ToList(),
+                WorkflowIds = workflowIds.ToList(),
                 Filters = filters != null ? filters.ConvertToLegacy() : new Indico.Entity.SubmissionFilter(),
                 Limit = limit
             };
@@ -57,21 +64,6 @@ namespace IndicoV2.V1Adapters.Submissions
         {
             var submission = await new GetSubmission(_indicoClient) { Id = submissionId }.Exec(cancellationToken);
             return new V1SubmissionAdapter(submission);
-        }
-
-        public async Task<IJob> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken = default)
-        {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-
-            return new V1JobAdapter(job);
-        }
-
-        public async Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default)
-        {
-            var job = await new SubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-            // TODO: handle cancellation token
-
-            return new V1JobAdapter(job);
         }
     }
 }
