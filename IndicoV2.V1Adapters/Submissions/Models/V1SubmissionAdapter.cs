@@ -1,5 +1,4 @@
-﻿using System;
-using IndicoV2.Submissions.Models;
+﻿using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Converters;
 
 namespace IndicoV2.V1Adapters.Submissions.Models

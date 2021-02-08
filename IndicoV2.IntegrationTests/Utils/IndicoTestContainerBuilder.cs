@@ -3,9 +3,11 @@ using Indico;
 using IndicoV2.DataSets;
 using IndicoV2.Jobs;
 using IndicoV2.Reviews;
+using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Workflows;
 using Unity;
+using Unity.Lifetime;
 using V1Client = Indico.IndicoClient;
 using V2Client = IndicoV2.IndicoClient;
 
@@ -22,7 +24,7 @@ namespace IndicoV2.IntegrationTests.Utils
             container.RegisterFactory<V1Client>(c => new V1Client(new IndicoConfig(
                 ApiToken,
                 host: new Uri(BaseUrl).Host)));
-            container.RegisterFactory<V2Client>(c => new V2Client(ApiToken, new Uri(BaseUrl)));
+            container.RegisterFactory<V2Client>(c => new V2Client(ApiToken, new Uri(BaseUrl)), new SingletonLifetimeManager());
             container.RegisterType<IIndicoClient, V2Client>();
             
             container.RegisterFactory<IDataSetClient>(c => c.Resolve<V2Client>().DataSets());
@@ -30,6 +32,7 @@ namespace IndicoV2.IntegrationTests.Utils
             container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<V2Client>().Submissions());
             container.RegisterFactory<IReviewsClient>(c => c.Resolve<V2Client>().Reviews());
             container.RegisterFactory<IJobsClient>(c => c.Resolve<V2Client>().Jobs());
+            container.RegisterFactory<IStorageClient>(c => c.Resolve<V2Client>().Storage());
 
             return container;
         }

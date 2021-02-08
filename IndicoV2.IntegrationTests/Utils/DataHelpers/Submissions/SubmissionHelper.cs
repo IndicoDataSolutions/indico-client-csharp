@@ -26,7 +26,7 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
         
         public async Task<ISubmission> GetAnyAsync()
         {
-            await using var fileStream = await _fileHelper.GetSampleFileStream();
+            await using var fileStream = _fileHelper.GetSampleFileStream();
             
             return await GetAnyAsync(fileStream);
         }
@@ -44,7 +44,7 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
 
         public async Task<(int workflowId, int submissionId)> ListAnyAsync()
         {
-            await using var content = await _fileHelper.GetSampleFileStream();
+            await using var content = _fileHelper.GetSampleFileStream();
             return await ListAnyAsync(content);
         }
 

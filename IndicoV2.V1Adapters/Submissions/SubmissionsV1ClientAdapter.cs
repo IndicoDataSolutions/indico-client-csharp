@@ -49,8 +49,8 @@ namespace IndicoV2.V1Adapters.Submissions
         {
             var listSubmissionQuery = new ListSubmissions(_indicoClient)
             {
-                SubmissionIds = submissionIds.ToList(),
-                WorkflowIds = workflowIds.ToList(),
+                SubmissionIds = submissionIds?.ToList(),
+                WorkflowIds = workflowIds?.ToList(),
                 Filters = filters != null ? filters.ConvertToLegacy() : new Indico.Entity.SubmissionFilter(),
                 Limit = limit
             };

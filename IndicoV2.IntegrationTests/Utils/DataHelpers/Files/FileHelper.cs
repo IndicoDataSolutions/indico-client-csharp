@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 
 namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Files
 {
@@ -7,6 +6,6 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Files
     {
         public string GetSampleFilePath() => "./Utils/DataHelpers/Files/workflow-sample.pdf";
 
-        public async Task<Stream> GetSampleFileStream() => File.OpenRead(GetSampleFilePath());
+        public Stream GetSampleFileStream() => File.OpenRead(GetSampleFilePath());
     }
 }
