@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,13 +36,9 @@ namespace Indico.Mutation
         /// <returns>Job</returns>
         public async Task<JObject> Exec(CancellationToken cancellationToken = default)
         {
-            if (Files == null && Streams == null && Urls == null)
+            if (Convert.ToInt16(this.Files != null) + Convert.ToInt16(this.Streams != null) + Convert.ToInt16(this.Urls != null) != 1)
             {
                 throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
-            }
-            else if (Files != null && Streams != null && Urls != null)
-            {
-                throw new InputException("Only one of 'Files', 'Streams' or 'Urls' must be specified");
             }
 
             var files = new List<object>();

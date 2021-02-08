@@ -10,6 +10,8 @@
 
         PROCESSING,
 
-        PENDING_ADMIN_REVIEW
+        PENDING_ADMIN_REVIEW,
+
+        PENDING_AUTO_REVIEW
     }
 }
