@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
-using GraphQL.Common.Response;
-using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
 
 namespace Indico.Mutation
 {
     /// <summary>
-    /// Class to run Model Group predictions
+    /// Predicts on a Model Group.
     /// </summary>
     public class ModelGroupPredict : IMutation<Job>
     {
@@ -38,16 +37,15 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// ModelGroupPredict constructor
+        /// ModelGroupPredict constructor.
         /// </summary>
-        /// <param name="graphQLHttpClient"></param>
+        /// <param name="graphQLHttpClient">Client used to send API requests.</param>
         public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
-        /// Data to predict
+        /// Data to predict.
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
-        /// <param name="data">Data.</param>
         public ModelGroupPredict Data(List<string> data)
         {
             _data = data;
@@ -55,12 +53,11 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Executes request and returns job 
+        /// Executes request and returns job. 
         /// </summary>
-        /// <returns>Job</returns>
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
                         modelPredict(modelId: $modelId, data: $data) {
                             jobId
@@ -79,14 +76,15 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._graphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _graphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
-            string jobId = (string)response.Data.modelPredict.jobId;
+            var jobId = (string)response.Data.modelPredict.jobId;
             var job = new Job(_graphQLHttpClient, jobId);
+
             return job;
         }
     }

@@ -3,32 +3,32 @@ using Indico.Types;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Submits detailed to workflow.
+    /// </summary>
     public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, IMutation<List<Submission>>
     {
         /// <summary>
-        /// Workflow Id
+        /// If detailed.
         /// </summary>
-        /// <value>Workflow Id</value>
-        public override int WorkflowId { get; set; }
-        /// <summary>
-        /// Files to submit
-        /// </summary>
-        /// <value>Files</value>
-        public override List<string> Files { get; set; }
-        public override List<Stream> Streams { get; set; }
-        public override List<string> Urls { get; set; }
         protected override bool Detailed { get; set; } = true;
 
+        /// <summary>
+        /// WorkflowSubmissionDetailed constuctor.
+        /// </summary>
+        /// <param name="client"></param>
         public WorkflowSubmissionDetailed(IndicoClient client) : base(client) { }
 
-        public async Task<List<Submission>> Exec(CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Executes query and returns list of submissions.
+        /// </summary>
+        public new async Task<List<Submission>> Exec(CancellationToken cancellationToken = default)
         {
             var response = await base.Exec(cancellationToken);
             var subs = (JArray)response.GetValue("submissions");

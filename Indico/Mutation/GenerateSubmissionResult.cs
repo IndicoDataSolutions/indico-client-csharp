@@ -1,17 +1,19 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Exception;
 using Indico.Jobs;
 using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Generates submission results.
+    /// </summary>
     public class GenerateSubmissionResult : IMutation<Job>
     {
         private readonly IndicoClient _client;
-        public int SubmissionId { get; set; }
 
         private int? _submissionId;
         
@@ -32,11 +34,21 @@ namespace Indico.Mutation
 
             set => _submissionId = value;
         }
+
+        /// <summary>
+        /// Generate Submission Result Constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public GenerateSubmissionResult(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes requests and returns <c><see cref="Job"/></c>.
+        /// </summary>
+        /// <param name="cancellationToken">Token to abort operations.</param>
+        /// <returns><c><see cref="Job"/></c></returns>
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation CreateSubmissionResults($submissionId: Int!) {
                         submissionResults(submissionId: $submissionId) {
                             jobId
@@ -62,7 +74,8 @@ namespace Indico.Mutation
             }
 
             JObject submissionResults = response.Data.submissionResults;
-            string jobId = submissionResults.Value<string>("jobId");
+            var jobId = submissionResults.Value<string>("jobId");
+
             return new Job(_client.GraphQLHttpClient, jobId);
         }
     }

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Types;
@@ -10,6 +9,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Updates Submission.
+    /// </summary>
     public class UpdateSubmission : IMutation<Submission>
     {
         private readonly IndicoClient _client;
@@ -32,13 +34,24 @@ namespace Indico.Mutation
 
             set => _submissionId = value;
         }
+
+        /// <summary>
+        /// If retrieved.
+        /// </summary>
         public bool Retrieved { get; set; }
 
+        /// <summary>
+        /// Update Submission Constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public UpdateSubmission(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes query and returns Submission.
+        /// </summary>
         public async Task<Submission> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation UpdateSubmission($submissionId: Int!, $retrieved: Boolean) {
                         updateSubmission(submissionId: $submissionId, retrieved: $retrieved) {
                             id
@@ -64,7 +77,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

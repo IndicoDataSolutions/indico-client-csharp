@@ -4,13 +4,15 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Exception;
 using Indico.Storage;
 using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Base for WorkflowSubmission classes.
+    /// </summary>
     public class WorkflowSubmissionBase : IMutation<JObject>
     {
         private readonly IndicoClient _client;
@@ -36,23 +38,37 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Files to submit
+        /// Files to submit.
         /// </summary>
-        /// <value>Files</value>
-        public virtual List<string> Files { get; set; }
-        public virtual List<Stream> Streams { get; set; }
-        public virtual List<string> Urls { get; set; }
+        public List<string> Files { get; set; }
+
+        /// <summary>
+        /// Streams to submit.
+        /// </summary>
+        public List<Stream> Streams { get; set; }
+
+        /// <summary>
+        /// Uris to submit.
+        /// </summary>
+        public List<string> Urls { get; set; }
+
+        /// <summary>
+        /// If detailed.
+        /// </summary>
         protected virtual bool Detailed { get; set; }
 
+        /// <summary>
+        /// WorkflowSubmissionBase constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         protected WorkflowSubmissionBase(IndicoClient client) => _client = client;
 
         /// <summary>
-        /// Executes request and returns Job
+        /// Executes request and returns Job.
         /// </summary>
-        /// <returns>Job</returns>
         public async Task<JObject> Exec(CancellationToken cancellationToken = default)
         {
-            if (Convert.ToInt16(this.Files != null) + Convert.ToInt16(this.Streams != null) + Convert.ToInt16(this.Urls != null) != 1)
+            if (Convert.ToInt16(Files != null) + Convert.ToInt16(Streams != null) + Convert.ToInt16(Urls != null) != 1)
             {
                 throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
             }
@@ -110,7 +126,7 @@ namespace Indico.Mutation
                 mutationName = "workflowUrlSubmission";
             }
 
-            string query = $@"
+            var query = $@"
                     mutation WorkflowSubmission($workflowId: Int!, ${arg}: {type}, $recordSubmission: Boolean) {{
                         {mutationName}(workflowId: $workflowId, {arg}: ${arg}, recordSubmission: $recordSubmission) {{
                             jobIds
@@ -119,7 +135,7 @@ namespace Indico.Mutation
                     }}
                 ";
 
-            string queryDetailed = $@"
+            var queryDetailed = $@"
                     mutation workflowSubmissionMutation($workflowId: Int!, ${arg}: {type}, $recordSubmission: Boolean) {{
                         {mutationName}(workflowId: $workflowId, {arg}: ${arg}, recordSubmission: $recordSubmission) {{
                             submissionIds
@@ -150,7 +166,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
