@@ -14,11 +14,27 @@ namespace Indico.Mutation
     public class WorkflowSubmissionBase : IMutation<JObject>
     {
         private readonly IndicoClient _client;
+        private int? _workflowId;
+
         /// <summary>
         /// Workflow Id
         /// </summary>
         /// <value>Workflow Id</value>
-        public virtual int WorkflowId { get; set; }
+        public int WorkflowId
+        {
+            get
+            {
+                if (!_workflowId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _workflowId.Value;
+            }
+
+            set => _workflowId = value;
+        }
+
         /// <summary>
         /// Files to submit
         /// </summary>

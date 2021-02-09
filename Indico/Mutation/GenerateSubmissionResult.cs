@@ -13,6 +13,25 @@ namespace Indico.Mutation
         private readonly IndicoClient _client;
         public int SubmissionId { get; set; }
 
+        private int? _submissionId;
+        
+        /// <summary>
+        /// Submission Id.
+        /// </summary>
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
         public GenerateSubmissionResult(IndicoClient client) => _client = client;
 
         public async Task<Job> Exec(CancellationToken cancellationToken = default)

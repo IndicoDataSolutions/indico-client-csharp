@@ -14,8 +14,26 @@ namespace Indico.Mutation
     public class ModelGroupLoad : IMutation<string>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;
-        
-        public int ModelId { get; set; }
+
+        private int? _modelId;
+
+        /// <summary>
+        /// Model Id.
+        /// </summary>
+        public int ModelId
+        {
+            get
+            {
+                if (!_modelId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _modelId.Value;
+            }
+
+            set => _modelId = value;
+        }
 
         /// <summary>
         /// Model Group Load Constructor

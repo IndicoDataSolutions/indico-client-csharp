@@ -13,7 +13,27 @@ namespace Indico.Mutation
     public class SubmitReview : IMutation<Job>
     {
         private readonly IndicoClient _client;
-        public int SubmissionId { get; set; }
+
+        private int? _submissionId;
+
+        /// <summary>
+        /// Submission Id.
+        /// </summary>
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
+
         public JObject Changes { get; set; }
         public bool Rejected { get; set; } = false;
         public bool? ForceComplete { get; set; }

@@ -16,12 +16,26 @@ namespace Indico.Mutation
     public class ModelGroupPredict : IMutation<Job>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;
+        private int? _modelId;
         private List<string> _data;
 
         /// <summary>
-        /// Get/Set the Model ID (often Selected Model ID for a Model Group)
+        /// Get/Set the Model ID (often Selected Model ID for a Model Group).
         /// </summary>
-        public int ModelId { get; set; }
+        public int ModelId
+        {
+            get
+            {
+                if (!_modelId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _modelId.Value;
+            }
+
+            set => _modelId = value;
+        }
 
         /// <summary>
         /// ModelGroupPredict constructor
