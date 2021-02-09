@@ -11,6 +11,12 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Workflows
         private readonly IDataSetClient _dataSets;
         private readonly IWorkflowsClient _workflows;
 
+        public WorkflowHelper(IDataSetClient dataSets, IWorkflowsClient workflows)
+        {
+            _dataSets = dataSets;
+            _workflows = workflows;
+        }
+
         public async Task<IWorkflow> GetAnyWorkflow()
         {
             var dataSets = await _dataSets.ListAsync();
@@ -19,10 +25,8 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Workflows
             return workflows.First();
         }
 
-        public WorkflowHelper(IDataSetClient dataSets, IWorkflowsClient workflows)
-        {
-            _dataSets = dataSets;
-            _workflows = workflows;
-        }
+        public async Task<IWorkflow> Get(bool autoReviewEnabled) => 
+            // TODO: implement autoReviewEnabled
+            await GetAnyWorkflow();
     }
 }

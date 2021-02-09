@@ -1,14 +1,14 @@
-﻿using IndicoV2.DataSets;
-using IndicoV2.V1Adapters.DataSets;
+﻿using IndicoV2.Reviews;
+using IndicoV2.V1Adapters.Reviews;
 
 namespace IndicoV2
 {
     public static partial class IndicoClientExtensions
     {
         /// <summary>
-        /// Gets <seealso cref="IDataSetClient"/>
+        /// Gets <seealso cref="IReviewsClient"/>
         /// </summary>
-        public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
-            new DataSetsV1ClientAdapter(indicoClient.LegacyClient);
+        public static IReviewsClient Reviews(this IndicoClient indicoClient) =>
+            new ReviewsV1ClientAdapter(indicoClient.LegacyClient);
     }
 }

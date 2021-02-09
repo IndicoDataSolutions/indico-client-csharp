@@ -42,7 +42,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendQueryAsync(request);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

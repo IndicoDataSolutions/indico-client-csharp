@@ -22,15 +22,15 @@ namespace IndicoV2
         /// <summary>
         /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
         /// </summary>
-        /// <param name="apiToken">Authentication token (You can generate one at "<see cref="baseUri"/>/auth/account" )</param>
+        /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
         public IndicoClient(string apiToken): this(apiToken, new Uri(_defaultUrl))
         { }
 
         /// <summary>
         /// Creates IndicoClient
         /// </summary>
-        /// <param name="apiToken">Authentication token (You can generate one at "<see cref="baseUri"/>/auth/account" )</param>
-        /// <param name="baseUri">indico.io base addres (Default values is "https://app.indico.io")</param>
+        /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
+        /// <param name="baseUri">indico.io base address (Default values is <c>https://app.indico.io</c>)</param>
         public IndicoClient(string apiToken, Uri baseUri)
         {
             _apiToken = apiToken  ?? throw new ArgumentNullException(nameof(apiToken));
