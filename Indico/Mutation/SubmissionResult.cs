@@ -12,7 +12,22 @@ namespace Indico.Mutation
     {
         private readonly IndicoClient _client;
 
-        public int? SubmissionId { get; set; }
+        private int? _submissionId;
+
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
 
         public SubmissionStatus? CheckStatus { get; set; }
 
@@ -20,19 +35,14 @@ namespace Indico.Mutation
 
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
-            if (!SubmissionId.HasValue)
-            {
-                throw new ArgumentNullException("Submission id was not provided.");
-            }
-
             var getSubmission = new GetSubmission(_client)
             {
-                Id = SubmissionId.Value
+                Id = SubmissionId
             };
 
             var submission = await getSubmission.Exec(cancellationToken);
-            
-            while(!StatusCheck(submission.Status))
+
+            while (!StatusCheck(submission.Status))
             {
                 submission = await getSubmission.Exec(cancellationToken);
                 await Task.Delay(1000);
@@ -54,7 +64,7 @@ namespace Indico.Mutation
 
         private bool StatusCheck(SubmissionStatus status)
         {
-            if(CheckStatus != null)
+            if (CheckStatus != null)
             {
                 return status.Equals(CheckStatus);
             }
