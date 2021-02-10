@@ -27,51 +27,45 @@ namespace IndicoV2.Extensions.SubmissionResult
             _storageClient = storageClient;
         }
 
-        public async Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, TimeSpan timeout,
-            CancellationToken cancellationToken)
+        public Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval,
+            TimeSpan timeout, CancellationToken cancellationToken)
+            => WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, timeout, cancellationToken);
+
+        public Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus,
+            TimeSpan checkInterval = default, TimeSpan timeout = default, CancellationToken cancellationToken = default)
+            => WaitReady(s => s == awaitedStatus, submissionId, checkInterval, timeout, cancellationToken);
+
+        private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isExpectedStatus, int submissionId, TimeSpan checkInterval, TimeSpan timeout, CancellationToken cancellationToken)
         {
             using (var innerCancellationTokenSource = new CancellationTokenSource(timeout))
             using (cancellationToken.Register(() => innerCancellationTokenSource.Cancel(true)))
             {
-                var innerTask = RepeatUntilReady(submissionId, checkInterval, innerCancellationTokenSource.Token);
+                var innerTask = RepeatUntilReady(isExpectedStatus, submissionId, checkInterval, innerCancellationTokenSource.Token);
                 await await Task.WhenAny(innerTask, Task.Delay(-1, innerCancellationTokenSource.Token));
 
                 return await innerTask;
             }
         }
 
-        private async Task<JObject> RepeatUntilReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
+        private async Task<JObject> RepeatUntilReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
-            SubmissionStatus submissionStatus;
-
-            while (SubmissionStatus.PROCESSING == (submissionStatus = (await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
+            while (!isAwaitedStatus((await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
             {
                 await Task.Delay(checkInterval, cancellationToken);
-            }
-
-            if (submissionStatus == SubmissionStatus.FAILED)
-            {
-                // TODO: throw
             }
 
             var jobId = await _jobsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
-            JobStatus jobStatus;
 
-            while (JobStatus.PENDING == (jobStatus = await _jobsClient.GetStatusAsync(jobId, cancellationToken)))
+            while (JobStatus.PENDING == await _jobsClient.GetStatusAsync(jobId, cancellationToken))
             {
                 await Task.Delay(checkInterval, cancellationToken);
-            }
-
-            if (jobStatus == JobStatus.FAILURE)
-            {
-                // TODO: throw
             }
 
             var jobResultJson = await _jobsClient.GetResultAsync(jobId);
             var jobResult = _jobResultBuilder.GetSubmissionJobResult((JObject)jobResultJson);
 
             var result = await _storageClient.GetAsync(jobResult.Url);
-                
+
             using (var reader = new JsonTextReader(new StreamReader(result)))
             {
                 return JsonSerializer.Create().Deserialize<JObject>(reader);
