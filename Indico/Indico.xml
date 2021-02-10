@@ -368,7 +368,7 @@
             Submission id.
             </summary>
         </member>
-        <member name="P:Indico.Mutation.SubmissionResult.ExpectedStatus">
+        <member name="P:Indico.Mutation.SubmissionResult.CheckStatus">
             <summary>
             Submission expected status.
             </summary>

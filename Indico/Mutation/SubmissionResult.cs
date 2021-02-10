@@ -22,7 +22,7 @@ namespace Indico.Mutation
         /// <summary>
         /// Submission expected status.
         /// </summary>
-        public SubmissionStatus? ExpectedStatus { get; set; }
+        public SubmissionStatus? CheckStatus { get; set; }
 
         /// <summary>
         /// SubmissionResult constructor.
@@ -63,9 +63,9 @@ namespace Indico.Mutation
 
         private bool StatusCheck(SubmissionStatus status)
         {
-            if(ExpectedStatus != null)
+            if(CheckStatus != null)
             {
-                return status.Equals(ExpectedStatus);
+                return status.Equals(CheckStatus);
             }
 
             return !status.Equals(SubmissionStatus.PROCESSING);
