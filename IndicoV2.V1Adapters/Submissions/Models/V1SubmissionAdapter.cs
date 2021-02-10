@@ -4,7 +4,7 @@ using IndicoV2.V1Adapters.Converters;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
 {
-    internal class V1SubmissionAdapter : ISubmission
+    public class V1SubmissionAdapter : ISubmission
     {
         private readonly Indico.Entity.Submission _submissionLegacy;
 
