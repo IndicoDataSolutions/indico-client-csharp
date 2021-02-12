@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Indico;
 using Indico.Jobs;
-using Indico.Mutation;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
 using Newtonsoft.Json.Linq;
@@ -18,13 +17,6 @@ namespace IndicoV2.V1Adapters.Jobs
         {
             _indicoClient = indicoClient;
             _jobStatusConverter = jobStatusConverter;
-        }
-
-        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
-        {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-
-            return job.Id;
         }
 
         public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();

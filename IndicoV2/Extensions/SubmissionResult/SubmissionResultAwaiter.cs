@@ -17,15 +17,13 @@ namespace IndicoV2.Extensions.SubmissionResult
     {
         private readonly ISubmissionsClient _submissionsClient;
         private readonly IJobAwaiter _jobAwaiter;
-        private readonly IJobsClient _jobsClient;
         private readonly IStorageClient _storageClient;
         private readonly JobResultBuilder _jobResultBuilder = new JobResultBuilder();
 
-        public SubmissionResultAwaiter(ISubmissionsClient submissionsClient, IJobsClient jobsClient, IJobAwaiter jobAwaiter, IStorageClient storageClient)
+        public SubmissionResultAwaiter(ISubmissionsClient submissionsClient, IJobAwaiter jobAwaiter, IStorageClient storageClient)
         {
             _submissionsClient = submissionsClient;
             _jobAwaiter = jobAwaiter;
-            _jobsClient = jobsClient;
             _storageClient = storageClient;
         }
 
@@ -56,7 +54,7 @@ namespace IndicoV2.Extensions.SubmissionResult
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var jobId = await _jobsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
+            var jobId = await _submissionsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
             var jobResultJson = await _jobAwaiter.WaitReadyAsync(jobId, checkInterval, cancellationToken);
             var jobResult = _jobResultBuilder.GetSubmissionJobResult((JObject)jobResultJson);
 
