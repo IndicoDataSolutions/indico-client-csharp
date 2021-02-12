@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Extensions.JobResultBuilders;
 using IndicoV2.Extensions.Jobs;
-using IndicoV2.Jobs;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -27,27 +26,13 @@ namespace IndicoV2.Extensions.SubmissionResult
             _storageClient = storageClient;
         }
 
-        public Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval,
-            TimeSpan timeout, CancellationToken cancellationToken)
-            => WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, timeout, cancellationToken);
+        public Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
+            => WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, cancellationToken);
 
-        public Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus,
-            TimeSpan checkInterval = default, TimeSpan timeout = default, CancellationToken cancellationToken = default)
-            => WaitReady(s => s == awaitedStatus, submissionId, checkInterval, timeout, cancellationToken);
+        public Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default)
+            => WaitReady(s => s == awaitedStatus, submissionId, checkInterval, cancellationToken);
 
-        private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isExpectedStatus, int submissionId, TimeSpan checkInterval, TimeSpan timeout, CancellationToken cancellationToken)
-        {
-            using (var innerCancellationTokenSource = new CancellationTokenSource(timeout))
-            using (cancellationToken.Register(() => innerCancellationTokenSource.Cancel(true)))
-            {
-                var innerTask = RepeatUntilReady(isExpectedStatus, submissionId, checkInterval, innerCancellationTokenSource.Token);
-                await await Task.WhenAny(innerTask, Task.Delay(-1, innerCancellationTokenSource.Token));
-
-                return await innerTask;
-            }
-        }
-
-        private async Task<JObject> RepeatUntilReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
+        private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
             while (!isAwaitedStatus((await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
             {

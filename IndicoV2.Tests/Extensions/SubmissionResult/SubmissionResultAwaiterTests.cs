@@ -20,8 +20,6 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
     {
         private static readonly SubmissionStatus[] _submissionStatusesExceptProcessing =
             Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING).ToArray();
-        private readonly TimeSpan _timeoutDefault = TimeSpan.FromMilliseconds(100);
-        private readonly TimeSpan _timeoutMax = TimeSpan.FromHours(1);
         private IFixture _fixture;
 
         [SetUp]
@@ -52,7 +50,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            var result = await sut.WaitReady(submissionId, checkInterval, _timeoutDefault, default);
+            var result = await sut.WaitReady(submissionId, checkInterval, default);
 
             // Assert
             result.Should().NotBeNull();
@@ -83,7 +81,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            await sut.WaitReady(submissionId, checkInterval, _timeoutDefault, default);
+            await sut.WaitReady(submissionId, checkInterval, default);
 
             // Assert
             submissionClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()),
@@ -116,28 +114,10 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            var result = await sut.WaitReady(submissionId, default, TimeSpan.FromSeconds(1), default);
+            var result = await sut.WaitReady(submissionId, default, default);
 
             // Asesrt
             result.Value<int>("test").Should().Be(13);
-        }
-
-        [Test, Timeout(2000)]
-        public void WaitReady_ShouldThrow_WhenTimeout()
-        {
-            // Arrange
-            _fixture.Freeze<Mock<ISubmissionsClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<int>(), default))
-                .Returns(async () =>
-                {
-                    await Task.Delay(_timeoutMax);
-                    return null;
-                });
-            var sut = _fixture.Create<SubmissionResultAwaiter>();
-
-            // Act
-            Assert.ThrowsAsync<TaskCanceledException>(async () =>
-                await sut.WaitReady(default, _timeoutMax, TimeSpan.Zero, default));
         }
 
         [Test]
@@ -151,7 +131,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 
             // Act, Assert
             Assert.ThrowsAsync<TaskCanceledException>(async () =>
-                await sut.WaitReady(default, default, _timeoutMax, new CancellationToken(true)));
+                await sut.WaitReady(default, default, new CancellationToken(true)));
         }
 
         [Test]
@@ -161,14 +141,10 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             _fixture
                 .Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Returns(async () =>
-                {
-                    await Task.Delay(_timeoutMax);
-                    throw new InvalidOperationException("Should not reach this part");
-                });
+                .Returns(async () => Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
             var cancellationTokenSource = new CancellationTokenSource();
-            var runTask = sut.WaitReady(1, TimeSpan.Zero, _timeoutMax, cancellationTokenSource.Token);
+            var runTask = sut.WaitReady(1, TimeSpan.FromMilliseconds(1), cancellationTokenSource.Token);
 
             // Act
             cancellationTokenSource.Cancel();
@@ -202,7 +178,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var waitForStatus = statusChanges.Last();
 
             // Act
-            await sut.WaitReady(submissionId, waitForStatus, TimeSpan.Zero, _timeoutDefault, default);
+            await sut.WaitReady(submissionId, waitForStatus, TimeSpan.Zero, default);
 
             // Assert
             submissionsClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()), Times.Exactly(statusChanges.Length));
@@ -214,15 +190,18 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public void Task_WaitReadyWithCustomStatus_ShouldThrow_IfCustomStatusNotReached(SubmissionStatus statusReturned, SubmissionStatus statusAwaited)
         {
             // Arrange
+            var cancellationToken = new CancellationTokenSource(50).Token;
             const int submissionId = 1;
             _fixture.Freeze<Mock<ISubmissionsClient>>()
-                .Setup(cli => cli.GetAsync(submissionId, default))
+                .Setup(cli => cli.GetAsync(submissionId, cancellationToken))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == statusReturned));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            this.Invoking(async _ =>
-                    await sut.WaitReady(submissionId, statusAwaited, default, _timeoutDefault, default))
+            var waitReady = sut.WaitReady(submissionId, statusAwaited, TimeSpan.FromMilliseconds(1), cancellationToken);
+
+            // Asert
+            this.Invoking(async _ => await waitReady)
                 .Should()
                 .Throw<TaskCanceledException>();
         }

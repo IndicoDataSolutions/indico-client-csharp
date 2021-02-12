@@ -37,7 +37,7 @@ namespace IndicoV2.IntegrationTests.Reviews
         {
             // Arrange
             var submission = await _dataHelper.Submissions().GetAnyAsync();
-            var result = await _submissionResultAwaiter.WaitReady(submission.Id, timeout: TimeSpan.FromSeconds(5));
+            var result = await _submissionResultAwaiter.WaitReady(submission.Id);
             var changes = (JObject)result["results"]["document"]["results"];
 
             // as in: https://indicodatasolutions.github.io/indico-client-python/auto-review.html?highlight=submitreview
