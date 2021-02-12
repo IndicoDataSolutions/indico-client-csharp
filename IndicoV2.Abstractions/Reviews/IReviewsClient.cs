@@ -14,14 +14,6 @@ namespace IndicoV2.Reviews
         /// <param name="changes">Changes</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
         /// <returns>Job's Id</returns>
-        Task<string> SubmitReviewAsync(int submissionId, JObject changes, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Rejects <see cref="ISubmission"/>.
-        /// </summary>
-        /// <param name="submissionId"><see cref="ISubmission"/>'s Id</param>
-        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
-        /// <returns>Job's Id</returns>
-        Task<string> RejectAsync(int submissionId, CancellationToken cancellationToken);
+        Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default);
     }
 }

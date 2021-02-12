@@ -1,13 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Jobs;
-using IndicoV2.Jobs.Models;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -22,36 +21,31 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
     {
         private static readonly SubmissionStatus[] _submissionStatusesExceptProcessing =
             Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING).ToArray();
-        private static readonly JobStatus[] _jobStatusesExceptPending =
-            Enum.GetValues(typeof(JobStatus)).Cast<JobStatus>().Where(s => s != JobStatus.PENDING).ToArray();
-        private readonly TimeSpan _timeoutDefault = TimeSpan.FromSeconds(0.5);
+        private readonly TimeSpan _timeoutDefault = TimeSpan.FromMilliseconds(100);
         private readonly TimeSpan _timeoutMax = TimeSpan.FromHours(1);
         private IFixture _fixture;
 
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
-        [Test, Combinatorial]
+        [TestCaseSource(nameof(_submissionStatusesExceptProcessing))]
         public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(
             [ValueSource(nameof(_submissionStatusesExceptProcessing))]
-            SubmissionStatus status,
-            [ValueSource(nameof(_jobStatusesExceptPending))]
-            JobStatus jobStatus)
+            SubmissionStatus status)
         {
             // Arrange
             const int submissionId = 1;
             var jobId = Guid.NewGuid().ToString();
+            var checkInterval = TimeSpan.Zero;
             _fixture.Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));
             _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
-            jobsClientMock
-                .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(jobStatus);
-            jobsClientMock.Setup(cli => cli.GetResultAsync(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
+            _fixture.Freeze<Mock<IJobAwaiter>>()
+                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
                 .ReturnsJsonStream("{}");
@@ -59,7 +53,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            var result = await sut.WaitReady(submissionId, TimeSpan.Zero, _timeoutDefault, default);
+            var result = await sut.WaitReady(submissionId, checkInterval, _timeoutDefault, default);
 
             // Assert
             result.Should().NotBeNull();
@@ -72,19 +66,18 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             const int submissionId = 1;
             var jobId = Guid.NewGuid().ToString();
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
+            var checkInterval = TimeSpan.Zero;
             submissionClientMock
                 .SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
-
-            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
-            jobsClientMock
+            
+            _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            jobsClientMock
-                .Setup(cli => cli.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JobStatus.SUCCESS);
-            jobsClientMock.Setup(cli => cli.GetResultAsync(jobId)).ReturnsAsync(JObject.Parse(@"{""url"": ""test""}"));
+            _fixture.Freeze<Mock<IJobAwaiter>>()
+                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse(@"{""url"": ""test""}"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
                 .ReturnsJsonStream("{}");
@@ -92,7 +85,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            await sut.WaitReady(submissionId, TimeSpan.Zero, _timeoutDefault, default);
+            await sut.WaitReady(submissionId, checkInterval, _timeoutDefault, default);
 
             // Assert
             submissionClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()),
@@ -101,65 +94,26 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         }
 
         [Test]
-        public async Task WaitReady_ShouldWait_UntilJobProcessed()
-        {
-            // Arrange
-            const int submissionId = 1;
-            var jobId = Guid.NewGuid().ToString();
-            var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
-            submissionClientMock
-                .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
-
-            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
-            jobsClientMock
-                .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(jobId);
-            jobsClientMock
-                .SetupSequence(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JobStatus.PENDING)
-                .ReturnsAsync(JobStatus.FAILURE);
-            jobsClientMock
-                .Setup(cli => cli.GetResultAsync(jobId))
-                .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test"" }"));
-            _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
-                .ReturnsAsync(new MemoryStream());
-            var sut = _fixture.Create<SubmissionResultAwaiter>();
-
-            // Act
-            await sut.WaitReady(submissionId, TimeSpan.Zero, _timeoutDefault, default);
-
-            // Assert
-            jobsClientMock.Verify(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()), Times.Once);
-            jobsClientMock.Verify(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Exactly(2));
-            jobsClientMock.Verify(j => j.GetResultAsync(jobId), Times.Once);
-            jobsClientMock.VerifyNoOtherCalls();
-        }
-
-        [Test]
         public async Task WaitReady_ShouldReturnJsonObject()
         {
             // Arrange
             const int submissionId = 1;
             const string jobId = "testJobId";
+            var checkInterval = TimeSpan.Zero;
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
+            var storageUri = new Uri("https://test");
             submissionClientMock
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
 
-            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
-            jobsClientMock
+            _fixture.Freeze<Mock<IJobAwaiter>>()
+                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse($@"{{ ""url"": ""{storageUri}"" }}"));
+            _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            jobsClientMock
-                .SetupSequence(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JobStatus.FAILURE);
-            jobsClientMock
-                .Setup(cli => cli.GetResultAsync(jobId))
-                .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test"" }"));
             _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
+                .Setup(cli => cli.GetAsync(storageUri))
                 .ReturnsJsonStream(@"{ ""test"" : 13 }");
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
@@ -238,11 +192,10 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 getSubmissionSequenceSetup.ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));
             }
 
-            var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
-            jobsClientMock
-                .Setup(cli => cli.GetStatusAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JobStatus.SUCCESS);
-            jobsClientMock.Setup(cli => cli.GetResultAsync(It.IsAny<string>())).ReturnsAsync(JObject.Parse(@"{""url"": ""test""}"));
+            _fixture.Freeze<Mock<IJobAwaiter>>()
+                .Setup(cli =>
+                    cli.WaitReadyAsync(It.IsAny<string>(), It.IsAny<TimeSpan>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test""}"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
                 .ReturnsJsonStream("{}");
@@ -251,7 +204,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var waitForStatus = statusChanges.Last();
 
             // Act
-            var result = await sut.WaitReady(submissionId, waitForStatus, TimeSpan.Zero, _timeoutDefault, default);
+            await sut.WaitReady(submissionId, waitForStatus, TimeSpan.Zero, _timeoutDefault, default);
 
             // Assert
             submissionsClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()), Times.Exactly(statusChanges.Length));
