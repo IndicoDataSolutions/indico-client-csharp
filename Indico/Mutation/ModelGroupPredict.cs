@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL;
 using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Jobs;
@@ -65,15 +64,15 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._graphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _graphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             string jobId = (string)response.Data.modelPredict.jobId;
-            var job = new Job(_graphQLHttpClient, jobId);
-            return job;
+            
+            return new Job(_graphQLHttpClient, jobId);
         }
     }
 }

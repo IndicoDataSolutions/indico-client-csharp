@@ -7,6 +7,7 @@ using Indico.Request;
 using Indico.Storage;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace Indico
 {
@@ -53,7 +54,7 @@ namespace Indico
                 EndPoint = new System.Uri($"{endpoint}/graph/api/graphql"),
                 HttpMessageHandler = handler
             };
-            GraphQLHttpClient = HttpClient.AsGraphQLClient(options);
+            GraphQLHttpClient = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), HttpClient);
         }
 
         private HttpMessageHandler GetHandler()

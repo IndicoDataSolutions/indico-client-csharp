@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+using GraphQL;
 using Indico.Exception;
 using Indico.Storage;
 using Newtonsoft.Json.Linq;
@@ -36,7 +35,7 @@ namespace Indico.Mutation
         /// <returns>Job</returns>
         public async Task<JObject> Exec(CancellationToken cancellationToken = default)
         {
-            if (Convert.ToInt16(this.Files != null) + Convert.ToInt16(this.Streams != null) + Convert.ToInt16(this.Urls != null) != 1)
+            if (Convert.ToInt16(Files != null) + Convert.ToInt16(Streams != null) + Convert.ToInt16(Urls != null) != 1)
             {
                 throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
             }
@@ -134,7 +133,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

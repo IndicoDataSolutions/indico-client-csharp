@@ -273,10 +273,11 @@
             <returns>List of Jobs</returns>
             </summary>
         </member>
-        <member name="M:Indico.Mutation.DocumentExtraction.Exec(System.String)">
+        <member name="M:Indico.Mutation.DocumentExtraction.Exec(System.String,System.Threading.CancellationToken)">
             <summary>
             Executes a single OCR request
             <param name="path">pathname of the file to OCR</param>
+            <param name="cancellationToken">Cancellation token to stop execution.</param>
             <returns>Job</returns>
             </summary>
         </member>
@@ -452,7 +453,7 @@
             Get/Set the GraphQL Query Variables
             </summary>
         </member>
-        <member name="M:Indico.Request.GraphQLRequest.Call">
+        <member name="M:Indico.Request.GraphQLRequest.Call(System.Threading.CancellationToken)">
             <summary>
             Run the GraphQL Query
             </summary>
@@ -523,7 +524,7 @@
             List of files to upload
             </summary>
         </member>
-        <member name="M:Indico.Storage.UploadFile.Call">
+        <member name="M:Indico.Storage.UploadFile.Call(System.Threading.CancellationToken)">
             <summary>
             Upload files and return metadata
             </summary>
@@ -534,7 +535,7 @@
             List of streams to upload
             </summary>
         </member>
-        <member name="M:Indico.Storage.UploadStream.Call">
+        <member name="M:Indico.Storage.UploadStream.Call(System.Threading.CancellationToken)">
             <summary>
             Upload streams and return metadata
             </summary>

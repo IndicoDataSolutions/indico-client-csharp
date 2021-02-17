@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
+using GraphQL;
 using Indico.Exception;
 using Indico.Jobs;
 using Newtonsoft.Json.Linq;
@@ -63,7 +63,7 @@ namespace Indico.Mutation
                 Variables = vars
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

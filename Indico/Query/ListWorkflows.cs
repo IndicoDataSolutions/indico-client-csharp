@@ -1,5 +1,4 @@
-﻿using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+﻿using GraphQL;
 using Indico.Entity;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
@@ -31,6 +30,7 @@ namespace Indico.Query
                         }
                     }
                 ";
+
             var request = new GraphQLRequest()
             {
                 Query = query,
@@ -42,21 +42,20 @@ namespace Indico.Query
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             JArray wfs = response.Data.workflows.workflows;
-            var workflows = wfs.Select(workflow => new Workflow()
+            
+            return wfs.Select(workflow => new Workflow()
             {
                 Id = workflow.Value<int>("id"),
                 Name = workflow.Value<string>("name"),
                 ReviewEnabled = workflow.Value<bool>("reviewEnabled")
             }).ToList();
-
-            return workflows;
         }
     }
 }
