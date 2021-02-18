@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+using GraphQL;
 using Indico.Exception;
 using Indico.Jobs;
 using Newtonsoft.Json.Linq;
@@ -35,7 +34,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
 
             if (response.Errors != null)
             {

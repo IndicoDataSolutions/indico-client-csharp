@@ -1,4 +1,4 @@
-﻿using GraphQL.Common.Request;
+﻿using GraphQL;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Types;
@@ -61,7 +61,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             
             if (response.Errors != null)
             {
@@ -69,7 +69,8 @@ namespace Indico.Query
             }
 
             var subs = (JArray)response.Data.submissions.submissions;
-            var submissions = subs.Select(submission => new Submission()
+            
+            return subs.Select(submission => new Submission()
             {
                 Id = submission.Value<int>("id"),
                 DatasetId = submission.Value<int>("datasetId"),
@@ -82,8 +83,6 @@ namespace Indico.Query
                 Errors = submission.Value<string>("errors")
 
             }).ToList();
-
-            return submissions;
         }
     }
 }

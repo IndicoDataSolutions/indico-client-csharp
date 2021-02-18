@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+using GraphQL;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
 
@@ -59,7 +57,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await graphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

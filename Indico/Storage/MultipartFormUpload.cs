@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico.Storage
@@ -16,12 +17,12 @@ namespace Indico.Storage
 
         public MultipartFormUpload(IndicoClient client) => _client = client;
 
-        public async Task<JArray> Call()
+        public async Task<JArray> Call(CancellationToken cancellationToken = default)
         {
             string uploadUrl = _client.Config.GetAppBaseUrl() + "/storage/files/store";
             var formData = await MultipartFormDataContent(FileParameters);
             var client = _client.HttpClient;
-            var responseMessage = await client.PostAsync(uploadUrl, formData);
+            var responseMessage = await client.PostAsync(uploadUrl, formData, cancellationToken);
             string body = await responseMessage.Content.ReadAsStringAsync();
             var uploadResult = JArray.Parse(body);
             return uploadResult;

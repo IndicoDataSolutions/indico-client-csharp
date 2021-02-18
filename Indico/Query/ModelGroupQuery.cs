@@ -1,9 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL;
 using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Types;
@@ -62,7 +61,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await this._graphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

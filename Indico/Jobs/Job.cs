@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Indico.Exception;
 using Indico.Types;
+using GraphQL;
 
 namespace Indico.Jobs
 {
@@ -57,7 +56,7 @@ namespace Indico.Jobs
                 }
             };
 
-            var response = await _graphQLHttpClient.SendQueryAsync(request);
+            var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -104,7 +103,7 @@ namespace Indico.Jobs
                 }
             };
 
-            var response = await _graphQLHttpClient.SendQueryAsync(request);
+            var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

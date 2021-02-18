@@ -1,8 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL;
 using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 
@@ -58,7 +57,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await this._graphQLHttpClient.SendMutationAsync(request, cancellationToken);
+            var response = await _graphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -70,8 +69,7 @@ namespace Indico.Mutation
                 throw new RuntimeException($"Cannot Load Model id : {ModelId}");
             }
 
-            string status = (string)modelLoad.status;
-            return status;
+            return (string)modelLoad.status;
         }
     }
 }

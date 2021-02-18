@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Indico.Exception;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Indico.Storage
 {
@@ -49,7 +50,7 @@ namespace Indico.Storage
         /// Upload files and return metadata
         /// </summary>
         /// <returns>JArray</returns>
-        public async Task<JArray> Call()
+        public async Task<JArray> Call(CancellationToken cancellationToken = default)
         {
             var fileParameters = new List<FileParameter>();
 
@@ -71,7 +72,7 @@ namespace Indico.Storage
             {
                 FileParameters = fileParameters
             };
-            var uploadResult = await formUpload.Call();
+            var uploadResult = await formUpload.Call(cancellationToken);
 
             // Dispose FileStreams
             fileParameters.ForEach(param => param.File.Dispose());
