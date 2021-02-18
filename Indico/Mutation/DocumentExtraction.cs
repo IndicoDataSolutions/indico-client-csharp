@@ -83,7 +83,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request);
+            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
             return response;
         }
 

@@ -280,70 +280,195 @@
             <returns>Job</returns>
             </summary>
         </member>
+        <member name="T:Indico.Mutation.GenerateSubmissionResult">
+            <summary>
+            Generates submission results.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.GenerateSubmissionResult.SubmissionId">
+            <summary>
+            Submission Id.
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.GenerateSubmissionResult.#ctor(Indico.IndicoClient)">
+            <summary>
+            Generate Submission Result Constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Mutation.GenerateSubmissionResult.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes requests and returns <c><see cref="T:Indico.Jobs.Job"/></c>.
+            </summary>
+            <param name="cancellationToken">Token to abort operations.</param>
+            <returns><c><see cref="T:Indico.Jobs.Job"/></c></returns>
+        </member>
         <member name="T:Indico.Mutation.ModelGroupLoad">
             <summary>
-            Load a Model Group
+            Loads a Model Group.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.ModelGroupLoad.ModelId">
+            <summary>
+            Model Id.
             </summary>
         </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
-            Model Group Load Constructor
+            Model Group Load Constructor.
             </summary>
-            <param name="graphQLHttpClient"></param>
+            <param name="graphQLHttpClient">Client used to send API requests.</param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.ModelGroup(Indico.Entity.ModelGroup)">
             <summary>
-            Use to load ModelGroup
+            Used to load ModelGroup.
             </summary>
-            <returns>ModelGroupLoad</returns>
             <param name="modelGroup">Model group.</param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupLoad.Exec(System.Threading.CancellationToken)">
             <summary>
-            Executes request and returns load status  
+            Executes request and returns load status.  
             </summary>
-            <returns>Load status</returns>
+            <returns>Load status.</returns>
         </member>
         <member name="T:Indico.Mutation.ModelGroupPredict">
             <summary>
-            Class to run Model Group predictions
+            Predicts on a Model Group.
             </summary>
         </member>
         <member name="P:Indico.Mutation.ModelGroupPredict.ModelId">
             <summary>
-            Get/Set the Model ID (often Selected Model ID for a Model Group)
+            Get/Set the Model ID (often Selected Model ID for a Model Group).
             </summary>
         </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
-            ModelGroupPredict constructor
+            ModelGroupPredict constructor.
             </summary>
-            <param name="graphQLHttpClient"></param>
+            <param name="graphQLHttpClient">Client used to send API requests.</param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.Data(System.Collections.Generic.List{System.String})">
             <summary>
-            Data to predict
+            Data to predict.
             </summary>
             <returns>ModelGroupPredict</returns>
-            <param name="data">Data.</param>
         </member>
         <member name="M:Indico.Mutation.ModelGroupPredict.Exec(System.Threading.CancellationToken)">
             <summary>
-            Executes request and returns job 
+            Executes request and returns job. 
             </summary>
-            <returns>Job</returns>
         </member>
-        <member name="P:Indico.Mutation.WorkflowSubmission.WorkflowId">
+        <member name="T:Indico.Mutation.SubmissionResult">
             <summary>
-            Workflow Id
+            Result of a Submission.
             </summary>
-            <value>Workflow Id</value>
         </member>
-        <member name="P:Indico.Mutation.WorkflowSubmission.Files">
+        <member name="P:Indico.Mutation.SubmissionResult.SubmissionId">
             <summary>
-            Files to submit
+            Submission id.
             </summary>
-            <value>Files</value>
+        </member>
+        <member name="P:Indico.Mutation.SubmissionResult.CheckStatus">
+            <summary>
+            Submission expected status.
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.SubmissionResult.#ctor(Indico.IndicoClient)">
+            <summary>
+            SubmissionResult constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Mutation.SubmissionResult.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes request and returns job.
+            </summary>
+        </member>
+        <member name="T:Indico.Mutation.SubmitReview">
+            <summary>
+            Submits review.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.SubmitReview.SubmissionId">
+            <summary>
+            Submission Id.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.SubmitReview.Changes">
+            <summary>
+            Review's changes.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.SubmitReview.Rejected">
+            <summary>
+            If review rejected.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.SubmitReview.ForceComplete">
+            <summary>
+            Force complete review.
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.SubmitReview.#ctor(Indico.IndicoClient)">
+            <summary>
+            Submit Review Constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Mutation.SubmitReview.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Submits review and returns job.
+            </summary>
+        </member>
+        <member name="T:Indico.Mutation.UpdateSubmission">
+            <summary>
+            Updates Submission.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.UpdateSubmission.SubmissionId">
+            <summary>
+            Submission id.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.UpdateSubmission.Retrieved">
+            <summary>
+            If retrieved.
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.UpdateSubmission.#ctor(Indico.IndicoClient)">
+            <summary>
+            Update Submission Constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Mutation.UpdateSubmission.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes query and returns Submission.
+            </summary>
+        </member>
+        <member name="T:Indico.Mutation.WorkflowSubmission">
+            <summary>
+            Submits to workflow.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmission.Detailed">
+            <inheritdoc/>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmission.#ctor(Indico.IndicoClient)">
+            <summary>
+            WorkflowSubmission constructor.
+            </summary>
+            <param name="client"></param>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmission.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes the query and returns list of submissions ids.
+            </summary>
+        </member>
+        <member name="T:Indico.Mutation.WorkflowSubmissionBase">
+            <summary>
+            Base for WorkflowSubmission classes.
+            </summary>
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionBase.WorkflowId">
             <summary>
@@ -353,27 +478,53 @@
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionBase.Files">
             <summary>
-            Files to submit
+            Files to submit.
             </summary>
-            <value>Files</value>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionBase.Streams">
+            <summary>
+            Streams to submit.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionBase.Urls">
+            <summary>
+            Uris to submit.
+            </summary>
+        </member>
+        <member name="P:Indico.Mutation.WorkflowSubmissionBase.Detailed">
+            <summary>
+            If detailed set to false, the <c>Exec</c> method returns simplified result with job and submission ids. If set to true, the result contains detailed information about submitted elements.
+            </summary>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmissionBase.#ctor(Indico.IndicoClient)">
+            <summary>
+            WorkflowSubmissionBase constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
         </member>
         <member name="M:Indico.Mutation.WorkflowSubmissionBase.Exec(System.Threading.CancellationToken)">
             <summary>
-            Executes request and returns Job
+            Executes request and returns Job.
             </summary>
-            <returns>Job</returns>
         </member>
-        <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.WorkflowId">
+        <member name="T:Indico.Mutation.WorkflowSubmissionDetailed">
             <summary>
-            Workflow Id
+            Submits detailed to workflow.
             </summary>
-            <value>Workflow Id</value>
         </member>
-        <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.Files">
+        <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.Detailed">
+            <inheritdoc/>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmissionDetailed.#ctor(Indico.IndicoClient)">
             <summary>
-            Files to submit
+            WorkflowSubmissionDetailed constuctor.
             </summary>
-            <value>Files</value>
+            <param name="client"></param>
+        </member>
+        <member name="M:Indico.Mutation.WorkflowSubmissionDetailed.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes query and returns list of submissions.
+            </summary>
         </member>
         <member name="M:Indico.IQuery`1.Exec(System.Threading.CancellationToken)">
             <summary>
@@ -381,34 +532,133 @@
             </summary>
             <returns>result of query of type T</returns>
         </member>
+        <member name="T:Indico.Query.GetSubmission">
+            <summary>
+            Gets submission.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.GetSubmission.Id">
+            <summary>
+            Submission id.
+            </summary>
+        </member>
+        <member name="M:Indico.Query.GetSubmission.#ctor(Indico.IndicoClient)">
+            <summary>
+            GetSubmission constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
         <member name="M:Indico.Query.GetSubmission.Exec(System.Threading.CancellationToken)">
             <summary>
             Queries the server and returns Submission
             </summary>
             <returns>Submission</returns>
         </member>
+        <member name="T:Indico.Query.GetWorkflow">
+            <summary>
+            Gets workflow.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.GetWorkflow.WorkflowId">
+            <summary>
+            Workflow id.
+            </summary>
+        </member>
+        <member name="M:Indico.Query.GetWorkflow.#ctor(Indico.IndicoClient)">
+            <summary>
+            GetWorkflow constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Query.GetWorkflow.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes query and returns workflow.
+            </summary>
+        </member>
+        <member name="T:Indico.Query.ListSubmissions">
+            <summary>
+            Lists submissions.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListSubmissions.SubmissionIds">
+            <summary>
+            Ids of submissions to list.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListSubmissions.WorkflowIds">
+            <summary>
+            Ids of workflow to list submissions from.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListSubmissions.Filters">
+            <summary>
+            Submission filters.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListSubmissions.Limit">
+            <summary>
+            Return list count limit.
+            </summary>
+            <value>Default and max is 1000.</value>
+        </member>
+        <member name="M:Indico.Query.ListSubmissions.#ctor(Indico.IndicoClient)">
+            <summary>
+            ListSubmissions constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Query.ListSubmissions.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes query and returns list of submissions.
+            </summary>
+        </member>
+        <member name="T:Indico.Query.ListWorkflows">
+            <summary>
+            Lists workflows.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListWorkflows.DatasetIds">
+            <summary>
+            Datasets ids to list workflows from.
+            </summary>
+        </member>
+        <member name="P:Indico.Query.ListWorkflows.WorkflowIds">
+            <summary>
+            Workflows ids to list.
+            </summary>
+        </member>
+        <member name="M:Indico.Query.ListWorkflows.#ctor(Indico.IndicoClient)">
+            <summary>
+            ListWorkflows constructor.
+            </summary>
+            <param name="client">Client used to send API requests.</param>
+        </member>
+        <member name="M:Indico.Query.ListWorkflows.Exec(System.Threading.CancellationToken)">
+            <summary>
+            Executes query and returns list of workflows.
+            </summary>
+        </member>
         <member name="T:Indico.Query.ModelGroupQuery">
             <summary>
-            Get a Model Group
+            Gets a Model Group.
             </summary>
         </member>
         <member name="P:Indico.Query.ModelGroupQuery.MgId">
             <summary>
-            Get/Set the Model Group ID
+            Get/Set the Model Group ID.
             </summary>
             <value>Model Group ID</value>
         </member>
         <member name="M:Indico.Query.ModelGroupQuery.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
             <summary>
-            Constructor for Model Group Queries
+            ModelGroupQuery constructor.
             </summary>
-            <param name="graphQLHttpClient"></param>
+            <param name="graphQLHttpClient">Client used to send API requests.</param>
         </member>
         <member name="M:Indico.Query.ModelGroupQuery.Exec(System.Threading.CancellationToken)">
             <summary>
             Queries the server and returns ModelGroup
             </summary>
-            <returns>ModelGroup</returns>
         </member>
         <member name="T:Indico.Query.TrainingModelWithProgressQuery">
             <summary>

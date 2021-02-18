@@ -8,12 +8,18 @@ using Indico.Types;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Result of a Submission.
+    /// </summary>
     public class SubmissionResult : IMutation<Job>
     {
         private readonly IndicoClient _client;
 
         private int? _submissionId;
 
+        /// <summary>
+        /// Submission id.
+        /// </summary>
         public int SubmissionId
         {
             get
@@ -29,10 +35,20 @@ namespace Indico.Mutation
             set => _submissionId = value;
         }
 
+        /// <summary>
+        /// Submission expected status.
+        /// </summary>
         public SubmissionStatus? CheckStatus { get; set; }
 
+        /// <summary>
+        /// SubmissionResult constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public SubmissionResult(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes request and returns job.
+        /// </summary>
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
             var getSubmission = new GetSubmission(_client)
@@ -59,6 +75,7 @@ namespace Indico.Mutation
             };
 
             var job = await generateSubmissionResult.Exec();
+
             return job;
         }
 
@@ -68,6 +85,7 @@ namespace Indico.Mutation
             {
                 return status.Equals(CheckStatus);
             }
+
             return !status.Equals(SubmissionStatus.PROCESSING);
         }
     }

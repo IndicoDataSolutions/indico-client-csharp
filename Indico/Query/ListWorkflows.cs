@@ -1,5 +1,4 @@
 ﻿using GraphQL.Common.Request;
-using GraphQL.Common.Response;
 using Indico.Entity;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
@@ -10,17 +9,35 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
+    /// <summary>
+    /// Lists workflows.
+    /// </summary>
     public class ListWorkflows : IQuery<List<Workflow>>
     {
         private readonly IndicoClient _client;
+
+        /// <summary>
+        /// Datasets ids to list workflows from.
+        /// </summary>
         public List<int> DatasetIds { get; set; }
+
+        /// <summary>
+        /// Workflows ids to list.
+        /// </summary>
         public List<int> WorkflowIds { get; set; }
 
+        /// <summary>
+        /// ListWorkflows constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public ListWorkflows(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes query and returns list of workflows.
+        /// </summary>
         public async Task<List<Workflow>> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     query ListWorkflows($datasetIds: [Int], $workflowIds:[Int]){
                         workflows(datasetIds: $datasetIds, workflowIds: $workflowIds){
                             workflows {
