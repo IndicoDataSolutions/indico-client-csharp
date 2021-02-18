@@ -34,7 +34,7 @@ namespace IndicoV2.IntegrationTests.Extensions.SubmissionResult
 
             // Assert
             jobResult.Should().NotBeNull();
-            jobResult.Url.Should().NotBeNull();
+            jobResult["results"]["document"].Should().NotBeNull();
         }
     }
 }

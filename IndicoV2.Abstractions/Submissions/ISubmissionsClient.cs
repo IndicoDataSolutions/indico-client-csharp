@@ -35,7 +35,7 @@ namespace IndicoV2.Submissions
         /// </summary>
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="paths">Filepaths collection to create submissions from.</param>
-        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}"/></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default);
 

@@ -30,7 +30,7 @@ namespace IndicoV2.IntegrationTests.Submissions
         {
             // Arrange
             var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
-            await using var fileStream = await _dataHelper.Files().GetSampleFileStream();
+            await using var fileStream = _dataHelper.Files().GetSampleFileStream();
 
             // Act
             var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { fileStream });

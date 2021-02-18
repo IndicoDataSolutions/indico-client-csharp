@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IndicoV2;
@@ -7,10 +8,13 @@ namespace Examples
 {
     internal class SubmitWorkflows
     {
+        private static string GetToken() =>
+            File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "indico_api_token.txt"));
+
         public static async Task Main()
         {
-            // null token will be replaced with an actual token by V1 config mechanism
-            var client = new IndicoClient(null, new Uri("https://app.indico.io"));
+            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
 
             var dataSets = await client.DataSets().ListAsync();
 
@@ -21,7 +25,7 @@ namespace Examples
             var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf"});
             int submissionId = submissionIds.Single();
             var submission = await submissionClient.GetAsync(submissionId);
-            var jobResult = await client.GetResultWhenReady(submissionId, timeout: TimeSpan.FromSeconds(5));
+            var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId, timeout: TimeSpan.FromSeconds(5));
             Console.ReadLine();
         }
     }
