@@ -14,9 +14,7 @@ namespace Indico.Mutation
     /// </summary>
     public class WorkflowSubmissionDetailed : WorkflowSubmissionBase, IMutation<List<Submission>>
     {
-        /// <summary>
-        /// If detailed.
-        /// </summary>
+        /// <inheritdoc/>
         protected override bool Detailed { get; set; } = true;
 
         /// <summary>

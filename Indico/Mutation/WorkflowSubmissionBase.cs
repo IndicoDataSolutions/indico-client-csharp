@@ -53,7 +53,7 @@ namespace Indico.Mutation
         public List<string> Urls { get; set; }
 
         /// <summary>
-        /// If detailed.
+        /// If detailed set to false, the <c>Exec</c> method returns simplified result with job and submission ids. If set to true, the result contains detailed information about submitted elements.
         /// </summary>
         protected virtual bool Detailed { get; set; }
 
