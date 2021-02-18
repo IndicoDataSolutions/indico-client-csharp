@@ -452,9 +452,7 @@
             </summary>
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmission.Detailed">
-            <summary>
-            If detailed.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="M:Indico.Mutation.WorkflowSubmission.#ctor(Indico.IndicoClient)">
             <summary>
@@ -495,7 +493,7 @@
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionBase.Detailed">
             <summary>
-            If detailed.
+            If detailed set to false, the <c>Exec</c> method returns simplified result with job and submission ids. If set to true, the result contains detailed information about submitted elements.
             </summary>
         </member>
         <member name="M:Indico.Mutation.WorkflowSubmissionBase.#ctor(Indico.IndicoClient)">
@@ -515,9 +513,7 @@
             </summary>
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.Detailed">
-            <summary>
-            If detailed.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="M:Indico.Mutation.WorkflowSubmissionDetailed.#ctor(Indico.IndicoClient)">
             <summary>

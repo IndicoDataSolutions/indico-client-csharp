@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Indico.Exception;
 using Indico.Jobs;
@@ -14,10 +15,25 @@ namespace Indico.Mutation
     {
         private readonly IndicoClient _client;
 
+        private int? _submissionId;
+
         /// <summary>
         /// Submission id.
         /// </summary>
-        public int SubmissionId { get; set; }
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
 
         /// <summary>
         /// Submission expected status.
@@ -39,9 +55,10 @@ namespace Indico.Mutation
             {
                 Id = SubmissionId
             };
+
             var submission = await getSubmission.Exec(cancellationToken);
 
-            while(!StatusCheck(submission.Status))
+            while (!StatusCheck(submission.Status))
             {
                 submission = await getSubmission.Exec(cancellationToken);
                 await Task.Delay(1000);
@@ -56,6 +73,7 @@ namespace Indico.Mutation
             {
                 SubmissionId = submission.Id
             };
+
             var job = await generateSubmissionResult.Exec();
 
             return job;
@@ -63,7 +81,7 @@ namespace Indico.Mutation
 
         private bool StatusCheck(SubmissionStatus status)
         {
-            if(CheckStatus != null)
+            if (CheckStatus != null)
             {
                 return status.Equals(CheckStatus);
             }
