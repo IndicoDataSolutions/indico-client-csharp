@@ -5,7 +5,6 @@ using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
-using IndicoV2.Jobs.Exceptions;
 using IndicoV2.Reviews;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -40,36 +39,14 @@ namespace IndicoV2.IntegrationTests.Reviews
             var result = await _submissionResultAwaiter.WaitReady(submission.Id);
             var changes = (JObject)result["results"]["document"]["results"];
 
-            // as in: https://indicodatasolutions.github.io/indico-client-python/auto-review.html?highlight=submitreview
-            foreach (var (_, predictions) in changes)
-            {
-                foreach (var prediction in predictions.Value<JArray>("pre_review"))
-                {
-                    var label = prediction.Value<string>("label");
-                    if (prediction["confidence"].Value<double>(label) < 0.6d)
-                    {
-                        prediction["rejected"] = true;
-                    }
-                }
-            }
-
             // Act
-            var jobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
-            try
-            {
-                var jobResult = await _jobAwaiter.WaitReadyAsync(jobId, TimeSpan.FromSeconds(1));
-                
-                // Assert
-                jobResult.Should().NotBeNullOrEmpty();
-            }
-            catch (JobNotSuccessfulException)
-            {
-                // TODO: fix the review
-                // Jobs's errorr: "Extraction predictions must be a list"
-                Assert.Fail("TODO: investigate what's wrong");
-            }
+            var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
+            var jobResult = await _jobAwaiter.WaitReadyAsync(submitReviewJobId, TimeSpan.FromSeconds(1));
 
-            Assert.Inconclusive("Requires JobsClient to verify job's result");
+            // Assert
+            jobResult.Should().NotBeNullOrEmpty();
+            jobResult.Value<string>("submission_status").Should().Be("pending_review");
+            jobResult.Value<bool>("success").Should().Be(true);
         }
     }
 }

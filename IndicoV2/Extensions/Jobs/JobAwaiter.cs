@@ -27,7 +27,8 @@ namespace IndicoV2.Extensions.Jobs
 
             if (status != JobStatus.SUCCESS)
             {
-                throw new JobNotSuccessfulException(status);
+                var failReason = await _jobsClient.GetFailReasonAsync(jobId);
+                throw new JobNotSuccessfulException(status, failReason);
             }
 
             return await _jobsClient.GetResultAsync(jobId);

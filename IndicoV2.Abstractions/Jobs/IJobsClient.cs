@@ -22,5 +22,7 @@ namespace IndicoV2.Jobs
         /// <param name="jobId"></param>
         /// <returns></returns>
         Task<JToken> GetResultAsync(string jobId);
+
+        Task<string> GetFailReasonAsync(string jobId);
     }
 }

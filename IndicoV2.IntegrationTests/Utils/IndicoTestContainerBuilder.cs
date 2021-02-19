@@ -26,7 +26,7 @@ namespace IndicoV2.IntegrationTests.Utils
 
         public IUnityContainer Build()
         {
-            var isClientRegistered = _container.Registrations.Any(r => r.RegisteredType.IsSubclassOf(typeof(IndicoClient)));
+            var isClientRegistered = _container.Registrations.Any(r => typeof(IndicoClient).IsAssignableFrom(r.RegisteredType));
 
             if (!isClientRegistered)
             {

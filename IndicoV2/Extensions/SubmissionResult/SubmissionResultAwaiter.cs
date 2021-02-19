@@ -26,24 +26,23 @@ namespace IndicoV2.Extensions.SubmissionResult
             _storageClient = storageClient;
         }
 
-        public Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
-            => WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, cancellationToken);
+        public async Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
+            => await WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, cancellationToken);
 
-        public Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default)
-            => WaitReady(s => s == awaitedStatus, submissionId, checkInterval, cancellationToken);
+        public async Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default)
+            => await WaitReady(s => s == awaitedStatus, submissionId, checkInterval, cancellationToken);
 
         private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
-            while (!isAwaitedStatus((await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
+            ISubmission submission;
+
+            while (!isAwaitedStatus((submission = await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
             {
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
-            var jobId = await _submissionsClient.GenerateSubmissionResultAsync(submissionId, cancellationToken);
-            var jobResultJson = await _jobAwaiter.WaitReadyAsync(jobId, checkInterval, cancellationToken);
-            var jobResult = _jobResultBuilder.GetSubmissionJobResult((JObject)jobResultJson);
-
-            var result = await _storageClient.GetAsync(jobResult.Url);
+            var resultUri = $"indico-file://{submission.ResultFile}";
+            var result = await _storageClient.GetAsync(new Uri(resultUri));
 
             using (var reader = new JsonTextReader(new StreamReader(result)))
             {
