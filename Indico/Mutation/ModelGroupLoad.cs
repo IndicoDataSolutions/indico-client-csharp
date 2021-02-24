@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
@@ -8,24 +9,41 @@ using Indico.Exception;
 namespace Indico.Mutation
 {
     /// <summary>
-    /// Load a Model Group
+    /// Loads a Model Group.
     /// </summary>
     public class ModelGroupLoad : IMutation<string>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;
-        
-        public int ModelId { get; set; }
+
+        private int? _modelId;
 
         /// <summary>
-        /// Model Group Load Constructor
+        /// Model Id.
         /// </summary>
-        /// <param name="graphQLHttpClient"></param>
+        public int ModelId
+        {
+            get
+            {
+                if (!_modelId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _modelId.Value;
+            }
+
+            set => _modelId = value;
+        }
+
+        /// <summary>
+        /// Model Group Load Constructor.
+        /// </summary>
+        /// <param name="graphQLHttpClient">Client used to send API requests.</param>
         public ModelGroupLoad(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
-        /// Use to load ModelGroup
+        /// Used to load ModelGroup.
         /// </summary>
-        /// <returns>ModelGroupLoad</returns>
         /// <param name="modelGroup">Model group.</param>
         public ModelGroupLoad ModelGroup(ModelGroup modelGroup)
         {
@@ -34,12 +52,12 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Executes request and returns load status  
+        /// Executes request and returns load status.  
         /// </summary>
-        /// <returns>Load status</returns>
+        /// <returns>Load status.</returns>
         public async Task<string> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation LoadModel($model_id: Int!) {
                         modelLoad(modelId: $model_id) {
                             status

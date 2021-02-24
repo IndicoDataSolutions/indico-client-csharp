@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
@@ -10,29 +11,42 @@ using Indico.Jobs;
 namespace Indico.Mutation
 {
     /// <summary>
-    /// Class to run Model Group predictions
+    /// Predicts on a Model Group.
     /// </summary>
     public class ModelGroupPredict : IMutation<Job>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;
+        private int? _modelId;
         private List<string> _data;
 
         /// <summary>
-        /// Get/Set the Model ID (often Selected Model ID for a Model Group)
+        /// Get/Set the Model ID (often Selected Model ID for a Model Group).
         /// </summary>
-        public int ModelId { get; set; }
+        public int ModelId
+        {
+            get
+            {
+                if (!_modelId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _modelId.Value;
+            }
+
+            set => _modelId = value;
+        }
 
         /// <summary>
-        /// ModelGroupPredict constructor
+        /// ModelGroupPredict constructor.
         /// </summary>
-        /// <param name="graphQLHttpClient"></param>
+        /// <param name="graphQLHttpClient">Client used to send API requests.</param>
         public ModelGroupPredict(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
-        /// Data to predict
+        /// Data to predict.
         /// </summary>
         /// <returns>ModelGroupPredict</returns>
-        /// <param name="data">Data.</param>
         public ModelGroupPredict Data(List<string> data)
         {
             _data = data;
@@ -40,12 +54,11 @@ namespace Indico.Mutation
         }
 
         /// <summary>
-        /// Executes request and returns job 
+        /// Executes request and returns job. 
         /// </summary>
-        /// <returns>Job</returns>
         public async Task<Job> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation PredictModel($modelId: Int!, $data: [String]!) {
                         modelPredict(modelId: $modelId, data: $data) {
                             jobId

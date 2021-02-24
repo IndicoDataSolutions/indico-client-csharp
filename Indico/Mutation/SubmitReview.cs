@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -10,16 +11,57 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Submits review.
+    /// </summary>
     public class SubmitReview : IMutation<Job>
     {
         private readonly IndicoClient _client;
-        public int SubmissionId { get; set; }
+
+        private int? _submissionId;
+
+        /// <summary>
+        /// Submission Id.
+        /// </summary>
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
+
+        /// <summary>
+        /// Review's changes.
+        /// </summary>
         public JObject Changes { get; set; }
+
+        /// <summary>
+        /// If review rejected.
+        /// </summary>
         public bool Rejected { get; set; } = false;
+
+        /// <summary>
+        /// Force complete review.
+        /// </summary>
         public bool? ForceComplete { get; set; }
 
+        /// <summary>
+        /// Submit Review Constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public SubmitReview(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Submits review and returns job.
+        /// </summary>
         public async Task<Job> Exec(CancellationToken cancellationToken)
         {
             if (Changes == null && !Rejected)

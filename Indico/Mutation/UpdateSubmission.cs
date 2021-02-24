@@ -9,17 +9,49 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+    /// <summary>
+    /// Updates Submission.
+    /// </summary>
     public class UpdateSubmission : IMutation<Submission>
     {
         private readonly IndicoClient _client;
-        public int SubmissionId { get; set; }
+        private int? _submissionId;
+
+        /// <summary>
+        /// Submission id.
+        /// </summary>
+        public int SubmissionId
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
+
+        /// <summary>
+        /// If retrieved.
+        /// </summary>
         public bool Retrieved { get; set; }
 
+        /// <summary>
+        /// Update Submission Constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public UpdateSubmission(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes query and returns Submission.
+        /// </summary>
         public async Task<Submission> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     mutation UpdateSubmission($submissionId: Int!, $retrieved: Boolean) {
                         updateSubmission(submissionId: $submissionId, retrieved: $retrieved) {
                             id

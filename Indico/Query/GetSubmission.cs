@@ -9,11 +9,36 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
+    /// <summary>
+    /// Gets submission.
+    /// </summary>
     public class GetSubmission : IQuery<Submission>
     {
         private readonly IndicoClient _client;
-        public int Id { get; set; }
+        private int? _submissionId;
 
+        /// <summary>
+        /// Submission id.
+        /// </summary>
+        public int Id 
+        {
+            get
+            {
+                if (!_submissionId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _submissionId.Value;
+            }
+
+            set => _submissionId = value;
+        }
+
+        /// <summary>
+        /// GetSubmission constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public GetSubmission(IndicoClient client) => _client = client;
 
         /// <summary>
@@ -22,7 +47,7 @@ namespace Indico.Query
         /// <returns>Submission</returns>
         public async Task<Submission> Exec(CancellationToken cancellationToken)
         {
-            string query = @"
+            var query = @"
                     query GetSubmission($submissionId: Int!){
                         submission(id: $submissionId){
                             id

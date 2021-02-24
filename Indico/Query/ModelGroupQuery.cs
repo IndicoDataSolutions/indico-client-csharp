@@ -11,31 +11,44 @@ using Newtonsoft.Json.Linq;
 namespace Indico.Query
 {
     /// <summary>
-    /// Get a Model Group
+    /// Gets a Model Group.
     /// </summary>
     public class ModelGroupQuery : IQuery<ModelGroup>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;
+        private int? _mgId;
 
         /// <summary>
-        /// Get/Set the Model Group ID
+        /// Get/Set the Model Group ID.
         /// </summary>
         /// <value>Model Group ID</value>
-        public int MgId { get; set; }
+        public int MgId 
+        {
+            get
+            {
+                if (!_mgId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _mgId.Value;
+            }
+
+            set => _mgId = value;
+        }
 
         /// <summary>
-        /// Constructor for Model Group Queries
+        /// ModelGroupQuery constructor.
         /// </summary>
-        /// <param name="graphQLHttpClient"></param>
+        /// <param name="graphQLHttpClient">Client used to send API requests.</param>
         public ModelGroupQuery(GraphQLHttpClient graphQLHttpClient) => _graphQLHttpClient = graphQLHttpClient;
 
         /// <summary>
         /// Queries the server and returns ModelGroup
         /// </summary>
-        /// <returns>ModelGroup</returns>
         public async Task<ModelGroup> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     query ModelGroupQuery($modelGroupIds: [Int]!) {
                         modelGroups(modelGroupIds: $modelGroupIds) {
                             modelGroups {
@@ -61,7 +74,11 @@ namespace Indico.Query
                 }
             };
 
+<<<<<<< HEAD
             var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
+=======
+            var response = await _graphQLHttpClient.SendQueryAsync(request, cancellationToken);
+>>>>>>> master
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
