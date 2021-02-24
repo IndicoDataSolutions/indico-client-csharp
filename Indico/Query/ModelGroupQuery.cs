@@ -74,11 +74,7 @@ namespace Indico.Query
                 }
             };
 
-<<<<<<< HEAD
             var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
-=======
-            var response = await _graphQLHttpClient.SendQueryAsync(request, cancellationToken);
->>>>>>> master
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
