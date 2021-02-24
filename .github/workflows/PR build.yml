@@ -27,7 +27,7 @@ jobs:
         reporttypes: lcov
         reports: ./coverage/*/coverage.*
         # remove old lib as it's untestable and breaks github coverage report (it's to long for github comment)
-        # assemblyFilters: -/Indico/*
+        assemblyFilters: -/Indico/*
     - name: Post code coverage report
       uses: romeovs/lcov-reporter-action@v0.2.16
       with:
