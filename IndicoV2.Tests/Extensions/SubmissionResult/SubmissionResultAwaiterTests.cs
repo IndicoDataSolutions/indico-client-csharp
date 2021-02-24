@@ -71,9 +71,6 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             submissionClientMock
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            _fixture.Freeze<Mock<IJobAwaiter>>()
-                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JObject.Parse(@"{""url"": ""test""}"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
                 .ReturnsJsonStream("{}");
@@ -86,7 +83,6 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             // Assert
             submissionClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()),
                 Times.Exactly(2));
-            submissionClientMock.Verify(cli => cli.GenerateSubmissionResultAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
             submissionClientMock.VerifyNoOtherCalls();
         }
 
@@ -96,18 +92,15 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             // Arrange
             const int submissionId = 1;
             const string jobId = "testJobId";
-            var checkInterval = TimeSpan.Zero;
             var submissionClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
-            var storageUri = new Uri("https://test");
+            const string resultFile = "/test/resultFile.x";
+            var storageUri = new Uri($"indico-file://{resultFile}");
             submissionClientMock
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
+                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED && s.ResultFile == resultFile));
             submissionClientMock
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            _fixture.Freeze<Mock<IJobAwaiter>>()
-                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JObject.Parse($@"{{ ""url"": ""{storageUri}"" }}"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(storageUri))
                 .ReturnsJsonStream(@"{ ""test"" : 13 }");
@@ -116,7 +109,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             // Act
             var result = await sut.WaitReady(submissionId, default, default);
 
-            // Asesrt
+            // Assert
             result.Value<int>("test").Should().Be(13);
         }
 
@@ -182,7 +175,6 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 
             // Assert
             submissionsClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()), Times.Exactly(statusChanges.Length));
-            submissionsClientMock.Verify(cli => cli.GenerateSubmissionResultAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
             submissionsClientMock.VerifyNoOtherCalls();
         }
 

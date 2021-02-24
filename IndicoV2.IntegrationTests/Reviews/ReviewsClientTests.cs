@@ -32,7 +32,7 @@ namespace IndicoV2.IntegrationTests.Reviews
         }
 
         [Test]
-        public async Task SubmitReviewAsync_ShouldReturnJob()
+        public async Task SubmitReviewAsync_ShouldSucceed()
         {
             // Arrange
             var submission = await _dataHelper.Submissions().GetAnyAsync();
