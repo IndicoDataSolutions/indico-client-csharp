@@ -1,12 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<BuildType Condition="'$(BuildType)' == ''"></BuildType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
-    <ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" />
-  </ItemGroup>
+	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
+	<Target Name="IncludeP2POutput">
+		<ItemGroup>
+			<BuildOutputInPackage Include="$(OutputPath)\Indico*.dll" />
+		</ItemGroup>
+	</Target>
+	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
+		<BuildNumber Condition="'$(Configuration)' == 'Debug'">$([System.DateTime]::UtcNow.ToString(HHmmss))</BuildNumber>
+		<BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<Version>2.0.0-alpha$(BuildNumber)</Version>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\Indico\indico-square-icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
+		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
+	</ItemGroup>
 
 </Project>

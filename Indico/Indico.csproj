@@ -1,22 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-        <PackageId>IndicoClient</PackageId>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+	</PropertyGroup>
+
+	<Import Project="../Nuget.props" Condition="'$(BuildType)' == ''" />
+
+	<PropertyGroup Condition="'$(BuildType)' == ''">
         <AssemblyVersion>0.9.1</AssemblyVersion>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Description>C# Client Library for the Indico IPA Platform</Description>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageProjectUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</PackageProjectUrl>
-        <PackageIcon>indico-square-icon.png</PackageIcon>
-        <RepositoryUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</RepositoryUrl>
-        <RepositoryType>Github</RepositoryType>
         <Version>0.9.1</Version>
-        <PackageTags>Indico</PackageTags>
-        <PackageReleaseNotes>This is the first preview release of the C# client for the Indico IPA Platform V3.x</PackageReleaseNotes>
-        <Product>Indico IPA</Product>
-        <Copyright>2020 Indico, Inc.</Copyright>
-        <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

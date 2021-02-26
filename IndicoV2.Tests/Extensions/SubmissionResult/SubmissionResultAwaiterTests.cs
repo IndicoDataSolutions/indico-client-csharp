@@ -24,7 +24,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING).ToArray();
         private static readonly JobStatus[] _jobStatusesExceptPending =
             Enum.GetValues(typeof(JobStatus)).Cast<JobStatus>().Where(s => s != JobStatus.PENDING).ToArray();
-        private readonly TimeSpan _timeoutDefault = TimeSpan.FromSeconds(0.5);
+        private readonly TimeSpan _timeoutDefault = TimeSpan.FromSeconds(0.05);
         private readonly TimeSpan _timeoutMax = TimeSpan.FromHours(1);
         private IFixture _fixture;
 
