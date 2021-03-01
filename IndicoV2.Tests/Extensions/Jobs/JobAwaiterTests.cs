@@ -22,18 +22,22 @@ namespace IndicoV2.Tests.Extensions.Jobs
         [SetUp]
         public void SetUp() => _fixture = new IndicoAutoMockingFixture();
 
-        private static readonly JobStatus[] _jobStatusFinishedNotSuccessful = Enum.GetValues(typeof(JobStatus)).Cast<JobStatus>()
-            .Except(new[] {JobStatus.SUCCESS, JobStatus.PENDING}).ToArray();
+        private static readonly JobStatus[] _waitingForResultStatuses = { JobStatus.PENDING, JobStatus.RECEIVED, JobStatus.STARTED };
 
-        [Test]
-        public async Task WaitReadyAsync_ShouldWait_UntilJobProcessed()
+        private static readonly JobStatus[] _finishedNotSuccessfulStatuses = Enum.GetValues(typeof(JobStatus))
+            .Cast<JobStatus>()
+            .Except(_waitingForResultStatuses.Union(new[] { JobStatus.SUCCESS }))
+            .ToArray();
+
+        [TestCaseSource(nameof(_waitingForResultStatuses))]
+        public async Task WaitReadyAsync_ShouldWait_UntilJobProcessed(JobStatus inProgressStatus)
         {
             // Arrange
             var jobId = Guid.NewGuid().ToString();
             var jobsClientMock = _fixture.Freeze<Mock<IJobsClient>>();
             jobsClientMock
                 .SetupSequence(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(JobStatus.PENDING)
+                .ReturnsAsync(inProgressStatus)
                 .ReturnsAsync(JobStatus.SUCCESS);
             jobsClientMock
                 .Setup(cli => cli.GetResultAsync(jobId))
@@ -49,7 +53,7 @@ namespace IndicoV2.Tests.Extensions.Jobs
             jobsClientMock.VerifyNoOtherCalls();
         }
 
-        [TestCaseSource(nameof(_jobStatusFinishedNotSuccessful))]
+        [TestCaseSource(nameof(_finishedNotSuccessfulStatuses))]
         public void WaitReadyAsync_ShouldThrow_WhenFinishedNotSuccessful(JobStatus jobStatus)
         {
             // Arrange
@@ -60,7 +64,7 @@ namespace IndicoV2.Tests.Extensions.Jobs
             var jobAwaiter = _fixture.Create<JobAwaiter>();
 
             // Act, Assert
-            this.Invoking(_ => jobAwaiter.WaitReadyAsync(jobId, default, default))
+            this.Invoking(_ => jobAwaiter.WaitReadyAsync(jobId, default, new CancellationTokenSource(500).Token))
                 .Should().Throw<JobNotSuccessfulException>();
         }
 

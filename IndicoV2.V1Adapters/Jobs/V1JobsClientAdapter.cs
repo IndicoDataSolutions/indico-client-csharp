@@ -22,7 +22,7 @@ namespace IndicoV2.V1Adapters.Jobs
         }
 
         public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
-        public async Task<string> GetFailReasonAsync(string jobId)
+        public async Task<string> GetFailureReasonAsync(string jobId)
         {
             var queryString = @"
                     query GetJob($id: String!) {
@@ -46,7 +46,7 @@ namespace IndicoV2.V1Adapters.Jobs
             if (jobStatus != JobStatus.FAILURE)
             {
                 throw new InvalidOperationException(
-                    $"Cannot get fail reason, job have not failed (status: {jobStatus}");
+                    $"Cannot get failure reason, the job has not failed (status: {jobStatus}");
             }
             var failReason = job.Value<string>("result");
             var failReasonObject = JObject.Parse(failReason);
