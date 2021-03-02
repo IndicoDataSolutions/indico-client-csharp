@@ -9,8 +9,8 @@ namespace IndicoV2
         /// <summary>
         /// Gets <seealso cref="ISubmissionsClient"/>
         /// </summary>
-        /// <param name="client"></param>
-        /// <returns></returns>
-        public static ISubmissionsClient Submissions(this IndicoClient client) => new SubmissionsV1ClientAdapter(client.LegacyClient);
+        /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
+        /// <returns>Instance of <seealso cref="ISubmissionsClient"/></returns>
+        public static ISubmissionsClient Submissions(this IndicoClient indicoClient) => new SubmissionsV1ClientAdapter(indicoClient.LegacyClient);
     }
 }

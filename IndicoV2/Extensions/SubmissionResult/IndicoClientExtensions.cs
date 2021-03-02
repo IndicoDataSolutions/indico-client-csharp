@@ -4,7 +4,12 @@ namespace IndicoV2
 {
     public static partial class IndicoClientExtensions
     {
-        public static ISubmissionResultAwaiter GetSubmissionResultAwaiter(this IndicoV2.IndicoClient indicoClient) =>
+        /// <summary>
+        /// Gets <seealso cref="ISubmissionResultAwaiter"/>
+        /// </summary>
+        /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
+        /// <returns></returns>
+        public static ISubmissionResultAwaiter GetSubmissionResultAwaiter(this IndicoClient indicoClient) =>
             new SubmissionResultAwaiter(indicoClient.Submissions(), indicoClient.Jobs(), indicoClient.Storage());
     }
 }
