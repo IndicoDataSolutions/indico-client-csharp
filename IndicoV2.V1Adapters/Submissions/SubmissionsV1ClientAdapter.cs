@@ -64,5 +64,12 @@ namespace IndicoV2.V1Adapters.Submissions
             var submission = await new GetSubmission(_indicoClient) { Id = submissionId }.Exec(cancellationToken);
             return new V1SubmissionAdapter(submission);
         }
+
+        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
+        {
+            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
+
+            return job.Id;
+        }
     }
 }

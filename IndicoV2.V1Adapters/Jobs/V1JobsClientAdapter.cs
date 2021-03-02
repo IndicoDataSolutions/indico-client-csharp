@@ -1,8 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using GraphQL;
 using Indico;
 using Indico.Jobs;
-using Indico.Mutation;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
 using Newtonsoft.Json.Linq;
@@ -20,14 +21,39 @@ namespace IndicoV2.V1Adapters.Jobs
             _jobStatusConverter = jobStatusConverter;
         }
 
-        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken)
-        {
-            var job = await new GenerateSubmissionResult(_indicoClient) { SubmissionId = submissionId }.Exec(cancellationToken);
-
-            return job.Id;
-        }
-
         public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
+        public async Task<string> GetFailureReasonAsync(string jobId)
+        {
+            var queryString = @"
+                    query GetJob($id: String!) {
+                        job(id: $id) {
+                            id
+                            status
+                            result
+                        }
+                    }";
+            var query = new GraphQLRequest()
+            {
+                Query = queryString,
+                OperationName = "GetJob",
+                Variables = new { id = jobId },
+            };
+            var jobResponse = await _indicoClient.GraphQLHttpClient.SendQueryAsync<dynamic>(query);
+            var job = (JObject)jobResponse.Data.job;
+
+            var jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), job.Value<string>("status"));
+            
+            if (jobStatus != JobStatus.FAILURE)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot get failure reason, the job has not failed (status: {jobStatus}");
+            }
+            var failReason = job.Value<string>("result");
+            var failReasonObject = JObject.Parse(failReason);
+            failReason = failReasonObject.Value<string>("message");
+
+            return failReason;
+        }
 
         public async Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken) =>
             _jobStatusConverter.Map(await new Job(_indicoClient.GraphQLHttpClient, jobId).Status());
