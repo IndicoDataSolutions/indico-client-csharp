@@ -38,6 +38,7 @@ jobs:
         lcov-file: ./coverage/lcov.info
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
+      if: ${{ github.base_ref == 'master' }}
       with:
         name: Nuget Package
         path: ./IndicoV2/bin/${{ env.CONFIG }}/IndicoClient.*${{ github.run_number }}.nupkg
