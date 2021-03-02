@@ -13,20 +13,15 @@ namespace IndicoV2.V1Adapters.Reviews
 
         public ReviewsV1ClientAdapter(IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
 
-        public async Task<string> SubmitReviewAsync(int submissionId, JObject changes, CancellationToken cancellationToken)
+        public async Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default)
         {
             var job = await new SubmitReview(_indicoClientLegacy)
             {
                 SubmissionId = submissionId,
                 Changes = changes,
+                ForceComplete = forceComplete,
+                Rejected = rejected,
             }.Exec(cancellationToken);
-
-            return job.Id;
-        }
-
-        public async Task<string> RejectAsync(int submissionId, CancellationToken cancellationToken)
-        {
-            var job = await new SubmitReview(_indicoClientLegacy) { Rejected = true }.Exec(cancellationToken);
 
             return job.Id;
         }

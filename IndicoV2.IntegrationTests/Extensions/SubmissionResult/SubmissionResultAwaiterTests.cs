@@ -30,7 +30,7 @@ namespace IndicoV2.IntegrationTests.Extensions.SubmissionResult
             var submissionId = (await _dataHelper.Submissions().GetAnyAsync()).Id;
 
             // Act
-            var jobResult = await _sut.WaitReady(submissionId, TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(5), default);
+            var jobResult = await _sut.WaitReady(submissionId, TimeSpan.FromMilliseconds(300), default);
 
             // Assert
             jobResult.Should().NotBeNull();
