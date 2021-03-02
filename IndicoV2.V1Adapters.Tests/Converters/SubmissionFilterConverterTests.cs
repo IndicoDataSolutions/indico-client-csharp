@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using FluentAssertions;
-
 using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Converters;
-
 using NUnit.Framework;
 
 
@@ -41,7 +37,7 @@ namespace IndicoV2.V1Adapters.Tests.Converters
         public void AndFilter_ShouldCorrectlyMapV1SubmissionFilter()
         {
             // Arrange
-            GetTestSubmissionFilters(out SubmissionFilter v2SubmissionFilter1, out SubmissionFilter v2SubmissionFilter2);
+            GetTestSubmissionFilters(out var v2SubmissionFilter1, out var v2SubmissionFilter2);
 
             var v2AndFilter = new AndFilter
             {
@@ -66,7 +62,7 @@ namespace IndicoV2.V1Adapters.Tests.Converters
         public void OrFilter_ShouldCorrectlyMapV1SubmissionFilter()
         {
             // Arrange
-            GetTestSubmissionFilters(out SubmissionFilter v2SubmissionFilter1, out SubmissionFilter v2SubmissionFilter2);
+            GetTestSubmissionFilters(out var v2SubmissionFilter1, out var v2SubmissionFilter2);
 
             var v2OrFilter = new OrFilter
             {
@@ -102,7 +98,7 @@ namespace IndicoV2.V1Adapters.Tests.Converters
             v1SubmissionFilter.Retrieved.Should().BeNull();
         }
 
-        private static void GetTestSubmissionFilters(out SubmissionFilter v2SubmissionFilter1, out SubmissionFilter v2SubmissionFilter2)
+        private void GetTestSubmissionFilters(out SubmissionFilter v2SubmissionFilter1, out SubmissionFilter v2SubmissionFilter2)
         {
             // Arrange
             v2SubmissionFilter1 = new SubmissionFilter
