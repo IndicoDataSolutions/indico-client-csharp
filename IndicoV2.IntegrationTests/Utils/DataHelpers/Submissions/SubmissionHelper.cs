@@ -16,7 +16,6 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
         private readonly ISubmissionsClient _submissions;
         private readonly FileHelper _fileHelper;
 
-
         public SubmissionHelper(WorkflowHelper workflowHelper, FileHelper fileHelper, ISubmissionsClient submissions)
         {
             _workflowHelper = workflowHelper;

@@ -8,6 +8,8 @@ namespace IndicoV2
         /// <summary>
         /// Gets <seealso cref="IDataSetClient"/>
         /// </summary>
+        /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
+        /// <returns>Instance of <seealso cref="IDataSetClient"/></returns>
         public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
             new DataSetsV1ClientAdapter(indicoClient.LegacyClient);
     }

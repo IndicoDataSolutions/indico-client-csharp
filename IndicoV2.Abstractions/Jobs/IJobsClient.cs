@@ -10,8 +10,8 @@ namespace IndicoV2.Jobs
         /// <summary>
         /// Gets Job's status
         /// </summary>
-        /// <param name="jobId"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="jobId">Job's Id</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Job's Status</returns>
         Task<JobStatus> GetStatusAsync(string jobId, CancellationToken cancellationToken = default);
         //Task<IJob> GetJobAsync(int submissionId, CancellationToken cancellationToken = default);
@@ -19,8 +19,8 @@ namespace IndicoV2.Jobs
         /// <summary>
         /// Gets Job's result
         /// </summary>
-        /// <param name="jobId"></param>
-        /// <returns></returns>
+        /// <param name="jobId">Job's Id</param>
+        /// <returns>Job result</returns>
         Task<JToken> GetResultAsync(string jobId);
 
         Task<string> GetFailureReasonAsync(string jobId);

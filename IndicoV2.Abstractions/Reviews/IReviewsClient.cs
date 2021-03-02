@@ -12,7 +12,9 @@ namespace IndicoV2.Reviews
         /// </summary>
         /// <param name="submissionId"><see cref="ISubmission"/>'s Id</param>
         /// <param name="changes">Changes</param>
-        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asyncronous operations.</param>
+        /// <param name="forceComplete">Force complete review.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="rejected">If review rejected.</param>
         /// <returns>Job's Id</returns>
         Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default);
     }

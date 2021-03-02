@@ -5,6 +5,11 @@ namespace IndicoV2
 {
     public static partial class IndicoClientExtensions
     {
-        public static IStorageClient Storage(this IndicoClient client) => new V1StorageClientAdapter(client.LegacyClient);
+        /// <summary>
+        /// Gets <seealso cref="IStorageClient"/>
+        /// </summary>
+        /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
+        /// <returns>Instance of <seealso cref="IStorageClient"/></returns>
+        public static IStorageClient Storage(this IndicoClient indicoClient) => new V1StorageClientAdapter(indicoClient.LegacyClient);
     }
 }
