@@ -1,4 +1,4 @@
-﻿using GraphQL.Common.Request;
+using GraphQL;
 using Indico.Entity;
 using Indico.Exception;
 using Indico.Types;
@@ -11,19 +11,46 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
+    /// <summary>
+    /// Lists submissions.
+    /// </summary>
     public class ListSubmissions : IQuery<List<Submission>>
     {
         private readonly IndicoClient _client;
+
+        /// <summary>
+        /// Ids of submissions to list.
+        /// </summary>
         public List<int> SubmissionIds { get; set; }
+
+        /// <summary>
+        /// Ids of workflow to list submissions from.
+        /// </summary>
         public List<int> WorkflowIds { get; set; }
+
+        /// <summary>
+        /// Submission filters.
+        /// </summary>
         public SubmissionFilter Filters { get; set; } = new SubmissionFilter();
+
+        /// <summary>
+        /// Return list count limit.
+        /// </summary>
+        /// <value>Default and max is 1000.</value>
         public int Limit { get; set; } = 1000;
 
+        /// <summary>
+        /// ListSubmissions constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public ListSubmissions(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes query and returns list of submissions.
+        /// </summary>
         public async Task<List<Submission>> Exec(CancellationToken cancellationToken = default)
         {
-            string query = @"
+            var query = @"
                     query ListSubmissions(
                         $submissionIds: [Int],
                         $workflowIds: [Int],
@@ -61,7 +88,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await _client.GraphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             
             if (response.Errors != null)
             {
@@ -69,7 +96,8 @@ namespace Indico.Query
             }
 
             var subs = (JArray)response.Data.submissions.submissions;
-            var submissions = subs.Select(submission => new Submission()
+            
+            return subs.Select(submission => new Submission()
             {
                 Id = submission.Value<int>("id"),
                 DatasetId = submission.Value<int>("datasetId"),
@@ -82,8 +110,6 @@ namespace Indico.Query
                 Errors = submission.Value<string>("errors")
 
             }).ToList();
-
-            return submissions;
         }
     }
 }

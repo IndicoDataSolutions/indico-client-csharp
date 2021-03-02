@@ -6,13 +6,41 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
+    /// <summary>
+    /// Gets workflow.
+    /// </summary>
     public class GetWorkflow : IQuery<Workflow>
     {
         private readonly IndicoClient _client;
-        public int WorkflowId { get; set; }
+        private int? _workflowId;
 
+        /// <summary>
+        /// Workflow id.
+        /// </summary>
+        public int WorkflowId 
+        {
+            get
+            {
+                if (!_workflowId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _workflowId.Value;
+            }
+
+            set => _workflowId = value;
+        }
+
+        /// <summary>
+        /// GetWorkflow constructor.
+        /// </summary>
+        /// <param name="client">Client used to send API requests.</param>
         public GetWorkflow(IndicoClient client) => _client = client;
 
+        /// <summary>
+        /// Executes query and returns workflow.
+        /// </summary>
         public async Task<Workflow> Exec(CancellationToken cancellationToken = default)
         {
             var listWorkflows = new ListWorkflows(_client)
@@ -25,6 +53,7 @@ namespace Indico.Query
             {
                 return workflows[0];
             }
+
             return null;
         }
     }

@@ -1,9 +1,10 @@
+using System;
 using System.Text;
-using GraphQL.Common.Response;
+using GraphQL;
 
 namespace Indico.Exception
 {
-    [System.Serializable]
+    [Serializable]
     public class GraphQLException : System.Exception
     {
         public GraphQLException() { }

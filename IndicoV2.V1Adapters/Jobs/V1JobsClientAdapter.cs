@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
+using GraphQL;
 using Indico;
 using Indico.Jobs;
 using IndicoV2.Jobs;
@@ -38,7 +38,7 @@ namespace IndicoV2.V1Adapters.Jobs
                 OperationName = "GetJob",
                 Variables = new { id = jobId },
             };
-            var jobResponse = await _indicoClient.GraphQLHttpClient.SendQueryAsync(query);
+            var jobResponse = await _indicoClient.GraphQLHttpClient.SendQueryAsync<dynamic>(query);
             var job = (JObject)jobResponse.Data.job;
 
             var jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), job.Value<string>("status"));

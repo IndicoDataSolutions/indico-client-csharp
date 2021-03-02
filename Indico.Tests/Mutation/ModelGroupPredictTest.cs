@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
-using Indico.Jobs;
+using GraphQL.Client.Serializer.Newtonsoft;
 using Indico.Mutation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,7 +20,7 @@ namespace Indico.Tests.Mutation
                 EndPoint = new System.Uri("http://www.example.com/graph/api/graphql"),
                 HttpMessageHandler = new MockHttpHandler()
             };
-            _client = new GraphQLHttpClient(options);
+            _client = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer());
         }
 
         [TestMethod]

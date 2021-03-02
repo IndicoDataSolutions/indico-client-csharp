@@ -1,8 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Client.Http;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+using GraphQL;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
 
@@ -14,11 +13,25 @@ namespace Indico.Query
     public class TrainingModelWithProgressQuery : IQuery<JArray>
     {
         private readonly IndicoClient _client;
+        private int? _modelId;
 
         /// <summary>
         /// Get/Set the Model ID (Often, the Selected Model ID for a Model Group)
         /// </summary>
-        public int ModelId { get; set; }
+        public int ModelId 
+        {
+            get
+            {
+                if (!_modelId.HasValue)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                return _modelId.Value;
+            }
+
+            set => _modelId = value;
+        }
 
         /// <summary>
         /// Find the % complete of a training Model Group
@@ -33,7 +46,7 @@ namespace Indico.Query
         public async Task<JArray> Exec(CancellationToken cancellationToken = default)
         {
             var graphQLHttpClient = _client.GraphQLHttpClient;
-            string query = @"
+            var query = @"
                     query ModelGroupProgressQuery($id: Int) {
                         modelGroups(modelGroupIds: [$id]) {
                             modelGroups {
@@ -59,7 +72,7 @@ namespace Indico.Query
                 }
             };
 
-            var response = await graphQLHttpClient.SendQueryAsync(request, cancellationToken);
+            var response = await graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
