@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
     <ProjectReference Include="..\IndicoV2\IndicoV2.csproj" />
+    <ProjectReference Include="..\Indico\Indico.csproj" />
   </ItemGroup>
 
 </Project>
