@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Jobs;
@@ -10,6 +11,12 @@ namespace IndicoV2.Extensions.Jobs
 {
     public class JobAwaiter : IJobAwaiter
     {
+        private readonly JobStatus[] _waitingForResult = new[]{
+            JobStatus.PENDING,
+            JobStatus.RECEIVED,
+            JobStatus.STARTED,
+        };
+
         private readonly IJobsClient _jobsClient;
 
 
@@ -20,14 +27,15 @@ namespace IndicoV2.Extensions.Jobs
         {
             JobStatus status;
 
-            while (JobStatus.PENDING == (status = await _jobsClient.GetStatusAsync(jobId, cancellationToken)))
+            while (_waitingForResult.Contains(status = await _jobsClient.GetStatusAsync(jobId, cancellationToken)))
             {
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
             if (status != JobStatus.SUCCESS)
             {
-                throw new JobNotSuccessfulException(status);
+                var failReason = await _jobsClient.GetFailureReasonAsync(jobId);
+                throw new JobNotSuccessfulException(status, failReason);
             }
 
             return await _jobsClient.GetResultAsync(jobId);
