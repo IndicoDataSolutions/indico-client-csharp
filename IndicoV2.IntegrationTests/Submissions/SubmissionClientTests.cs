@@ -98,5 +98,22 @@ namespace IndicoV2.IntegrationTests.Submissions
             submission.Id.Should().BeGreaterThan(0);
             submission.Status.Should().BeOfType<SubmissionStatus>();
         }
+
+        [Test]
+        public async Task GenerateSubmissionResultAsync_ShouldReturnJob()
+        {
+            // Arrange
+            var submissionId = (await _dataHelper.Submissions().GetAnyAsync()).Id;
+            while (SubmissionStatus.PROCESSING == (await _submissionsClient.GetAsync(submissionId)).Status)
+            {
+                await Task.Delay(50);
+            }
+
+            // Act
+            var jobId = await _submissionsClient.GenerateSubmissionResultAsync(submissionId);
+
+            // Assert
+            jobId.Should().NotBeEmpty();
+        }
     }
 }

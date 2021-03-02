@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using IndicoV2.Extensions.Jobs;
+using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Reviews;
@@ -14,46 +16,37 @@ namespace IndicoV2.IntegrationTests.Reviews
     {
         private IReviewsClient _reviewsClient;
         private DataHelper _dataHelper;
+        private ISubmissionResultAwaiter _submissionResultAwaiter;
+        private JobAwaiter _jobAwaiter;
 
         [SetUp]
         public void SetUp()
         {
-            var container = new IndicoTestContainerBuilder().Build();
+            var container = new IndicoTestContainerBuilder()
+                .ForAutoReviewWorkflow()
+                .Build();
             _dataHelper = container.Resolve<DataHelper>();
             _reviewsClient = container.Resolve<IReviewsClient>();
+            _submissionResultAwaiter = container.Resolve<ISubmissionResultAwaiter>();
+            _jobAwaiter = container.Resolve<JobAwaiter>();
         }
 
         [Test]
-        public async Task RejectAsync_ShouldReturnJobId()
+        public async Task SubmitReviewAsync_ShouldSucceed()
         {
             // Arrange
-            var submissionId = await GetSubmissionIdWithAutoReview();
-            
-            // Act
-            var jobId = await _reviewsClient.RejectAsync(submissionId, default);
-
-            // Assert
-            jobId.Should().NotBeNullOrEmpty();
-            Assert.Inconclusive("Requires JobsClient to verify job's result");
-        }
-
-        [Test]
-        public async Task SubmitReviewAsync_ShouldReturnJobId()
-        {
-            // Arrange
-            var submission = await GetSubmissionIdWithAutoReview();
+            var submission = await _dataHelper.Submissions().GetAnyAsync();
+            var result = await _submissionResultAwaiter.WaitReady(submission.Id);
+            var changes = (JObject)result["results"]["document"]["results"];
 
             // Act
-            var jobId = await _reviewsClient.SubmitReviewAsync(submission, JObject.Parse("{}"), default);
+            var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
+            var jobResult = await _jobAwaiter.WaitReadyAsync(submitReviewJobId, TimeSpan.FromSeconds(1));
 
             // Assert
-            jobId.Should().NotBeNullOrEmpty();
-            Assert.Inconclusive("Requires JobsClient to verify job's result");
+            jobResult.Should().NotBeNullOrEmpty();
+            jobResult.Value<string>("submission_status").Should().Be("pending_review");
+            jobResult.Value<bool>("success").Should().Be(true);
         }
-
-        private async Task<int> GetSubmissionIdWithAutoReview() =>
-            await _dataHelper.Submissions().Get(
-                await _dataHelper.Workflows().Get(true), 
-                new MemoryStream(new byte[3]));
     }
 }

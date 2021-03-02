@@ -14,15 +14,12 @@ namespace IndicoV2.Extensions.SubmissionResult
         /// </summary>
         /// <param name="submissionId"><seealso cref="ISubmission"/>'s Id</param>
         /// <param name="checkInterval">Interval between server calls.</param>
-        /// <param name="timeout">Maximum wait time for the result.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <exception cref="TaskCanceledException"></exception>
-        Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval = default, TimeSpan timeout = default,
-            CancellationToken cancellationToken = default);
+        Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval = default, CancellationToken cancellationToken = default);
 
         /// <inheritdoc cref="WaitReady(int,System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)"/>
         /// <param name="awaitedStatus">Wait until submission reaches this status.</param>
-        Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, TimeSpan timeout = default,
-            CancellationToken cancellationToken = default);
+        Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default);
     }
 }
