@@ -132,7 +132,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             _fixture
                 .Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Returns(async () => Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING));
+                .Returns(Task.FromResult(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING)));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
             var cancellationTokenSource = new CancellationTokenSource();
             var runTask = sut.WaitReady(1, TimeSpan.FromMilliseconds(1), cancellationTokenSource.Token);

@@ -1,11 +1,10 @@
-﻿using IndicoV2;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FluentAssertions;
 
 namespace IndicoV2.Tests
 {
     [TestFixture()]
-    public partial class IndicoClientExtensionsTests
+    public class IndicoClientExtensionsTests
     {
         private IndicoClient Client => new IndicoClient("test");
 
