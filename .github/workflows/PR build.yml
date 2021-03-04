@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      CONFIG: Release
+      Configuration: Release
+      BuildType: V2
+      BuildNumber: ${{ github.run_number }}
 
     steps:
     - uses: actions/checkout@v2
@@ -20,9 +22,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration $CONFIG -p:BuildNumber=${{ github.run_number }} -p:BuildType=V2
+      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --configuration $CONFIG --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
     - name: Generate report
       uses: danielpalme/ReportGenerator-GitHub-Action@4.8.5
       with:
@@ -36,10 +38,3 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         lcov-file: ./coverage/lcov.info
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
-      if: ${{ github.base_ref == 'master' }}
-      with:
-        name: Nuget Package
-        path: ./IndicoV2/bin/${{ env.CONFIG }}/IndicoClient.*${{ github.run_number }}.nupkg
-        retention-days: 5
