@@ -14,10 +14,10 @@ namespace IndicoV2.V1Adapters.DataSets
     {
         private readonly IndicoClient _indicoClientLegacy;
 
-        public DataSetsV1ClientAdapter(Indico.IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
+        public DataSetsV1ClientAdapter(IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
 
 
-        public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken)
         {
             string query = @"
               query GetDatasets {
@@ -29,8 +29,32 @@ namespace IndicoV2.V1Adapters.DataSets
             ";
 
             var request = _indicoClientLegacy.GraphQLRequest(query, "GetDatasets");
-            var response = await request.Call();
-            var dataSets = ((JArray)response["datasets"]).Select(r => new V1DataSetAdapter(r)).ToArray();
+            var response = await request.Call(cancellationToken);
+            var dataSets = ((JArray)response["datasets"]).Select(ds => (IDataSet)ds.ToObject(typeof(V1DataSetAdapter))).ToArray();
+
+            return dataSets;
+        }
+
+        public async Task<IEnumerable<IDataSetFull>> ListFullAsync(CancellationToken cancellationToken)
+        {
+            var query = @"
+            query GetDatasets {
+                datasets {
+                  id
+                  name
+                  status
+                  rowCount
+                  numModelGroups
+                  modelGroups {
+                    id
+                  }
+                }
+            }
+            ";
+
+            var request = _indicoClientLegacy.GraphQLRequest(query, "GetDatasets");
+            var response = await request.Call(cancellationToken);
+            var dataSets = ((JArray)response["datasets"]).Select(ds => (IDataSetFull)ds.ToObject(typeof(V1DataSetFullAdapter))).ToArray();
 
             return dataSets;
         }

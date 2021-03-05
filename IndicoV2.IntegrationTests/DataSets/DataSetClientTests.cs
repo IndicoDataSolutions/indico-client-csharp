@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.DataSets;
@@ -25,6 +26,12 @@ namespace IndicoV2.IntegrationTests.DataSets
             var dataSets = (await _dataSetClient.ListAsync()).ToArray();
 
             dataSets.Length.Should().BeGreaterThan(0);
+            var ds = dataSets.First();
+            ds.Id.Should().BeGreaterThan(0);
+            ds.Name.Should().NotBeNullOrEmpty();
         }
+
+        [Test]
+        public void ListFullAsync_ShouldReturnDataSetsFull() => throw new NotImplementedException();
     }
 }
