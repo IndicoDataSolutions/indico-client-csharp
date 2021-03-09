@@ -2,22 +2,15 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<BuildType Condition="'$(BuildType)' == ''"></BuildType>
 	</PropertyGroup>
 
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
+
 	<Target Name="IncludeP2POutput">
 		<ItemGroup>
 			<BuildOutputInPackage Include="$(OutputPath)\Indico*.dll" />
 		</ItemGroup>
 	</Target>
-	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
-		<BuildNumber Condition="'$(Configuration)' == 'Debug'">$([System.DateTime]::UtcNow.ToString(HHmmss))</BuildNumber>
-		<BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<Version>2.0.0-alpha$(BuildNumber)</Version>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="..\LICENSE">
