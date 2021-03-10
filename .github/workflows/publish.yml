@@ -2,8 +2,8 @@ name: publish to nuget
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '*'
 
 jobs:
   publish:
@@ -13,9 +13,13 @@ jobs:
       Configuration: Release
       BuildType: V2
       BuildNumber: ${{ github.run_number }}
-      NugetFile: ./IndicoV2/bin/Release/IndicoClient.*${{ github.run_number }}.nupkg
-
     steps:
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
+      - name: Set Version
+        run: echo "Version=${{ env.GIT_TAG_NAME }}" >> $GITHUB_ENV
+      - name: Set NugetFile
+        run: echo "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
@@ -23,13 +27,13 @@ jobs:
           dotnet-version: 3.1.301
       - name: Pack
         run: dotnet pack ./IndicoV2/IndicoV2.csproj
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
-        with:
-          name: Nuget Package
-          path: ${{ env.NugetFile }}
-          retention-days: 5
-          if-no-files-found: error
+      # - name: 'Upload Artifact'
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: Nuget Package
+      #     path: ${{ env.NugetFile }}
+      #     retention-days: 1
+      #     if-no-files-found: error
       - name: Push
-        run: dotnet nuget push ${{ env.NugetFile }} --api-key ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push ${{ env.NugetFile }} -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} 
       

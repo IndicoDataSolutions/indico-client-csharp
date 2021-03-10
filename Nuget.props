@@ -1,10 +1,8 @@
 <Project>
 
 	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
-		<BuildNumber Condition="'$(Configuration)' == 'Debug'">$([System.DateTime]::UtcNow.ToString(HHmmss))</BuildNumber>
-		<BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
 		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<Version>2.0.0-alpha$(BuildNumber)</Version>
+		<Version Condition="'$(Version)' == ''">2.0.0.$([System.DateTime]::UtcNow.ToString(MMddHHmmss))</Version>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
 
