@@ -11,7 +11,7 @@ namespace IndicoV2.Extensions.Jobs
 {
     public class JobAwaiter : IJobAwaiter
     {
-        private readonly JobStatus[] _waitingForResult = new[]{
+        private readonly JobStatus[] _waitingForResult = {
             JobStatus.PENDING,
             JobStatus.RECEIVED,
             JobStatus.STARTED,
@@ -21,7 +21,6 @@ namespace IndicoV2.Extensions.Jobs
 
 
         public JobAwaiter(IJobsClient jobsClient) => _jobsClient = jobsClient;
-
 
         public async Task<JToken> WaitReadyAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default)
         {

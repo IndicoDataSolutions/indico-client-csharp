@@ -2,6 +2,9 @@
 {
     public interface IDataSet
     {
+        /// <summary>
+        /// DataSet's Id
+        /// </summary>
         int Id { get; }
     }
 }
