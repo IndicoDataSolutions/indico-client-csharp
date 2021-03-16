@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
-using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Jobs;
@@ -17,7 +16,6 @@ namespace IndicoV2.IntegrationTests.Jobs
         private DataHelper _dataHelper;
         private IJobsClient _jobsClient;
         private ISubmissionsClient _submissionsClient;
-        private ISubmissionResultAwaiter _submissionResultAwaiter;
 
         [SetUp]
         public void SetUp()
@@ -26,7 +24,6 @@ namespace IndicoV2.IntegrationTests.Jobs
             _jobsClient = container.Resolve<IJobsClient>();
             _submissionsClient = container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
-            _submissionResultAwaiter = container.Resolve<ISubmissionResultAwaiter>();
         }
 
         [Test]

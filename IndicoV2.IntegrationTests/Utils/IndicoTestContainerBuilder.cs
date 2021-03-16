@@ -3,6 +3,7 @@ using System.Linq;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Jobs;
+using IndicoV2.Models;
 using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
@@ -43,6 +44,7 @@ namespace IndicoV2.IntegrationTests.Utils
             _container.RegisterFactory<IStorageClient>(c => c.Resolve<IndicoClient>().Storage());
             _container.RegisterFactory<ISubmissionResultAwaiter>(c =>
                 c.Resolve<IndicoClient>().GetSubmissionResultAwaiter());
+            _container.RegisterFactory<IModelClient>(c => c.Resolve<IndicoClient>().Models());
 
             return _container;
         }
