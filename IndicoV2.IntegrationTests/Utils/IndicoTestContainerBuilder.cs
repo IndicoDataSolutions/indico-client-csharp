@@ -49,7 +49,7 @@ namespace IndicoV2.IntegrationTests.Utils
             return _container;
         }
 
-        private void RegisterClientAutoReview() => RegisterClient(ApiTokenAutoreview, BaseUrl);
+        private void RegisterClientAutoReview() => RegisterClient(ApiToken, BaseUrl);
 
         private void RegisterClientDefault() => RegisterClient(ApiToken, BaseUrl);
 
