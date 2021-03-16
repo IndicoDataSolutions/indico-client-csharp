@@ -198,13 +198,13 @@
             </summary>
             <returns>JobStatus</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Result">
+        <member name="M:Indico.Jobs.Job.Result(System.Threading.CancellationToken)">
             <summary>
             Retrieve result. Status must be success or an error will be thrown.
             </summary>
             <returns>JSON Object</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Results">
+        <member name="M:Indico.Jobs.Job.Results(System.Threading.CancellationToken)">
             <summary>
             Retrieve results. Status must be success or an error will be thrown.
             </summary>
