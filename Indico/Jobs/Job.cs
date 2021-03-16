@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQL.Client.Http;
 using Newtonsoft.Json;
@@ -33,7 +34,7 @@ namespace Indico.Jobs
             Id = id;
         }
 
-        private async Task<string> FetchResult()
+        private async Task<string> FetchResult(CancellationToken cancellationToken)
         {
             string query = @"
                     query JobStatus($id: String!) {
@@ -56,7 +57,7 @@ namespace Indico.Jobs
                 }
             };
 
-            var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request);
+            var response = await _graphQLHttpClient.SendQueryAsync<dynamic>(request, cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
@@ -118,13 +119,13 @@ namespace Indico.Jobs
         /// Retrieve result. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Object</returns>
-        public async Task<JObject> Result()
+        public async Task<JObject> Result(CancellationToken cancellationToken = default)
         {
             while (await Status() == JobStatus.PENDING)
             {
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
-            string result = await FetchResult();
+            string result = await FetchResult(cancellationToken);
             var json = JsonConvert.DeserializeObject<JObject>(result);
             return json;
         }
@@ -133,13 +134,13 @@ namespace Indico.Jobs
         /// Retrieve results. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Array</returns>
-        public async Task<JArray> Results()
+        public async Task<JArray> Results(CancellationToken cancellationToken = default)
         {
             while (await Status() == JobStatus.PENDING)
             {
-               await Task.Delay(1000);
+               await Task.Delay(1000, cancellationToken);
             }
-            string result = await FetchResult();
+            string result = await FetchResult(cancellationToken);
             var json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }

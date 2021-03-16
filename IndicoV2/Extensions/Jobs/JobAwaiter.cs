@@ -21,8 +21,12 @@ namespace IndicoV2.Extensions.Jobs
 
 
         public JobAwaiter(IJobsClient jobsClient) => _jobsClient = jobsClient;
+        
+        [Obsolete("Use generic version")]
+        public async Task<JToken> WaitReadyAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default) =>
+            await WaitReadyAsync<JToken>(jobId, checkInterval, cancellationToken);
 
-        public async Task<JToken> WaitReadyAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default)
+        public async Task<TResult> WaitReadyAsync<TResult>(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default)
         {
             JobStatus status;
 
@@ -37,7 +41,7 @@ namespace IndicoV2.Extensions.Jobs
                 throw new JobNotSuccessfulException(status, failReason);
             }
 
-            return await _jobsClient.GetResultAsync(jobId);
+            return await _jobsClient.GetResultAsync<TResult>(jobId, cancellationToken);
         }
     }
 }

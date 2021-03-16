@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
@@ -21,7 +22,34 @@ namespace IndicoV2.V1Adapters.Jobs
             _jobStatusConverter = jobStatusConverter;
         }
 
-        public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
+        public async Task<JToken> GetResultAsync(string jobId, CancellationToken cancellationToken) =>
+            await GetResultAsync<JObject>(jobId, cancellationToken);
+        
+        public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
+        {
+            if (typeof(TResult) == typeof(JToken))
+            {
+                throw new ArgumentException(
+                    $"For types inheriting from {nameof(JToken)} exact type is required ({nameof(JObject)}, {nameof(JArray)}).");
+            }
+
+            var jobQuery = new Job(_indicoClient.GraphQLHttpClient, jobId);
+            var resultIsCollection = typeof(ICollection).IsAssignableFrom(typeof(TResult))
+                && !typeof(JObject).IsAssignableFrom(typeof(TResult));
+            JToken result;
+
+            if (resultIsCollection)
+            {
+                result = await jobQuery.Results(cancellationToken);
+            }
+            else
+            {
+                result = await jobQuery.Result(cancellationToken);
+            }
+
+            return result.ToObject<TResult>();
+        }
+
         public async Task<string> GetFailureReasonAsync(string jobId)
         {
             var queryString = @"
