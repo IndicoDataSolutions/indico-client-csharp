@@ -8,7 +8,7 @@ namespace IndicoV2.V1Adapters.Models.Models
     {
         private readonly ModelGroup _modelGroup;
 
-        public V1ModelGroupAdapter(ModelGroup modelGroup) => _modelGroup = modelGroup;
+        public V1ModelGroupAdapter(ModelGroup modelGroup) => _modelGroup = modelGroup ?? throw new ArgumentNullException(nameof(modelGroup));
 
         public int Id => _modelGroup.Id;
         public string Name => _modelGroup.Name;
