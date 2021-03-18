@@ -35,26 +35,29 @@ namespace IndicoV2.V1Adapters.DataSets
             return dataSets;
         }
 
-        public async Task<IEnumerable<IDataSetFull>> ListFullAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<IDataSetFull>> ListFullAsync(int? limit = null, CancellationToken cancellationToken = default)
         {
             var query = @"
-            query GetDatasets {
-                datasets {
-                  id
-                  name
-                  status
-                  rowCount
-                  numModelGroups
-                  modelGroups {
-                    id
-                  }
+            query GetDatasets($limit: Int) {
+                datasetsPage(limit: $limit) {
+                    datasets {
+                        id
+                        name
+                        status
+                        rowCount
+                        numModelGroups
+                        modelGroups {
+                            id
+                        }
+                    }
                 }
             }
             ";
 
             var request = _indicoClientLegacy.GraphQLRequest(query, "GetDatasets");
+            request.Variables = new {limit};
             var response = await request.Call(cancellationToken);
-            var dataSets = ((JArray)response["datasets"]).Select(ds => (IDataSetFull)ds.ToObject(typeof(V1DataSetFullAdapter))).ToArray();
+            var dataSets = ((JArray)response["datasetsPage"]["datasets"]).Select(ds => (IDataSetFull)ds.ToObject(typeof(V1DataSetFullAdapter))).ToArray();
 
             return dataSets;
         }

@@ -21,7 +21,7 @@ namespace IndicoV2.IntegrationTests.Models
             var container= new IndicoTestContainerBuilder().Build();
 
             _modelClient = container.Resolve<IModelClient>();
-            var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync();
+            var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync(1);
             _modelGroupId = dataSets.First().ModelGroups.First().Id;
         }
 

@@ -25,7 +25,7 @@ namespace IndicoV2.V1Adapters.Tests.Models.Models
 
         [TestCase(13)]
         public void Model_ShouldReturnMapOfInner(int innerId)
-            => new V1ModelGroupAdapter(new ModelGroup { SelectedModel = new Model { Id = 13 } }).SelectedModel.Id.Should()
+            => new V1ModelGroupAdapter(new ModelGroup { SelectedModel = new Model { Id = innerId } }).SelectedModel.Id.Should()
                 .Be(innerId);
     }
 }

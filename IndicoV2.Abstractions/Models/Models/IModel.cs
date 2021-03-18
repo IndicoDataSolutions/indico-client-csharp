@@ -6,13 +6,12 @@
         /// Gets the Model identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        
         int Id { get; }
+
         /// <summary>
         /// Gets the Model status.
         /// </summary>
         /// <value>The model status.</value>
-        
         string Status { get; }
 
         /// <summary>
