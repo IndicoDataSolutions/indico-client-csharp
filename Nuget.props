@@ -1,0 +1,23 @@
+<Project>
+
+	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<Version Condition="'$(Version)' == ''">2.0.0.$([System.DateTime]::UtcNow.ToString(MMddHHmmss))</Version>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageId>IndicoClient</PackageId>
+		<Description>C# Client Library for the Indico IPA Platform</Description>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</PackageProjectUrl>
+		<PackageIcon>indico-square-icon.png</PackageIcon>
+		<RepositoryUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</RepositoryUrl>
+		<RepositoryType>Github</RepositoryType>
+		<PackageTags>Indico</PackageTags>
+		<PackageReleaseNotes>This is the first preview release of the C# client for the Indico IPA Platform V3.x</PackageReleaseNotes>
+		<Product>Indico IPA</Product>
+		<Copyright>$([System.DateTime]::UtcNow.ToString("YYYY)) Indico, Inc.</Copyright>
+		<NeutralLanguage>en-US</NeutralLanguage>
+	</PropertyGroup>
+</Project>

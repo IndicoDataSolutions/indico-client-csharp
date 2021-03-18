@@ -26,9 +26,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
         [TestCaseSource(nameof(_submissionStatusesExceptProcessing))]
-        public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(
-            [ValueSource(nameof(_submissionStatusesExceptProcessing))]
-            SubmissionStatus status)
+        public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(SubmissionStatus status)
         {
             // Arrange
             const int submissionId = 1;
@@ -134,7 +132,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             _fixture
                 .Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Returns(async () => Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING));
+                .Returns(Task.FromResult(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING)));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
             var cancellationTokenSource = new CancellationTokenSource();
             var runTask = sut.WaitReady(1, TimeSpan.FromMilliseconds(1), cancellationTokenSource.Token);
