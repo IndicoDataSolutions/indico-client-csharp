@@ -1,59 +1,32 @@
-﻿using Indico;
-using Indico.Entity;
-using Indico.Jobs;
-using Indico.Mutation;
-using Indico.Query;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using IndicoV2;
 
 namespace Examples
 {
     internal class SubmitWorkflows
     {
-        private static async Task Main(string[] args)
+        private static string GetToken() =>
+            File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "indico_api_token.txt"));
+
+        public static async Task Main()
         {
-            var config = new IndicoConfig(
-                host: "app.indico.io"
-            );
+            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
 
-            var client = new IndicoClient(config);
+            var dataSets = await client.DataSets().ListAsync();
 
-            // List Workflows for Dataset 1707
-            var listWorkflows = new ListWorkflows(client)
-            {
-                DatasetIds = new List<int>() { 1707 }
-            };
-            var workflows = await listWorkflows.Exec();
+            var workflows = await client.Workflows().ListAsync(dataSets.First().Id);
 
-            // Select Workflow
-            var workflow = workflows[0];
+            var submissionClient = client.Submissions();
 
-            var workflowSubmission = new WorkflowSubmission(client)
-            {
-                WorkflowId = workflow.Id,
-                // Submit files to Workflow
-                Files = new List<string>() { "path-to-file" },
-                // Or submit streams to Workflow
-                Streams = null // Stream List
-            };
-
-            var submissionIds = await workflowSubmission.Exec();
-
-            // Select Submission
-            int submissionId = submissionIds[0];
-
-            var submissionResult = new SubmissionResult(client)
-            {
-                SubmissionId = submissionId
-            };
-
-            var job = await submissionResult.Exec();
-
-            // Get Submission result
-            var result = await job.Result();
-            // Or results
-            var results = await job.Results();
+            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf"});
+            int submissionId = submissionIds.Single();
+            var submission = await submissionClient.GetAsync(submissionId);
+            var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);
+            Console.ReadLine();
         }
     }
 }

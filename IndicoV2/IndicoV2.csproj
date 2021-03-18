@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
+
+	<Target Name="IncludeP2POutput">
+		<ItemGroup>
+			<BuildOutputInPackage Include="$(OutputPath)\Indico*.dll" />
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\Indico\indico-square-icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
+		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
+	</ItemGroup>
+
+</Project>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL.Common.Request;
-using GraphQL.Common.Response;
+using GraphQL;
 using Indico.Exception;
 using Indico.Jobs;
 using Indico.Storage;
@@ -40,7 +40,7 @@ namespace Indico.Mutation
             return arr;
         }
 
-        private async Task<GraphQLResponse> ExecRequest(CancellationToken cancellationToken = default)
+        private async Task<GraphQLResponse<dynamic>> ExecRequest(CancellationToken cancellationToken = default)
         {
             JArray fileMetadata;
             var files = new List<object>();
@@ -83,8 +83,7 @@ namespace Indico.Mutation
                 }
             };
 
-            var response = await _client.GraphQLHttpClient.SendMutationAsync(request, cancellationToken);
-            return response;
+            return await _client.GraphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
         }
 
         /// <summary>
@@ -94,33 +93,28 @@ namespace Indico.Mutation
         public async Task<List<Job>> Exec(CancellationToken cancellationToken = default)
         {
             var response = await ExecRequest(cancellationToken);
+
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);
             }
 
             var jobIds = (JArray)response.Data.documentExtraction.jobIds;
-            var jobs = new List<Job>();
-            foreach (string id in jobIds)
-            {
-                var job = new Job(_client.GraphQLHttpClient, id);
-                jobs.Add(job);
-            }
-
-            return jobs;
+            return jobIds.Select(id => new Job(_client.GraphQLHttpClient, (string)id)).ToList();
         }
 
 
         /// <summary>
         /// Executes a single OCR request
         /// <param name="path">pathname of the file to OCR</param>
+        /// <param name="cancellationToken">Cancellation token to stop execution.</param>
         /// <returns>Job</returns>
         /// </summary>
-        public async Task<Job> Exec(string path)
+        public async Task<Job> Exec(string path, CancellationToken cancellationToken = default)
         {
             Files = new List<string>() { path };
 
-            var response = await ExecRequest();
+            var response = await ExecRequest(cancellationToken);
             if (response.Errors != null)
             {
                 throw new GraphQLException(response.Errors);

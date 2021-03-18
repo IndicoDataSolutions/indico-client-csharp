@@ -8,11 +8,31 @@
             "**.csproj"
           ],
           "exclude": [
-            "docfx_project/**"
+            "docfx_project/**",
+            "*Tests/**",
+            "IndicoV2*/**"
           ]
         }
       ],
       "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    },
+    {
+      "src": [
+        {
+          "src": "../",
+          "files": [
+            "IndicoV2*/**.csproj"
+          ],
+          "exclude": [
+            "docfx_project/**",
+            "*Tests/**",
+            "IndicoV2.V1Adapters/**"
+          ]
+        }
+      ],
+      "dest": "apiV2",
       "disableGitFeatures": false,
       "disableDefaultFilter": false
     }
@@ -36,6 +56,12 @@
           "articles/**/toc.yml",
           "toc.yml",
           "*.md"
+        ]
+      },
+      {
+        "files": [
+          "apiV2/**.yml",
+          "apiV2/index.md"
         ]
       }
     ],
