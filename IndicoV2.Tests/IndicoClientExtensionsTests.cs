@@ -23,5 +23,8 @@ namespace IndicoV2.Tests
 
         [Test()]
         public void Workflows_ShouldCreateInstance() => Client.Workflows().Should().NotBeNull();
+
+        [Test]
+        public void Models_ShouldReturnModelsClient() => Client.Models().Should().NotBeNull();
     }
 }

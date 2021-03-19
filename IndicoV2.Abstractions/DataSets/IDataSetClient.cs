@@ -15,6 +15,6 @@ namespace IndicoV2.DataSets
         /// <summary>
         /// Lists <seealso cref="IDataSetFull"/>s
         /// </summary>
-        Task<IEnumerable<IDataSetFull>> ListFullAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<IDataSetFull>> ListFullAsync(int? limit = null, CancellationToken cancellationToken = default);
     }
 }
