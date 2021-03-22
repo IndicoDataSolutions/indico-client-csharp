@@ -40,16 +40,16 @@ namespace IndicoV2.Tests.Extensions.Jobs
                 .ReturnsAsync(inProgressStatus)
                 .ReturnsAsync(JobStatus.SUCCESS);
             jobsClientMock
-                .Setup(cli => cli.GetResultAsync(jobId))
+                .Setup(cli => cli.GetResultAsync<JObject>(jobId, default))
                 .ReturnsAsync(JObject.Parse(@"{ ""test"": ""test"" }"));
             var sut = _fixture.Create<JobAwaiter>();
 
             // Act
-            await sut.WaitReadyAsync(jobId, TimeSpan.Zero, default);
+            await sut.WaitReadyAsync<JObject>(jobId, TimeSpan.Zero, default);
 
             // Assert
             jobsClientMock.Verify(j => j.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Exactly(2));
-            jobsClientMock.Verify(j => j.GetResultAsync(jobId), Times.Once);
+            jobsClientMock.Verify(j => j.GetResultAsync<JObject>(jobId, default), Times.Once);
             jobsClientMock.VerifyNoOtherCalls();
         }
 

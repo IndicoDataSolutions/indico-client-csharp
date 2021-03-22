@@ -41,10 +41,10 @@ namespace IndicoV2.IntegrationTests.Reviews
 
             // Act
             var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
-            var jobResult = await _jobAwaiter.WaitReadyAsync(submitReviewJobId, TimeSpan.FromSeconds(1));
+            var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(submitReviewJobId, TimeSpan.FromSeconds(1));
 
             // Assert
-            jobResult.Should().NotBeNullOrEmpty();
+            jobResult.Should().NotBeNull();
             jobResult.Value<string>("submission_status").Should().Be("pending_review");
             jobResult.Value<bool>("success").Should().Be(true);
         }
