@@ -39,7 +39,7 @@ namespace IndicoV2.V1Adapters.Ocr
             return job.Id;
         }
 
-        public async Task<string> GetExtractionResult(Uri documentUri)
+        public async Task<string> GetExtractionResultAsync(Uri documentUri)
         {
             using (var docStream = await _storage.GetAsync(documentUri))
             using (var reader = new JsonTextReader(new StreamReader(docStream)))

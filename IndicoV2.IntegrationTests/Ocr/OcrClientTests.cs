@@ -33,7 +33,7 @@ namespace IndicoV2.IntegrationTests.Ocr
             => (await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), configType, default))
                 .Should().NotBeEmpty();
 
-        [TestCase]
+        [Test]
         public async Task GetExtractionResult_ShouldReturnDocument()
         {
             // Arrange
@@ -41,7 +41,7 @@ namespace IndicoV2.IntegrationTests.Ocr
             var jobResult = await _jobAwaiter.WaitReadyAsync<ExtractionJobResult>(jobId, TimeSpan.FromMilliseconds(300));
             
             // Act
-            var extractionResult = await _ocrClient.GetExtractionResult(jobResult.Url);
+            var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url);
 
             // Assert
             extractionResult.Should().NotBeNullOrEmpty();

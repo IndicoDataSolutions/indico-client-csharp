@@ -20,6 +20,6 @@ namespace IndicoV2.Ocr
         /// </summary>
         /// <param name="documentUri">Url of the document (returned in Job's result).</param>
         /// <returns>Content of the document</returns>
-        Task<string> GetExtractionResult(Uri documentUri);
+        Task<string> GetExtractionResultAsync(Uri documentUri);
     }
 }
