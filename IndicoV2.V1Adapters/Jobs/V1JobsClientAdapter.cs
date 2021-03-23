@@ -7,6 +7,7 @@ using Indico;
 using Indico.Jobs;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.Jobs
