@@ -24,7 +24,7 @@ namespace Indico.Query
             {
                 if (!_modelId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException($"{nameof(ModelId)} has no value.");
                 }
 
                 return _modelId.Value;
@@ -81,7 +81,7 @@ namespace Indico.Query
             var modelGroups = response.Data.modelGroups.modelGroups;
             if (modelGroups.Count != 1)
             {
-                throw new RuntimeException("Cannot find Model Group");
+                throw new RuntimeException($"Cannot find Model Group with provided Id: {ModelId}.");
             }
 
             return (JArray)modelGroups[0].models;

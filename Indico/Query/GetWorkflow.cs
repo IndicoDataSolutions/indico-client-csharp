@@ -23,7 +23,7 @@ namespace Indico.Query
             {
                 if (!_workflowId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException($"{nameof(WorkflowId)} has no value.");
                 }
 
                 return _workflowId.Value;

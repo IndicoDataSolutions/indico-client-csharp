@@ -26,7 +26,7 @@ namespace Indico.Query
             {
                 if (!_submissionId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException($"{nameof(Id)} has no value.");
                 }
 
                 return _submissionId.Value;

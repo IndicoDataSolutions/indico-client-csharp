@@ -4,6 +4,7 @@ using System.IO;
 using Indico.Exception;
 using System.Threading.Tasks;
 using System.Threading;
+using System;
 
 namespace Indico.Storage
 {
@@ -25,11 +26,12 @@ namespace Indico.Storage
 
         private void CheckFiles(List<string> files)
         {
-            foreach (string path in files)
+            foreach (var path in files)
             {
-                string filepath = path;
-                char seperator = Path.DirectorySeparatorChar;
-                char alt = Path.AltDirectorySeparatorChar;
+                var filepath = path;
+                var seperator = Path.DirectorySeparatorChar;
+                var alt = Path.AltDirectorySeparatorChar;
+
                 if (seperator != alt)
                 {
                     filepath = filepath.Replace(alt, seperator);
@@ -41,7 +43,7 @@ namespace Indico.Storage
                 }
                 else
                 {
-                    throw new RuntimeException($"File ({path}) does not exist");
+                    throw new ArgumentException($"File ({path}) does not exist.");
                 }
             }
         }
@@ -54,9 +56,9 @@ namespace Indico.Storage
         {
             var fileParameters = new List<FileParameter>();
 
-            foreach (string filepath in Files)
+            foreach (var filepath in Files)
             {
-                string filename = Path.GetFileName(filepath);
+                var filename = Path.GetFileName(filepath);
                 var file = File.OpenRead(filepath);
                 var param = new FileParameter
                 {
@@ -79,11 +81,12 @@ namespace Indico.Storage
 
             foreach (JObject uploadMeta in uploadResult)
             {
-                string error = (string)uploadMeta.GetValue("error");
+                var error = (string)uploadMeta.GetValue("error");
                 if (error != null)
                 {
-                    string fname = (string)uploadMeta.GetValue("name");
-                    string ferror = (string)uploadMeta.GetValue("error");
+                    var fname = (string)uploadMeta.GetValue("name");
+                    var ferror = (string)uploadMeta.GetValue("error");
+
                     throw new FileUploadException($"File upload failed on {fname} with status {ferror}");
                 }
             }

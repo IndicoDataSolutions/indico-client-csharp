@@ -28,7 +28,7 @@ namespace Indico.Query
             {
                 if (!_mgId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException($"{nameof(MgId)} has no value.");
                 }
 
                 return _mgId.Value;

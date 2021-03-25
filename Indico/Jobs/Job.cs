@@ -143,13 +143,5 @@ namespace Indico.Jobs
             var json = JsonConvert.DeserializeObject<JArray>(result);
             return json;
         }
-
-        /// <summary>
-        /// If job status is FAILURE returns the list of errors encoutered
-        /// </summary>
-        /// <returns>List of errors</returns>
-        public List<string> Errors() =>
-            //TODO:
-            new List<string>();
     }
 }

@@ -33,7 +33,7 @@ namespace Indico
             }
             else
             {
-                throw new HttpRequestException($"[error] : {response.StatusCode}");
+                throw new HttpRequestException($"Error occured while calling authentication server: {response.StatusCode}.");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Indico
             }
             else
             {
-                throw new HttpRequestException($"[error] : {httpResponseMessage.StatusCode}");
+                throw new HttpRequestException($"Error occured while calling authentication server: {httpResponseMessage.StatusCode}");
             }
         }
 

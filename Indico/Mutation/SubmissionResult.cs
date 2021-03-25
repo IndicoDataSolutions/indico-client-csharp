@@ -26,7 +26,7 @@ namespace Indico.Mutation
             {
                 if (!_submissionId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException($"{nameof(SubmissionId)} has no value.");
                 }
 
                 return _submissionId.Value;
@@ -62,11 +62,6 @@ namespace Indico.Mutation
             {
                 submission = await getSubmission.Exec(cancellationToken);
                 await Task.Delay(1000);
-            }
-
-            if (!StatusCheck(submission.Status))
-            {
-                throw new RuntimeException($"Submission {submission.Id} does not meet status requirements");
             }
 
             var generateSubmissionResult = new GenerateSubmissionResult(_client)
