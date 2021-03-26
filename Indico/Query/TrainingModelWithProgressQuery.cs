@@ -24,7 +24,7 @@ namespace Indico.Query
             {
                 if (!_modelId.HasValue)
                 {
-                    throw new ArgumentNullException($"{nameof(ModelId)} has no value.");
+                    throw new ArgumentNullException(nameof(ModelId));
                 }
 
                 return _modelId.Value;

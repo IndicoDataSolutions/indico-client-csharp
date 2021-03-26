@@ -26,7 +26,7 @@ namespace Indico.Mutation
             {
                 if (!_submissionId.HasValue)
                 {
-                    throw new ArgumentNullException($"{nameof(SubmissionId)} has no value.");
+                    throw new ArgumentNullException(nameof(SubmissionId));
                 }
 
                 return _submissionId.Value;

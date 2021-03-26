@@ -28,7 +28,7 @@ namespace Indico.Mutation
             {
                 if (!_workflowId.HasValue)
                 {
-                    throw new ArgumentNullException($"{nameof(WorkflowId)} has no value.");
+                    throw new ArgumentNullException(nameof(WorkflowId));
                 }
 
                 return _workflowId.Value;
