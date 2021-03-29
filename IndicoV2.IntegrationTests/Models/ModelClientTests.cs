@@ -49,12 +49,12 @@ namespace IndicoV2.IntegrationTests.Models
         }
 
         [Test]
-        public async Task LoadModel() =>
+        public async Task LoadModel_ShouldReturnStatus() =>
             (await _modelClient.LoadModel(_modelId, default)).Should().Be("ready");
 
         [TestCase("Invoice Date: 2012-01-02")]
         [TestCase("Invoice Date: 2012-02-03 Invoice Number: 123Test")]
-        public async Task Predict(params string[] data)
+        public async Task Predict_ShouldReturnPrediction(params string[] data)
         {
             // Arrange
             var modelGroup = await _modelClient.GetGroup(_modelGroupId, default);
