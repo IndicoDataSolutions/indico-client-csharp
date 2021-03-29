@@ -11,7 +11,7 @@ namespace IndicoV2.V1Adapters.Converters
         public override object ReadJson(JsonReader reader, Type targetType, object existingValue, JsonSerializer serializer) 
             => Cast(serializer.Deserialize<TCastFrom>(reader), targetType);
 
-        public override bool CanConvert(Type objectType) => throw new NotImplementedException();
+        public override bool CanConvert(Type objectType) => throw new NotSupportedException("Only explicit usage is being allowed (class requiring this converter needs to be marked with attribute JsonConverter(typeof(CastingConverter<T>)) ).");
 
         private object Cast(TCastFrom sourceValue, Type targetTyped)
         {
