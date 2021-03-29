@@ -210,6 +210,12 @@
             </summary>
             <returns>JSON Array</returns>
         </member>
+        <member name="M:Indico.Jobs.Job.Result``1(System.Threading.CancellationToken)">
+            <summary>
+            Retrieve results. Status must be success or an error will be thrown.
+            </summary>
+            <returns>Result of <typeparamref name="TResult"/> type</returns>
+        </member>
         <member name="M:Indico.Jobs.Job.Errors">
             <summary>
             If job status is FAILURE returns the list of errors encoutered

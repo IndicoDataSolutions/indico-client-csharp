@@ -119,29 +119,27 @@ namespace Indico.Jobs
         /// Retrieve result. Status must be success or an error will be thrown.
         /// </summary>
         /// <returns>JSON Object</returns>
-        public async Task<JObject> Result(CancellationToken cancellationToken = default)
+        public async Task<JObject> Result(CancellationToken cancellationToken = default) => await Result<JObject>(cancellationToken);
+
+        /// <summary>
+        /// Retrieve results. Status must be success or an error will be thrown.
+        /// </summary>
+        /// <returns>JSON Array</returns>
+        public async Task<JArray> Results(CancellationToken cancellationToken = default) => await Result<JArray>(cancellationToken);
+
+        /// <summary>
+        /// Retrieve results. Status must be success or an error will be thrown.
+        /// </summary>
+        /// <returns>Result of <typeparamref name="TResult"/> type</returns>
+        public async Task<TResult> Result<TResult>(CancellationToken cancellationToken)
         {
             while (await Status() == JobStatus.PENDING)
             {
                 await Task.Delay(1000, cancellationToken);
             }
             string result = await FetchResult(cancellationToken);
-            var json = JsonConvert.DeserializeObject<JObject>(result);
-            return json;
-        }
-
-        /// <summary>
-        /// Retrieve results. Status must be success or an error will be thrown.
-        /// </summary>
-        /// <returns>JSON Array</returns>
-        public async Task<JArray> Results(CancellationToken cancellationToken = default)
-        {
-            while (await Status() == JobStatus.PENDING)
-            {
-               await Task.Delay(1000, cancellationToken);
-            }
-            string result = await FetchResult(cancellationToken);
-            var json = JsonConvert.DeserializeObject<JArray>(result);
+            var json = JsonConvert.DeserializeObject<TResult>(result);
+            
             return json;
         }
 

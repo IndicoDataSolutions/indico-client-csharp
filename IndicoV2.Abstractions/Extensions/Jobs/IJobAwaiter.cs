@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IndicoV2.Models.Models;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Extensions.Jobs
@@ -25,5 +26,14 @@ namespace IndicoV2.Extensions.Jobs
         /// <returns></returns>
         [Obsolete("Use generic version of this method.")]
         Task<JToken> WaitReadyAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Wait until Job is finished.
+        /// </summary>
+        /// <param name="predictionJobId">Job's Id</param>
+        /// <param name="checkInterval">Interval between requests.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <returns>Prediction results</returns>
+        Task<IPredictionJobResult> WaitPredictionReadyAsync(string predictionJobId, TimeSpan checkInterval, CancellationToken cancellationToken);
     }
 }

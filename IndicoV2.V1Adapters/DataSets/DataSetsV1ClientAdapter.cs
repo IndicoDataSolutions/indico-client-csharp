@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +38,13 @@ namespace IndicoV2.V1Adapters.DataSets
 
         public async Task<IEnumerable<IDataSetFull>> ListFullAsync(int? limit = null, CancellationToken cancellationToken = default)
         {
+            if (limit == null)
+            {
+                // TODO: remove
+                // https://indicodata.atlassian.net/browse/DEV-6225?atlOrigin=eyJpIjoiOTEyNGUyYWQxZjZhNDU0YTllZjc0ZGJmNWRlNTM0OTYiLCJwIjoiamlyYS1zbGFjay1pbnQifQ
+                limit = 100;
+            }
+
             var query = @"
             query GetDatasets($limit: Int) {
                 datasetsPage(limit: $limit) {

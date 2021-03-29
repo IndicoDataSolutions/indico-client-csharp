@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQL;
@@ -7,7 +6,6 @@ using Indico;
 using Indico.Jobs;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.Jobs
@@ -28,27 +26,10 @@ namespace IndicoV2.V1Adapters.Jobs
         
         public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
         {
-            if (typeof(TResult) == typeof(JToken))
-            {
-                throw new ArgumentException(
-                    $"For types inheriting from {nameof(JToken)} exact type is required ({nameof(JObject)}, {nameof(JArray)}).");
-            }
-
             var jobQuery = new Job(_indicoClient.GraphQLHttpClient, jobId);
-            var resultIsCollection = typeof(ICollection).IsAssignableFrom(typeof(TResult))
-                && !typeof(JObject).IsAssignableFrom(typeof(TResult));
-            JToken result;
+            var result = await jobQuery.Result<TResult>(cancellationToken);
 
-            if (resultIsCollection)
-            {
-                result = await jobQuery.Results(cancellationToken);
-            }
-            else
-            {
-                result = await jobQuery.Result(cancellationToken);
-            }
-
-            return result.ToObject<TResult>();
+            return result;
         }
 
         public async Task<string> GetFailureReasonAsync(string jobId)

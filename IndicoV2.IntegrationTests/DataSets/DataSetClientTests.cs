@@ -30,12 +30,21 @@ namespace IndicoV2.IntegrationTests.DataSets
             ds.Name.Should().NotBeNullOrEmpty();
         }
 
-        [Test]
-        public async Task ListFullAsync_ShouldReturnDataSetsFull()
+        [TestCase(null)]
+        [TestCase(1)]
+        public async Task ListFullAsync_ShouldReturnDataSetsFull(int? limit)
         {
-            var dataSets = (await _dataSetClient.ListFullAsync()).ToArray();
+            var dataSets = (await _dataSetClient.ListFullAsync(limit)).ToArray();
 
-            dataSets.Length.Should().BeGreaterThan(0);
+            if (limit.HasValue)
+            {
+                dataSets.Length.Should().Be(limit);
+            }
+            else
+            {
+                dataSets.Length.Should().BeGreaterThan(0);
+            }
+
             var ds = dataSets.First();
             ds.Id.Should().BeGreaterThan(0);
             ds.Name.Should().NotBeEmpty();
