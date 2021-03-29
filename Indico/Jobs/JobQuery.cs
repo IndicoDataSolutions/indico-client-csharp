@@ -23,14 +23,5 @@ namespace Indico.Jobs
         /// </summary>
         /// <returns>Job</returns>
         public Job Exec() => new Job(_graphQLHttpClient, Id);
-
-        /// <summary>
-        /// Refreshes the Job Object
-        /// </summary>
-        /// <returns>Job</returns>
-        /// <param name="obj">Job</param>
-        public Job Refresh() =>
-            //TODO:
-            throw new RuntimeException("Method Not Implemented");
     }
 }

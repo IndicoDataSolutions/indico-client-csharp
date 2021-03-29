@@ -8,8 +8,13 @@ namespace Indico.Exception
     public class GraphQLException : System.Exception
     {
         public GraphQLException() { }
+
+        public GraphQLException(string message) : base(message) { }
+
         public GraphQLException(GraphQLError[] errors) : base(SerializeGraphQLErrors(errors)) { }
+
         public GraphQLException(GraphQLError[] errors, System.Exception inner) : base(SerializeGraphQLErrors(errors), inner) { }
+
         protected GraphQLException(
             System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }

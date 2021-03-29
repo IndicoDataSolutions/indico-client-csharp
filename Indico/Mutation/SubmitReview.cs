@@ -29,7 +29,7 @@ namespace Indico.Mutation
             {
                 if (!_submissionId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException(nameof(SubmissionId));
                 }
 
                 return _submissionId.Value;
@@ -66,7 +66,7 @@ namespace Indico.Mutation
         {
             if (Changes == null && !Rejected)
             {
-                throw new RuntimeException("Must provide Changes or Reject=true");
+                throw new ArgumentException($"Provide {nameof(Changes)} or set {nameof(Rejected)} to true.");
             }
 
             var args = new Dictionary<string, string>

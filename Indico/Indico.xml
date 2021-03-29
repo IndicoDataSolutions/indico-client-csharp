@@ -216,12 +216,6 @@
             </summary>
             <returns>Result of <typeparamref name="TResult"/> type</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Errors">
-            <summary>
-            If job status is FAILURE returns the list of errors encoutered
-            </summary>
-            <returns>List of errors</returns>
-        </member>
         <member name="P:Indico.Jobs.JobQuery.Id">
             <summary>
             Get/Set the Job ID
@@ -238,13 +232,6 @@
             Returns Job
             </summary>
             <returns>Job</returns>
-        </member>
-        <member name="M:Indico.Jobs.JobQuery.Refresh">
-            <summary>
-            Refreshes the Job Object
-            </summary>
-            <returns>Job</returns>
-            <param name="obj">Job</param>
         </member>
         <member name="M:Indico.IMutation`1.Exec(System.Threading.CancellationToken)">
             <summary>
