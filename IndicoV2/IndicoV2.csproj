@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+  </PropertyGroup>
 
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
 
@@ -24,6 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
 	</ItemGroup>

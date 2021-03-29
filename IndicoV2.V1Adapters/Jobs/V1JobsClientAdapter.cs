@@ -21,8 +21,17 @@ namespace IndicoV2.V1Adapters.Jobs
             _jobStatusConverter = jobStatusConverter;
         }
 
-        public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
+        public async Task<JToken> GetResultAsync(string jobId, CancellationToken cancellationToken) =>
+            await GetResultAsync<JObject>(jobId, cancellationToken);
         
+        public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
+        {
+            var jobQuery = new Job(_indicoClient.GraphQLHttpClient, jobId);
+            var result = await jobQuery.Result<TResult>(cancellationToken);
+
+            return result;
+        }
+
         public async Task<string> GetFailureReasonAsync(string jobId)
         {
             var queryString = @"

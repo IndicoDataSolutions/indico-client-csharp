@@ -1,15 +1,14 @@
 ﻿using IndicoV2.DataSets.Models;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace IndicoV2.V1Adapters.DataSets.Models
 {
     internal class V1DataSetAdapter : IDataSet
     {
-        private readonly JToken _jToken;
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public int Id { get; internal set; }
 
-        public V1DataSetAdapter(JToken jToken) => _jToken = jToken;
-
-        public int Id => _jToken.Value<int>("id");
-        public string Name => _jToken.Value<string>("name");
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public string Name { get; internal set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,10 +15,10 @@ namespace IndicoV2.V1Adapters.DataSets
     {
         private readonly IndicoClient _indicoClientLegacy;
 
-        public DataSetsV1ClientAdapter(Indico.IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
+        public DataSetsV1ClientAdapter(IndicoClient indicoClientLegacy) => _indicoClientLegacy = indicoClientLegacy;
 
 
-        public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<IDataSet>> ListAsync(CancellationToken cancellationToken)
         {
             string query = @"
               query GetDatasets {
@@ -29,8 +30,42 @@ namespace IndicoV2.V1Adapters.DataSets
             ";
 
             var request = _indicoClientLegacy.GraphQLRequest(query, "GetDatasets");
-            var response = await request.Call();
-            var dataSets = ((JArray)response["datasets"]).Select(r => new V1DataSetAdapter(r)).ToArray();
+            var response = await request.Call(cancellationToken);
+            var dataSets = ((JArray)response["datasets"]).Select(ds => (IDataSet)ds.ToObject(typeof(V1DataSetAdapter))).ToArray();
+
+            return dataSets;
+        }
+
+        public async Task<IEnumerable<IDataSetFull>> ListFullAsync(int? limit = null, CancellationToken cancellationToken = default)
+        {
+            if (limit == null)
+            {
+                // TODO: remove
+                // https://indicodata.atlassian.net/browse/DEV-6225?atlOrigin=eyJpIjoiOTEyNGUyYWQxZjZhNDU0YTllZjc0ZGJmNWRlNTM0OTYiLCJwIjoiamlyYS1zbGFjay1pbnQifQ
+                limit = 100;
+            }
+
+            var query = @"
+            query GetDatasets($limit: Int) {
+                datasetsPage(limit: $limit) {
+                    datasets {
+                        id
+                        name
+                        status
+                        rowCount
+                        numModelGroups
+                        modelGroups {
+                            id
+                        }
+                    }
+                }
+            }
+            ";
+
+            var request = _indicoClientLegacy.GraphQLRequest(query, "GetDatasets");
+            request.Variables = new {limit};
+            var response = await request.Call(cancellationToken);
+            var dataSets = ((JArray)response["datasetsPage"]["datasets"]).Select(ds => (IDataSetFull)ds.ToObject(typeof(V1DataSetFullAdapter))).ToArray();
 
             return dataSets;
         }
