@@ -8,7 +8,10 @@ namespace IndicoV2.Jobs.Exceptions
     /// </summary>
     public class JobNotSuccessfulException : Exception
     {
-        public JobNotSuccessfulException(JobStatus status, string failReason) : base($"Invalid job status ({status}): {failReason}")
-        { }
+        public JobNotSuccessfulException() { }
+
+        public JobNotSuccessfulException(string message) : base(message) { }
+
+        public JobNotSuccessfulException(JobStatus status, string failReason) : base($"Invalid job status ({status}): {failReason}") { }
     }
 }

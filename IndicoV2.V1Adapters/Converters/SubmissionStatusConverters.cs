@@ -16,7 +16,7 @@ namespace IndicoV2.V1Adapters.Converters
 
             if (!Enum.TryParse(status.ToString(), out v1SubmissionStatus parsed))
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException($"Cannot read submission status: {status}");
             }
 
             return parsed;
@@ -26,7 +26,7 @@ namespace IndicoV2.V1Adapters.Converters
         {
             if (!Enum.TryParse(legacyStatus.ToString(), out v2SubmissionStatus parsed))
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException($"Cannot read submission status: {legacyStatus}");
             }
 
             return parsed;

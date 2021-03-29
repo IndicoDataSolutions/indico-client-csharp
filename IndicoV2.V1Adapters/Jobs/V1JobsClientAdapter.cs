@@ -22,6 +22,7 @@ namespace IndicoV2.V1Adapters.Jobs
         }
 
         public async Task<JToken> GetResultAsync(string jobId) => await new Job(_indicoClient.GraphQLHttpClient, jobId).Result();
+        
         public async Task<string> GetFailureReasonAsync(string jobId)
         {
             var queryString = @"
