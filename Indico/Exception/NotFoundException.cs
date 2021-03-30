@@ -3,7 +3,7 @@
 namespace Indico.Exception
 {
     [Serializable]
-    public class NotFoundException : System.Exception
+    public class NotFoundException : RuntimeException
     {
         public NotFoundException() { }
 
