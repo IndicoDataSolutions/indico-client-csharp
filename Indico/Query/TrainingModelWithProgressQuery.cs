@@ -81,7 +81,7 @@ namespace Indico.Query
             var modelGroups = response.Data.modelGroups.modelGroups;
             if (modelGroups.Count != 1)
             {
-                throw new RuntimeException($"Cannot find Model Group with provided Id: {ModelId}.");
+                throw new NotFoundException($"Cannot find Model Group with provided Id: {ModelId}.");
             }
 
             return (JArray)modelGroups[0].models;

@@ -83,7 +83,7 @@ namespace Indico.Query
             var modelGroupList = response.Data.modelGroups.modelGroups;
             if (modelGroupList.Count == 0)
             {
-                throw new RuntimeException($"Cannot find the default selected model for model group : {MgId}");
+                throw new NotFoundException($"Cannot find the default selected model for model group : {MgId}");
             }
 
             JToken mg = modelGroupList[0];
