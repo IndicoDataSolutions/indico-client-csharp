@@ -6,6 +6,7 @@ using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Ocr;
 using IndicoV2.Ocr.Models;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
 
@@ -28,23 +29,34 @@ namespace IndicoV2.IntegrationTests.Ocr
             _ocrClient = container.Resolve<IOcrClient>();
         }
 
-        [TestCase("standard")]
-        public async Task ExtractDocument_ShouldReturnJobNumber(string configType)
-            => (await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), configType, default))
+        [Theory]
+        public async Task ExtractDocument_ShouldReturnJobNumber(DocumentExtractionPreset preset)
+            => (await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset, default))
                 .Should().NotBeEmpty();
 
-        [Test]
-        public async Task GetExtractionResult_ShouldReturnDocument()
+        [Theory]
+        public async Task GetExtractionResult_ShouldReturnDocument(DocumentExtractionPreset preset)
         {
             // Arrange
-            var jobId = await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath());
+            var jobId = await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset);
             var jobResult = await _jobAwaiter.WaitReadyAsync<ExtractionJobResult>(jobId, TimeSpan.FromMilliseconds(300));
-            
-            // Act
-            var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url);
 
-            // Assert
-            extractionResult.Should().NotBeNullOrEmpty();
+            if (preset != DocumentExtractionPreset.OnDocument)
+            {
+                // Act
+                var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url);
+
+                // Assert
+                extractionResult.Should().NotBeNullOrEmpty();
+            }
+            else
+            {
+                // Act
+                var extractionResult = await _ocrClient.GetExtractionResultAsync<JArray>(jobResult.Url);
+
+                // Assert
+                extractionResult.Count.Should().Be(1);
+            }
         }
     }
 }

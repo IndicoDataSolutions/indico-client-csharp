@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Indico;
 using Indico.Mutation;
 using IndicoV2.Ocr;
+using IndicoV2.Ocr.Models;
 using IndicoV2.Storage;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -22,31 +23,31 @@ namespace IndicoV2.V1Adapters.Ocr
             _storage = storage;
         }
 
-        public async Task<string> ExtractDocumentAsync(string filePath, string configType, CancellationToken cancellationToken)
+        public async Task<string> ExtractDocumentAsync(string filePath, DocumentExtractionPreset preset, CancellationToken cancellationToken)
         {
             var config = new JObject
             {
-                {"preset_config", configType}
+                {"preset_config", preset.ToString("F").ToLower()}
             };
             var docExtraction =
                 new DocumentExtraction(_indicoClientLegacy)
                 {
                     JsonConfig = config,
-                    //Files = new List<string> {filePath},
                 };
             var job = await docExtraction.Exec(filePath, cancellationToken);
 
             return job.Id;
         }
 
-        public async Task<string> GetExtractionResultAsync(Uri documentUri)
+        public async Task<string> GetExtractionResultAsync(Uri documentUri) =>
+            (await GetExtractionResultAsync<JToken>(documentUri)).Value<string>("text");
+
+        public async Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri)
         {
             using (var docStream = await _storage.GetAsync(documentUri))
             using (var reader = new JsonTextReader(new StreamReader(docStream)))
             {
-                var docJson = await JToken.ReadFromAsync(reader);
-
-                return docJson.Value<string>("text");
+                return JsonSerializer.Create().Deserialize<TResult>(reader);
             }
         }
     }

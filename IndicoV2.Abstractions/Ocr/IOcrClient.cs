@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IndicoV2.Ocr.Models;
 
 namespace IndicoV2.Ocr
 {
@@ -13,7 +14,7 @@ namespace IndicoV2.Ocr
         /// <param name="filePath">Path to the document</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Job's Is</returns>
-        Task<string> ExtractDocumentAsync(string filePath, string configType = "standard", CancellationToken cancellationToken = default);
+        Task<string> ExtractDocumentAsync(string filePath, DocumentExtractionPreset preset = DocumentExtractionPreset.Standard, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets result of the OCR
@@ -21,5 +22,9 @@ namespace IndicoV2.Ocr
         /// <param name="documentUri">Url of the document (returned in Job's result).</param>
         /// <returns>Content of the document</returns>
         Task<string> GetExtractionResultAsync(Uri documentUri);
+
+        /// <inheritdoc cref="GetExtractionResultAsync"/>
+        /// <typeparam name="TResult">OCR result model.</typeparam>
+        Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri);
     }
 }
