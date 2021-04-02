@@ -7,9 +7,16 @@
 
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
 
+	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
+		<AssemblyVersion>2.0.0</AssemblyVersion>
+		<Version Condition="'$(Version)' == ''">2.0.0.$([System.DateTime]::UtcNow.ToString(MMddHHmm))</Version>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
+	</PropertyGroup>
+
 	<Target Name="IncludeP2POutput">
 		<ItemGroup>
-			<BuildOutputInPackage Include="$(OutputPath)\Indico*.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Indico.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)IndicoV2.*.dll" />
 		</ItemGroup>
 	</Target>
 
@@ -28,6 +35,14 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
+		<ProjectReference Include="..\Indico\Indico.csproj" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--workaround: those pacakges are required here to be visible as nuget dependencies-->
+		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.2" />
+		<PackageReference Include="GraphQL.Client" Version="3.2.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
 </Project>
