@@ -4,9 +4,9 @@
 		<TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
 	</PropertyGroup>
 
-	<Import Project="../Nuget.props" Condition="'$(BuildType)' == ''" />
+	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V1'" />
 
-	<PropertyGroup Condition="'$(BuildType)' == ''">
+	<PropertyGroup Condition="'$(BuildType)' == 'V1'">
         <AssemblyVersion>0.9.1</AssemblyVersion>
         <Version>0.9.1</Version>
     </PropertyGroup>
@@ -20,7 +20,7 @@
     </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.1" />
+		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.2" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 	</ItemGroup>

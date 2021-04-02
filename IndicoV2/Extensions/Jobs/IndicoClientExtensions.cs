@@ -4,6 +4,6 @@ namespace IndicoV2
 {
     public static partial class IndicoClientExtensions
     {
-        public static JobAwaiter JobAwaiter(this IndicoClient indicoClient) => new JobAwaiter(indicoClient.Jobs());
+        public static IJobAwaiter JobAwaiter(this IndicoClient indicoClient) => new JobAwaiter(indicoClient.Jobs());
     }
 }

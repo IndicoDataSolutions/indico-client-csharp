@@ -198,23 +198,23 @@
             </summary>
             <returns>JobStatus</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Result">
+        <member name="M:Indico.Jobs.Job.Result(System.Threading.CancellationToken)">
             <summary>
             Retrieve result. Status must be success or an error will be thrown.
             </summary>
             <returns>JSON Object</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Results">
+        <member name="M:Indico.Jobs.Job.Results(System.Threading.CancellationToken)">
             <summary>
             Retrieve results. Status must be success or an error will be thrown.
             </summary>
             <returns>JSON Array</returns>
         </member>
-        <member name="M:Indico.Jobs.Job.Errors">
+        <member name="M:Indico.Jobs.Job.Result``1(System.Threading.CancellationToken)">
             <summary>
-            If job status is FAILURE returns the list of errors encoutered
+            Retrieve results. Status must be success or an error will be thrown.
             </summary>
-            <returns>List of errors</returns>
+            <returns>Result of <typeparamref name="TResult"/> type</returns>
         </member>
         <member name="P:Indico.Jobs.JobQuery.Id">
             <summary>
@@ -232,13 +232,6 @@
             Returns Job
             </summary>
             <returns>Job</returns>
-        </member>
-        <member name="M:Indico.Jobs.JobQuery.Refresh">
-            <summary>
-            Refreshes the Job Object
-            </summary>
-            <returns>Job</returns>
-            <param name="obj">Job</param>
         </member>
         <member name="M:Indico.IMutation`1.Exec(System.Threading.CancellationToken)">
             <summary>

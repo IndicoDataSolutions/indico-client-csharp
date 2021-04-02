@@ -28,7 +28,7 @@ namespace Indico.Mutation
             {
                 if (!_workflowId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException(nameof(WorkflowId));
                 }
 
                 return _workflowId.Value;
@@ -70,7 +70,7 @@ namespace Indico.Mutation
         {
             if (Convert.ToInt16(Files != null) + Convert.ToInt16(Streams != null) + Convert.ToInt16(Urls != null) != 1)
             {
-                throw new InputException("One of 'Files', 'Streams' or 'Urls' must be specified");
+                throw new ArgumentException($"Provide one of '{nameof(Files)}', '{nameof(Streams)}' or '{nameof(Urls)}'.");
             }
 
             var files = new List<object>();

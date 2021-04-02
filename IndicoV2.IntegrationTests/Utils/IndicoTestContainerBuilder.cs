@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
 using IndicoV2.DataSets;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Jobs;
+using IndicoV2.Models;
+using IndicoV2.Ocr;
 using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
@@ -40,14 +43,17 @@ namespace IndicoV2.IntegrationTests.Utils
             _container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<IndicoClient>().Submissions());
             _container.RegisterFactory<IReviewsClient>(c => c.Resolve<IndicoClient>().Reviews());
             _container.RegisterFactory<IJobsClient>(c => c.Resolve<IndicoClient>().Jobs());
+            _container.RegisterFactory<IJobAwaiter>(c => c.Resolve<IndicoClient>().JobAwaiter());
             _container.RegisterFactory<IStorageClient>(c => c.Resolve<IndicoClient>().Storage());
             _container.RegisterFactory<ISubmissionResultAwaiter>(c =>
                 c.Resolve<IndicoClient>().GetSubmissionResultAwaiter());
+            _container.RegisterFactory<IModelClient>(c => c.Resolve<IndicoClient>().Models());
+            _container.RegisterFactory<IOcrClient>(c => c.Resolve<IndicoClient>().Ocr());
 
             return _container;
         }
 
-        private void RegisterClientAutoReview() => RegisterClient(ApiTokenAutoreview, BaseUrl);
+        private void RegisterClientAutoReview() => RegisterClient(ApiToken, BaseUrl);
 
         private void RegisterClientDefault() => RegisterClient(ApiToken, BaseUrl);
 

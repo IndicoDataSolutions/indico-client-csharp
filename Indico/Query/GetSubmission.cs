@@ -26,7 +26,7 @@ namespace Indico.Query
             {
                 if (!_submissionId.HasValue)
                 {
-                    throw new ArgumentNullException();
+                    throw new ArgumentNullException(nameof(Id));
                 }
 
                 return _submissionId.Value;

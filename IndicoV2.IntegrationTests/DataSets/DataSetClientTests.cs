@@ -25,6 +25,33 @@ namespace IndicoV2.IntegrationTests.DataSets
             var dataSets = (await _dataSetClient.ListAsync()).ToArray();
 
             dataSets.Length.Should().BeGreaterThan(0);
+            var ds = dataSets.First();
+            ds.Id.Should().BeGreaterThan(0);
+            ds.Name.Should().NotBeNullOrEmpty();
+        }
+
+        [TestCase(null)]
+        [TestCase(1)]
+        public async Task ListFullAsync_ShouldReturnDataSetsFull(int? limit)
+        {
+            var dataSets = (await _dataSetClient.ListFullAsync(limit)).ToArray();
+
+            if (limit.HasValue)
+            {
+                dataSets.Length.Should().Be(limit);
+            }
+            else
+            {
+                dataSets.Length.Should().BeGreaterThan(0);
+            }
+
+            var ds = dataSets.First();
+            ds.Id.Should().BeGreaterThan(0);
+            ds.Name.Should().NotBeEmpty();
+            ds.Status.Should().NotBeEmpty();
+            ds.ModelGroups.Should().NotBeEmpty();
+            ds.NumModelGroups.Should().BeGreaterThan(0);
+            ds.RowCount.Should().BeGreaterThan(0);
         }
     }
 }

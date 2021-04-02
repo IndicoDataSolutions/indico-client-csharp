@@ -6,5 +6,10 @@
         /// DataSet's Id
         /// </summary>
         int Id { get; }
+
+        /// <summary>
+        /// DataSet's Name
+        /// </summary>
+        string Name { get; }
     }
 }

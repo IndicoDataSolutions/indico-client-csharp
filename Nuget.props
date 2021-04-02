@@ -1,10 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <Project>
-
-	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<Version Condition="'$(Version)' == ''">2.0.0.$([System.DateTime]::UtcNow.ToString(MMddHHmmss))</Version>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
-	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageId>IndicoClient</PackageId>
