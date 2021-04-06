@@ -42,7 +42,7 @@ namespace IndicoV2.Extensions.SubmissionResult
             }
 
             var resultUri = new Uri(new Uri("indico-file://"), submission.ResultFile);// $"indico-file://{submission.ResultFile}";
-            var result = await _storageClient.GetAsync(resultUri);
+            var result = await _storageClient.GetAsync(resultUri, cancellationToken);
 
             using (var reader = new JsonTextReader(new StreamReader(result)))
             {

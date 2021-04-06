@@ -20,11 +20,13 @@ namespace IndicoV2.Ocr
         /// Gets result of the OCR
         /// </summary>
         /// <param name="documentUri">Url of the document (returned in Job's result).</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Content of the document</returns>
-        Task<string> GetExtractionResultAsync(Uri documentUri);
+        Task<string> GetExtractionResultAsync(Uri documentUri, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="GetExtractionResultAsync"/>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <typeparam name="TResult">OCR result model.</typeparam>
-        Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri);
+        Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri, CancellationToken cancellationToken);
     }
 }

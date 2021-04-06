@@ -42,7 +42,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
             _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
+                .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
                 .ReturnsJsonStream("{}");
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
@@ -70,7 +70,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
             _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
+                .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
                 .ReturnsJsonStream("{}");
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
@@ -100,7 +100,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
             _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(storageUri))
+                .Setup(cli => cli.GetAsync(storageUri, default))
                 .ReturnsJsonStream(@"{ ""test"" : 13 }");
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
@@ -162,7 +162,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                     cli.WaitReadyAsync(It.IsAny<string>(), It.IsAny<TimeSpan>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test""}"));
             _fixture.Freeze<Mock<IStorageClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<Uri>()))
+                .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
                 .ReturnsJsonStream("{}");
 
             var sut = _fixture.Create<SubmissionResultAwaiter>();
