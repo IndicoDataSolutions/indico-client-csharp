@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Indico.Exception;
 using Newtonsoft.Json;
 
 namespace Indico
@@ -53,7 +54,7 @@ namespace Indico
             }
             else
             {
-                throw new HttpRequestException($"Error occured while calling authentication server: {httpResponseMessage.StatusCode}");
+                throw new IndicoAuthenticationException($"Error occured while calling authentication server: {httpResponseMessage.StatusCode}", httpResponseMessage.StatusCode);
             }
         }
 
