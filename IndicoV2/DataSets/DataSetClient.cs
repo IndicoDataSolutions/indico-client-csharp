@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.DataSets.Models;
 using IndicoV2.Storage;
+using IndicoV2.StrawberryShake.DataSets;
 using IndicoV2.StrawberryShake.IndicoGqlClient;
 using IndicoV2.V1Adapters.DataSets;
-using Newtonsoft.Json.Linq;
-using Gql = IndicoV2.StrawberryShake.DataSets.Wrappers;
 
 namespace IndicoV2.DataSets
 {
     public class DataSetClient : IDataSetClient
     {
         private readonly DataSetsV1ClientAdapter _legacyAdapter;
-        private readonly Gql.IAddFilesClient _addFilesClient;
+        private readonly IDataSetClientGql _dataSetClientGql;
         private readonly IStorageClient _storage;
 
-        public DataSetClient(DataSetsV1ClientAdapter legacyAdapter, Gql.IAddFilesClient addFilesClient, IStorageClient storage)
+        public DataSetClient(DataSetsV1ClientAdapter legacyAdapter, IDataSetClientGql dataSetClientGql, IStorageClient storage)
         {
             _legacyAdapter = legacyAdapter;
-            _addFilesClient = addFilesClient;
+            _dataSetClientGql = dataSetClientGql;
             _storage = storage;
         }
 
@@ -35,9 +33,12 @@ namespace IndicoV2.DataSets
         {
             var uploadedFiles = await _storage.UploadAsync(filePaths, cancellationToken);
             var metadata = _storage.Serialize(uploadedFiles);
-            var result = await _addFilesClient.ExecuteAsync(dataSetId, metadata.ToString(), cancellationToken);
+            var result = await _dataSetClientGql.AddFiles(dataSetId, metadata.ToString(), cancellationToken);
 
             return result;
         }
+
+        public Task<IDatasetUploadStatusResult> FileUploadStatus(int dataSetId, CancellationToken cancellationToken) =>
+            _dataSetClientGql.FileUploadStatus(dataSetId, cancellationToken);
     }
 }

@@ -5,12 +5,8 @@ using StrawberryShake;
 
 namespace IndicoV2.StrawberryShake.Exceptions
 {
-    public abstract class ErrorHandlingWrapper<T>
+    public abstract class ErrorHandlingWrapper
     {
-        protected readonly T _inner;
-
-        protected ErrorHandlingWrapper(T inner) => _inner = inner;
-
         protected async Task<TResult> ExecuteAsync<TResult>(Func<Task<IOperationResult<TResult>>> executeAsync)
             where TResult : class
         {

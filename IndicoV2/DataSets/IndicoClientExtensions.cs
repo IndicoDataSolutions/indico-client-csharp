@@ -12,6 +12,6 @@ namespace IndicoV2
         /// <returns>Instance of <seealso cref="IDataSetClient"/></returns>
         public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
             new DataSetClient(new DataSetsV1ClientAdapter(indicoClient.LegacyClient),
-                indicoClient.IndicoStrawberryShakeClient.DataSets().AddFiles(), indicoClient.Storage());
+                indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using IndicoV2.StrawberryShake.DataSets;
-using IndicoV2.StrawberryShake.DataSets.Wrappers;
 using IndicoV2.StrawberryShake.HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +19,7 @@ namespace IndicoV2.StrawberryShake
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
                     builder => builder.ConfigurePrimaryHttpMessageHandler<AuthenticatingMessageHandler>());
 
-            serviceCollection.AddSingleton<IAddFilesClient, AddFilesClient>();
+            serviceCollection.AddSingleton<IDataSetClientGql, DataSetClientGql>();
 
             _services = serviceCollection.BuildServiceProvider();
         }

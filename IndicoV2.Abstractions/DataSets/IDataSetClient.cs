@@ -28,5 +28,7 @@ namespace IndicoV2.DataSets
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns></returns>
         Task<IAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths, CancellationToken cancellationToken);
+
+        Task<IDatasetUploadStatusResult> FileUploadStatus(int dataSetId, CancellationToken cancellationToken);
     }
 }
