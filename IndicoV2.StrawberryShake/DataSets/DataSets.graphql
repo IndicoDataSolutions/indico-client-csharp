@@ -1,0 +1,25 @@
+﻿mutation AddFiles($datasetId: Int!, $metadata: JSONString!) {
+  addDatasetFiles(datasetId: $datasetId, metadataList: $metadata) {
+    id
+    status
+  }
+}
+
+query DatasetUploadStatus($id: Int!) {
+  dataset(id: $id) {
+    id
+    status
+    files {
+      id
+      name
+      deleted
+      fileSize
+      rainbowUrl
+      fileType
+      fileHash
+      status
+      statusMeta
+      failureType
+    }
+  }
+}

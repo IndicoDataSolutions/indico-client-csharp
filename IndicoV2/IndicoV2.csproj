@@ -34,6 +34,7 @@
 	<ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
+		<ProjectReference Include="..\IndicoV2.StrawberryShake\IndicoV2.StrawberryShake.csproj" />
 		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\Indico\Indico.csproj" PrivateAssets="All" />
 	</ItemGroup>

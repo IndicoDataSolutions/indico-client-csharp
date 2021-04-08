@@ -44,3 +44,4 @@ msbuild.wrn
 test-results/
 
 user.runsettings
+IndicoV2.StrawberryShake/Generated/IndicoGqlClient.StrawberryShake.cs

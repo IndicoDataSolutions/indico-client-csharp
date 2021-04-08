@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.IntegrationTests.Utils;
+using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using NUnit.Framework;
 using Unity;
 
@@ -11,12 +15,14 @@ namespace IndicoV2.IntegrationTests.DataSets
     public class DataSetClientTests
     {
         private IDataSetClient _dataSetClient;
+        private DataHelper _dataHelper;
 
         [SetUp]
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
             _dataSetClient = container.Resolve<IDataSetClient>();
+            _dataHelper = container.Resolve<DataHelper>();
         }
 
         [Test]
@@ -52,6 +58,17 @@ namespace IndicoV2.IntegrationTests.DataSets
             ds.ModelGroups.Should().NotBeEmpty();
             ds.NumModelGroups.Should().BeGreaterThan(0);
             ds.RowCount.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task AddFiles_ShouldAddFiles()
+        {
+            var dataSet = await _dataHelper.DataSets().GetAny();
+            var files = new[] {_dataHelper.Files().GetSampleFilePath()};
+
+            var result = await _dataSetClient.AddFilesAsync(dataSet.Id, files, default);
+
+            result.AddDatasetFiles.Id.Should().Be(dataSet.Id);
         }
     }
 }
