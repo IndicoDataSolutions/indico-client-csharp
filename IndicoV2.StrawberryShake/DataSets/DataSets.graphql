@@ -1,11 +1,4 @@
-﻿mutation AddFiles($datasetId: Int!, $metadata: JSONString!) {
-  addDatasetFiles(datasetId: $datasetId, metadataList: $metadata) {
-    id
-    status
-  }
-}
-
-query DatasetUploadStatus($id: Int!) {
+﻿query DatasetUploadStatus($id: Int!) {
   dataset(id: $id) {
     id
     status
@@ -21,5 +14,26 @@ query DatasetUploadStatus($id: Int!) {
       statusMeta
       failureType
     }
+  }
+}
+
+mutation AddFiles($datasetId: Int!, $metadata: JSONString!) {
+  addDatasetFiles(datasetId: $datasetId, metadataList: $metadata) {
+    id
+    status
+  }
+}
+
+mutation ProcessFiles($datasetId: Int!, $datafileIds: [Int]) {
+  addDataFiles(datasetId: $datasetId, datafileIds: $datafileIds) {
+    id
+    name
+  }
+}
+
+mutation ProcessCsv($datasetId: Int!, $datafileIds: [Int]) {
+  addDataCsv(datasetId: $datasetId, datafileIds: $datafileIds) {
+    id
+    name
   }
 }

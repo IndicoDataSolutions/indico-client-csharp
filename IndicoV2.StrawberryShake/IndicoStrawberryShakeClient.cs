@@ -19,11 +19,11 @@ namespace IndicoV2.StrawberryShake
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
                     builder => builder.ConfigurePrimaryHttpMessageHandler<AuthenticatingMessageHandler>());
 
-            serviceCollection.AddSingleton<IDataSetClientGql, DataSetClientGql>();
+            serviceCollection.AddSingleton<IDataSetSsClient, DataSetSsClient>();
 
             _services = serviceCollection.BuildServiceProvider();
         }
 
-        public DataSetClientGql DataSets() => new DataSetClientGql(_services);
+        public DataSetSsClient DataSets() => new DataSetSsClient(_services);
     }
 }

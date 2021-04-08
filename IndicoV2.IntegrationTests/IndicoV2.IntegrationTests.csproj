@@ -26,4 +26,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Utils\DataHelpers\Files\TooSmall.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

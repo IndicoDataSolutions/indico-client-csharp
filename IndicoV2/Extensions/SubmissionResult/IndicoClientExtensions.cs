@@ -10,6 +10,6 @@ namespace IndicoV2
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns></returns>
         public static ISubmissionResultAwaiter GetSubmissionResultAwaiter(this IndicoClient indicoClient) =>
-            new SubmissionResultAwaiter(indicoClient.Submissions(), indicoClient.JobAwaiter(), indicoClient.Storage());
+            new SubmissionResultAwaiter(indicoClient.Submissions(), indicoClient.Storage());
     }
 }

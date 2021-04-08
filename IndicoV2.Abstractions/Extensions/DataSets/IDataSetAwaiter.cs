@@ -6,6 +6,7 @@ namespace IndicoV2.Extensions.DataSets
 {
     public interface IDataSetAwaiter
     {
-        Task WaitAllFilesProcessedAsync(int dataSetId, TimeSpan checkInterval, CancellationToken cancellationToken);
+        Task WaitFilesDownloadedOrFailedAsync(int dataSetId, TimeSpan checkInterval, CancellationToken cancellationToken);
+        Task WaitFilesProcessedOrFailedAsync(int datasSetId, TimeSpan checkInterval, CancellationToken cancellationToken);
     }
 }

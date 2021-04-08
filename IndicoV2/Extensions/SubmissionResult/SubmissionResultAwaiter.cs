@@ -2,8 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using IndicoV2.Extensions.JobResultBuilders;
-using IndicoV2.Extensions.Jobs;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -15,14 +13,11 @@ namespace IndicoV2.Extensions.SubmissionResult
     internal class SubmissionResultAwaiter : ISubmissionResultAwaiter
     {
         private readonly ISubmissionsClient _submissionsClient;
-        private readonly IJobAwaiter _jobAwaiter;
         private readonly IStorageClient _storageClient;
-        private readonly JobResultBuilder _jobResultBuilder = new JobResultBuilder();
 
-        public SubmissionResultAwaiter(ISubmissionsClient submissionsClient, IJobAwaiter jobAwaiter, IStorageClient storageClient)
+        public SubmissionResultAwaiter(ISubmissionsClient submissionsClient, IStorageClient storageClient)
         {
             _submissionsClient = submissionsClient;
-            _jobAwaiter = jobAwaiter;
             _storageClient = storageClient;
         }
 

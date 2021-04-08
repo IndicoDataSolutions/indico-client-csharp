@@ -39,7 +39,6 @@ namespace IndicoV2.V1Adapters.Storage
         public async Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken)
         {
             var metadata = await new UploadFile(_clientLegacy) {Files = filePaths.ToList()}.Call(cancellationToken);
-            
 
             return DeserializeMetadata(metadata);
         }
