@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Indico;
 using Indico.Mutation;
 using Indico.Query;
 using IndicoV2.Models;
@@ -12,9 +11,9 @@ namespace IndicoV2.V1Adapters.Models
 {
     public class V1ModelClientAdapter : IModelClient
     {
-        private readonly IndicoClient _clientLegacy;
+        private readonly Indico.IndicoClient _clientLegacy;
 
-        public V1ModelClientAdapter(IndicoClient indicoClientLegacyClient) => _clientLegacy = indicoClientLegacyClient;
+        public V1ModelClientAdapter(Indico.IndicoClient indicoClientLegacyClient) => _clientLegacy = indicoClientLegacyClient;
 
         public async Task<IModelGroup> GetGroup(int modelGroupId, CancellationToken cancellationToken) =>
             new V1ModelGroupAdapter(
