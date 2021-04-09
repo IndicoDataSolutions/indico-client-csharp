@@ -28,7 +28,7 @@ namespace IndicoV2.DataSets
         public Task<IEnumerable<IDataSetFull>> ListFullAsync(int? limit = null, CancellationToken cancellationToken = default) =>
             _legacyAdapter.ListFullAsync(limit, cancellationToken);
 
-        public async Task<IAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths,
+        public async Task<IDataSetAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths,
             CancellationToken cancellationToken)
         {
             var uploadedFiles = await _storage.UploadAsync(filePaths, cancellationToken);
@@ -42,10 +42,10 @@ namespace IndicoV2.DataSets
             CancellationToken cancellationToken) =>
             _dataSetSsClient.FileUploadStatus(dataSetId, cancellationToken);
 
-        public Task<IProcessFilesResult> ProcessFileAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) => 
+        public Task<IDataSetProcessFilesResult> ProcessFileAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) => 
             _dataSetSsClient.ProcessFilesAsync(dataSetId, fileIds, cancellationToken);
 
-        public Task<IProcessCsvResult> ProcessCsvAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) =>
+        public Task<IDataSetProcessCsvResult> ProcessCsvAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) =>
             _dataSetSsClient.ProcessCsvAsync(dataSetId, fileIds, cancellationToken);
     }
 }

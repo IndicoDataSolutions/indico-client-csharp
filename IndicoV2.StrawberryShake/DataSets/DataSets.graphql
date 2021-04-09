@@ -17,21 +17,21 @@
   }
 }
 
-mutation AddFiles($datasetId: Int!, $metadata: JSONString!) {
+mutation DataSetAddFiles($datasetId: Int!, $metadata: JSONString!) {
   addDatasetFiles(datasetId: $datasetId, metadataList: $metadata) {
     id
     status
   }
 }
 
-mutation ProcessFiles($datasetId: Int!, $datafileIds: [Int]) {
+mutation DataSetProcessFiles($datasetId: Int!, $datafileIds: [Int]) {
   addDataFiles(datasetId: $datasetId, datafileIds: $datafileIds) {
     id
     name
   }
 }
 
-mutation ProcessCsv($datasetId: Int!, $datafileIds: [Int]) {
+mutation DataSetProcessCsv($datasetId: Int!, $datafileIds: [Int]) {
   addDataCsv(datasetId: $datasetId, datafileIds: $datafileIds) {
     id
     name

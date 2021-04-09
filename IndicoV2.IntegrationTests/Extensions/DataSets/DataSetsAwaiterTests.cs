@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.DataSets;
 using IndicoV2.IntegrationTests.Utils;
@@ -40,8 +41,10 @@ namespace IndicoV2.IntegrationTests.Extensions.DataSets
 
             // Assert
             var dataSetWithStatuses = await _dataSetsClient.FileUploadStatusAsync(dataSet.Id, default);
-            dataSetWithStatuses.Dataset.Files.Select(f => f.Status).All(s =>
-                s == FileStatus.Downloaded || s == FileStatus.Failed || s == FileStatus.Processed);
+            dataSetWithStatuses.Dataset.Files
+                .Select(f => f.Status)
+                .All(s => s is FileStatus.Downloaded or FileStatus.Failed or FileStatus.Processed)
+                .Should().BeTrue();
         }
 
         [Test]
@@ -63,8 +66,9 @@ namespace IndicoV2.IntegrationTests.Extensions.DataSets
 
             // Assert
             var dataSetWithStauses = await _dataSetsClient.FileUploadStatusAsync(datasSet.Id, default);
-            dataSetWithStauses.Dataset.Files.All(f =>
-                f.Status == FileStatus.Processed || f.Status == FileStatus.Failed);
+            dataSetWithStauses.Dataset.Files
+                .All(f => f.Status is FileStatus.Processed or FileStatus.Failed)
+                .Should().BeTrue();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace IndicoV2.DataSets
         /// <param name="filePaths">List of pathnames to the dataset files</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns></returns>
-        Task<IAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths, CancellationToken cancellationToken);
+        Task<IDataSetAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths, CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the status of dataset file upload
@@ -44,7 +44,7 @@ namespace IndicoV2.DataSets
         /// <param name="fileIds">IDs of the CSV datafiles to process</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns></returns>
-        Task<IProcessCsvResult> ProcessCsvAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken);
+        Task<IDataSetProcessCsvResult> ProcessCsvAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken);
 
         /// <summary>
         /// Process files associated with a dataset and add corresponding data to the dataset
@@ -53,6 +53,6 @@ namespace IndicoV2.DataSets
         /// <param name="fileIds">IDs of the datafiles to process</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns></returns>
-        Task<IProcessFilesResult> ProcessFileAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken);
+        Task<IDataSetProcessFilesResult> ProcessFileAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken);
     }
 }

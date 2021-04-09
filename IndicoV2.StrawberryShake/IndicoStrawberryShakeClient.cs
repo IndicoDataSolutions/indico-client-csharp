@@ -24,6 +24,6 @@ namespace IndicoV2.StrawberryShake
             _services = serviceCollection.BuildServiceProvider();
         }
 
-        public DataSetSsClient DataSets() => new DataSetSsClient(_services);
+        public IDataSetSsClient DataSets() => new DataSetSsClient(_services);
     }
 }
