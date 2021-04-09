@@ -1,5 +1,4 @@
-﻿using IndicoV2.V1Adapters.Workflows;
-using IndicoV2.Workflows;
+﻿using IndicoV2.Workflows;
 
 namespace IndicoV2
 {
@@ -10,6 +9,6 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IWorkflowsClient"/></returns>
-        public static IWorkflowsClient Workflows(this IndicoClient indicoClient) => new WorkflowsV1ClientAdapter(indicoClient.LegacyClient);
+        public static IWorkflowsClient Workflows(this IndicoClient indicoClient) => new WorkflowsClient(indicoClient);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using IndicoV2.StrawberryShake.DataSets;
 using IndicoV2.StrawberryShake.HttpClient;
+using IndicoV2.StrawberryShake.Workflows;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IndicoV2.StrawberryShake
@@ -25,5 +26,6 @@ namespace IndicoV2.StrawberryShake
         }
 
         public IDataSetSsClient DataSets() => new DataSetSsClient(_services);
+        public IWorkflowSsClient Workflows() => new WorkflowSsClient(_services);
     }
 }
