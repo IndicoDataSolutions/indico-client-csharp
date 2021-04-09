@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IndicoV2.StrawberryShake.DataSets
 {
-    public class DataSetSsClient : ErrorHandlingWrapper, IDataSetSsClient
+    public class DataSetSsClient : ErrorHandlingWrapper
     {
         private readonly ServiceProvider _services;
 
