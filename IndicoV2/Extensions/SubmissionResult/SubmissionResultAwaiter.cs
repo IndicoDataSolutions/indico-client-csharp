@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Extensions.JobResultBuilders;
 using IndicoV2.Extensions.Jobs;
+using IndicoV2.Extensions.SubmissionResult.Exceptions;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -27,17 +28,27 @@ namespace IndicoV2.Extensions.SubmissionResult
         }
 
         public async Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
-            => await WaitReady(s => s != SubmissionStatus.PROCESSING, submissionId, checkInterval, cancellationToken);
+            => await WaitReady(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED, submissionId, checkInterval, cancellationToken);
 
         public async Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default)
             => await WaitReady(s => s == awaitedStatus, submissionId, checkInterval, cancellationToken);
 
         private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
+            if (isAwaitedStatus(SubmissionStatus.PROCESSING) || isAwaitedStatus(SubmissionStatus.FAILED))
+            {
+                throw new ArgumentException($"Wrong awaited status. Cannot get the result when submission status is {SubmissionStatus.PROCESSING} or {SubmissionStatus.FAILED}.");
+            }
+
             ISubmission submission;
 
             while (!isAwaitedStatus((submission = await _submissionsClient.GetAsync(submissionId, cancellationToken)).Status))
             {
+                if (submission.Status == SubmissionStatus.FAILED)
+                {
+                    throw new WrongSubmissionStatusException(SubmissionStatus.FAILED);
+                }
+
                 await Task.Delay(checkInterval, cancellationToken);
             }
 
