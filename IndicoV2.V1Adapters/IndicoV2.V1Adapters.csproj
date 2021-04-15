@@ -8,6 +8,7 @@
     <ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
     <ProjectReference Include="..\Indico\Indico.csproj" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="MimeKit" Version="2.11.0" />
   </ItemGroup>
 
 </Project>

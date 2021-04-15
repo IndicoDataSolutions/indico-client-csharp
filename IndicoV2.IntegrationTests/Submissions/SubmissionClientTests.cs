@@ -16,7 +16,7 @@ namespace IndicoV2.IntegrationTests.Submissions
         private DataHelper _dataHelper;
         private ISubmissionsClient _submissionsClient;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
@@ -33,6 +33,22 @@ namespace IndicoV2.IntegrationTests.Submissions
 
             // Act
             var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { fileStream });
+
+            // Assert
+            var submissionId = submissionIds.Single();
+            submissionId.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldCreateSubmission_FromStreamWithName()
+        {
+            // Arrange
+            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+            await using var fileStream = _dataHelper.Files().GetSampleFileStream();
+            var filePath = _dataHelper.Files().GetSampleFilePath();
+
+            // Act
+            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { (filePath, fileStream )});
 
             // Assert
             var submissionId = submissionIds.Single();

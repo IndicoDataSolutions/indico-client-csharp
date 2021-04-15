@@ -32,9 +32,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
-		<ProjectReference Include="..\IndicoV2.StrawberryShake\IndicoV2.StrawberryShake.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\Indico\Indico.csproj" PrivateAssets="All" />
 	</ItemGroup>
@@ -44,10 +43,7 @@
 		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.2" />
 		<PackageReference Include="GraphQL.Client" Version="3.2.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-		<PackageReference Include="StrawberryShake.CodeGeneration.CSharp.Analyzers" Version="11.2.0-preview.12" />
-		<PackageReference Include="StrawberryShake.Transport.Http" Version="11.2.0-preview.12" />
-		<PackageReference Include="System.Text.Json" Version="5.0.2" />
+		<PackageReference Include="MimeKit" Version="2.11.0" />
 	</ItemGroup>
 
 </Project>

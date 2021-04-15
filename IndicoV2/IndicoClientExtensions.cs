@@ -27,7 +27,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="ISubmissionsClient"/></returns>
-        public static ISubmissionsClient Submissions(this IndicoClient indicoClient) => new SubmissionsV1ClientAdapter(indicoClient.LegacyClient);
+        public static ISubmissionsClient Submissions(this IndicoClient indicoClient) => new SubmissionsV1ClientAdapter(indicoClient.LegacyClient, indicoClient.Storage());
 
         /// <summary>
         /// Gets <seealso cref="IWorkflowsClient"/>
