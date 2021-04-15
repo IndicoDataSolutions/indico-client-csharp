@@ -46,7 +46,7 @@ namespace IndicoV2.Extensions.SubmissionResult
             {
                 if (submission.Status == SubmissionStatus.FAILED)
                 {
-                    throw new WrongSubmissionStatusException($"Cannot get the result because submission status is {SubmissionStatus.FAILED}.");
+                    throw new WrongSubmissionStatusException(SubmissionStatus.FAILED);
                 }
 
                 await Task.Delay(checkInterval, cancellationToken);
