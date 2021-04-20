@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IndicoV2.StrawberryShake.Workflows
 {
-    public class WorkflowSsClient : ErrorHandlingWrapper, IWorkflowSsClient
+    public class WorkflowSsClient : ErrorHandlingWrapper
     {
         private readonly ServiceProvider _services;
 
