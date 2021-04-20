@@ -7,6 +7,7 @@
 type AppSchema {
   workflows(datasetIds: [Int] workflowIds: [Int] role: Roles metricsStartDate: Date "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: WORKFLOW_COLUMN_ENUM filters: WorkflowFilter): WorkflowPage
   submission(id: Int!): Submission
+  checkoutSpecificSubmission(submissionId: Int!): Submission
   randomSubmission(workflowId: Int! adminReview: Boolean = false): Submission
   submissions(submissionIds: [Int] workflowIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: SUBMISSION_COLUMN_ENUM filters: SubmissionFilter): SubmissionPage
   refresh: Refresh
@@ -23,9 +24,10 @@ type AppSchema {
   datafiles(datafileIds: [Int]!): [DataFile]
   dataset(id: Int): Dataset
   datasets(permissions: [PermissionType]): [Dataset]
-  datasetsPage(permissions: [PermissionType] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: DATASET_COLUMN_ENUM filters: DatasetFilter): DatasetPage
+  datasetsPage(permissions: [PermissionType] showAll: Boolean "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: DATASET_COLUMN_ENUM filters: DatasetFilter): DatasetPage
   searchDatapoint(datapointId: Int! keyword: String! "Max result length including keyword and surrounding text" context: Int "Use case-insensitive search" ignoreCase: Boolean = true): [DataPointSearchResult]
   user: User
+  ipaVersion: String
 }
 
 type WorkflowPage {
@@ -53,6 +55,7 @@ type Workflow {
   submissionCounts: SubmissionCounts
   reviewableModelGroups: [ModelGroup]
   submissionFacts: SubmissionFacts
+  metrics(startDate: Date endDate: Date): WorkflowMetrics
 }
 
 type Dataset {
@@ -793,14 +796,23 @@ type DailyStp {
 }
 
 type ModelStpDailyFacts {
+  name: String
   modelGroupId: Int
   stps: [DailyStp]
   classStps: [ClassStpFacts]
+  "Review STP for model aggregated by parent filter context."
+  reviewStpForModel: Float
+  "Auto Review STP for model aggregated by parent filter context."
+  autoReviewStpForModel: Float
 }
 
 type ClassStpFacts {
   className: String
   stps: [DailyStp]
+  "Review STP for class aggregated by parent filter context."
+  reviewStpForClass: Float
+  "Auto Review STP for class aggregated by parent filter context"
+  autoReviewStpForClass: Float
 }
 
 type TimeOnTaskDaily {
@@ -830,7 +842,33 @@ type ModelStp {
   autoReviewDenom: Int
   reviewStpPct: Float
   autoReviewStpPct: Float
+  name: String
   modelGroupId: Int
+}
+
+type WorkflowMetrics {
+  workflowId: Int
+  startDate: Date
+  endDate: Date
+  timeOnTask: TimeOnTaskMetrics
+}
+
+type TimeOnTaskMetrics {
+  aggregate: TimeOnTaskMetric
+  daily: [DailyTimeOnTaskMetric]
+}
+
+type TimeOnTaskMetric {
+  avgMinsPerDoc: Float
+  avgMinsPerDocReview: Float
+  avgMinsPerDocExceptions: Float
+}
+
+type DailyTimeOnTaskMetric {
+  date: Date
+  avgMinsPerDoc: Float
+  avgMinsPerDocReview: Float
+  avgMinsPerDocExceptions: Float
 }
 
 "An enumeration."
@@ -872,6 +910,8 @@ type Submission {
   status: SubmissionStatus
   "Errors occured during this submission"
   errors: String
+  "Submission files have been deleted from file store"
+  deleted: Boolean
   inputFiles: [SubmissionFile]
   "Local URL to first stored input"
   inputFile: String
@@ -938,6 +978,7 @@ enum SUBMISSION_COLUMN_ENUM {
   WORKFLOW_ID
   STATUS
   ERRORS
+  DELETED
   INPUT_FILE
   INPUT_FILENAME
   RESULT_FILE
@@ -1342,6 +1383,7 @@ type User {
   preferences(app: String! keys: [String]): [Preference]
   logins("number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: LOGIN_COLUMN_ENUM): LoginPage
   accountLockedAt: DateTime
+  numManagedDatasets: Int
 }
 
 type RefreshTokenMeta {
@@ -1366,6 +1408,8 @@ enum Scope {
   MANAGE_USERS
   GRAPHIQL
   APP_ACCESS
+  MANAGE_DATASET
+  MANAGE_ALL_DATA
   BASE
   REFRESH_TOKEN
   CHANGE_PASSWORD

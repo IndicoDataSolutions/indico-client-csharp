@@ -42,4 +42,6 @@ msbuild.wrn
 *.pidb
 *.resources
 test-results/
+
 IndicoV2.StrawberryShake/Generated/
+user.runsettings

@@ -10,11 +10,6 @@ using Unity;
 
 namespace IndicoV2.IntegrationTests.DataSets
 {
-    /// <summary>
-    /// There's no way to identify uploaded file (upload does not return Id, just metadata)
-    /// so running those tests in parallel may cause problems (multiple tests using the same file)
-    /// </summary>
-    [Parallelizable(ParallelScope.None)]
     public class DataSetClientTests
     {
         private IDataSetClient _dataSetClient;
