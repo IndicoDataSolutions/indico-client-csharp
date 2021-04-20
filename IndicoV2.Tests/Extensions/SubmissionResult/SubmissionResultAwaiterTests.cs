@@ -6,6 +6,7 @@ using AutoFixture;
 using FluentAssertions;
 using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
+using IndicoV2.Extensions.SubmissionResult.Exceptions;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -18,14 +19,14 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 {
     public class SubmissionResultAwaiterTests
     {
-        private static readonly SubmissionStatus[] _submissionStatusesExceptProcessing =
-            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING).ToArray();
+        private static readonly SubmissionStatus[] _submissionStatusesExceptProcessingAndFailed =
+            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED).ToArray();
         private IFixture _fixture;
 
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
-        [TestCaseSource(nameof(_submissionStatusesExceptProcessing))]
+        [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
         public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(SubmissionStatus status)
         {
             // Arrange
@@ -65,7 +66,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             submissionClientMock
                 .SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING))
-                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
+                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.COMPLETE));
             submissionClientMock
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
@@ -79,8 +80,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             await sut.WaitReady(submissionId, checkInterval, default);
 
             // Assert
-            submissionClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()),
-                Times.Exactly(2));
+            submissionClientMock.Verify(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()), Times.Exactly(2));
             submissionClientMock.VerifyNoOtherCalls();
         }
 
@@ -95,7 +95,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var storageUri = new Uri($"indico-file://{resultFile}");
             submissionClientMock
                 .Setup(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED && s.ResultFile == resultFile));
+                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.COMPLETE && s.ResultFile == resultFile));
             submissionClientMock
                 .Setup(j => j.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
@@ -194,6 +194,43 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             this.Invoking(async _ => await waitReady)
                 .Should()
                 .Throw<TaskCanceledException>();
+        }
+
+        [TestCase(SubmissionStatus.PROCESSING)]
+        [TestCase(SubmissionStatus.FAILED)]
+        public void Task_WaitReadyWithCustomStatus_ShouldThrow_IfCustomStatusIsWrong(SubmissionStatus statusAwaited)
+        {
+            // Arrange
+            const int submissionId = 1;
+            var sut = _fixture.Create<SubmissionResultAwaiter>();
+
+            // Act
+            var waitReady = sut.WaitReady(submissionId, statusAwaited, TimeSpan.FromMilliseconds(1), default);
+
+            // Asert
+            this.Invoking(async _ => await waitReady)
+                .Should()
+                .Throw<ArgumentException>();
+        }
+
+        [Test]
+        public void Task_WaitReadyWithCustomStatus_ShouldThrow_IfReturnedStatusIsFailed()
+        {
+            // Arrange
+            var cancellationToken = new CancellationTokenSource(50).Token;
+            const int submissionId = 1;
+            _fixture.Freeze<Mock<ISubmissionsClient>>()
+                .Setup(cli => cli.GetAsync(submissionId, cancellationToken))
+                .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.FAILED));
+            var sut = _fixture.Create<SubmissionResultAwaiter>();
+
+            // Act
+            var waitReady = sut.WaitReady(submissionId, SubmissionStatus.COMPLETE, TimeSpan.FromMilliseconds(1), cancellationToken);
+
+            // Asert
+            this.Invoking(async _ => await waitReady)
+                .Should()
+                .Throw<WrongSubmissionStatusException>();
         }
     }
 }
