@@ -12,10 +12,10 @@ namespace IndicoV2.DataSets
     public class DataSetClient : IDataSetClient
     {
         private readonly DataSetsV1ClientAdapter _legacyAdapter;
-        private readonly IDataSetSsClient _dataSetSsClient;
+        private readonly DataSetSsClient _dataSetSsClient;
         private readonly IStorageClient _storage;
 
-        public DataSetClient(DataSetsV1ClientAdapter legacyAdapter, IDataSetSsClient dataSetSsClient, IStorageClient storage)
+        public DataSetClient(DataSetsV1ClientAdapter legacyAdapter, DataSetSsClient dataSetSsClient, IStorageClient storage)
         {
             _legacyAdapter = legacyAdapter;
             _dataSetSsClient = dataSetSsClient;

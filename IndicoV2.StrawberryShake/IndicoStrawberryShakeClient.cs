@@ -1,6 +1,7 @@
 ﻿using System;
 using IndicoV2.StrawberryShake.DataSets;
 using IndicoV2.StrawberryShake.HttpClient;
+using IndicoV2.StrawberryShake.Workflows;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IndicoV2.StrawberryShake
@@ -19,11 +20,12 @@ namespace IndicoV2.StrawberryShake
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
                     builder => builder.ConfigurePrimaryHttpMessageHandler<AuthenticatingMessageHandler>());
 
-            serviceCollection.AddSingleton<IDataSetSsClient, DataSetSsClient>();
+            serviceCollection.AddSingleton<DataSetSsClient>();
 
             _services = serviceCollection.BuildServiceProvider();
         }
 
-        public IDataSetSsClient DataSets() => new DataSetSsClient(_services);
+        public DataSetSsClient DataSets() => new DataSetSsClient(_services);
+        public WorkflowSsClient Workflows() => new WorkflowSsClient(_services);
     }
 }

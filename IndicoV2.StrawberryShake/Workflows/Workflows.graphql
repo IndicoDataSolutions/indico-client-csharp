@@ -1,0 +1,17 @@
+﻿query WorkflowGetStatus($workflowId: Int!) {
+    workflows(workflowIds: [$workflowId]) {
+        workflows {
+          status
+        }
+    }
+}
+
+mutation WorkflowAddData($workflowId: Int!) {
+  addDataToWorkflow(workflowId: $workflowId) {
+    workflow {
+      id
+      name
+      status
+    }
+  }
+}
