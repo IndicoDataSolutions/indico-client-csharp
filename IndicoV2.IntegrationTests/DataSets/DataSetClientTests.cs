@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.IntegrationTests.Utils;
+using IndicoV2.IntegrationTests.Utils.DataHelpers;
+using IndicoV2.StrawberryShake;
 using NUnit.Framework;
 using Unity;
 
@@ -11,12 +13,14 @@ namespace IndicoV2.IntegrationTests.DataSets
     public class DataSetClientTests
     {
         private IDataSetClient _dataSetClient;
+        private DataHelper _dataHelper;
 
         [SetUp]
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
             _dataSetClient = container.Resolve<IDataSetClient>();
+            _dataHelper = container.Resolve<DataHelper>();
         }
 
         [Test]
@@ -52,6 +56,57 @@ namespace IndicoV2.IntegrationTests.DataSets
             ds.ModelGroups.Should().NotBeEmpty();
             ds.NumModelGroups.Should().BeGreaterThan(0);
             ds.RowCount.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task AddFiles_ShouldAddFiles()
+        {
+            var dataSet = await _dataHelper.DataSets().GetAny();
+            var files = new[] {_dataHelper.Files().GetSampleFilePath()};
+
+            var result = await _dataSetClient.AddFilesAsync(dataSet.Id, files, default);
+
+            result.AddDatasetFiles.Id.Should().Be(dataSet.Id);
+        }
+
+        [Test]
+        public async Task ProcessFiles_ShouldStartProcessing()
+        {
+            // Arrange
+            var dataSet = await _dataHelper.DataSets().GetAny();
+            var files = new[] {_dataHelper.Files().GetSampleFilePath()};
+            await _dataSetClient.AddFilesAsync(dataSet.Id, files, default);
+            var downloadedFiles =
+                (await _dataSetClient.FileUploadStatusAsync(dataSet.Id, default))
+                .Dataset.Files
+                .Where(f => f.Status == FileStatus.Downloaded)
+                .Select(f => f.Id.Value);
+            
+            // Act
+            var result = await _dataSetClient.ProcessFileAsync(dataSet.Id, downloadedFiles, default);
+
+            // Assert
+            result.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task ProcessCsv_ShouldStartProcessing()
+        {
+            // Arrange
+            var dataSet = await _dataHelper.DataSets().GetAny();
+            var files = new[] { _dataHelper.Files().GetSampleCsvPath() };
+            await _dataSetClient.AddFilesAsync(dataSet.Id, files, default);
+            var downloadedFiles =
+                (await _dataSetClient.FileUploadStatusAsync(dataSet.Id, default))
+                .Dataset.Files
+                .Where(f => f.Status == FileStatus.Downloaded)
+                .Select(f => f.Id.Value);
+
+            // Act
+            var result = await _dataSetClient.ProcessCsvAsync(dataSet.Id, downloadedFiles, default);
+
+            // Assert
+            result.Should().NotBeNull();
         }
     }
 }

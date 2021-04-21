@@ -1,0 +1,11 @@
+{
+  "schema": "schema.graphql",
+  "documents": "**/*.graphql",
+  "extensions": {
+    "strawberryShake": {
+      "name": "IndicoGqlClient",
+      "url": "https://app.indico.io/graph/api/graphql",
+      "dependencyInjection": true
+    }
+  }
+}

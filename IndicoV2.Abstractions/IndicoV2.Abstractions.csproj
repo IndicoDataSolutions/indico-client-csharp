@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IndicoV2.StrawberryShake\IndicoV2.StrawberryShake.csproj" />
+  </ItemGroup>
+
 </Project>

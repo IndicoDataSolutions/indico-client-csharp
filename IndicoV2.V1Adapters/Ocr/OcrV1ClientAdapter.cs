@@ -39,12 +39,12 @@ namespace IndicoV2.V1Adapters.Ocr
             return job.Id;
         }
 
-        public async Task<string> GetExtractionResultAsync(Uri documentUri) =>
-            (await GetExtractionResultAsync<JToken>(documentUri)).Value<string>("text");
+        public async Task<string> GetExtractionResultAsync(Uri documentUri, CancellationToken cancellationToken) =>
+            (await GetExtractionResultAsync<JToken>(documentUri, cancellationToken)).Value<string>("text");
 
-        public async Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri)
+        public async Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri, CancellationToken cancellationToken)
         {
-            using (var docStream = await _storage.GetAsync(documentUri))
+            using (var docStream = await _storage.GetAsync(documentUri, cancellationToken))
             using (var reader = new JsonTextReader(new StreamReader(docStream)))
             {
                 return JsonSerializer.Create().Deserialize<TResult>(reader);
