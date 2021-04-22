@@ -11,7 +11,12 @@ namespace IndicoV2.Storage
     public interface IStorageClient
     {
         Task<Stream> GetAsync(Uri uri, CancellationToken cancellationToken);
+
+        [Obsolete("On this level it's preferable to use streams instead of paths")]
         Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken);
+
+        Task<(string Name, string Meta)[]> UploadAsync(IEnumerable<(string Path, Stream Content)> files,
+            CancellationToken cancellationToken);
 
         JArray Serialize(IEnumerable<IFileMetadata> filesMetadata);
     }

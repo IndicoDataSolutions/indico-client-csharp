@@ -16,7 +16,7 @@ namespace IndicoV2.IntegrationTests.Storage
         private IStorageClient _storageClient;
         private DataHelper _dataHelper;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
@@ -41,5 +41,14 @@ namespace IndicoV2.IntegrationTests.Storage
             uploadedFile.Path.Should().NotBeEmpty();
             uploadedFile.UploadType.Should().Be(UploadType.User);
         }
+
+
+        [Test]
+        public async Task Upload_ShouldCreateFiles() =>
+            (await _storageClient.UploadAsync(new[]{(_dataHelper.Files().GetSampleFilePath(), _dataHelper.Files().GetSampleFileStream())},
+                default))
+            .Single()
+            .Name
+            .Should().Be(Path.GetFileName(_dataHelper.Files().GetSampleFilePath()));
     }
 }
