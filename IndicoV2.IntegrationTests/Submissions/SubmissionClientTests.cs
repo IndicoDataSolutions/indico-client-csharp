@@ -6,6 +6,7 @@ using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
+using IndicoV2.Workflows.Models;
 using NUnit.Framework;
 using Unity;
 
@@ -15,24 +16,26 @@ namespace IndicoV2.IntegrationTests.Submissions
     {
         private DataHelper _dataHelper;
         private ISubmissionsClient _submissionsClient;
+        private IWorkflow _workflow;
 
         [OneTimeSetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
             _submissionsClient = container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
+
+            _workflow = await _dataHelper.Workflows().GetAnyWorkflow();
         }
 
         [Test]
         public async Task CreateAsync_ShouldCreateSubmission_FromStream()
         {
             // Arrange
-            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
             await using var fileStream = _dataHelper.Files().GetSampleFileStream();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { fileStream });
+            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new[] { fileStream });
 
             // Assert
             var submissionId = submissionIds.Single();
@@ -43,12 +46,11 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task CreateAsync_ShouldCreateSubmission_FromStreamWithName()
         {
             // Arrange
-            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
             await using var fileStream = _dataHelper.Files().GetSampleFileStream();
             var filePath = _dataHelper.Files().GetSampleFilePath();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { (filePath, fileStream )});
+            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new[] { (filePath, fileStream) });
 
             // Assert
             var submissionId = submissionIds.Single();
@@ -59,11 +61,10 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task CreateAsync_ShouldCreateSubmission_FromFilePath()
         {
             // Arrange
-            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
             var filePath = _dataHelper.Files().GetSampleFilePath();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { filePath });
+            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new[] { filePath });
 
             // Assert
             var submissionId = submissionIds.Single();
@@ -74,17 +75,16 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task CreateAsync_ShouldCreateSubmission_FromUri()
         {
             // Arrange
-            var workflow = await _dataHelper.Workflows().GetAnyWorkflow();
             var uri = _dataHelper.Uris().GetSampleUri();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(workflow.Id, new[] { uri });
+            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new[] { uri });
 
             // Assert
             var submissionId = submissionIds.Single();
             submissionId.Should().BeGreaterThan(0);
         }
-
+        
         [Test]
         public async Task GetAsync_ShouldFetchSubmission()
         {

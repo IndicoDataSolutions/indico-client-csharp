@@ -4,60 +4,20 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GraphQL;
 using Indico;
-using Indico.Exception;
 using Indico.Mutation;
 using Indico.Query;
-using IndicoV2.Storage;
-using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Converters;
 using IndicoV2.V1Adapters.Submissions.Models;
-using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.Submissions
 {
-    public class SubmissionsV1ClientAdapter : ISubmissionsClient
+    public class SubmissionsV1ClientAdapter
     {
         private readonly IndicoClient _indicoClient;
-        private readonly IStorageClient _storage;
 
-        public SubmissionsV1ClientAdapter(IndicoClient indicoClient, IStorageClient storage)
-        {
-            _indicoClient = indicoClient;
-            _storage = storage;
-        }
-
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default)
-        {
-            var filesUploaded = await _storage.UploadAsync(filesToUpload, cancellationToken);
-            var query = @"
-                    mutation WorkflowSubmission($workflowId: Int!, $files: [FileInput]!, $recordSubmission: Boolean) {
-                        workflowSubmission(workflowId: $workflowId, files: $files, recordSubmission: $recordSubmission) {
-                            jobIds
-                            submissionIds
-                        }
-                    }
-                ";
-            var args = new
-            {
-                workflowId,
-                files = filesUploaded.Select(f => new
-                {
-                    filename = f.Name,
-                    filemeta = f.Meta,
-                }).ToArray(),
-            };
-            var result = await _indicoClient.GraphQLHttpClient.SendMutationAsync<JObject>(new GraphQLRequest(query, args, "WorkflowSubmission"), cancellationToken);
-
-            if (result.Errors != null && result.Errors.Any())
-            {
-                throw new GraphQLException(result.Errors);
-            }
-
-            return result.Data["workflowSubmission"]["submissionIds"].Values<int>();
-        }
+        public SubmissionsV1ClientAdapter(IndicoClient indicoClient) => _indicoClient = indicoClient;
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default)
         {

@@ -19,14 +19,9 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Workflows
 
         public async Task<IWorkflow> GetAnyWorkflow()
         {
-            var dataSets = await _dataSets.ListAsync();
-            var workflows = await _workflows.ListAsync(dataSets.First().Id);
+            var workflows = await _workflows.ListAsync(null, default);
 
-            return workflows.First();
+            return workflows.First(wf => wf.ReviewEnabled);
         }
-
-        public async Task<IWorkflow> Get(bool autoReviewEnabled) => 
-            // TODO: implement autoReviewEnabled
-            await GetAnyWorkflow();
     }
 }

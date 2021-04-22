@@ -10,5 +10,6 @@ namespace IndicoV2.V1Adapters.Workflows.Models
 
         public int Id => _workflowV1.Id;
         public string Name => _workflowV1.Name;
+        public bool ReviewEnabled => _workflowV1.ReviewEnabled;
     }
 }
