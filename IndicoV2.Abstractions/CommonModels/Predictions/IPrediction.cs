@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace IndicoV2.V1Adapters.CommonModels.Predictions
+namespace IndicoV2.CommonModels.Predictions
 {
     public interface IPrediction
     {
