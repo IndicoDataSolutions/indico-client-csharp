@@ -161,7 +161,7 @@ namespace Indico.Mutation
                 Variables = new
                 {
                     workflowId = WorkflowId,
-                    files = files,
+                    files,
                     urls = Urls
                 }
             };

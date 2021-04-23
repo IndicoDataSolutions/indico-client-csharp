@@ -6,7 +6,7 @@ namespace IndicoV2.Tests
     [TestFixture()]
     public class IndicoClientExtensionsTests
     {
-        private IndicoClient Client => new IndicoClient("test");
+        private IndicoClient Client => new("test");
 
         [Test()]
         public void Reviews_ShouldCreateInstance() => Client.Reviews().Should().NotBeNull();

@@ -21,7 +21,6 @@ namespace IndicoV2.IntegrationTests.Utils
 
         private string BaseUrl => Environment.GetEnvironmentVariable("INDICO_HOST");
         private string ApiToken => Environment.GetEnvironmentVariable("INDICO_TOKEN");
-        private string ApiTokenAutoreview => Environment.GetEnvironmentVariable("INDICO_AUTOREVIEW_TOKEN");
 
 
         public IndicoTestContainerBuilder() => _container = new UnityContainer();

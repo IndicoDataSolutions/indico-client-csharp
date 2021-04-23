@@ -22,7 +22,7 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
-            _submissionsClient = container.Resolve<ISubmissionsClient>();
+            _submissionsClient = (SubmissionsClient)container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
 
             _workflow = await _dataHelper.Workflows().GetAnyWorkflow();
