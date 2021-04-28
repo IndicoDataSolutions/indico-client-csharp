@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using IndicoV2.CommonModels.Predictions;
 using IndicoV2.Models.Models;
 using IndicoV2.V1Adapters.CommonModels.Predictions;
 using IndicoV2.V1Adapters.Converters;

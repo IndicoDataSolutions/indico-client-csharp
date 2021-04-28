@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IndicoV2.CommonModels.Predictions;
 using Newtonsoft.Json;
 
 namespace IndicoV2.V1Adapters.CommonModels.Predictions
