@@ -6,6 +6,7 @@ using IndicoV2.Extensions.Workflows;
 using IndicoV2.Jobs;
 using IndicoV2.Models;
 using IndicoV2.Ocr;
+using IndicoV2.Reporting;
 using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
@@ -15,7 +16,6 @@ using IndicoV2.V1Adapters.Models;
 using IndicoV2.V1Adapters.Ocr;
 using IndicoV2.V1Adapters.Reviews;
 using IndicoV2.V1Adapters.Storage;
-using IndicoV2.V1Adapters.Submissions;
 using IndicoV2.Workflows;
 
 namespace IndicoV2
@@ -87,6 +87,9 @@ namespace IndicoV2
 
         public static IDataSetAwaiter DataSetAwaiter(this IndicoClient indicoClient) =>
             new DataSetAwaiter(indicoClient.DataSets());
+
+        public static IUserReportingClient UserReporting(this IndicoClient indicoClient) =>
+            indicoClient.IndicoStrawberryShakeClient.UserReporting();
 
         /// <summary>
         /// Gets <seealso cref="IDataSetClient"/>

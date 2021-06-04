@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 	  <Watch Remove="DataSets\DataSets.graphql" />
+	  <Watch Remove="Reporting\UserReporting.graphql" />
 	</ItemGroup>
 
   <ItemGroup>
