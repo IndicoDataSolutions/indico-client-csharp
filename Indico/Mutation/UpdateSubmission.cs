@@ -62,6 +62,7 @@ namespace Indico.Mutation
                             inputFilename
                             resultFile
                             retrieved
+                            errors
                         }
                     }
                 ";

@@ -71,6 +71,8 @@ namespace Indico.Query
                                 inputFile
                                 inputFilename
                                 resultFile
+                                retrieved
+                                errors
                             }
                         }
                     }
