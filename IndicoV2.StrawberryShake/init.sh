@@ -9,6 +9,7 @@ fi
 
 REFRESH_TOKEN=$1
 URL=https://app.indico.io/graph/api/graphql
+# URL=https://dev.indico.io/graph/api/graphql
 PROJ=./
 
 TOKEN=$(curl --location --request POST 'https://app.indico.io/auth/users/refresh_token' \
