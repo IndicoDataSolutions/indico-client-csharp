@@ -4,3 +4,6 @@
 - name: Api V2 Documentation
   href: apiV2/
   homepage: apiV2/index.md
+- name: Api V2 Examples
+  href: examplesV2/
+  homepage: examplesV2/index.md

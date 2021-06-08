@@ -64,6 +64,12 @@
           "apiV2/**.yml",
           "apiV2/index.md"
         ]
+      },
+      {
+        "files": [
+          "examplesV2/**.md",
+          "examplesV2/**.yml"
+        ]
       }
     ],
     "resource": [
