@@ -10,7 +10,8 @@
           "exclude": [
             "docfx_project/**",
             "*Tests/**",
-            "IndicoV2*/**"
+            "IndicoV2*/**",
+            "Examples/**"
           ]
         }
       ],
