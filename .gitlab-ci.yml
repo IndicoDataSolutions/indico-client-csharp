@@ -1,0 +1,46 @@
+image: mcr.microsoft.com/dotnet/sdk:5.0
+
+variables:
+  BUILD_CONF: 'Release'
+  NUGET_FOLDER: './nuget'
+
+stages:
+  - build
+  - test
+
+# cache:
+#   key: '$CI_COMMIT_REF_SLUG'
+#   paths:
+#     - '$NUGET_FOLDER'
+#     - '**/obj/'
+#     - '**/bin/'
+
+build:
+  stage: build
+  script:
+    - dotnet restore --packages $NUGET_FOLDER
+    - dotnet build --no-restore -c $BUILD_CONF --source $NUGET_FOLDER
+  artifacts:
+    untracked: true
+    expire_in: 30 min
+
+test:
+  stage: test
+  script:
+    - dotnet test --no-restore --no-build -c $BUILD_CONF --verbosity normal --collect:'XPlat Code Coverage' --results-directory:'./coverage/' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+  artifacts:
+    reports:
+      cobertura: coverage/*/coverage.cobertura.xml
+  needs: [ 'build' ]
+  dependencies: [ build]
+    
+
+# release:
+#   stage: release
+#   only:
+#     - master
+#   artifacts:
+#     paths:
+#       - publish/
+#   script:
+#     - dotnet publish -c Release -o ../publish ./IndicoV2/IndicoV2.csproj
