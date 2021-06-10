@@ -8,12 +8,10 @@ stages:
   - build
   - test
 
-# cache:
-#   key: '$CI_COMMIT_REF_SLUG'
-#   paths:
-#     - '$NUGET_FOLDER'
-#     - '**/obj/'
-#     - '**/bin/'
+cache:
+  key: 'nuget'
+  paths:
+    - '$NUGET_FOLDER'
 
 build:
   stage: build
@@ -21,7 +19,9 @@ build:
     - dotnet restore --packages $NUGET_FOLDER
     - dotnet build --no-restore -c $BUILD_CONF --source $NUGET_FOLDER
   artifacts:
-    untracked: true
+    paths:
+      - '**/bin/'
+      - '**/obj/'
     expire_in: 30 min
 
 test:
