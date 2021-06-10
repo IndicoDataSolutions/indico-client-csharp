@@ -27,10 +27,11 @@ build:
 test:
   stage: test
   script:
-    - dotnet test --no-restore --no-build -c $BUILD_CONF --verbosity normal --collect:'XPlat Code Coverage' --results-directory:'./coverage/' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+    - dotnet test --no-build --no-restore -c Release --results-directory:'./artifacts/test/' --logger:"junit;LogFileName=./results/{assembly}-test-result.xml" --collect:'XPlat Code Coverage' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura 
   artifacts:
     reports:
-      cobertura: coverage/*/coverage.cobertura.xml
+      junit: ./artifacts/test/results/*
+      cobertura: ./artifacts/test/*/coverage.cobertura.xml
   needs: [ 'build' ]
   dependencies: [ build]
     
