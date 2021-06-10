@@ -27,11 +27,17 @@ build:
 test:
   stage: test
   script:
-    - dotnet test --no-build --no-restore -c Release --results-directory:'./artifacts/test/' --logger:"junit;LogFileName=./results/{assembly}-test-result.xml" --collect:'XPlat Code Coverage' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura 
+    # - dotnet clean Indico.Tests/Indico.Tests.csproj -c $BUILD_CONF
+    - dotnet test --no-build --no-restore -c $BUILD_CONF --results-directory:'./artifacts/test/' --logger:"junit;LogFileName=./results/{assembly}-test-result.xml" --collect:'XPlat Code Coverage' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+    - dotnet tool restore
+    - dotnet reportgenerator -reports:./artifacts/test/*/coverage.cobertura.xml -targetdir:./artifacts/test/coverage/ -assemblyFilters:-Indicore -sourcedirs:$PWD -reporttypes:cobertura\;TextSummary
+    # fix filename (absolute -> relative path)
+    - cat ./artifacts/test/coverage/Cobertura.xml | sed "s/filename=\"$(pwd -P | sed -e 's/\//\\\//g')\//filename=\"/g" > ./artifacts/test/coverage/Cobertura-fixed.xml
+    - cat ./artifacts/test/coverage/Summary.txt
   artifacts:
     reports:
       junit: ./artifacts/test/results/*
-      cobertura: ./artifacts/test/*/coverage.cobertura.xml
+      cobertura: ./artifacts/test/coverage/Cobertura-fixed.xml
   needs: [ 'build' ]
   dependencies: [ build]
     
