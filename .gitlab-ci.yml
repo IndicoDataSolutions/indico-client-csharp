@@ -1,28 +1,31 @@
 image: mcr.microsoft.com/dotnet/sdk:5.0.301-alpine3.13-amd64
 
 variables:
-  BUILD_CONF: 'Release'
-  NUGET_FOLDER: './nuget'
+  BUILD_CONF: "Release"
+  NUGET_FOLDER: "./nuget"
+  BuildType: V2
 
 stages:
   - build
   - test
+  - deploy
 
 cache:
-  key: 'nuget'
+  key: "nuget"
   paths:
-    - '$NUGET_FOLDER'
+    - "$NUGET_FOLDER"
 
 build:
   stage: build
   script:
     - dotnet restore --packages $NUGET_FOLDER
     - dotnet build --no-restore -c $BUILD_CONF --source $NUGET_FOLDER
+    - dotnet pack --no-build -c $BUILD_CONF ./IndicoV2/IndicoV2.csproj
   artifacts:
     paths:
-      - '**/bin/'
-      - '**/obj/'
-    expire_in: 30 min
+      - "**/bin/"
+      - "**/obj/"
+    expire_in: 5 days
 
 test:
   stage: test
@@ -38,16 +41,14 @@ test:
     reports:
       junit: ./artifacts/test/results/*
       cobertura: ./artifacts/test/coverage/Cobertura-fixed.xml
-  needs: [ 'build' ]
-  dependencies: [ build]
-    
+  needs: [build]
+  dependencies: [build]
 
-# release:
-#   stage: release
-#   only:
-#     - master
-#   artifacts:
-#     paths:
-#       - publish/
-#   script:
-#     - dotnet publish -c Release -o ../publish ./IndicoV2/IndicoV2.csproj
+deploy:
+  stage: deploy
+  when: manual
+  # only: [master]
+  needs: [build, test]
+  dependencies: [build]
+  script:
+    - dotnet push /IndicoV2/bin/$BUILD_CONF/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
