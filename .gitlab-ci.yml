@@ -20,15 +20,18 @@ build:
   script:
     - dotnet restore --packages $NUGET_FOLDER
     - dotnet build --no-restore -c $BUILD_CONF --source $NUGET_FOLDER
-    - dotnet pack --no-build -c $BUILD_CONF ./IndicoV2/IndicoV2.csproj
   artifacts:
     paths:
       - "**/bin/"
       - "**/obj/"
-    expire_in: 5 days
+    expire_in: 30 minutes
 
 test:
   stage: test
+  needs: [build]
+  dependencies: [build]
+  cache:
+    policy: pull
   script:
     # - dotnet clean Indico.Tests/Indico.Tests.csproj -c $BUILD_CONF
     - dotnet test --no-build --no-restore -c $BUILD_CONF --results-directory:'./artifacts/test/' --logger:"junit;LogFileName=./results/{assembly}-test-result.xml" --collect:'XPlat Code Coverage' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
@@ -41,14 +44,26 @@ test:
     reports:
       junit: ./artifacts/test/results/*
       cobertura: ./artifacts/test/coverage/Cobertura-fixed.xml
-  needs: [build]
-  dependencies: [build]
 
-deploy:
+build:nuget:
+  stage: build
+  dependencies: [build]
+  cache:
+    policy: pull
+  script:
+    - dotnet pack --no-build -c $BUILD_CONF ./IndicoV2/IndicoV2.csproj -o ./artifacts/nuget/
+  artifacts:
+    paths:
+      - ./artifacts/nuget/
+    expire_in: 5 days
+
+deploy:nuget:
   stage: deploy
   when: manual
   # only: [master]
-  needs: [build, test]
-  dependencies: [build]
+  needs: [build:nuget, test]
+  dependencies: [build:nuget]
   script:
     - dotnet push /IndicoV2/bin/$BUILD_CONF/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+  cache:
+    policy: pull
