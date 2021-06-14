@@ -49,10 +49,10 @@ test:
 
 deploy:
   stage: deploy
-  when: [manual, on_success]
-  # only: [master]
+  when: manual
+  only: [master, develop]
   needs: [build, test]
   dependencies: [build]
   script:
-    - dotnet push /IndicoV2/bin/$BUILD_CONF/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+    - dotnet nuget push ./artifacts/nuget/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
   cache: {}
