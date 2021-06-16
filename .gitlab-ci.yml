@@ -56,3 +56,26 @@ deploy:
   script:
     - dotnet nuget push ./artifacts/nuget/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
   cache: {}
+
+build-pages:
+  stage: build
+  cache: {}
+  script:
+    - ./docfx_project/docfx.sh build
+  artifacts:
+    paths:
+    - ./docfx_project/_site
+    expire_in: 5 days
+
+pages:
+  stage: deploy
+  when: manual
+  # only: [master]
+  needs: [build-pages]
+  dependencies: [build-pages]
+  cache: {}
+  script:
+    - mv ./docfx_project/_site ./public
+  artifacts:
+    paths:
+      - public
