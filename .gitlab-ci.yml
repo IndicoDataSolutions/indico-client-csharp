@@ -58,6 +58,7 @@ deploy:
   cache: {}
 
 build-pages:
+  image: managedcode/docfx-automation
   stage: build
   cache: {}
   script:
