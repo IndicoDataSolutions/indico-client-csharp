@@ -6,6 +6,7 @@ using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Jobs;
 using IndicoV2.Models;
 using IndicoV2.Ocr;
+using IndicoV2.Reporting;
 using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
@@ -48,6 +49,7 @@ namespace IndicoV2.IntegrationTests.Utils
                 c.Resolve<IndicoClient>().GetSubmissionResultAwaiter());
             _container.RegisterFactory<IModelClient>(c => c.Resolve<IndicoClient>().Models());
             _container.RegisterFactory<IOcrClient>(c => c.Resolve<IndicoClient>().Ocr());
+            _container.RegisterFactory<IUserReportingClient>(c => c.Resolve<IndicoClient>().UserReporting());
 
             return _container;
         }
