@@ -10,7 +10,8 @@
           "exclude": [
             "docfx_project/**",
             "*Tests/**",
-            "IndicoV2*/**"
+            "IndicoV2*/**",
+            "Examples/**"
           ]
         }
       ],
@@ -62,6 +63,12 @@
         "files": [
           "apiV2/**.yml",
           "apiV2/index.md"
+        ]
+      },
+      {
+        "files": [
+          "examplesV2/**.md",
+          "examplesV2/**.yml"
         ]
       }
     ],
