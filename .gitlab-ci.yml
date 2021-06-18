@@ -9,6 +9,7 @@ stages:
   - build
   - test
   - deploy
+  - post-deploy
 
 cache: &global_cache
   key: nuget
@@ -48,18 +49,18 @@ test:
       cobertura: ./artifacts/test/coverage/Cobertura-fixed.xml
 
 deploy:
+  only: [master, develop]
   stage: deploy
   when: manual
-  only: [master, develop]
   needs: [build, test]
   dependencies: [build]
   script:
-    - dotnet nuget push ./artifacts/nuget/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+    - dotnet nuget push ./artifacts/nuget/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key $NUGET_KEY
   cache: {}
 
 build-pages:
-  image: managedcode/docfx-automation
   stage: build
+  image: managedcode/docfx-automation
   cache: {}
   script:
     - ./docfx_project/docfx.sh build
@@ -69,10 +70,9 @@ build-pages:
     expire_in: 5 days
 
 pages:
-  stage: deploy
-  when: manual
-  # only: [master]
-  needs: [build-pages]
+  only: [master, develop]
+  stage: post-deploy
+  needs: [deploy, build-pages]
   dependencies: [build-pages]
   cache: {}
   script:
@@ -80,3 +80,21 @@ pages:
   artifacts:
     paths:
       - public
+
+release:
+  only: [master, develop]
+  stage: post-deploy
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  dependencies: [build]
+  needs: [build, deploy]
+  cache: {}
+  script:
+    - VERSION=$(ls ./artifacts/nuget/IndicoClient.*.nupkg | grep -o -E '[[:digit:]]+(.[[:digit:]]+){2}(-[[:alpha:]]+)?.[[:digit:]]+' )
+    - "echo Creating GitLab realease for version $VERSION"
+    - >
+      release-cli create 
+      --tag-name "v$VERSION"
+      --name "IndicoClient v$VERSION"
+      --description "IndicoClient v$VERSION"
+      --assets-link "{ \"name\": \"Nuget file\", \"url\": \"https://www.nuget.org/packages/IndicoClient/$VERSION\" }"
+      --ref $CI_COMMIT_SHA
