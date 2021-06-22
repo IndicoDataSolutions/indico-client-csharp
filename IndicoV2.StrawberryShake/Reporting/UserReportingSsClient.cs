@@ -30,8 +30,8 @@ namespace IndicoV2.StrawberryShake.Reporting
             => await ExecuteAsync(async () =>
                 await _services.GetService<UserSummaryQuery>().ExecuteAsync(date, cancellationToken));
 
-        public async Task<IUserSnapshotResult> UserSnapshot(DateTime? date, UserReportFilter? filters, CancellationToken cancellationToken) => 
+        public async Task<IGetUserSnapshotResult> GetUserSnapshots(DateTime? date, UserReportFilter? filters, int? after, int? limit, CancellationToken cancellationToken) => 
             await ExecuteAsync(async () =>
-                await _services.GetService<UserSnapshotQuery>().ExecuteAsync(date, filters, cancellationToken));
+                await _services.GetService<GetUserSnapshotQuery>().ExecuteAsync(date, filters, after, limit, cancellationToken));
     }
 }

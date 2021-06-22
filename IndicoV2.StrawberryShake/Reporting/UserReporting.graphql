@@ -11,11 +11,17 @@
   }
 }
 
-query UserSnapshot($date: Date, $filters: UserReportFilter) {
-  userSnapshot(date: $date, filters: $filters) {
+query GetUserSnapshot(
+  $date: Date
+  $filters: UserReportFilter
+  $after: Int
+  $limit: Int
+) {
+  userSnapshot(date: $date, filters: $filters, after: $after, limit: $limit) {
     results {
       id
       name
+      email
       createdAt
       enabled
       roles
@@ -25,6 +31,9 @@ query UserSnapshot($date: Date, $filters: UserReportFilter) {
       }
     }
     pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
       aggregateCount
     }
   }

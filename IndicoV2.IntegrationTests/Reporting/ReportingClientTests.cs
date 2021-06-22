@@ -63,7 +63,7 @@ namespace IndicoV2.IntegrationTests.Reporting
         [Test]
         public async Task UserSnapshot_ShouldReturnSnapshot()
         {
-            var snapshot = (await _userReportingClient.UserSnapshot(default, default, default));
+            var snapshot = (await _userReportingClient.GetUserSnapshots(default, default, default, 5, default));
             snapshot.UserSnapshot.Results.Should().NotBeEmpty();
         }
 

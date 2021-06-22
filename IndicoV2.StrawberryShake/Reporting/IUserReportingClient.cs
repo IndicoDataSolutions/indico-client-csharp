@@ -15,6 +15,6 @@ namespace IndicoV2.Reporting
 
         Task<IUserSummaryResult> UserSummary(DateTime? date, CancellationToken cancellationToken);
 
-        Task<IUserSnapshotResult> UserSnapshot(DateTime? date, UserReportFilter? filters, CancellationToken cancellationToken);
+        Task<IGetUserSnapshotResult> GetUserSnapshots(DateTime? date, UserReportFilter? filters, int? after, int? limit, CancellationToken cancellationToken);
     }
 }
