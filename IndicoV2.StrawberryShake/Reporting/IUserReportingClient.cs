@@ -11,7 +11,8 @@ namespace IndicoV2.Reporting
 
         Task<IUserChangelogReportResult> CreateChangelogReportAsync(DateTime? startDate, DateTime? endDate, UserReportFilter? filters, CancellationToken cancellationToken);
 
-        Task<IUserChangelogResult> UserChangelogQuery(DateTime? startDate, DateTime? endDate, UserReportFilter? filters, CancellationToken cancellationToken);
+        Task<IGetUserChangelogResult> GetUserChangelog(DateTime? startDate, DateTime? endDate,
+            UserReportFilter? filters, int? after, int? limit, CancellationToken cancellationToken);
 
         Task<IUserSummaryResult> UserSummary(DateTime? date, CancellationToken cancellationToken);
 

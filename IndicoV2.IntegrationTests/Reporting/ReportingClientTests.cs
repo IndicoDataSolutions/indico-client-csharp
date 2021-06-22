@@ -7,6 +7,7 @@ using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.Jobs;
 using IndicoV2.Reporting;
 using IndicoV2.Storage;
+using IndicoV2.StrawberryShake;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
@@ -47,12 +48,13 @@ namespace IndicoV2.IntegrationTests.Reporting
             await AssertJobGeneratesNonEmptyReport(jobId);
         }
 
-        [Test]
-        public async Task UserChangelog_ShouldReturnChangelog() =>
-            (await _userReportingClient.UserChangelogQuery(default, default, default, default))
+        [TestCase(null, null, default(UserReportFilter?), null, null)]
+        [TestCase(null, null, default(UserReportFilter?), 5, 4)]
+        public async Task GetUserChangelog_ShouldReturnChangelog(DateTime? startDate, DateTime? endDate, UserReportFilter? filters, int? after, int? limit) =>
+            (await _userReportingClient.GetUserChangelog(startDate, endDate, filters, after, limit, default))
             .UserChangelog.Results
-            .Should().NotBeEmpty();
-
+            .Should().NotBeNull();
+        
         [Test]
         public async Task UserSummary_ShouldReturnSummary()
         {
@@ -60,10 +62,11 @@ namespace IndicoV2.IntegrationTests.Reporting
             summary.UserSummary.Should().NotBeNull();
         }
 
-        [Test]
-        public async Task UserSnapshot_ShouldReturnSnapshot()
+        [TestCase(null, null, null, null)]
+        [TestCase(null, null, 5, 4)]
+        public async Task GetUserSnapshot_ShouldReturnSnapshot(DateTime? date, UserReportFilter? filters, int? after, int? limit)
         {
-            var snapshot = (await _userReportingClient.GetUserSnapshots(default, default, default, 5, default));
+            var snapshot = (await _userReportingClient.GetUserSnapshots(date, filters, after, limit, default));
             snapshot.UserSnapshot.Results.Should().NotBeEmpty();
         }
 

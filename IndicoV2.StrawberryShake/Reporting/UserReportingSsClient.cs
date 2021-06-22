@@ -21,10 +21,11 @@ namespace IndicoV2.StrawberryShake.Reporting
             await ExecuteAsync(async () => await _services.GetRequiredService<UserChangelogReportMutation>()
                 .ExecuteAsync(startDate, endDate, filters, cancellationToken));
 
-        public async Task<IUserChangelogResult> UserChangelogQuery(DateTime? startDate, DateTime? endDate, UserReportFilter? filters, CancellationToken cancellationToken) =>
+        public async Task<IGetUserChangelogResult> GetUserChangelog(DateTime? startDate, DateTime? endDate,
+            UserReportFilter? filters, int? after, int? limit, CancellationToken cancellationToken) =>
             await ExecuteAsync(async () =>
-            await _services.GetRequiredService<UserChangelogQuery>()
-                .ExecuteAsync(startDate, endDate, filters, cancellationToken));
+            await _services.GetRequiredService<GetUserChangelogQuery>()
+                .ExecuteAsync(startDate, endDate, filters, after, limit, cancellationToken));
 
         public async Task<IUserSummaryResult> UserSummary(DateTime? date, CancellationToken cancellationToken)
             => await ExecuteAsync(async () =>

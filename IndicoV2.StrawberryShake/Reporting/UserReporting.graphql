@@ -39,8 +39,20 @@ query GetUserSnapshot(
   }
 }
 
-query UserChangelog($sdate: Date, $edate: Date, $filters: UserReportFilter) {
-  userChangelog(startDate: $sdate, endDate: $edate, filters: $filters) {
+query GetUserChangelog(
+  $sdate: Date
+  $edate: Date
+  $filters: UserReportFilter
+  $after: Int
+  $limit: Int
+) {
+  userChangelog(
+    startDate: $sdate
+    endDate: $edate
+    filters: $filters
+    after: $after
+    limit: $limit
+  ) {
     results {
       id
       date
@@ -54,6 +66,8 @@ query UserChangelog($sdate: Date, $edate: Date, $filters: UserReportFilter) {
     }
     pageInfo {
       aggregateCount
+      hasNextPage
+      endCursor
     }
   }
 }
