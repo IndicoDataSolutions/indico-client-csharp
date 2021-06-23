@@ -1,4 +1,7 @@
-image: mcr.microsoft.com/dotnet/sdk:5.0.301-alpine3.13-amd64
+# for devel branch:
+# image: mcr.microsoft.com/dotnet/sdk:5.0.301-alpine3.13-amd64
+# for master branch
+image: mcr.microsoft.com/dotnet/sdk:3.1.410-alpine3.13
 
 variables:
   BUILD_CONF: Release
@@ -17,6 +20,7 @@ cache: &global_cache
     - $NUGET_FOLDER
 
 build:
+  except: [tags]
   stage: build
   script:
     - dotnet restore --packages $NUGET_FOLDER
@@ -30,6 +34,7 @@ build:
     expire_in: 5 days
 
 test:
+  except: [tags]
   stage: test
   needs: [build]
   dependencies: [build]
@@ -52,6 +57,7 @@ deploy:
   only: [master, develop]
   stage: deploy
   when: manual
+  allow_failure: false
   needs: [build, test]
   dependencies: [build]
   script:
@@ -59,6 +65,7 @@ deploy:
   cache: {}
 
 build-pages:
+  except: [tags]
   stage: build
   image: managedcode/docfx-automation
   cache: {}
@@ -66,7 +73,7 @@ build-pages:
     - ./docfx_project/docfx.sh build
   artifacts:
     paths:
-    - ./docfx_project/_site
+      - ./docfx_project/_site
     expire_in: 5 days
 
 pages:
