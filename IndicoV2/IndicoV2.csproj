@@ -32,6 +32,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.16" />
+		<PackageReference Include="Microsoft.Extensions.Primitives" Version="3.1.16" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
 		<ProjectReference Include="..\IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj" PrivateAssets="All" />
