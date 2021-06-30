@@ -11,7 +11,7 @@ namespace IndicoV2.Submissions
 {
     public class SubmissionsClient : ISubmissionsClient
     {
-        private readonly SubmissionsV1ClientAdapter _legacy;
+        protected readonly SubmissionsV1ClientAdapter _legacy;
         private readonly IndicoStrawberryShakeClient _strawberryShakeClient;
         private readonly IndicoClient _indicoClient;
 
@@ -39,7 +39,7 @@ namespace IndicoV2.Submissions
         Task<IEnumerable<int>> ISubmissionsClient.CreateAsync(int workflowId, IEnumerable<string> paths,
             CancellationToken cancellationToken) => _legacy.CreateAsync(workflowId, paths, cancellationToken);
 
-        public Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
+        public virtual Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
             CancellationToken cancellationToken = default) => _legacy.ListAsync(submissionIds, workflowIds, filters, limit, cancellationToken);
 
         public Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default) =>

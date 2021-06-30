@@ -99,5 +99,15 @@ namespace IndicoV2
         public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
             new DataSetClient(new DataSetsV1ClientAdapter(indicoClient.LegacyClient),
                 indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
+
+
+
+        /// <summary>
+        /// Gets <seealso cref="ISubmissionsClient"/>
+        /// </summary>
+        /// <param name="indicoClient">Instance of <seealso cref="WithRetryClient"/></param>
+        /// <returns>Instance of <seealso cref="WithRetrySubmissionsClient"/></returns>
+        public static ISubmissionsClient Submissions(this WithRetryClient indicoClient) => new WithRetrySubmissionsClient(indicoClient);
+
     }
 }
