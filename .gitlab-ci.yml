@@ -1,0 +1,100 @@
+image: mcr.microsoft.com/dotnet/sdk:5.0.301-alpine3.13-amd64
+
+variables:
+  BUILD_CONF: Release
+  NUGET_FOLDER: ./nuget
+  BuildType: V2
+
+stages:
+  - build
+  - test
+  - deploy
+  - post-deploy
+
+cache: &global_cache
+  key: nuget
+  paths:
+    - $NUGET_FOLDER
+
+build:
+  stage: build
+  script:
+    - dotnet restore --packages $NUGET_FOLDER
+    - dotnet build --no-restore -c $BUILD_CONF --source $NUGET_FOLDER
+    - dotnet pack --no-build -c $BUILD_CONF ./IndicoV2/IndicoV2.csproj -o ./artifacts/nuget/
+  artifacts:
+    paths:
+      - "**/bin/"
+      - "**/obj/"
+      - "./artifacts/nuget/"
+    expire_in: 5 days
+
+test:
+  stage: test
+  needs: [build]
+  dependencies: [build]
+  cache:
+    <<: *global_cache
+    policy: pull
+  script:
+    - dotnet test --no-build --no-restore -c $BUILD_CONF --results-directory:'./artifacts/test/' --logger:"junit;LogFileName=./results/{assembly}-test-result.xml" --collect:'XPlat Code Coverage' --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+    - dotnet tool restore
+    - dotnet reportgenerator -reports:./artifacts/test/*/coverage.cobertura.xml -targetdir:./artifacts/test/coverage/ -assemblyFilters:-Indicore -sourcedirs:$PWD -reporttypes:cobertura\;TextSummary
+    # fix filename (absolute -> relative path)
+    - cat ./artifacts/test/coverage/Cobertura.xml | sed "s/filename=\"$(pwd -P | sed -e 's/\//\\\//g')\//filename=\"/g" > ./artifacts/test/coverage/Cobertura-fixed.xml
+    - cat ./artifacts/test/coverage/Summary.txt
+  artifacts:
+    reports:
+      junit: ./artifacts/test/results/*
+      cobertura: ./artifacts/test/coverage/Cobertura-fixed.xml
+
+deploy:
+  only: [master, develop]
+  stage: deploy
+  when: manual
+  needs: [build, test]
+  dependencies: [build]
+  script:
+    - dotnet nuget push ./artifacts/nuget/IndicoClient.*.nupkg  -s https://api.nuget.org/v3/index.json --api-key $NUGET_KEY
+  cache: {}
+
+build-pages:
+  stage: build
+  image: managedcode/docfx-automation
+  cache: {}
+  script:
+    - ./docfx_project/docfx.sh build
+  artifacts:
+    paths:
+    - ./docfx_project/_site
+    expire_in: 5 days
+
+pages:
+  only: [master, develop]
+  stage: post-deploy
+  needs: [deploy, build-pages]
+  dependencies: [build-pages]
+  cache: {}
+  script:
+    - mv ./docfx_project/_site ./public
+  artifacts:
+    paths:
+      - public
+
+release:
+  only: [master, develop]
+  stage: post-deploy
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  dependencies: [build]
+  needs: [build, deploy]
+  cache: {}
+  script:
+    - VERSION=$(ls ./artifacts/nuget/IndicoClient.*.nupkg | grep -o -E '[[:digit:]]+(.[[:digit:]]+){2}(-[[:alpha:]]+)?.[[:digit:]]+' )
+    - "echo Creating GitLab realease for version $VERSION"
+    - >
+      release-cli create 
+      --tag-name "v$VERSION"
+      --name "IndicoClient v$VERSION"
+      --description "IndicoClient v$VERSION"
+      --assets-link "{ \"name\": \"Nuget file\", \"url\": \"https://www.nuget.org/packages/IndicoClient/$VERSION\" }"
+      --ref $CI_COMMIT_SHA
