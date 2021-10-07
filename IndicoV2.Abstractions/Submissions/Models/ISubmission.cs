@@ -1,4 +1,7 @@
-﻿namespace IndicoV2.Submissions.Models
+﻿
+using IndicoV2.CommonModels.Pagination;
+
+namespace IndicoV2.Submissions.Models
 {
     /// <summary>
     /// Submission interface.

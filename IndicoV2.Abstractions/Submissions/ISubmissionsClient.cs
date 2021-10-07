@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using IndicoV2.CommonModels.Pagination;
 using IndicoV2.Submissions.Models;
 
 namespace IndicoV2.Submissions
@@ -59,6 +60,19 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}"/></c> of <c><see cref="ISubmission"/></c></returns>
         Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Method returns a <c><see cref="IHasCursor{T}"/></c> containing an enumerable of <c><see cref="ISubmission"/></c> 
+        /// Set <paramref name="after"/> to the EndCursor of PageInfo for subsequent queries.
+        /// </summary>
+        /// <param name="submissionIds"></param>
+        /// <param name="workflowIds"></param>
+        /// <param name="filters"></param>
+        /// <param name="after"></param>
+        /// <param name="limit"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Method gets certain <c><see cref="ISubmission"/></c>.

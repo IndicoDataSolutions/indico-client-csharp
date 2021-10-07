@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.StrawberryShake", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.AddDataSetFiles", "Examples\Examples.AddDataSetFiles\Examples.AddDataSetFiles.csproj", "{35F4AEDA-59A6-4FEC-A64B-5106C2DF0BC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.AmazonSQS", "Examples.AmazonSQS\Examples.AmazonSQS.csproj", "{D6F8D06D-BE70-4404-BE15-E18ED37453AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.AmazonSQS", "Examples.AmazonSQS\Examples.AmazonSQS.csproj", "{D6F8D06D-BE70-4404-BE15-E18ED37453AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
