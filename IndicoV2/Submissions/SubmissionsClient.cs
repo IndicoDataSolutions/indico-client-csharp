@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Indico.Entity;
 using IndicoV2.CommonModels.Pagination;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Submissions.Models;
@@ -47,8 +48,11 @@ namespace IndicoV2.Submissions
 
         public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
         {
-            var ssFilters = FilterConverter.ConvertToSs(filters);
-            var result = await _strawberryShakeClient.Submissions().List((IReadOnlyList<int?>)submissionIds, (IReadOnlyList<int?>)workflowIds, ssFilters, limit, after, cancellationToken);
+            var ssFilters = filters != null ? FilterConverter.ConvertToSs(filters) : null;
+
+            var readonlyIds = (IReadOnlyList<int?>)submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var readonlyWorkflowIds = (IReadOnlyList<int?>)workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var result = await _strawberryShakeClient.Submissions().List(readonlyIds, readonlyWorkflowIds, ssFilters, limit, after, cancellationToken);
 
             return new HasCursor<IEnumerable<ISubmission>>()
             {
@@ -71,9 +75,8 @@ namespace IndicoV2.Submissions
         public Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
             _legacy.GenerateSubmissionResultAsync(submissionId, cancellationToken);
 
-#pragma warning disable IDE0060 // Remove unused parameter
-        private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => throw new NotImplementedException();
+        private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
 
-#pragma warning restore IDE0060 // Remove unused parameter
+
     }
 }

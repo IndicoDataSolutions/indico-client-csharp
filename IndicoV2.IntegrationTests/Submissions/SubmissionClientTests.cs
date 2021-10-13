@@ -114,6 +114,28 @@ namespace IndicoV2.IntegrationTests.Submissions
             submission.Status.Should().BeOfType<SubmissionStatus>();
         }
 
+
+        [Test]
+        public async Task ListAsync_ShouldFetchSubmissionsWithCursor()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync();
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(new List<int> { listData.submissionId }, new List<int> { listData.workflowId }, null, 0, 1000);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            var submission = submissions.Data.First();
+
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            submission.Id.Should().BeGreaterThan(0);
+            submission.Status.Should().BeOfType<SubmissionStatus>();
+        }
+
+
         [Test]
         public async Task GenerateSubmissionResultAsync_ShouldReturnJob()
         {
