@@ -1,8 +1,10 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Indico.Exception;
 using Newtonsoft.Json;
 
 namespace Indico
@@ -10,6 +12,8 @@ namespace Indico
     internal class TokenHandler : DelegatingHandler
     {
         private readonly string _apiToken;
+
+        private const string _jwtRegex = "^[a-zA-Z0-9-_]+\\.[a-zA-Z0-9-_]+\\.[a-zA-Z0-9-_]+$";
 
         public TokenHandler(string apiToken, HttpMessageHandler innerHandler) : base(innerHandler) => _apiToken = apiToken;
 
@@ -39,6 +43,8 @@ namespace Indico
 
         private async Task<string> GetToken(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            ValidateRefreshToken();
+
             string endpoint = request.RequestUri.GetLeftPart(System.UriPartial.Authority);
             request.RequestUri = new System.Uri($"{endpoint}/auth/users/refresh_token");
             request.Content = null;
@@ -53,7 +59,17 @@ namespace Indico
             }
             else
             {
-                throw new HttpRequestException($"Error occured while calling authentication server: {httpResponseMessage.StatusCode}");
+                throw new IndicoAuthenticationException($"Error occured while calling authentication server: {httpResponseMessage.StatusCode}", httpResponseMessage.StatusCode);
+            }
+        }
+
+        private void ValidateRefreshToken()
+        {
+            var jwtRegex = new Regex(_jwtRegex);
+
+            if (!jwtRegex.IsMatch(_apiToken))
+            {
+                throw new IndicoAuthenticationException("API token contains invalid characters.", HttpStatusCode.BadRequest);
             }
         }
 

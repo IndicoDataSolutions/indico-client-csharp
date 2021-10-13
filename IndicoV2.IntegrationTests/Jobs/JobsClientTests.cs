@@ -6,6 +6,7 @@ using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
 
@@ -36,7 +37,7 @@ namespace IndicoV2.IntegrationTests.Jobs
             var jobId = await GetAnyJobIdAsync();
 
             // Act
-            var jobResult = await _jobsClient.GetResultAsync(jobId);
+            var jobResult = await _jobsClient.GetResultAsync<JToken>(jobId);
 
             // Assert
             jobResult.Should().NotBeNull();

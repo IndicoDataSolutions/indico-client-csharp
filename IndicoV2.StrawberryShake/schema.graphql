@@ -1,0 +1,2005 @@
+﻿schema {
+  query: SuperSchema
+  mutation: SuperMutation
+  subscription: Subscription
+}
+
+type SuperSchema {
+  allUsers("Include scopes for each user" includeScopes: Boolean "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: USER_COLUMN_ENUM filters: UserFilter): UserPage
+  oneUser(id: Int!): User
+  userSummary("User summary at this date (23:59 UTC)" date: Date): UserSummary
+  userSnapshot("Snapshot of permissions at this date (23:59 UTC)" date: Date "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int = 100 "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: USERSNAPSHOT_COLUMN_ENUM filters: UserReportFilter): UserSnapshotPage
+  userChangelog("Get changes on or after this daye (00:00 UTC)" startDate: Date "Get changes on or before this day (23:59 UCT)" endDate: Date "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int = 100 "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: USERCHANGELOG_COLUMN_ENUM filters: UserReportFilter): UserChangelogPage
+  workflows(datasetIds: [Int] workflowIds: [Int] role: Roles metricsStartDate: Date "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: WORKFLOW_COLUMN_ENUM filters: WorkflowFilter): WorkflowPage
+  submission(id: Int!): Submission
+  checkoutSpecificSubmission(submissionId: Int!): Submission
+  randomSubmission(workflowId: Int! adminReview: Boolean = false): Submission
+  submissions(submissionIds: [Int] workflowIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: SUBMISSION_COLUMN_ENUM filters: SubmissionFilter): SubmissionPage
+  refresh: Refresh
+  questionnaires(datasetIds: [Int] questionnaireIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: QUESTIONNAIRE_COLUMN_ENUM filters: QuestionnaireFilter): QuestionnairePage
+  modelGroups(datasetIds: [Int] modelGroupIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: MODELGROUP_COLUMN_ENUM filters: ModelGroupFilter): ModelGroupPage
+  modelGroup(modelGroupId: Int!): ModelGroup
+  modelSimilarity(modelGroupId: Int! modelId: Int! query: String!): [ModelSimilarity]
+  job(id: String): Job
+  fireGroups(datasetIds: [Int] fireGroupIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: FIREGROUP_COLUMN_ENUM filters: FireGroupFilter): FireGroupPage
+  fireSimilarity(fireGroupId: Int! fireId: Int! query: String!): [FireSimilarity]
+  exports(datasetId: [Int] exportIds: [Int] columnIds: [Int] subsetIds: [Int] labelsetIds: [Int] "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: EXPORT_COLUMN_ENUM): ExportPage
+  datafile(datafileId: Int!): DataFile
+  datafiles(datafileIds: [Int]!): [DataFile]
+  dataset(id: Int): Dataset
+  datasets(permissions: [PermissionType]): [Dataset]
+  datasetsPage(permissions: [PermissionType] showAll: Boolean "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: DATASET_COLUMN_ENUM filters: DatasetFilter): DatasetPage
+  searchDatapoint(datapointId: Int! keyword: String! "Max result length including keyword and surrounding text" context: Int "Use case-insensitive search" ignoreCase: Boolean = true): [DataPointSearchResult]
+  user: User
+  ipaVersion: String
+}
+
+type UserPage {
+  users: [User]
+  pageInfo: PageInfo
+}
+
+"Basic user object"
+type User {
+  id: Int
+  active: Boolean
+  acceptedTerms: Boolean
+  apiRefreshToken: RefreshTokenMeta
+  "Epoch time of confirmation of user registration"
+  confirmedAt: String
+  confirmedDate: DateTime
+  email: String
+  lastUpdate: String
+  lastUpdateDate: DateTime
+  name: String
+  "Epoch time of user registration"
+  registeredAt: String
+  registeredDate: DateTime
+  sStreet: String
+  sStreet2: String
+  sCity: String
+  sState: String
+  sCountry: String
+  sZip: String
+  scopes: [ScopeAccess]
+  preferences(app: String! keys: [String]): [Preference]
+  logins("number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: LOGIN_COLUMN_ENUM): LoginPage
+  accountLockedAt: DateTime
+  numManagedDatasets: Int
+}
+
+type RefreshTokenMeta {
+  id: Int
+  createdAt: DateTime
+  isApiToken: Boolean
+  isValid: Boolean
+  userId: Int
+}
+
+"The `DateTime` scalar type represents a DateTime\nvalue as specified by\n[iso8601](https:\/\/en.wikipedia.org\/wiki\/ISO_8601)."
+scalar DateTime
+
+type ScopeAccess {
+  scope: Scope
+  userId: Int
+}
+
+"An enumeration."
+enum Scope {
+  CELERY_FLOWER
+  MANAGE_USERS
+  GRAPHIQL
+  APP_ACCESS
+  MANAGE_DATASET
+  MANAGE_ALL_DATA
+  BASE
+  REFRESH_TOKEN
+  CHANGE_PASSWORD
+  CONFIRM_ACCOUNT
+  USER_INFORMATION
+  METRICS
+}
+
+type Preference {
+  app: String
+  key: String
+  value: JSONString
+}
+
+"Allows use of a JSON String for input \/ output from the GraphQL schema.\n\nUse of this type is *not recommended* as you lose the benefits of having a defined, static\nschema (one of the key benefits of GraphQL)."
+scalar JSONString
+
+type LoginPage {
+  logins: [Login]
+  pageInfo: PageInfo
+}
+
+type Login {
+  id: Int
+  loggedInAt: DateTimeISO
+  loginIp: String
+}
+
+"ISO-8601 datetime format for JS to parse timezone\n\nFor example: 2020-03-20T01:31:12.467113+00:00\n\nThis custom scalar should only be used for serializing data out, not as an \ninput field, so parse_literal and parse_value are not implemented."
+scalar DateTimeISO
+
+type PageInfo {
+  startCursor: Int
+  endCursor: Int
+  hasNextPage: Boolean
+  aggregateCount: Int
+}
+
+"An enumeration."
+enum LOGIN_COLUMN_ENUM {
+  ID
+  LOGIN_IP
+}
+
+"An enumeration."
+enum USER_COLUMN_ENUM {
+  ID
+  ACTIVE
+  ACCEPTED_TERMS
+  CONFIRMED_AT
+  CONFIRMED_DATE
+  EMAIL
+  LAST_UPDATE
+  LAST_UPDATE_DATE
+  NAME
+  REGISTERED_AT
+  REGISTERED_DATE
+  S_STREET
+  S_STREET2
+  S_CITY
+  S_STATE
+  S_COUNTRY
+  S_ZIP
+  ACCOUNT_LOCKED_AT
+  NUM_MANAGED_DATASETS
+}
+
+input UserFilter {
+  "name contains"
+  name: String
+  "email contains"
+  email: String
+  OR: [UserFilter]
+  AND: [UserFilter]
+  ors: [UserFilter]
+  ands: [UserFilter]
+}
+
+type UserSummary {
+  users: EnabledCount
+  appRoles: [AppRoleCount]
+}
+
+type EnabledCount {
+  "Number of active users"
+  enabled: Int
+  "Number of deactivated users"
+  disabled: Int
+}
+
+type AppRoleCount {
+  role: AppRole
+  count: Int
+}
+
+"An enumeration."
+enum AppRole {
+  APP_ADMIN
+  TEAM_ADMIN
+  TEAM_DEVELOPER
+  TEAM_USER
+  CELERY_FLOWER
+  MANAGE_ALL_DATA
+}
+
+"The `Date` scalar type represents a Date\nvalue as specified by\n[iso8601](https:\/\/en.wikipedia.org\/wiki\/ISO_8601)."
+scalar Date
+
+type UserSnapshotPage {
+  results: [UserSnapshot]
+  pageInfo: PageInfo
+}
+
+type UserSnapshot {
+  id: Int
+  name: String
+  email: String
+  createdAt: DateTime
+  enabled: Boolean
+  roles: [AppRole]
+  datasets: [DatasetRole]
+}
+
+type DatasetRole {
+  datasetId: Int
+  role: Roles
+}
+
+"An enumeration."
+enum Roles {
+  LABELER
+  REVIEWER
+  LABELER_AND_REVIEWER
+  ANALYST
+  MANAGER
+}
+
+"An enumeration."
+enum USERSNAPSHOT_COLUMN_ENUM {
+  ID
+  NAME
+  EMAIL
+  CREATED_AT
+  ENABLED
+}
+
+input UserReportFilter {
+  "User id in this list"
+  userId: [Int]
+  "User email in this list"
+  userEmail: [String]
+  OR: [UserReportFilter]
+  AND: [UserReportFilter]
+  ors: [UserReportFilter]
+  ands: [UserReportFilter]
+}
+
+type UserChangelogPage {
+  results: [UserChangelog]
+  pageInfo: PageInfo
+}
+
+type UserChangelog {
+  "Unique combination of date and user_id"
+  id: String
+  date: DateTime
+  userId: Int
+  userEmail: String
+  updatedBy: Int
+  updaterEmail: String
+  previouslyEnabled: Boolean
+  enabled: Boolean
+  previousRoles: [AppRole]
+  roles: [AppRole]
+  previousDatasets: [DatasetRole]
+  datasets: [DatasetRole]
+  changesMade: [UserChangeType]
+}
+
+"An enumeration."
+enum UserChangeType {
+  APP_ROLE
+  DATASET_ROLE
+  ENABLEMENT
+}
+
+"An enumeration."
+enum USERCHANGELOG_COLUMN_ENUM {
+  ID
+  DATE
+  USER_ID
+  USER_EMAIL
+  UPDATED_BY
+  UPDATER_EMAIL
+  PREVIOUSLY_ENABLED
+  ENABLED
+}
+
+type WorkflowPage {
+  workflows: [Workflow]
+  pageInfo: PageInfo
+}
+
+type Workflow {
+  id: Int
+  datasetId: Int
+  dataset: Dataset
+  createdAt: String
+  createdBy: Int
+  updatedAt: String
+  updatedBy: Int
+  name: String
+  docbots: [DocBot]
+  userRole: Roles
+  status: WorkflowStatus
+  reviewable: Boolean
+  reviewEnabled: Boolean
+  autoReviewEnabled: Boolean
+  "Estimated human time to complete the workflow in minutes"
+  estHumanTimeMins: Int
+  submissionCounts: SubmissionCounts
+  reviewableModelGroups: [ModelGroup]
+  submissionFacts: SubmissionFacts
+  metrics(startDate: Date endDate: Date): WorkflowMetrics
+}
+
+type Dataset {
+  id: Int
+  name: String
+  status: DatasetStatus
+  rowCount: Int
+  defaultSubsetId: Int
+  type: DatasetType
+  errorInfo: String
+  createdAt: String
+  createdBy: Int
+  updatedAt: String
+  updatedBy: Int
+  datacolumns: [DataColumn]
+  labelsets: [LabelSet]
+  permissions: [String]
+  exports: [Export]
+  modelGroups(taskTypes: [TaskType]): [ModelGroup]
+  modelGroup(id: Int): ModelGroup
+  files: [DataFile]
+  numFireGroups: Int
+  numModelGroups: Int
+  numQuestionnaires: Int
+  dataInfo(labelsetId: Int sourceColumnId: Int): DataInfo @deprecated(reason: "Fetch class balance info under ModelGroup")
+  users: [DatasetUser]
+}
+
+"An enumeration."
+enum DatasetStatus {
+  STAGED
+  PROCESSED
+  UPLOADING
+  CREATING
+  FAILED
+  COMPLETE
+  DELETING
+}
+
+"An enumeration."
+enum DatasetType {
+  IMAGE
+  TEXT
+  DOCUMENT
+}
+
+type DataColumn {
+  id: Int
+  name: String
+  datasetId: Int
+  columnIndex: Int
+  datatype: DataTypes
+  ocrUsed: Boolean
+}
+
+"An enumeration."
+enum DataTypes {
+  CATEGORICAL
+  STRING
+  NUMERIC
+  IMAGE
+  UNKNOWN
+}
+
+type LabelSet {
+  id: Int
+  name: String
+  numLabelersRequired: Int
+  numLabelsetPoints: Int
+  numFullyLabeled: Int
+  taskType: TaskType
+  targetNames: [TargetName]
+}
+
+"An enumeration."
+enum TaskType {
+  CLASSIFICATION
+  CLASSIFICATION_MULTIPLE
+  RATIONALIZED_CLASSIFICATION
+  REGRESSION
+  ANNOTATION
+  OBJECT_DETECTION
+  FORM_EXTRACTION
+}
+
+type TargetName {
+  id: Int
+  labelsetId: Int
+  name: String
+  position: Int
+}
+
+type Export {
+  id: Int
+  datasetId: Int
+  name: String
+  status: ExportStatus
+  columnIds: [Int]
+  labelsetIds: [Int]
+  subsetIds: [Int]
+  numLabels: Int
+  anonymous: Boolean
+  "Download URL of this export"
+  downloadUrl: String
+  "Unix timestamp"
+  createdAt: String
+  "user id"
+  createdBy: Int
+}
+
+"An enumeration."
+enum ExportStatus {
+  STARTED
+  FAILED
+  COMPLETE
+}
+
+type ModelGroup {
+  id: Int
+  datasetId: Int
+  name: String
+  status: ModelStatus
+  models: [Model]
+  model(id: Int): Model
+  selectedModel: Model
+  taskType: TaskType
+  dataType: DataTypes
+  retrainRequired: Boolean
+  labelset: LabelSet
+  sourceColumn: DataColumn
+  interlabelerResolution: LabelResolutionStrategy
+  example(rowIndex: Int): Example
+  createdAt: String
+  createdBy: Int
+  updatedAt: String
+  updatedBy: Int
+  "Ordered list of target names used to train the model."
+  classNames: [String]
+  processors: [Processor]
+  subsetId: Int
+  dataInfo: DataInfo
+  labelsetColumnId: Int
+}
+
+"An enumeration."
+enum ModelStatus {
+  CREATING
+  TRAINING
+  FAILED
+  COMPLETE
+  NOT_ENOUGH_DATA
+}
+
+type Model {
+  id: Int
+  collectionName: String
+  predictionLabelsetId: Int
+  classNames: [String]
+  evaluation: Evaluation
+  predictions(sources: [String] threshold: Float): [Prediction]
+  modelInfo: JSONString
+  createdAt: String
+  createdBy: Int
+  updatedAt: String
+  updatedBy: Int
+  status: ModelStatus
+  trainingSubsetId: Int
+  testingSubsetId: Int
+  trainingProgress: TrainingProgress
+  linkable: Boolean
+  modelType: ModelType
+  rareClasses: [ClassCount]
+  unlabeledClasses: [String]
+}
+
+union Evaluation = ClassificationSingleEvaluation | ClassificationMultipleEvaluation | AnnotationEvaluation | ObjectDetectionEvaluation | RationalizedClassificationEvaluation
+
+type ClassificationSingleEvaluation {
+  metrics: ClassificationModelMetrics
+  confusionResult(predicted: String! actual: String!): [SingleTestResult]
+  testResults(actual: String threshold: Float): CLASSIFICATIONTestResult
+}
+
+type ClassificationModelMetrics {
+  metricsTable: [MetricsTable]
+  rocCurves: [ROCCurve]
+  prCurves: [PRCurve]
+  confusionMatrix: ConfusionMatrix
+}
+
+type MetricsTable {
+  name: String
+  auc: Float
+  accuracy: Float
+  precision: Float
+  recall: Float
+  f1Score: Float
+}
+
+type ROCCurve {
+  confidences: [String]
+  name: String
+  truePositiveRate: [Float]
+  falsePositiveRate: [Float]
+  auc: Float
+}
+
+type PRCurve {
+  confidences: [String]
+  name: String
+  precision: [Float]
+  recall: [Float]
+}
+
+type ConfusionMatrix {
+  classes: [String]
+  matrix: [[Float]]
+}
+
+type SingleTestResult {
+  explanations: [Explanation]
+  text: String
+  rowIdx: Int
+  actual: String
+  predicted: String
+  score: [ClassConfidence]
+}
+
+type Explanation {
+  label: String
+  metadata: ExplainMeta
+  similarity: Float
+  text: String
+}
+
+type ExplainMeta {
+  datasetId: Int
+  rowIndex: Int
+  rowId: Int
+  sourceColumnId: Int
+}
+
+type ClassConfidence {
+  name: String
+  confidence: Float
+}
+
+type CLASSIFICATIONTestResult {
+  falsePositive: [SingleTestResult]
+  falseNegative: [SingleTestResult]
+  truePositive: [SingleTestResult]
+  trueNegative: [SingleTestResult]
+  resultCounts: ResultCounts
+  threshold: Float
+  modelId: Int
+}
+
+type ResultCounts {
+  falsePositive: Float
+  falseNegative: Float
+  truePositive: Float
+  trueNegative: Float
+}
+
+type ClassificationMultipleEvaluation {
+  metrics: ClassificationModelMetrics
+  confusionResult(predicted: String! actual: String!): [SingleTestResult]
+  testResults(actual: [String] threshold: Float): CLASSIFICATION_MULTIPLETestResult
+}
+
+type CLASSIFICATION_MULTIPLETestResult {
+  falsePositive: [MultiTestResult]
+  falseNegative: [MultiTestResult]
+  truePositive: [MultiTestResult]
+  trueNegative: [MultiTestResult]
+  resultCounts: ResultCounts
+  threshold: Float
+  modelId: Int
+}
+
+type MultiTestResult {
+  explanations: [Explanation]
+  text: String
+  rowIdx: Int
+  actual: [String]
+  predicted: [String]
+  score: [ClassConfidence]
+}
+
+type AnnotationEvaluation {
+  metrics: AnnotationModelMetrics
+  examples("filter on a specific label" label: String "filter source data on a string" textSearch: String "number of pages to skip" skip: Int "Find results before this cursor" before: Int "Find results after this cursor" after: Int "Max number of results to return" limit: Int "Return results in descending order" desc: Boolean "attribute to order results by" orderBy: ANNOTATIONEXAMPLE_COLUMN_ENUM includeAggregate: Boolean = false): AnnotationExamplesPage
+  testResults(actual: [String] threshold: Float): ANNOTATIONTestResult
+}
+
+type AnnotationModelMetrics {
+  "Metrics for evaluating model performance per class"
+  classMetrics: [AnnotationClassMetrics]
+  "Metrics for evaluating model performance at the model level, across classes"
+  modelLevelMetrics: [ModelLevelMetrics]
+  "Model retraining is required in order to calculate metrics."
+  retrainForMetrics: Boolean
+}
+
+type AnnotationClassMetrics {
+  name: String
+  metrics: [PerClassSeqMetrics]
+}
+
+type PerClassSeqMetrics {
+  "Type of span the metric is calculated on, e.g. Token, Sequence Superset"
+  spanType: String
+  "Of the predicted true positives, the percentage that were actually correct"
+  precision: Float
+  "Of the total true positives, the percentage were recovered by the model as true positives"
+  recall: Float
+  "Harmonic mean of precision and recall"
+  f1Score: Float
+  "# of examples that were predicted affirmative in the class but negative"
+  falsePositives: Int
+  "# of examples that were affirmative but were not predicted as such by the model"
+  falseNegatives: Int
+  "# of examples that were predicted affirmative and were actually affirmative"
+  truePositives: Int
+}
+
+type ModelLevelMetrics {
+  "Type of span the metric is calculated on, e.g. Token, Sequence Superset"
+  spanType: String
+  "F1 score calculated based on pooling instances across classes"
+  microF1: Float
+  "F1 score calculated per-class and then averaged"
+  macroF1: Float
+  "F1 score calculated per-class and then weighted averaged, weighted by instances per class"
+  weightedF1: Float
+}
+
+type AnnotationExamplesPage {
+  annotationExamples: [AnnotationExample]
+  pageInfo: PageInfo
+}
+
+type AnnotationExample {
+  rowId: Int
+  rowIndex: Int
+  text: String
+  annotationLabels: [AnnotationLabel]
+  predictions: [AnnotationPrediction]
+  datafile: DataFile
+}
+
+type AnnotationLabel {
+  start: Int
+  end: Int
+  label: String
+  userId: Int
+}
+
+type AnnotationPrediction {
+  start: Int
+  end: Int
+  label: String
+  text: String
+  confidence: Float
+}
+
+type DataFile {
+  id: Int
+  deleted: Boolean
+  name: String
+  rainbowUrl: String
+  status: FileStatus
+  statusMeta: JSONString
+  fileHash: String
+  fileSize: Int
+  fileType: FileType
+  pageIds: [Int]
+  numPages: Int
+  pages(pageNums: [Int]): [DataFilePage]
+  failureType: FileFailureType
+}
+
+"An enumeration."
+enum FileStatus {
+  DOWNLOADING
+  DOWNLOADED
+  EXTRACTING
+  EXTRACTED
+  PROCESSED
+  PROCESSING
+  FAILED
+}
+
+"An enumeration."
+enum FileType {
+  CSV
+  PDF
+  EXCEL
+  DOC
+  DOCX
+  PPT
+  PPTX
+  PNG
+  JPG
+  TIFF
+  UNKNOWN
+}
+
+type DataFilePage {
+  id: Int
+  datafileId: Int
+  image: String
+  pageNum: Int
+  pageInfo: String
+  thumbnail: String
+  docStartOffset: Int
+  docEndOffset: Int
+}
+
+"An enumeration."
+enum FileFailureType {
+  SERVER
+  DOWNLOAD
+  EXTRACTION
+  INCOMPATIBLE_TYPE
+  UNSUPPORTED_TYPE
+  CORRUPT_IMAGE
+  CSV_PARSING
+  INCOMPATIBLE_CSV_COLUMNS
+  CSV_NO_URL_DS_TYPE_DOCUMENT
+  CSV_NO_URL_DS_TYPE_IMAGE
+  CSV_REQUIRES_CONTENT
+  CSV_MULTIPLE_URLS
+}
+
+"An enumeration."
+enum ANNOTATIONEXAMPLE_COLUMN_ENUM {
+  ROW_ID
+  ROW_INDEX
+  TEXT
+}
+
+type ANNOTATIONTestResult {
+  falsePositive: [MultiTestResult]
+  falseNegative: [MultiTestResult]
+  truePositive: [MultiTestResult]
+  trueNegative: [MultiTestResult]
+  resultCounts: ResultCounts
+  threshold: Float
+  modelId: Int
+}
+
+type ObjectDetectionEvaluation {
+  metrics: JSONString
+  testResults(actual: [String] threshold: Float): OBJECT_DETECTIONTestResult
+}
+
+type OBJECT_DETECTIONTestResult {
+  falsePositive: [MultiTestResult]
+  falseNegative: [MultiTestResult]
+  truePositive: [MultiTestResult]
+  trueNegative: [MultiTestResult]
+  resultCounts: ResultCounts
+  threshold: Float
+  modelId: Int
+}
+
+type RationalizedClassificationEvaluation {
+  metrics: ClassificationModelMetrics
+  confusionResult(predicted: String! actual: String!): [SingleTestResult]
+  testResults(actual: String threshold: Float): RATIONALIZED_CLASSIFICATIONTestResult
+}
+
+type RATIONALIZED_CLASSIFICATIONTestResult {
+  falsePositive: [SingleTestResult]
+  falseNegative: [SingleTestResult]
+  truePositive: [SingleTestResult]
+  trueNegative: [SingleTestResult]
+  resultCounts: ResultCounts
+  threshold: Float
+  modelId: Int
+}
+
+union Prediction = AnnotationPrediction | ClassificationPrediction | ClassificationMultiplePrediction | RationalizedClassificationPrediction
+
+type ClassificationPrediction {
+  confidences: [ClassConfidence]
+  tokenPredictions: [TokenPrediction]
+  explanations: [Explanation]
+  label: String
+}
+
+type TokenPrediction {
+  confidences: [ClassConfidence]
+  token: _Token
+}
+
+type _Token {
+  end: Int
+  start: Int
+  text: String
+}
+
+type ClassificationMultiplePrediction {
+  labels: [String]
+  confidences: [ClassConfidence]
+  tokenPredictions: [TokenPrediction]
+  explanations: [Explanation]
+}
+
+type RationalizedClassificationPrediction {
+  confidences: [ClassConfidence]
+  tokenPredictions: [TokenPrediction]
+  explanations: [Explanation]
+  label: String
+}
+
+type TrainingProgress {
+  percentComplete: Float
+}
+
+"An enumeration."
+enum ModelType {
+  ENSEMBLE
+  TFIDF
+  STANDARD
+  FINETUNE
+  OBJECT_DETECTION
+  RATIONALIZED
+  FORM_EXTRACTION
+  DOCUMENT
+}
+
+type ClassCount {
+  target: String
+  count: Int
+}
+
+"An enumeration."
+enum LabelResolutionStrategy {
+  MAJORITY_VOTE_WITH_TIES
+  MAJORITY_VOTE_WITHOUT_TIES
+  UNANIMOUS
+  ALL
+}
+
+type Example {
+  id: String
+  Type: String
+  LabelsetId: Int
+  rowIndex: Int
+  datarowId: Int
+  source: String
+  targets: [Target]
+  datafileId: Int
+  datapointId: Int
+  predictions: [Prediction]
+}
+
+type Target {
+  start: Int
+  end: Int
+  label: String
+  userId: Int
+}
+
+type Processor {
+  processorType: ProcessorType!
+  args: JSONString
+}
+
+"An enumeration."
+enum ProcessorType {
+  SPLIT
+  CONTENT_LENGTH
+  LINK_CLASSIFICATION_MODEL
+  OUTPUT_CSV_FORMATTER
+  OUTPUT_JSON_FORMATTER
+  INPUT_OCR_EXTRACTION
+  INPUT_IMAGE
+  VALIDATION
+}
+
+"Cyclone Label Breakdown Response\n\nresponse = {\n    \"num_empty_examples\": len(empty_sources),\n    \"num_examples\": num_examples,\n    \"labelset_id\": labelset.id,\n    \"target_contradictions\": percent_contradictions,\n    \"source_duplicates\": percent_source_duplicate,\n    \"class_balance\": target_counter,\n    \"warnings\": warnings,\n}"
+type DataInfo {
+  datasetId: Int
+  subsetIds: [Int]
+  numEmptyExamples: Int
+  numExamples: Int
+  targetContradictions: Float
+  sourceDuplicates: Float
+  classBalance: ClassBalance
+  sourceColumnId: Int
+  labelsetId: Int
+  warnings: [String]
+}
+
+type ClassBalance {
+  all: [ClassCount]
+  majorityVoteWithTies: [ClassCount]
+  majorityVoteWithoutTies: [ClassCount]
+  unanimous: [ClassCount]
+}
+
+type DatasetUser {
+  id: Int
+  userId: Int
+  name: String
+  email: String
+  datasetId: Int
+  permissions: [String]
+  role: Roles
+}
+
+type DocBot {
+  id: Int
+  name: String
+  createdAt: String
+  createdBy: Int
+  updatedAt: String
+  updatedBy: Int
+  subsetId: Int
+  parents: [Int]
+  docbotType: DocBotType
+  processors: [Processor]
+  components: [ComponentInterface]
+}
+
+"An enumeration."
+enum DocBotType {
+  QUESTIONNAIRE
+  FIRE_GROUP
+  MODEL_GROUP
+  DATASET
+  ETL
+  OUTPUT
+}
+
+interface ComponentInterface {
+  id: Int
+  docbotId: Int
+  componentAppId: Int
+  componentType: ComponentType
+  reviewable: Boolean
+}
+
+"An enumeration."
+enum ComponentType {
+  QUESTIONNAIRE
+  FIRE_GROUP
+  MODEL_GROUP
+  DOCUMENT
+  RESULT
+  CUSTOM_RESULT
+}
+
+"An enumeration."
+enum WorkflowStatus {
+  COMPLETE
+  ADDING_DATA
+}
+
+type SubmissionCounts {
+  processing: Int
+  pendingReview: Int
+  pendingAdminReview: Int
+  pendingAutoReview: Int
+  complete: Int
+  failed: Int
+}
+
+type SubmissionFacts {
+  startDate: Date
+  workflowId: Int
+  daily: SubmissionFactsDaily
+  total: SubmissionFactsTotal
+}
+
+type SubmissionFactsDaily {
+  submitted: [DailyCount]
+  submittedAndCompletedInReview: [DailyCount]
+  completed: [DailyCount]
+  completedInReview: [DailyCount]
+  completedReviewQueue: [DailyCount]
+  completedExceptionQueue: [DailyCount]
+  rejectedInReview: [DailyCount]
+  avgHoursOnQueue: [DailyAvg]
+  stp: StpFactsDaily
+  predictions: [DailyCount]
+  timeOnTask: TimeOnTaskDaily
+}
+
+type DailyCount {
+  date: Date
+  count: Int
+}
+
+type DailyAvg {
+  date: Date
+  avg: Float
+}
+
+type StpFactsDaily {
+  workflow: [DailyStp]
+  model: [ModelStpDailyFacts]
+}
+
+type DailyStp {
+  reviewNumerator: Int
+  autoReviewNumerator: Int
+  reviewDenom: Int
+  autoReviewDenom: Int
+  reviewStpPct: Float
+  autoReviewStpPct: Float
+  date: Date
+}
+
+type ModelStpDailyFacts {
+  name: String
+  modelGroupId: Int
+  stps: [DailyStp]
+  classStps: [ClassStpFacts]
+  "Review STP for model aggregated by parent filter context."
+  reviewStpForModel: Float
+  "Auto Review STP for model aggregated by parent filter context."
+  autoReviewStpForModel: Float
+}
+
+type ClassStpFacts {
+  className: String
+  stps: [DailyStp]
+  "Review STP for class aggregated by parent filter context."
+  reviewStpForClass: Float
+  "Auto Review STP for class aggregated by parent filter context"
+  autoReviewStpForClass: Float
+}
+
+type TimeOnTaskDaily {
+  review: [DailyTimeOnTask]
+  exceptions: [DailyTimeOnTask]
+}
+
+type DailyTimeOnTask {
+  date: Date
+  minutes: Float
+  numReviews: Int
+}
+
+type SubmissionFactsTotal {
+  submitted: Int
+  stp: StpFacts
+}
+
+type StpFacts {
+  model: [ModelStp]
+}
+
+type ModelStp {
+  reviewNumerator: Int
+  autoReviewNumerator: Int
+  reviewDenom: Int
+  autoReviewDenom: Int
+  reviewStpPct: Float
+  autoReviewStpPct: Float
+  name: String
+  modelGroupId: Int
+}
+
+type WorkflowMetrics {
+  workflowId: Int
+  startDate: Date
+  endDate: Date
+  timeOnTask: TimeOnTaskMetrics
+  submissions: SubmissionMetrics
+  queues: QueueMetrics
+  predictions: PredictionMetrics
+  straightThroughProcessing: StpMetrics
+  "The first date an item was submitted to this workflow"
+  firstSubmittedDate: Date
+}
+
+type TimeOnTaskMetrics {
+  aggregate: TimeOnTaskMetric
+  daily: [DailyTimeOnTaskMetric]
+}
+
+type TimeOnTaskMetric {
+  "The average amount of minutes reviewers spend on documents for this workflow, aggregated across review and exceptions queue"
+  avgMinsPerDoc: Float
+  "The average amount of minutes reviewers spend on documents for this workflow in the review queue"
+  avgMinsPerDocReview: Float
+  "The average amount of minutes reviewers spend on documents for this workflow in the exceptions queue"
+  avgMinsPerDocExceptions: Float
+}
+
+type DailyTimeOnTaskMetric {
+  date: Date
+  "The average amount of minutes reviewers spend on documents for this workflow, aggregated across review and exceptions queue"
+  avgMinsPerDoc: Float
+  "The average amount of minutes reviewers spend on documents for this workflow in the review queue"
+  avgMinsPerDocReview: Float
+  "The average amount of minutes reviewers spend on documents for this workflow in the exceptions queue"
+  avgMinsPerDocExceptions: Float
+}
+
+type SubmissionMetrics {
+  aggregate: SubmissionMetric
+  daily: [DailySubmissionMetric]
+}
+
+type SubmissionMetric {
+  "Number of items submitted to the workflow"
+  submitted: Int
+  "Number of items completed in the workflow, whether review was enabled or disabled"
+  completed: Int
+  "Number of items that were accepted in either the review or exceptions queue"
+  completedInReview: Int
+  "Number of items rejected from the exceptions queue"
+  rejectedInReview: Int
+  "Number of items accepted in the review queue"
+  completedReviewQueue: Int
+  "Number of items accepted in the exceptions queue"
+  completedExceptionQueue: Int
+}
+
+type DailySubmissionMetric {
+  date: Date
+  "Number of items submitted to the workflow"
+  submitted: Int
+  "Number of items completed in the workflow, whether review was enabled or disabled"
+  completed: Int
+  "Number of items that were accepted in either the review or exceptions queue"
+  completedInReview: Int
+  "Number of items rejected from the exceptions queue"
+  rejectedInReview: Int
+  "Number of items accepted in the review queue"
+  completedReviewQueue: Int
+  "Number of items accepted in the exceptions queue"
+  completedExceptionQueue: Int
+}
+
+type QueueMetrics {
+  dailyCumulative: [DailyQueueMetric]
+}
+
+type DailyQueueMetric {
+  date: Date
+  "Number of submissions on the queues waiting to be reviewed"
+  subsOnQueue: Int
+  "Cumulative hours of items on queues waiting to be reviewed"
+  hoursOnQueue: Float
+  "Average cumulative age of items on queues waiting to be reviewed"
+  avgAgeInQueue: Float
+}
+
+type PredictionMetrics {
+  "Total number of model generated predictions for this workflow"
+  aggregate: PredictionMetric
+  "Number of model generated predictions for the workflow, each day"
+  daily: [DailyPredictionMetric]
+}
+
+type PredictionMetric {
+  numPreds: Int
+}
+
+type DailyPredictionMetric {
+  date: Date
+  numPreds: Int
+}
+
+type StpMetrics {
+  "STP metrics aggregate at the level of the workflow"
+  workflow: WorkflowStpMetrics
+  "Schema for model STP metrics including class STP metrics as child nodes on this object's schema"
+  model: [ModelStpMetrics]
+}
+
+type WorkflowStpMetrics {
+  "Daily STP metrics aggregated to the level of the workflow"
+  daily: [DailyStpMetric]
+}
+
+type DailyStpMetric {
+  date: Date
+  "The number of human accepted model predictions that exactly match model predictions"
+  reviewNumerator: Int
+  "The number of human accepted auto review labels"
+  autoReviewNumerator: Int
+  "The union of user supplied labels and model predictions"
+  reviewDenom: Int
+  "The union of user supplied labels and auto review labels"
+  autoReviewDenom: Int
+  "Review numerator divided by review denominator, applicable if review is enabled and auto-review is disabled"
+  reviewStpPct: Float
+  "Auto review numerator divided by auto review denomoinator, applicable if auto-review is enabled"
+  autoReviewStpPct: Float
+}
+
+type ModelStpMetrics {
+  modelGroupId: Int
+  name: String
+  "Aggregate STP metrics for the model based on filters applied to the query"
+  aggregate: StpMetric
+  "Daily STP metrics for the model"
+  daily: [DailyStpMetric]
+  "STP metrics for each class associated with the model"
+  classMetrics: [ClassStpMetrics]
+}
+
+type StpMetric {
+  "The number of human accepted model predictions that exactly match model predictions"
+  reviewNumerator: Int
+  "The number of human accepted auto review labels"
+  autoReviewNumerator: Int
+  "The union of user supplied labels and model predictions"
+  reviewDenom: Int
+  "The union of user supplied labels and auto review labels"
+  autoReviewDenom: Int
+  "Review numerator divided by review denominator, applicable if review is enabled and auto-review is disabled"
+  reviewStpPct: Float
+  "Auto review numerator divided by auto review denomoinator, applicable if auto-review is enabled"
+  autoReviewStpPct: Float
+}
+
+type ClassStpMetrics {
+  className: String
+  "STP metrics for this class, aggregated based on the filters applied to the query"
+  aggregate: StpMetric
+  "STP metrics for this class, daily"
+  daily: [DailyStpMetric]
+}
+
+"An enumeration."
+enum WORKFLOW_COLUMN_ENUM {
+  ID
+  DATASET_ID
+  CREATED_AT
+  CREATED_BY
+  UPDATED_AT
+  UPDATED_BY
+  NAME
+  USER_ROLE
+  STATUS
+  REVIEWABLE
+  REVIEW_ENABLED
+  AUTO_REVIEW_ENABLED
+  EST_HUMAN_TIME_MINS
+}
+
+input WorkflowFilter {
+  "name contains"
+  name: String
+  "the workflow can use Review for its submissions"
+  reviewable: Boolean
+  "all new submissions will pass through Review"
+  reviewEnabled: Boolean
+  "all new submissions will wait for Auto Review"
+  autoReviewEnabled: Boolean
+  OR: [WorkflowFilter]
+  AND: [WorkflowFilter]
+  ors: [WorkflowFilter]
+  ands: [WorkflowFilter]
+}
+
+type Submission {
+  id: Int
+  datasetId: Int
+  workflowId: Int
+  status: SubmissionStatus
+  "Errors occured during this submission"
+  errors: String
+  "Submission files have been deleted from file store"
+  deleted: Boolean
+  inputFiles: [SubmissionFile]
+  "Local URL to first stored input"
+  inputFile: String
+  "Original name of first file"
+  inputFilename: String
+  "Local URL to stored output"
+  resultFile: String
+  "Submission has been marked as having been retrieved"
+  retrieved: Boolean
+  "Latest auto review for submission"
+  autoReview: Review
+  "Internal field for review load"
+  AutoReviewLoaded: Boolean
+}
+
+"An enumeration."
+enum SubmissionStatus {
+  PROCESSING
+  PENDING_AUTO_REVIEW
+  PENDING_REVIEW
+  PENDING_ADMIN_REVIEW
+  COMPLETE
+  FAILED
+}
+
+type SubmissionFile {
+  id: Int
+  "Local URL to stored input"
+  filepath: String
+  "Name of original file"
+  filename: String
+  submissionId: Int
+}
+
+type Review {
+  id: Int
+  submissionId: Int
+  createdAt: String
+  createdBy: Int
+  completedAt: String
+  rejected: Boolean
+  adminReview: Boolean @deprecated(reason: "Please use review_type")
+  reviewType: ReviewType
+  notes: String
+  changes: JSONString
+}
+
+"An enumeration."
+enum ReviewType {
+  MANUAL
+  AUTO
+  ADMIN
+}
+
+type SubmissionPage {
+  submissions: [Submission]
+  pageInfo: PageInfo
+}
+
+"An enumeration."
+enum SUBMISSION_COLUMN_ENUM {
+  ID
+  DATASET_ID
+  WORKFLOW_ID
+  STATUS
+  ERRORS
+  DELETED
+  INPUT_FILE
+  INPUT_FILENAME
+  RESULT_FILE
+  RETRIEVED
+  _AUTO_REVIEW_LOADED
+}
+
+input SubmissionFilter {
+  "input filename contains"
+  inputFilename: String
+  "submission status is"
+  status: SubmissionStatus
+  "Submission has been marked as having been retrieved"
+  retrieved: Boolean
+  OR: [SubmissionFilter]
+  AND: [SubmissionFilter]
+  ors: [SubmissionFilter]
+  ands: [SubmissionFilter]
+}
+
+type Refresh {
+  refreshedAt: DateTimeISO
+  refreshStartedAt: DateTimeISO
+  refreshing: Boolean
+}
+
+type QuestionnairePage {
+  questionnaires: [Questionnaire]
+  pageInfo: PageInfo
+}
+
+type Questionnaire {
+  id: Int
+  "Labeling tasks are enabled"
+  active: Boolean
+  "Predictions are enabled"
+  activeLearning: Boolean
+  role: Roles
+  assignedUsers: [QuestionnaireUser]
+  "Unix timestamp"
+  createdAt: String
+  "User id"
+  createdBy: Int
+  dataType: DataType
+  datasetId: Int
+  subsetId: Int
+  "Labeling will always be done in Text mode"
+  forceTextMode: Boolean
+  instructions: String
+  name: String
+  numTotalExamples: Int
+  numFullyLabeled: Int
+  numLabeledByMe: Int
+  numRejected: Int
+  processors: [Processor]
+  "On-document labeling interface enabled"
+  odl: Boolean
+  questions: [Question]
+  "cumulative status of all questions in questionnaire"
+  questionsStatus: QuestionStatus
+  sourceColumnId: Int
+  "Unix timestamp"
+  updatedAt: String
+  "User id"
+  updatedBy: Int
+  examples(numExamples: Int! "First question in questionnaire is selected if not provided" questionId: Int datafileId: Int): [Example]
+}
+
+type QuestionnaireUser {
+  id: Int
+  userId: Int
+  email: String
+  name: String
+  questionnaireId: Int
+  permissions: [String]
+  role: Roles
+  createdAt: String
+  createdBy: Int
+  datasetId: Int
+  labelCount: Int
+}
+
+enum DataType {
+  TEXT
+  IMAGE
+}
+
+type Question {
+  id: Int
+  type: TaskType
+  DatasetId: Int
+  SubsetId: Int
+  labelsetId: Int
+  labelset: LabelSet
+  keywords: [String]
+  status: QuestionStatus
+  questionnaireId: Int
+  text: String
+  modelGroupId: Int
+  modelGroup: ModelGroup
+  "Ordered list of target names."
+  targets: [String]
+}
+
+"An enumeration."
+enum QuestionStatus {
+  STARTED
+  FAILED
+  COMPLETE
+}
+
+"An enumeration."
+enum QUESTIONNAIRE_COLUMN_ENUM {
+  ID
+  ACTIVE
+  ACTIVE_LEARNING
+  ROLE
+  CREATED_AT
+  CREATED_BY
+  DATA_TYPE
+  DATASET_ID
+  SUBSET_ID
+  FORCE_TEXT_MODE
+  INSTRUCTIONS
+  NAME
+  NUM_TOTAL_EXAMPLES
+  NUM_FULLY_LABELED
+  NUM_LABELED_BY_ME
+  NUM_REJECTED
+  ODL
+  QUESTIONS_STATUS
+  SOURCE_COLUMN_ID
+  UPDATED_AT
+  UPDATED_BY
+}
+
+input QuestionnaireFilter {
+  "name contains"
+  name: String
+  OR: [QuestionnaireFilter]
+  AND: [QuestionnaireFilter]
+  ors: [QuestionnaireFilter]
+  ands: [QuestionnaireFilter]
+}
+
+type ModelGroupPage {
+  modelGroups: [ModelGroup]
+  pageInfo: PageInfo
+}
+
+"An enumeration."
+enum MODELGROUP_COLUMN_ENUM {
+  ID
+  DATASET_ID
+  NAME
+  STATUS
+  TASK_TYPE
+  DATA_TYPE
+  RETRAIN_REQUIRED
+  INTERLABELER_RESOLUTION
+  CREATED_AT
+  CREATED_BY
+  UPDATED_AT
+  UPDATED_BY
+  SUBSET_ID
+  LABELSET_COLUMN_ID
+}
+
+input ModelGroupFilter {
+  "name contains"
+  name: String
+  "model group task type is"
+  taskType: TaskType
+  "model group subset id is"
+  subsetId: Int
+  OR: [ModelGroupFilter]
+  AND: [ModelGroupFilter]
+  ors: [ModelGroupFilter]
+  ands: [ModelGroupFilter]
+}
+
+type ModelSimilarity {
+  row: Int
+  value: Int
+}
+
+type Job {
+  id: String
+  status: JobStatus
+  result: JSONString
+  ready: Boolean
+}
+
+"Adapted from Celery Task Status"
+enum JobStatus {
+  "Task state is unknown (assumed pending since you know the id)."
+  PENDING
+  "Task was received by a worker (only used in events)."
+  RECEIVED
+  "Task was started by a worker (:setting:`task_track_started`)."
+  STARTED
+  "Task succeeded"
+  SUCCESS
+  "Task failed"
+  FAILURE
+  "Task was revoked."
+  REVOKED
+  "Task was rejected (only used in events)."
+  REJECTED
+  "Task is waiting for retry."
+  RETRY
+  "Job Status IGNORED"
+  IGNORED
+  "Job Status TRAILED"
+  TRAILED
+}
+
+type FireGroupPage {
+  fireGroups: [FireGroup]
+  pageInfo: PageInfo
+}
+
+type FireGroup {
+  id: Int
+  createdAt: String
+  createdBy: Int
+  datacolumnId: Int
+  datasetId: Int
+  defaultFire: Fire
+  featurecolumnId: Int
+  fires: [Fire]
+  name: String
+  numRows: Int
+  processors: [Processor]
+  ready: Boolean
+  status: FireStatus
+  subsetId: Int
+  updatedAt: String
+  updatedBy: Int
+}
+
+type Fire {
+  id: Int
+  clusterId: Int
+  createdAt: String
+  createdBy: Int
+  datacolumnId: Int
+  datasetId: Int
+  featurecolumnId: Int
+  filters: String
+  fireGroupId: Int
+  status: FireStatus
+  subsetId: Int
+  vectorizerId: Int
+}
+
+"An enumeration."
+enum FireStatus {
+  CREATING
+  COMPLETE
+  FAILED
+}
+
+"An enumeration."
+enum FIREGROUP_COLUMN_ENUM {
+  ID
+  CREATED_AT
+  CREATED_BY
+  DATACOLUMN_ID
+  DATASET_ID
+  FEATURECOLUMN_ID
+  NAME
+  NUM_ROWS
+  READY
+  STATUS
+  SUBSET_ID
+  UPDATED_AT
+  UPDATED_BY
+}
+
+input FireGroupFilter {
+  "name contains"
+  name: String
+  OR: [FireGroupFilter]
+  AND: [FireGroupFilter]
+  ands: [FireGroupFilter]
+  ors: [FireGroupFilter]
+}
+
+type FireSimilarity {
+  row: Int
+  value: Int
+}
+
+type ExportPage {
+  exports: [Export]
+  pageInfo: PageInfo
+}
+
+"An enumeration."
+enum EXPORT_COLUMN_ENUM {
+  ID
+  DATASET_ID
+  NAME
+  STATUS
+  NUM_LABELS
+  ANONYMOUS
+  DOWNLOAD_URL
+  CREATED_AT
+  CREATED_BY
+}
+
+"An enumeration."
+enum PermissionType {
+  READ_METADATA
+  READ_LABELS
+  READ_DATAPOINTS
+  MODIFY_METADATA
+  DELETE_DATASET
+  ADD_LABEL
+  MANAGE_USERS
+  FEATURIZE
+  READ_USERS
+  READ_SUBMISSIONS
+  ADD_REVIEW
+  CREATE_SUBMISSION
+  ADD_ADMIN_REVIEW
+}
+
+type DatasetPage {
+  datasets: [Dataset]
+  pageInfo: PageInfo
+}
+
+"An enumeration."
+enum DATASET_COLUMN_ENUM {
+  ID
+  NAME
+  STATUS
+  ROW_COUNT
+  DEFAULT_SUBSET_ID
+  TYPE
+  ERROR_INFO
+  CREATED_AT
+  CREATED_BY
+  UPDATED_AT
+  UPDATED_BY
+  NUM_FIRE_GROUPS
+  NUM_MODEL_GROUPS
+  NUM_QUESTIONNAIRES
+}
+
+input DatasetFilter {
+  "name contains"
+  name: String
+  OR: [DatasetFilter]
+  AND: [DatasetFilter]
+  ands: [DatasetFilter]
+  ors: [DatasetFilter]
+}
+
+type DataPointSearchResult {
+  result: DataPointSearchResultSnippet
+  context: DataPointSearchResultSnippet
+}
+
+type DataPointSearchResultSnippet {
+  "Starting index in text"
+  start: Int
+  "Exclusive end index in text"
+  end: Int
+  text: String
+}
+
+type SuperMutation {
+  generateResetLink(userId: Int!): GenerateResetLink
+  activateUser(id: Int!): User
+  deactivateUser(id: Int!): User
+  modifyScopes(id: Int! scopes: [Scope]!): User
+  unlockUser(id: Int!): User
+  invalidateSessions(id: Int!): User
+  workflowSubmission("Batch all files under a single submission" bundle: Boolean = false "UUID for duplicate Submissions caching" duplicationId: String files: [FileInput]! "Record submission for future use" recordSubmission: Boolean = true "Submission output result file version" resultVersion: SubmissionResultVersion workflowId: Int!): SubmissionResult
+  workflowUrlSubmission("Batch all urls under a single submission" bundle: Boolean = false "UUID for duplicate Submissions caching" duplicationId: String "Record submission for future use" recordSubmission: Boolean = true "Submission output result file version" resultVersion: SubmissionResultVersion urls: [String]! workflowId: Int!): SubmissionResult
+  toggleWorkflowReview("If toggling review off, mark existing submissions waiting for review as complete. Ignored if toggling review on." completeExistingSubmissions: Boolean = false "Place all future submissions into review queue" enableReview: Boolean! workflowId: Int!): Workflow
+  toggleWorkflowAutoReview("All new submissions will wait for Auto Review" enableAutoReview: Boolean! "If toggling auto review on, mark existing subs pending review as pending auto review. Ignore if toggling off" updateExistingSubmissions: Boolean = false workflowId: Int!): Workflow
+  addDataToWorkflow(workflowId: Int!): AddDataToWorkflow
+  updateWorkflowMeta("Estimated human time to complete the workflow in minutes" estHumanTimeMins: Int name: String workflowId: Int!): Workflow
+  updateSubmission("Mark the submission as having been retrieved" retrieved: Boolean submissionId: Int!): Submission
+  submitReview(changes: JSONString notes: String rejected: Boolean = false submissionId: Int!): Review
+  submitAutoReview(changes: JSONString "Bypass Review\/Exception queue (not recommended)" forceComplete: Boolean = false rejected: Boolean = false submissionId: Int!): SubmitAutoReview
+  submissionResults(submissionId: Int!): SubmissionResults
+  userSnapshotReport("User information on this date (23:59 UTC)" date: Date filters: UserReportFilter "Format of report to generate, defaults to CSV" reportFormat: ReportFormat): GenerateUserSnapshotReport
+  userChangelogReport("Changelog up to this date (23:59 UTC)" endDate: Date filters: UserReportFilter "Format of report to generate, defaults to CSV" reportFormat: ReportFormat "Changelog from this date (00:00 UTC)" startDate: Date): GenerateUserChangelogReport
+  refreshViews("Force refresh views if the views were refreshed less than cooldown period ago." force: Boolean = false): Refresh
+  createQuestionnaire("Enable predictions on the questionnaire" activeLearning: Boolean = true dataType: DataType! datasetId: Int! "Always use Text Labeling UI" forceTextMode: Boolean instructions: String modelTrainingOptions: JSONString modelType: ModelType name: String! numLabelersRequired: Int! "Create a new questionnaire from an existing labelset." originalLabelsetId: Int processors: [InputProcessor] questions: [QuestionInput]! sourceColumnId: Int!): Questionnaire
+  updateQuestionnaire("Enable labeling tasks" active: Boolean "Enable predictions on the questionnaire" activeLearning: Boolean dataType: DataType id: Int! instructions: String name: String): Questionnaire
+  deleteQuestionnaire(id: Int!): DeleteQuestionnaire
+  submitLabels(datasetId: Int! labels: [SubmissionLabel]! labelsetId: Int! "Model group to retrain after label submission" modelGroupId: Int): SubmitLabels
+  addTarget(questionnaireId: Int! target: String!): Question
+  updateQuestionKeywords("Use keywords for all users" globalPreference: Boolean = false keywords: [String]! questionnaireId: Int!): UpdateKeywords
+  addQuestionnaireUser(id: Int! userId: Int!): QuestionnaireUser
+  removeQuestionnaireUser(id: Int! userId: Int!): RemoveQuestionnaireUser
+  cancelModelTraining(modelId: Int!): CancelModelTraining
+  createModelGroup(datasetId: Int! domain: FeatureDomainEnum finetune: Boolean interlabelerResolution: LabelResolutionStrategy labelsetColumnId: Int makePredictions: Boolean = false modelTrainingOptions: JSONString modelType: ModelType name: String! processors: [InputProcessor] rowIdx: [Int] sourceColumnId: Int! subsetId: Int testSplit: Float = 0.2): ModelGroup
+  retrainModelGroup(forceRetrain: Boolean interlabelerResolution: LabelResolutionStrategy modelGroupId: Int! "Can only be updated on retrain for extraction models." modelType: ModelType): ModelGroup
+  updateModelGroupSettings(domain: FeatureDomainEnum finetune: Boolean interlabelerResolution: LabelResolutionStrategy makePredictions: Boolean modelGroupId: Int! predictOptions: JSONString rocAucAveraging: RocAucAveraging samplingStrategy: SamplingStrategy taskType: TaskType testSplit: Float wordPredictorStrength: WordPredictorStrength): ModelGroup
+  updateModelGroupName(modelGroupId: Int! name: String!): ModelGroup
+  deleteModelGroup(modelGroupId: Int!): DeleteModelGroup
+  optimizeModelGroup(makePredictions: Boolean modelGroupId: Int!): ModelGroup
+  modelPredict(data: [String] modelId: Int! predictOptions: JSONString): ModelPredict
+  modelLoad(modelId: Int!): ModelLoad
+  updateLabelsetTargetPositions(labelsetId: Int! targetNames: [String]): LabelSet
+  addLabelsetTarget(labelsetId: Int! targetName: String!): LabelSet
+  createFireGroup(datacolumnId: Int datasetId: Int filters: [FiltersInput] name: String processors: [InputProcessor]): FireGroup
+  updateFireGroup(filters: [FiltersInput] id: Int! name: String): FireGroup
+  deleteFireGroup(id: Int!): DeleteFireGroup
+  pdfExtraction(data: [String]! images: Boolean metadata: Boolean pageFormat: String rawText: Boolean singleColumn: Boolean tables: Boolean text: Boolean): PDFExtraction
+  documentExtraction(files: [FileInput] jsonConfig: JSONString): DocumentExtraction
+  activeFormFields(files: [FileInput]): ActiveFormFields
+  createExport("Anonymize user information" anonymous: Boolean = false columnIds: [Int] "One row per example, combine labels from multiple labelers into a single row" combineLabels: Boolean = false datasetId: Int! "Include datafile information" fileInfo: Boolean = true labelsetIds: [Int] name: String subsetIds: [Int]): Export
+  newDataset("DEPRECATED: Use kloudless uploader. If false, uses Nginx for local file uploads" kloudless: Boolean = false metadataList: JSONString!): Dataset
+  updateDataset(datasetId: Int! "New name of the dataset." name: String): Dataset
+  addDatasetFiles("Automatically process files that are uploaded and associated with the dataset" autoprocess: Boolean = false datasetId: Int! metadataList: JSONString!): Dataset
+  deleteDatasetFile(datasetId: Int! fileId: Int!): Dataset
+  deleteDataset(id: Int!): DeleteDataset
+  addDatasetUser(datasetId: Int! email: String! role: Roles!): DatasetUser
+  modifyDatasetUser(datasetId: Int! role: Roles! userId: Int!): DatasetUser
+  deleteDatasetUser(datasetId: Int! userId: Int!): DeleteDatasetUser
+  createDataset(datasetType: DatasetType "Name of the dataset to create" name: String!): Dataset
+  addDataFiles(datafileIds: [Int] datasetId: Int!): Dataset
+  addDataCsv(datafileIds: [Int] datasetId: Int!): Dataset
+  retryUrl(datafileId: Int! datasetId: Int! newUrl: String!): Dataset
+  "Example:\nmutation update_py_user {\n    updateUser(sZip:\"12345\") {\n        updated\n    }\n}"
+  updateUser(id: Int name: String sCity: String sCountry: String sState: String sStreet: String sStreet2: String sZip: String): User
+  "Example:\nmutation generate_new_refresh_token {\n    GenerateNewApiRefreshToken{\n        refresh_token\n    }\n}"
+  generateNewApiRefreshToken: GenerateNewApiRefreshToken
+  updateUserPreference(app: String! key: String! value: JSONString!): Preference
+  deleteUserPreference(app: String! key: String!): DeletePreference
+}
+
+type GenerateResetLink {
+  link: String
+}
+
+type SubmissionResult {
+  "Returned if submissions are not recorded"
+  jobIds: [String]
+  "Returned if submissions are recorded"
+  submissionIds: [Int]
+  submissions: [Submission]
+  "Returned if submissions are duplicates"
+  isDuplicateRequest: Boolean
+}
+
+input FileInput {
+  filename: String
+  filemeta: JSONString
+}
+
+"An enumeration."
+enum SubmissionResultVersion {
+  ONE
+  TWO
+  OLDEST_SUPPORTED
+  LATEST
+}
+
+type AddDataToWorkflow {
+  subsetId: Int
+  workflow: Workflow
+}
+
+type SubmitAutoReview {
+  jobId: String
+}
+
+type SubmissionResults {
+  jobId: String
+}
+
+type GenerateUserSnapshotReport {
+  jobId: String
+}
+
+"An enumeration."
+enum ReportFormat {
+  CSV
+  JSON
+}
+
+type GenerateUserChangelogReport {
+  jobId: String
+}
+
+input InputProcessor {
+  processorType: ProcessorType!
+  args: JSONString
+}
+
+input QuestionInput {
+  type: TaskType!
+  labelsetId: Int
+  keywords: [String]
+  text: String!
+  modelGroupId: Int
+  targets: [String]!
+}
+
+type DeleteQuestionnaire {
+  success: Boolean
+}
+
+type SubmitLabels {
+  success: Boolean
+}
+
+input SubmissionLabel {
+  rowIndex: Int!
+  target: JSONString
+  rejected: Boolean = false
+  deleted: Boolean = false
+  override: Boolean = false
+}
+
+type UpdateKeywords {
+  keywords: [String]
+}
+
+type RemoveQuestionnaireUser {
+  success: Boolean
+}
+
+type CancelModelTraining {
+  success: Boolean
+}
+
+"An enumeration."
+enum FeatureDomainEnum {
+  STANDARD
+  STANDARD_V2
+  TOPICS
+  SENTIMENT
+  FINANCE
+  EMOTION
+  ENSEMBLE
+  FASTTEXT
+  UNSUPERVISEDSENTIMENT
+  IMAGE_V2
+  IMAGE_V3
+  IMAGE_V4
+  IMAGE_ENSEMBLE
+}
+
+"An enumeration."
+enum RocAucAveraging {
+  SIMPLE
+  WEIGHTED
+}
+
+"An enumeration."
+enum SamplingStrategy {
+  NO_SAMPLING
+  RANDOM_OVERSAMPLE
+}
+
+"An enumeration."
+enum WordPredictorStrength {
+  STRONG
+  MODERATE
+  WEAK
+}
+
+type DeleteModelGroup {
+  success: Boolean
+}
+
+type ModelPredict {
+  jobId: String
+}
+
+type ModelLoad {
+  status: String
+}
+
+input FiltersInput {
+  labels: [String]!
+  predictionLabelsetId: Int
+  targetLabelsetId: Int
+}
+
+type DeleteFireGroup {
+  success: Boolean
+}
+
+type PDFExtraction {
+  jobId: String
+}
+
+type DocumentExtraction {
+  jobIds: [String]
+}
+
+type ActiveFormFields {
+  jobIds: [String]
+}
+
+type DeleteDataset {
+  success: Boolean
+}
+
+type DeleteDatasetUser {
+  success: Boolean
+}
+
+"Example:\nmutation generate_new_refresh_token {\n    GenerateNewApiRefreshToken{\n        refresh_token\n    }\n}"
+type GenerateNewApiRefreshToken {
+  refreshToken: String
+}
+
+type DeletePreference {
+  success: Boolean
+}
+
+type Subscription {
+  datasetCreated: Dataset
+  datasetUpdated: Dataset
+  datasetDeleted: Dataset
+}
+
+type Component implements ComponentInterface {
+  id: Int
+  docbotId: Int
+  componentAppId: Int
+  componentType: ComponentType
+  reviewable: Boolean
+}
+
+type ModelGroupComponent implements ComponentInterface {
+  id: Int
+  docbotId: Int
+  componentAppId: Int
+  componentType: ComponentType
+  reviewable: Boolean
+  taskType: TaskType
+  modelType: ModelType
+}

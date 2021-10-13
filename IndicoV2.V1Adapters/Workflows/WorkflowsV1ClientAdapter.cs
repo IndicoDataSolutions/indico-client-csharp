@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using Indico;
 using Indico.Query;
 using IndicoV2.V1Adapters.Workflows.Models;
-using IndicoV2.Workflows;
 using IndicoV2.Workflows.Models;
 
 namespace IndicoV2.V1Adapters.Workflows
 {
-    public class WorkflowsV1ClientAdapter : IWorkflowsClient
+    public class WorkflowsV1ClientAdapter
     {
         private readonly IndicoClient _indicoClientLegacy;
 
@@ -23,7 +22,7 @@ namespace IndicoV2.V1Adapters.Workflows
         {
             var workflows = await new ListWorkflows(_indicoClientLegacy)
             {
-                DatasetIds = dataSetIds.ToList()
+                DatasetIds = dataSetIds?.ToList()
             }.Exec(cancellationToken);
 
             return workflows.Select(wf => new V1WorkflowAdapter(wf));

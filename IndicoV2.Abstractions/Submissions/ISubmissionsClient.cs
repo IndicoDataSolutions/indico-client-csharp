@@ -19,7 +19,17 @@ namespace IndicoV2.Submissions
         /// <param name="streams"><c><see cref="Stream">Stream collection</see></c> to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
+        [Obsolete("Please provide file name for each stream.")]
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Method creates <c><see cref="ISubmission"/></c>.
+        /// </summary>
+        /// <param name="workflowId">Workflow Id.</param>
+        /// <param name="streams"><c><see cref="Stream">Stream collection</see></c> to create submissions from.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
+        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> files, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Method creates <c><see cref="ISubmission"/></c>.

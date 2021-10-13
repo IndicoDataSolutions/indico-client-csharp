@@ -1,5 +1,6 @@
 ﻿using System;
 using Indico;
+using IndicoV2.StrawberryShake;
 
 namespace IndicoV2
 {
@@ -15,15 +16,23 @@ namespace IndicoV2
         private Indico.IndicoClient _legacyClient;
 
         internal Uri BaseUri { get; }
+        private readonly Uri _graphQl = new Uri("graph/api/graphql", UriKind.Relative);
+
         internal Indico.IndicoClient LegacyClient =>
             _legacyClient ?? (_legacyClient =
                 new Indico.IndicoClient(new IndicoConfig(host: BaseUri.Host, apiToken: _apiToken)));
+
+        private IndicoStrawberryShakeClient _indicoStrawberryShakeClient;
+
+        internal IndicoStrawberryShakeClient IndicoStrawberryShakeClient =>
+            _indicoStrawberryShakeClient
+            ?? (_indicoStrawberryShakeClient = new IndicoStrawberryShakeClient(BaseUri, _graphQl, _apiToken));
 
         /// <summary>
         /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
         /// </summary>
         /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
-        public IndicoClient(string apiToken): this(apiToken, new Uri(_defaultUrl))
+        public IndicoClient(string apiToken) : this(apiToken, new Uri(_defaultUrl))
         { }
 
         /// <summary>
@@ -33,7 +42,7 @@ namespace IndicoV2
         /// <param name="baseUri">indico.io base address (Default values is <c>https://app.indico.io</c>)</param>
         public IndicoClient(string apiToken, Uri baseUri)
         {
-            _apiToken = apiToken  ?? throw new ArgumentNullException(nameof(apiToken));
+            _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
         }
     }

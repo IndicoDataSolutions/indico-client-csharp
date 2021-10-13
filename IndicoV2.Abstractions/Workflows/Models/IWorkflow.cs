@@ -6,5 +6,7 @@
         /// Workflow's Id
         /// </summary>
         int Id { get; }
+
+        bool ReviewEnabled { get; }
     }
 }

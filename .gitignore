@@ -43,4 +43,5 @@ msbuild.wrn
 *.resources
 test-results/
 
+IndicoV2.StrawberryShake/Generated/
 user.runsettings

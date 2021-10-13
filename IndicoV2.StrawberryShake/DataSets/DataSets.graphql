@@ -1,0 +1,39 @@
+﻿query DatasetUploadStatus($id: Int!) {
+  dataset(id: $id) {
+    id
+    status
+    files {
+      id
+      name
+      deleted
+      fileSize
+      rainbowUrl
+      fileType
+      fileHash
+      status
+      statusMeta
+      failureType
+    }
+  }
+}
+
+mutation DataSetAddFiles($datasetId: Int!, $metadata: JSONString!) {
+  addDatasetFiles(datasetId: $datasetId, metadataList: $metadata) {
+    id
+    status
+  }
+}
+
+mutation DataSetProcessFiles($datasetId: Int!, $datafileIds: [Int]) {
+  addDataFiles(datasetId: $datasetId, datafileIds: $datafileIds) {
+    id
+    name
+  }
+}
+
+mutation DataSetProcessCsv($datasetId: Int!, $datafileIds: [Int]) {
+  addDataCsv(datasetId: $datasetId, datafileIds: $datafileIds) {
+    id
+    name
+  }
+}

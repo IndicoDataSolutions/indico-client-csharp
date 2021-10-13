@@ -44,7 +44,7 @@ namespace IndicoV2.IntegrationTests.Ocr
             if (preset != DocumentExtractionPreset.OnDocument)
             {
                 // Act
-                var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url);
+                var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url, default);
 
                 // Assert
                 extractionResult.Should().NotBeNullOrEmpty();
@@ -52,7 +52,7 @@ namespace IndicoV2.IntegrationTests.Ocr
             else
             {
                 // Act
-                var extractionResult = await _ocrClient.GetExtractionResultAsync<JArray>(jobResult.Url);
+                var extractionResult = await _ocrClient.GetExtractionResultAsync<JArray>(jobResult.Url, default);
 
                 // Assert
                 extractionResult.Count.Should().Be(1);

@@ -13,6 +13,10 @@ namespace IndicoV2.V1Adapters.Tests.Converters
                 .Inner.Should().NotBeNull()
                 .And.BeOfType<TestInner>();
 
+        [Test]
+        public void InterfaceConverter_ShouldSerializeFromInterface() =>
+            JsonConvert.SerializeObject(new Test {Inner = new TestInner()}).Should().Be("{\"Inner\":{}}");
+
         private interface ITestInner
         { }
         private class TestInner : ITestInner

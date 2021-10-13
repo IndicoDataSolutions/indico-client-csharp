@@ -6,7 +6,7 @@ namespace IndicoV2.Tests
     [TestFixture()]
     public class IndicoClientExtensionsTests
     {
-        private IndicoClient Client => new IndicoClient("test");
+        private IndicoClient Client => new("test");
 
         [Test()]
         public void Reviews_ShouldCreateInstance() => Client.Reviews().Should().NotBeNull();
@@ -26,5 +26,17 @@ namespace IndicoV2.Tests
 
         [Test]
         public void Models_ShouldReturnModelsClient() => Client.Models().Should().NotBeNull();
+
+        [Test]
+        public void Ocr_ShouldReturnClient() => Client.Ocr().Should().NotBeNull();
+
+        [Test]
+        public void WorkflowAwaiter_ShouldReturnClient() => Client.WorkflowAwaiter().Should().NotBeNull();
+
+        [Test]
+        public void Jobs_ShouldReturnClient() => Client.Jobs().Should().NotBeNull();
+
+        [Test]
+        public void DataSetAwaiter_ShouldReturnClient() => Client.DataSetAwaiter().Should().NotBeNull();
     }
 }

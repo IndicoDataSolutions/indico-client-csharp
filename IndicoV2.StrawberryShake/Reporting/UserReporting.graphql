@@ -1,0 +1,67 @@
+﻿query UserSummary($date: Date){
+  userSummary(date: $date){
+      users {
+          enabled
+          disabled
+      }
+      appRoles {
+          role
+          count
+      }
+   }
+}
+
+query UserSnapshot($date: Date, $filters: UserReportFilter){
+    userSnapshot(date: $date, filters: $filters){
+        results {
+            id
+            name
+            createdAt
+            enabled
+            roles
+            datasets {
+                datasetId
+                role
+            }
+        }
+        pageInfo{
+            aggregateCount
+        }
+  }
+}
+
+  query UserChangelog($sdate: Date, $edate: Date, $filters: UserReportFilter){
+    userChangelog(startDate: $sdate, endDate: $edate, filters: $filters){
+        results {
+            id
+            date
+            userEmail
+            updaterEmail
+            previousDatasets {
+                datasetId
+                role
+            }
+            changesMade
+        }
+        pageInfo{
+            aggregateCount
+        }
+    }
+}
+
+mutation UserSnapshotReport($date: Date, $filters: UserReportFilter){
+    userSnapshotReport(date: $date, filters: $filters, reportFormat: CSV){
+        jobId
+    }
+}
+
+mutation UserChangelogReport ($sdate: Date, $edate: Date, $filters: UserReportFilter){
+    userChangelogReport(
+        startDate: $sdate,
+        endDate: $edate,
+        filters: $filters,
+        reportFormat: JSON
+    ){
+        jobId
+    }
+}
