@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     /// <summary>
     /// Generates submission results.
     /// </summary>

@@ -11,6 +11,9 @@ using Indico.Storage;
 
 namespace OcrPredict
 {
+    /// <summary>
+    /// NOTE: This example is obsolete and will be rewritten.
+    /// </summary>
     internal class Program
     {
         /* 
