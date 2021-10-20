@@ -10,6 +10,8 @@ using Indico.Jobs;
 
 namespace Indico.Mutation
 {
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     /// <summary>
     /// Predicts on a Model Group.
     /// </summary>

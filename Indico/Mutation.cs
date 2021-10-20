@@ -1,8 +1,11 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Indico
 {
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     internal interface IMutation<T>
     {
         /// <summary>

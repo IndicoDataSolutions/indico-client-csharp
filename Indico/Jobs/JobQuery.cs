@@ -1,8 +1,11 @@
-﻿using GraphQL.Client.Http;
+﻿using System;
+using GraphQL.Client.Http;
 using Indico.Exception;
 
 namespace Indico.Jobs
 {
+
+    [Obsolete("This is the V1 Version. Please use V2 where possible.")]
     public class JobQuery
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;

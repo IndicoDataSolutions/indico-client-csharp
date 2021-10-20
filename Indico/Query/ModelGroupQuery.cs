@@ -13,6 +13,8 @@ namespace Indico.Query
     /// <summary>
     /// Gets a Model Group.
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class ModelGroupQuery : IQuery<ModelGroup>
     {
         private readonly GraphQLHttpClient _graphQLHttpClient;

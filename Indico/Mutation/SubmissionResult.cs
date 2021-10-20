@@ -8,6 +8,8 @@ using Indico.Types;
 
 namespace Indico.Mutation
 {
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     /// <summary>
     /// Result of a Submission.
     /// </summary>

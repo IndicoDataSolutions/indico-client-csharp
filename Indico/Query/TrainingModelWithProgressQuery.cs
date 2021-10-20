@@ -10,6 +10,8 @@ namespace Indico.Query
     /// <summary>
     /// Find the % complete of a training Model Group
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class TrainingModelWithProgressQuery : IQuery<JArray>
     {
         private readonly IndicoClient _client;

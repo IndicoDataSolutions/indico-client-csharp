@@ -1,9 +1,11 @@
 ﻿using Indico.Types;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
 namespace Indico.Entity
 {
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class SubmissionFilter : Filter
     {
         public string InputFilename { get; set; }

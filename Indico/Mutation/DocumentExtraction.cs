@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Indico.Mutation
 {
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     /// <summary>
     /// OCR PDF, TIF, JPG and PNG files
     /// </summary>

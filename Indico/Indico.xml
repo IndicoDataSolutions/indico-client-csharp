@@ -50,6 +50,7 @@
             <summary>
             Indico Client to send all GraphQL requests to the platform
             </summary>
+            
         </member>
         <member name="P:Indico.IndicoClient.Config">
             <summary>
@@ -179,6 +180,7 @@
             <summary>
             Async Job information
             </summary>
+            
         </member>
         <member name="P:Indico.Jobs.Job.Id">
             <summary>
@@ -239,11 +241,6 @@
             </summary>
             <returns>result of query of type T</returns>
         </member>
-        <member name="T:Indico.Mutation.DocumentExtraction">
-            <summary>
-            OCR PDF, TIF, JPG and PNG files
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.DocumentExtraction.Files">
             <summary>
             List of files to process
@@ -274,11 +271,6 @@
             <returns>Job</returns>
             </summary>
         </member>
-        <member name="T:Indico.Mutation.GenerateSubmissionResult">
-            <summary>
-            Generates submission results.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.GenerateSubmissionResult.SubmissionId">
             <summary>
             Submission Id.
@@ -296,11 +288,6 @@
             </summary>
             <param name="cancellationToken">Token to abort operations.</param>
             <returns><c><see cref="T:Indico.Jobs.Job"/></c></returns>
-        </member>
-        <member name="T:Indico.Mutation.ModelGroupLoad">
-            <summary>
-            Loads a Model Group.
-            </summary>
         </member>
         <member name="P:Indico.Mutation.ModelGroupLoad.ModelId">
             <summary>
@@ -325,11 +312,6 @@
             </summary>
             <returns>Load status.</returns>
         </member>
-        <member name="T:Indico.Mutation.ModelGroupPredict">
-            <summary>
-            Predicts on a Model Group.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.ModelGroupPredict.ModelId">
             <summary>
             Get/Set the Model ID (often Selected Model ID for a Model Group).
@@ -352,11 +334,6 @@
             Executes request and returns job. 
             </summary>
         </member>
-        <member name="T:Indico.Mutation.SubmissionResult">
-            <summary>
-            Result of a Submission.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.SubmissionResult.SubmissionId">
             <summary>
             Submission id.
@@ -376,11 +353,6 @@
         <member name="M:Indico.Mutation.SubmissionResult.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes request and returns job.
-            </summary>
-        </member>
-        <member name="T:Indico.Mutation.SubmitReview">
-            <summary>
-            Submits review.
             </summary>
         </member>
         <member name="P:Indico.Mutation.SubmitReview.SubmissionId">
@@ -414,11 +386,6 @@
             Submits review and returns job.
             </summary>
         </member>
-        <member name="T:Indico.Mutation.UpdateSubmission">
-            <summary>
-            Updates Submission.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.UpdateSubmission.SubmissionId">
             <summary>
             Submission id.
@@ -440,11 +407,6 @@
             Executes query and returns Submission.
             </summary>
         </member>
-        <member name="T:Indico.Mutation.WorkflowSubmission">
-            <summary>
-            Submits to workflow.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.WorkflowSubmission.Detailed">
             <inheritdoc/>
         </member>
@@ -457,11 +419,6 @@
         <member name="M:Indico.Mutation.WorkflowSubmission.Exec(System.Threading.CancellationToken)">
             <summary>
             Executes the query and returns list of submissions ids.
-            </summary>
-        </member>
-        <member name="T:Indico.Mutation.WorkflowSubmissionBase">
-            <summary>
-            Base for WorkflowSubmission classes.
             </summary>
         </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionBase.WorkflowId">
@@ -501,11 +458,6 @@
             Executes request and returns Job.
             </summary>
         </member>
-        <member name="T:Indico.Mutation.WorkflowSubmissionDetailed">
-            <summary>
-            Submits detailed to workflow.
-            </summary>
-        </member>
         <member name="P:Indico.Mutation.WorkflowSubmissionDetailed.Detailed">
             <inheritdoc/>
         </member>
@@ -525,11 +477,6 @@
             Execute the graphql query and returns the results as a specific type
             </summary>
             <returns>result of query of type T</returns>
-        </member>
-        <member name="T:Indico.Query.GetSubmission">
-            <summary>
-            Gets submission.
-            </summary>
         </member>
         <member name="P:Indico.Query.GetSubmission.Id">
             <summary>
@@ -552,6 +499,7 @@
             <summary>
             Gets workflow.
             </summary>
+            
         </member>
         <member name="P:Indico.Query.GetWorkflow.WorkflowId">
             <summary>
@@ -573,6 +521,7 @@
             <summary>
             Lists submissions.
             </summary>
+            
         </member>
         <member name="P:Indico.Query.ListSubmissions.SubmissionIds">
             <summary>
@@ -610,6 +559,7 @@
             <summary>
             Lists workflows.
             </summary>
+            
         </member>
         <member name="P:Indico.Query.ListWorkflows.DatasetIds">
             <summary>
@@ -636,6 +586,7 @@
             <summary>
             Gets a Model Group.
             </summary>
+            
         </member>
         <member name="P:Indico.Query.ModelGroupQuery.MgId">
             <summary>
@@ -658,6 +609,7 @@
             <summary>
             Find the % complete of a training Model Group
             </summary>
+            
         </member>
         <member name="P:Indico.Query.TrainingModelWithProgressQuery.ModelId">
             <summary>
