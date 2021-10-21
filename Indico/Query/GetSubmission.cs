@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Indico.Query
 {
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     /// <summary>
     /// Gets submission.
     /// </summary>

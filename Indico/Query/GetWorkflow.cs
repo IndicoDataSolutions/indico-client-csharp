@@ -9,6 +9,8 @@ namespace Indico.Query
     /// <summary>
     /// Gets workflow.
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class GetWorkflow : IQuery<Workflow>
     {
         private readonly IndicoClient _client;

@@ -1,5 +1,10 @@
-﻿namespace Indico.Exception
+﻿using System;
+
+namespace Indico.Exception
 {
+
+
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     [System.Serializable]
     public class FileUploadException : System.Exception
     {

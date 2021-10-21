@@ -2,6 +2,7 @@ using GraphQL;
 using Indico.Entity;
 using Indico.Exception;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -12,6 +13,8 @@ namespace Indico.Query
     /// <summary>
     /// Lists workflows.
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class ListWorkflows : IQuery<List<Workflow>>
     {
         private readonly IndicoClient _client;

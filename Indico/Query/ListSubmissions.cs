@@ -14,6 +14,8 @@ namespace Indico.Query
     /// <summary>
     /// Lists submissions.
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class ListSubmissions : IQuery<List<Submission>>
     {
         private readonly IndicoClient _client;

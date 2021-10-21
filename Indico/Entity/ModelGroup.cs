@@ -1,7 +1,9 @@
+using System;
 using Indico.Types;
 
 namespace Indico.Entity
 {
+    [Obsolete("This is the V1 Version of the object. Please use V2 where possible.")]
     public class ModelGroup
     {
         /// <summary>

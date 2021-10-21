@@ -8,12 +8,16 @@ using Indico.Storage;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using GraphQL.Client.Serializer.Newtonsoft;
+using System;
 
 namespace Indico
 {
+    
     /// <summary>
     /// Indico Client to send all GraphQL requests to the platform
     /// </summary>
+    /// 
+    [Obsolete("This is the V1 Version of the indico client. Please use V2.")]
     public class IndicoClient
     {
         /// <summary>
