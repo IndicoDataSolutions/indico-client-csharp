@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Indico.Entity;
+using IndicoV2.CommonModels.Pagination;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Submissions;
@@ -42,10 +45,38 @@ namespace IndicoV2.Submissions
         public Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
             CancellationToken cancellationToken = default) => _legacy.ListAsync(submissionIds, workflowIds, filters, limit, cancellationToken);
 
+
+        public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
+        {
+            var ssFilters = filters != null ? FilterConverter.ConvertToSs(filters) : null;
+
+            var readonlyIds = (IReadOnlyList<int?>)submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var readonlyWorkflowIds = (IReadOnlyList<int?>)workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var result = await _strawberryShakeClient.Submissions().List(readonlyIds, readonlyWorkflowIds, ssFilters, limit, after, cancellationToken);
+
+            return new HasCursor<IEnumerable<ISubmission>>()
+            {
+                Data = result?.Submissions?.Select(x => ToSubmissionFromSs(x)).ToList() ?? new List<ISubmission>(),
+                PageInfo = new PageInfo()
+                {
+                    HasNextPage = result?.PageInfo?.HasNextPage ?? false,
+                    StartCursor = result?.PageInfo?.StartCursor ?? 0,
+                    EndCursor = result?.PageInfo?.EndCursor ?? 0,
+                    AggregateCount = result?.PageInfo?.AggregateCount ?? 0
+
+                }
+            };
+        }
+
+
         public Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default) =>
             _legacy.GetAsync(submissionId, cancellationToken);
 
         public Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
             _legacy.GenerateSubmissionResultAsync(submissionId, cancellationToken);
+
+        private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
+
+
     }
 }

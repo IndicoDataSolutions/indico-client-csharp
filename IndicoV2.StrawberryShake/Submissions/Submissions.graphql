@@ -12,3 +12,44 @@
     submissionIds
   }
 }
+
+query ListSubmissions(
+            $submissionIds: [Int],
+            $workflowIds: [Int],
+            $filters: SubmissionFilter,
+            $limit: Int,
+            $orderBy: SUBMISSION_COLUMN_ENUM,
+            $desc: Boolean,
+            $after: Int
+            
+        ){
+            submissions(
+                submissionIds: $submissionIds,
+                workflowIds: $workflowIds,
+                filters: $filters,
+                limit: $limit
+                orderBy: $orderBy,
+                desc: $desc,
+                after: $after
+                
+            ){
+                submissions {
+                    id
+                    datasetId
+                    workflowId
+                    status
+                    inputFile
+                    inputFilename
+                    resultFile
+                    deleted
+                    retrieved
+                    errors
+                },
+                pageInfo{
+                    startCursor
+                    endCursor
+                    hasNextPage
+                    aggregateCount
+                    }
+            }
+        }
