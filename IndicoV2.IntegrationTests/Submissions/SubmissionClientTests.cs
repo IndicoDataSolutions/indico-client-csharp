@@ -152,5 +152,29 @@ namespace IndicoV2.IntegrationTests.Submissions
             // Assert
             jobId.Should().NotBeEmpty();
         }
+
+        [Test]
+        public async Task MarkSubmissionAsRetrieved_ShouldUpdateSubmission()
+        {
+            // Arrange
+            var submissionId = (await _dataHelper.Submissions().GetAnyAsync()).Id;
+            while (SubmissionStatus.PROCESSING == (await _submissionsClient.GetAsync(submissionId)).Status)
+            {
+                await Task.Delay(50);
+            }
+
+            // Act
+            var submission = await _submissionsClient.MarkSubmissionAsRetrieved(submissionId);
+            // Assert
+            submission.Should().NotBeNull();
+
+            var result = await _submissionsClient.ListAsync(new List<int>() { submission.Value }, new List<int>(), null);
+            result.Should().NotBeNullOrEmpty();
+
+            var updated_sub = result.First();
+            updated_sub.Should().NotBeNull();
+            updated_sub.Retrieved.Should().BeTrue();
+
+        }
     }
 }

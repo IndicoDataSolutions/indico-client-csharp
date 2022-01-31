@@ -10,7 +10,7 @@
 		<RepositoryUrl>https://github.com/IndicoDataSolutions/indico-client-csharp</RepositoryUrl>
 		<RepositoryType>Github</RepositoryType>
 		<PackageTags>Indico</PackageTags>
-		<PackageReleaseNotes>This is the first preview release of the C# client for the Indico IPA Platform V3.x</PackageReleaseNotes>
+		<PackageReleaseNotes>This is the 4.x IPA platform package.</PackageReleaseNotes>
 		<Product>Indico IPA</Product>
 		<Copyright>$([System.DateTime]::UtcNow.ToString("YYYY)) Indico, Inc.</Copyright>
 		<NeutralLanguage>en-US</NeutralLanguage>

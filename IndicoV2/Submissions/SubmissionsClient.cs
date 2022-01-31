@@ -75,8 +75,9 @@ namespace IndicoV2.Submissions
         public Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
             _legacy.GenerateSubmissionResultAsync(submissionId, cancellationToken);
 
+        public async Task<int?> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default) => await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
+
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
-
-
+       
     }
 }
