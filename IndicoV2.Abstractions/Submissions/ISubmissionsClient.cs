@@ -89,5 +89,14 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Created Job's Id</returns>
         Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Marks a submission as retrieved. Defaults retrieved to true.
+        /// </summary>
+        /// <param name="submissionId"></param>
+        /// <param name="retrieved"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Id of the submission updated.</returns>
+        Task<int?> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default);
     }
 }

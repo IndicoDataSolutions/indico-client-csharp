@@ -28,6 +28,7 @@ namespace IndicoV2.StrawberryShake.Submissions
         public async Task<IListSubmissions_Submissions> List(IReadOnlyList<int?> ids, IReadOnlyList<int?> workflowIds, SubmissionFilter? filter, int? limit, int? after, CancellationToken cancellationToken) => (
             await ExecuteAsync(async () => await _services.GetRequiredService<ListSubmissionsQuery>().ExecuteAsync(ids, workflowIds, filter, limit, null, null, after, cancellationToken))).Submissions;
 
+        public async Task<int?> MarkRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default) => (await ExecuteAsync(async() => await _services.GetRequiredService<UpdateSubmissionMutation>().ExecuteAsync(submissionId, retrieved, cancellationToken))).UpdateSubmission.Id;
         private string RemovePropsCausingErrors(string metaString)
         {
             var acceptableMetaProps = new[] { "name", "path", "upload_type" };

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
 	  <BuildType>V2</BuildType>
+	  <Version>4.0.0-preview.2201271556</Version>
   </PropertyGroup>
 
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
