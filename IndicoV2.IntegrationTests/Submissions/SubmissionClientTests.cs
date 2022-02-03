@@ -168,7 +168,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             // Assert
             submission.Should().NotBeNull();
 
-            var result = await _submissionsClient.ListAsync(new List<int>() { submission.Value }, new List<int>(), null);
+            var result = await _submissionsClient.ListAsync(new List<int>() { submission.Id }, new List<int>(), null);
             result.Should().NotBeNullOrEmpty();
 
             var updated_sub = result.First();
