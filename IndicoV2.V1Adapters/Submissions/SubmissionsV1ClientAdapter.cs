@@ -70,5 +70,11 @@ namespace IndicoV2.V1Adapters.Submissions
 
             return job.Id;
         }
+
+        public async Task<ISubmission> UpdateSubmissionAsync(int submissionId, bool retrieved, CancellationToken cancellationToken = default)
+        {
+            var submission = await new UpdateSubmission(_indicoClient) { SubmissionId = submissionId, Retrieved = retrieved }.Exec(cancellationToken);
+            return new V1SubmissionAdapter(submission);
+        }
     }
 }

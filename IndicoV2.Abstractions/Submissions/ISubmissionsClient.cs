@@ -97,6 +97,6 @@ namespace IndicoV2.Submissions
         /// <param name="retrieved"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>Id of the submission updated.</returns>
-        Task<int?> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default);
+        Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default);
     }
 }
