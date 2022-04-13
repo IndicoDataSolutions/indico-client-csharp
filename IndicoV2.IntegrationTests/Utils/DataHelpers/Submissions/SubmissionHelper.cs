@@ -33,13 +33,13 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
         public async Task<ISubmission> GetAnyAsync(Stream content)
         {
             var workflow = await _workflowHelper.GetAnyWorkflow();
-            var submissionIds = await _submissions.CreateAsync(workflow.Id, new [] { content ?? throw new ArgumentNullException(nameof(content))});
+            var submissionIds = await _submissions.CreateAsync(workflow.Id, new [] { ("csharp_test_content",content ?? throw new ArgumentNullException(nameof(content)))});
             var submission = await _submissions.GetAsync(submissionIds.Single());
 
             return submission;
         }
 
-        public async Task<int> Get(IWorkflow workflow, Stream content) => (await _submissions.CreateAsync(workflow.Id, new[] { content })).Single();
+        public async Task<int> Get(IWorkflow workflow, Stream content) => (await _submissions.CreateAsync(workflow.Id, new[] { ("csharp_test_content", content) })).Single();
 
         public async Task<(int workflowId, int submissionId)> ListAnyAsync()
         {
@@ -50,7 +50,7 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.Submissions
         public async Task<(int workflowId, int submissionId)> ListAnyAsync(Stream content)
         {
             var workflow = await _workflowHelper.GetAnyWorkflow();
-            var submissionIds = await _submissions.CreateAsync(workflow.Id, new[] { content ?? throw new ArgumentNullException(nameof(content))});
+            var submissionIds = await _submissions.CreateAsync(workflow.Id, new[] {  ("csharp_test_content", content ?? throw new ArgumentNullException(nameof(content))) });
 
             return (workflow.Id, submissionIds.First());
         }

@@ -25,22 +25,40 @@ namespace IndicoV2.Submissions
             _strawberryShakeClient = indicoClient.IndicoStrawberryShakeClient;
         }
 
+       
         public Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams,
             CancellationToken cancellationToken = default) =>
             _legacy.CreateAsync(workflowId, streams, cancellationToken);
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload,  CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null)
         {
             var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken);
-            return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken);
+            return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
         }
 
         public Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris,
-            CancellationToken cancellationToken = default) =>
+            CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null) =>
             _legacy.CreateAsync(workflowId, uris, cancellationToken);
 
-        Task<IEnumerable<int>> ISubmissionsClient.CreateAsync(int workflowId, IEnumerable<string> paths,
-            CancellationToken cancellationToken) => _legacy.CreateAsync(workflowId, paths, cancellationToken);
+         Task<IEnumerable<int>> ISubmissionsClient.CreateAsync(int workflowId, IEnumerable<string> paths,
+           CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null) {
+            var filesToUpload = new List<(string Name, Stream content)>();
+            foreach(var path in paths)
+            {
+                if(File.Exists(path))
+                {
+                    var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    filesToUpload.Add((path, fileStream));
+                }
+                else
+                {
+                    throw new ArgumentException($"Cannot find a file at path {path}");
+                } 
+
+            }
+             return CreateAsync(workflowId, filesToUpload, cancellationToken, resultsFileVersion);
+        }
+
 
         public Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
             CancellationToken cancellationToken = default) => _legacy.ListAsync(submissionIds, workflowIds, filters, limit, cancellationToken);

@@ -1,12 +1,12 @@
 ﻿mutation WorkflowSubmission(
   $workflowId: Int!
   $files: [FileInput!]!
-  $recordSubmission: Boolean
+  $resultVersion: SubmissionResultVersion
 ) {
   workflowSubmission(
     workflowId: $workflowId
     files: $files
-    recordSubmission: $recordSubmission
+    resultVersion: $resultVersion
   ) {
     jobIds
     submissionIds
