@@ -15,11 +15,11 @@ namespace IndicoV2.StrawberryShake.Submissions
 
         public SubmissionSsClient(ServiceProvider services) => _services = services;
 
-        public async Task<IEnumerable<int>> Create(int workflowId, IEnumerable<(string Name, string Meta)> files, CancellationToken cancellationToken) => 
+        public async Task<IEnumerable<int>> Create(int workflowId, IEnumerable<(string Name, string Meta)> files,  CancellationToken cancellationToken, SubmissionResultVersion? resultsFileVersion = null) => 
             (await ExecuteAsync(async () => await _services.GetRequiredService<WorkflowSubmissionMutation>().ExecuteAsync(
                 workflowId, 
                 files.Select(f => new FileInput { Filename = f.Name, Filemeta = RemovePropsCausingErrors(f.Meta)}).ToArray(), 
-                default,
+                resultsFileVersion,
                 cancellationToken)))
             .WorkflowSubmission
             .SubmissionIds
