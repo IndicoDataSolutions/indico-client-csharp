@@ -36,6 +36,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             await using var fileStream = _dataHelper.Files().GetSampleFileStream();
 
             // Act
+
             var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new List<(string f, Stream c)> { ("csharp_test_content", fileStream) });
 
             // Assert
