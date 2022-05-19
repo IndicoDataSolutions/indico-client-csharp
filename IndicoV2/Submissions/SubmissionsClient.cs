@@ -36,6 +36,27 @@ namespace IndicoV2.Submissions
             return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
         }
 
+
+     
+        public Task<IEnumerable<int>> CreateAsyncLegacy(int workflowId, IEnumerable<string> paths,
+          CancellationToken cancellationToken)
+        {
+            var filesToUpload = new List<Stream>();
+            foreach (var path in paths)
+            {
+                if (File.Exists(path))
+                {
+                    var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                    filesToUpload.Add(fileStream);
+                }
+                else
+                {
+                    throw new ArgumentException($"Cannot find a file at path {path}");
+                }
+
+            }
+            return _legacy.CreateAsync(workflowId, filesToUpload, cancellationToken);
+        }
         public Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris,
             CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null) =>
             _legacy.CreateAsync(workflowId, uris, cancellationToken);

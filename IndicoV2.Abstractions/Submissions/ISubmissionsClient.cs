@@ -99,5 +99,15 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"></param>
         /// <returns>Id of the submission updated.</returns>
         Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Uses the legacy C# client for older frameworks.
+        /// </summary>
+        /// <param name="workflowId"></param>
+        /// <param name="paths"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<IEnumerable<int>> CreateAsyncLegacy(int workflowId, IEnumerable<string> paths,
+          CancellationToken cancellationToken = default);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -35,7 +36,8 @@ namespace IndicoV2.IntegrationTests.Submissions
             await using var fileStream = _dataHelper.Files().GetSampleFileStream();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new[] { ("csharp_test_content", fileStream) });
+
+            var submissionIds = await _submissionsClient.CreateAsync(_workflow.Id, new List<(string f, Stream c)> { ("csharp_test_content", fileStream) });
 
             // Assert
             var submissionId = submissionIds.Single();
