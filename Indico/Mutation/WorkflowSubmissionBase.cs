@@ -127,8 +127,8 @@ namespace Indico.Mutation
             }
 
             var query = $@"
-                    mutation WorkflowSubmission($workflowId: Int!, ${arg}: {type}, $recordSubmission: Boolean) {{
-                        {mutationName}(workflowId: $workflowId, {arg}: ${arg}, recordSubmission: $recordSubmission) {{
+                    mutation WorkflowSubmission($workflowId: Int!, ${arg}: {type}) {{
+                        {mutationName}(workflowId: $workflowId, {arg}: ${arg}) {{
                             jobIds
                             submissionIds
                         }}
@@ -136,8 +136,8 @@ namespace Indico.Mutation
                 ";
 
             var queryDetailed = $@"
-                    mutation workflowSubmissionMutation($workflowId: Int!, ${arg}: {type}, $recordSubmission: Boolean) {{
-                        {mutationName}(workflowId: $workflowId, {arg}: ${arg}, recordSubmission: $recordSubmission) {{
+                    mutation workflowSubmissionMutation($workflowId: Int!, ${arg}: {type}) {{
+                        {mutationName}(workflowId: $workflowId, {arg}: ${arg}) {{
                             submissionIds
                             submissions {{
                                 id
