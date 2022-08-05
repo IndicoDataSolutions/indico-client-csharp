@@ -6,17 +6,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Indico", "Indico\Indico.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Indico.Tests", "Indico.Tests\Indico.Tests.csproj", "{B2073447-E583-437C-B778-58FEC18DBFAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SingleDocExtraction", "SingleDocExtraction\SingleDocExtraction.csproj", "{E80667B5-3F03-4024-BE1E-AFB3E296159E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphqlCall", "GraphqlCall\GraphqlCall.csproj", "{D0B9C38F-8409-4A49-BA6D-0A8D40384C7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetModelTrainingProgress", "GetModelTrainingProgress\GetModelTrainingProgress.csproj", "{F3510DC3-CDFA-4A54-8DA0-79C67763F790}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DD4C5530-B244-46CD-B4E8-A0DFE0C6A542}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetPredictions", "GetPredictions\GetPredictions.csproj", "{4A314A4A-786A-4D72-A1CB-C6A57F5FA8F5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcrPredict", "OcrPredict\OcrPredict.csproj", "{31682601-4777-44AC-8668-DE009F70C131}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubmitWorkflows", "WorkflowSubmission\SubmitWorkflows.csproj", "{45DCF6F0-6727-4D94-8E72-9A8A3F04733A}"
 EndProject
