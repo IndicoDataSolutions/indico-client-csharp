@@ -59,10 +59,9 @@ queries for you. You can find the collection documented in the Reference section
 Several examples are provided in this repo:
 
 **GraphqlCall** - Place a GraphQL call to list your datasets  
-**SingleDocExtraction** - OCR a single PDF file (a sample PDF is provided)  
-**GetPredictions** - Get predictions from a simple classifier. A CSV is provided for you to train the classifier via the Indico App.  
-**GetModelTrainingProgress** - Get % complete progress on a training model.  
-**OcrPredict** - Pass a directory of files through DocumentExtraction then pass the text to a model for predictions.  
+**WorkflowSubmission** - Upload a document to a workflow and wait for a result  
+**AddDataSetFiles** - Upload a document to an existing Dataset  
+**AmazonSQS** - Example of how to handle SQS notifications from Indico Workflows
 
 The examples are setup as console apps in the repo's Visual Studio project.
 
@@ -82,15 +81,6 @@ var submission = await submissionClient.GetAsync(submissionId);
 var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);
 ```
 
-```
-
-#### Get Training Model With Progress
-```
-ModelGroup mg = await client.ModelGroupQuery(mgId).Exec();
-JArray trainingStatus = await client.TrainingModelWithProgressQuery(mg).Exec();
-            
-Console.WriteLine(mg.Name);
-Console.WriteLine(trainingStatus);                     
 ```
 
 #### Send a GraphQL Query

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SingleDocExtraction": {
-      "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\dzere\\source\\repos\\indico-client-csharp\\SingleDocExtraction\\Amtrack-Financials.pdf"
-    }
-  }
-}

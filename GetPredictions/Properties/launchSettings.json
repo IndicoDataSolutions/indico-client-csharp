@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "GetPredictions": {
-      "commandName": "Project",
-      "commandLineArgs": "4308"
-    }
-  }
-}
