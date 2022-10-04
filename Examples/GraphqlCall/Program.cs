@@ -1,8 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Indico;
-using Indico.Request;
+using IndicoV2;
 using Newtonsoft.Json.Linq;
 
 namespace Examples
@@ -10,16 +9,17 @@ namespace Examples
     /// <summary>
     /// Example for raw GraphQL call. Uses Indico V1 client.
     /// </summary>
-    internal class GraphQLCall
+    public class GraphQLCall
     {
-        private static string GetTokenPath() =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "indico_api_token.txt");
+        private static string GetToken() =>
+            File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "indico_api_token.txt"));
 
         public static async Task Main()
         {
-            var config = new IndicoConfig(GetTokenPath(), "app.indico.io");
-            var client = new IndicoClient(config);
+            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
+
+            var graphQLRequestClient = client.GraphQLRequest();
 
             string query = @"
             query ListDatasets($limit: Int){
@@ -32,16 +32,10 @@ namespace Examples
                 }
             }
             ";
-            var request = new GraphQLRequest(client.GraphQLHttpClient)
-            {
-                Query = query,
-                OperationName = "ListDatasets",
-                Variables = new
-                {
-                    limit = 1,
-                }
-            };
-            JObject response = await request.Call();
+            string operationName = "ListDatasets";
+            dynamic variables = new { limit = 1 };
+
+            JObject response = await graphQLRequestClient.Call(query, operationName, variables);
             Console.WriteLine(response);
         }
     }

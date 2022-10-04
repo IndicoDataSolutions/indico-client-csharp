@@ -21,9 +21,6 @@
 	</Target>
 
 	<ItemGroup>
-	  <None Remove="GraphQLRequest\" />
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="..\LICENSE">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
@@ -56,9 +53,5 @@
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="MimeKit" Version="2.11.0" />
 		<PackageReference Include="StrawberryShake.Transport.Http" Version="11.2.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="GraphQLRequest\" />
 	</ItemGroup>
 </Project>

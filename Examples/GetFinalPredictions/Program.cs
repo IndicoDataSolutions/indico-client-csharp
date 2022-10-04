@@ -10,7 +10,7 @@ namespace Examples
     /// <summary>
     /// Returns final output. Does not include pre_review and post_review predictions.
     /// </summary>
-    internal class GetFinalPredictions
+    public class GetFinalPredictions
     {
         private static string GetToken() =>
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),

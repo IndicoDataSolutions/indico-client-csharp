@@ -14,11 +14,4 @@
   <ItemGroup>
     <ProjectReference Include="..\IndicoV2.StrawberryShake\IndicoV2.StrawberryShake.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="GraphQLRequest\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GraphQLRequest\" />
-  </ItemGroup>
 </Project>
