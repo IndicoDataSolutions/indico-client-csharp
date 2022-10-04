@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\WorkflowSubmission\workflow-sample.pdf" Link="workflow-sample.pdf">
+    <None Include="..\WorkflowSubmission\workflow-sample.pdf" Link="workflow-sample.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
