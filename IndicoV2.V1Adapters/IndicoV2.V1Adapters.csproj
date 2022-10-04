@@ -11,4 +11,10 @@
     <PackageReference Include="MimeKit" Version="2.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="GraphQLRequest\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GraphQLRequest\" />
+  </ItemGroup>
 </Project>
