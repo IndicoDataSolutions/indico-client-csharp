@@ -42,7 +42,7 @@ namespace IndicoV2.V1Adapters.Jobs
                             result
                         }
                     }";
-            var query = new GraphQLRequest()
+            var query = new GraphQL.GraphQLRequest()
             {
                 Query = queryString,
                 OperationName = "GetJob",

@@ -22,9 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="GraphQLRequest\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Examples\WorkflowSubmission\workflow-sample.pdf" Link="Utils\DataHelpers\Files\workflow-sample.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -36,7 +33,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="GraphQLRequest\" />
-  </ItemGroup>
 </Project>
