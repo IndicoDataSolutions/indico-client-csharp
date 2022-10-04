@@ -64,7 +64,10 @@ namespace Indico
         private HttpMessageHandler GetHandler()
         {
             var innerHandler = new HttpClientHandler();
-            
+            if (!Config.Verify)
+            {
+                innerHandler.ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;
+            }
             var tokenHandler = new TokenHandler(Config.ApiToken, innerHandler);
             return tokenHandler;
         }
