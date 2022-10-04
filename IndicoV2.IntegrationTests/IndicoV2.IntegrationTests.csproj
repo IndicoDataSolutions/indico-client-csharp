@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\WorkflowSubmission\workflow-sample.pdf" Link="Utils\DataHelpers\Files\workflow-sample.pdf">
+    <None Include="..\Examples\WorkflowSubmission\workflow-sample.pdf" Link="Utils\DataHelpers\Files\workflow-sample.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
