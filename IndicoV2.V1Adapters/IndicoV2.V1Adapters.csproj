@@ -10,4 +10,5 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="MimeKit" Version="2.11.0" />
   </ItemGroup>
+
 </Project>

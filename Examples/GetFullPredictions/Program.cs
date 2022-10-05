@@ -20,23 +20,18 @@ namespace Examples
         {
             var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
 
-            var dataSets = await client.DataSets().ListAsync();
-
-            var workflows = await client.Workflows().ListAsync(dataSets.First().Id);
-
             var submissionClient = client.Submissions();
 
             var jobClient = client.Jobs();
 
             var storageClient = client.Storage();
 
-            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] { "workflow-sample.pdf" });
-            int submissionId = submissionIds.Single();
+            int submissionId = 152070;
             var submission = await submissionClient.GetAsync(submissionId);
 
             string jobId = await submissionClient.GenerateSubmissionResultAsync(submissionId);
-            var jobResult = await jobClient.GetResultAsync<dynamic>(jobId);
-            var jobResultUrl = jobResult.Value("url");
+            JToken jobResult = await jobClient.GetResultAsync<JToken>(jobId);
+            string jobResultUrl = jobResult.Value<string>("url");
 
             var storageResult = await storageClient.GetAsync(new Uri(jobResultUrl), default);
             using (var reader = new StreamReader(storageResult))

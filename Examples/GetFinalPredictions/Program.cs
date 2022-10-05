@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace Examples
 {
     /// <summary>
-    /// Returns final output. Does not include pre_review and post_review predictions.
+    /// Returns raw output.
     /// </summary>
     public class GetFinalPredictions
     {
@@ -20,16 +20,11 @@ namespace Examples
         {
             var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
 
-            var dataSets = await client.DataSets().ListAsync();
-
-            var workflows = await client.Workflows().ListAsync(dataSets.First().Id);
-
             var submissionClient = client.Submissions();
 
             var storageClient = client.Storage();
 
-            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] { "workflow-sample.pdf" });
-            int submissionId = submissionIds.Single();
+            int submissionId = 152070;
             var submission = await submissionClient.GetAsync(submissionId);
 
             string resultFileUrl = submission.ResultFile;

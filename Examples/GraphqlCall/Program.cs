@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 namespace Examples
 {
     /// <summary>
-    /// Example for raw GraphQL call. Uses Indico V1 client.
+    /// Example of raw GraphQL call.
     /// </summary>
     public class GraphQLCall
     {
