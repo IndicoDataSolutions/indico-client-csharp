@@ -10,7 +10,7 @@ namespace Examples
     /// <summary>
     /// Returns raw output.
     /// </summary>
-    public class GetFinalPredictions
+    public class GetPredictionsBasic
     {
         private static string GetToken() =>
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),

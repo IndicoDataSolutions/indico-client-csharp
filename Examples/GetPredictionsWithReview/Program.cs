@@ -10,7 +10,7 @@ namespace Examples
     /// <summary>
     /// Returns full output with pre_review, post_review, and final predictions
     /// </summary>
-    public class GetFullPredictions
+    public class GetPredictionsWithReview
     {
         private static string GetToken() =>
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
