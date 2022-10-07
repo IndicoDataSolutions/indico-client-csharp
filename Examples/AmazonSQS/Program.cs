@@ -11,7 +11,7 @@ using Amazon.SQS.Model;
 using IndicoV2;
 using Microsoft.Extensions.Configuration;
 
-namespace Examples.AmazonSQS
+namespace Examples
 {
     public class Program
     {

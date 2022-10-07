@@ -6,7 +6,7 @@ using IndicoV2;
 
 namespace Examples
 {
-    internal class SubmitWorkflows
+    public class SubmitWorkflows
     {
         private static string GetToken() =>
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),

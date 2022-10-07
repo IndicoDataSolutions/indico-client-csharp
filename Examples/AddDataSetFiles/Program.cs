@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using IndicoV2;
 using IndicoV2.StrawberryShake;
 
-namespace Examples.AddDataSetFiles
+namespace Examples
 {
     public class Program
     {

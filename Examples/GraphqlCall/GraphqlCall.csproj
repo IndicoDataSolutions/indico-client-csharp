@@ -2,14 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\WorkflowSubmission\workflow-sample.pdf" Link="workflow-sample.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
