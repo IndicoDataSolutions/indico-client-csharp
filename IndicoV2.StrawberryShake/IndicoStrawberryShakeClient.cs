@@ -18,14 +18,6 @@ namespace IndicoV2.StrawberryShake
             serviceCollection
                 .AddSingleton(new AuthenticatingMessageHandler(baseUri, token))
                 .AddIndicoGqlClient()
-                .ConfigureHttpClientHandler(() =>
-                {
-                    return new HttpClientHandler
-                    {
-                        ClientCertificateOptions = ClientCertificateOption.Manual,
-                        ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => verify
-                    };
-                })
                 .ConfigureHttpClient(
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
                     builder => builder.ConfigurePrimaryHttpMessageHandler<AuthenticatingMessageHandler>());
