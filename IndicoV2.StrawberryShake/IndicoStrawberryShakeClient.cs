@@ -12,12 +12,20 @@ namespace IndicoV2.StrawberryShake
     {
         private readonly ServiceProvider _services;
 
-        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token)
+        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token, bool verify)
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection
                 .AddSingleton(new AuthenticatingMessageHandler(baseUri, token))
                 .AddIndicoGqlClient()
+                .ConfigureHttpClientHandler(() =>
+                {
+                    return new HttpClientHandler
+                    {
+                        ClientCertificateOptions = ClientCertificateOption.Manual,
+                        ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => verify
+                    };
+                })
                 .ConfigureHttpClient(
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
                     builder => builder.ConfigurePrimaryHttpMessageHandler<AuthenticatingMessageHandler>());
