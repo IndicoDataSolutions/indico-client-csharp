@@ -12,7 +12,7 @@ namespace IndicoV2.StrawberryShake
     {
         private readonly ServiceProvider _services;
 
-        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token)
+        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token, bool verify)
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection
