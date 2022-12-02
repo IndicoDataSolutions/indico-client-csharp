@@ -23,7 +23,7 @@ namespace IndicoV2
 
         internal Indico.IndicoClient LegacyClient =>
             _legacyClient ?? (_legacyClient =
-                new Indico.IndicoClient(new IndicoConfig(host: BaseUri.Host, apiToken: _apiToken, verify: _verifySsl)));
+                new Indico.IndicoClient(new IndicoConfig(host: BaseUri.Host, port: BaseUri.Port, apiToken: _apiToken, verify: _verifySsl)));
 
         private IndicoStrawberryShakeClient _indicoStrawberryShakeClient;
 
