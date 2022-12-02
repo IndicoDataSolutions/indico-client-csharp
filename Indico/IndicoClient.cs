@@ -52,7 +52,7 @@ namespace Indico
 
             var handler = GetHandler();
             HttpClient = new HttpClient(handler);
-            string endpoint = $"{Config.Protocol}://{Config.Host}";
+            string endpoint = Config.GetAppBaseUrl();
             var options = new GraphQLHttpClientOptions
             {
                 EndPoint = new System.Uri($"{endpoint}/graph/api/graphql"),

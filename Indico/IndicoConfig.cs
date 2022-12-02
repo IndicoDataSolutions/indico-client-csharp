@@ -18,6 +18,10 @@ namespace Indico
         /// </summary>
         /// <value>The host.</value>
         public string Host { get; }
+        /// <summary>
+        /// The port of the url.
+        /// </summary>
+        public int? Port { get; }
 
         /// <summary>
         /// Gets the protocol.
@@ -43,6 +47,7 @@ namespace Indico
         public IndicoConfig(
             [Optional] string apiToken,
             [Optional] string tokenPath,
+            [Optional] int port,
             string host = "app.indico.io",
             string protocol = "https",
             bool verify = true
@@ -50,6 +55,7 @@ namespace Indico
         {
             Host = host;
             Protocol = protocol;
+            Port = port;
             Verify = verify;
             if (apiToken == null)
             {
@@ -96,6 +102,6 @@ namespace Indico
         /// Get the base URL for the Indico Platform host, including protocol
         /// </summary>
         /// <returns>base URL string</returns>
-        public string GetAppBaseUrl() => Protocol + "://" + Host;
+        public string GetAppBaseUrl() => Protocol + "://" + Host + (Port.HasValue? $":{Port.Value}" : "");
     }
 }

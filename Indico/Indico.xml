@@ -161,7 +161,7 @@
             </summary>
             <value>The API token.</value>
         </member>
-        <member name="M:Indico.IndicoConfig.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Indico.IndicoConfig.#ctor(System.String,System.String,System.Int32,System.String,System.String,System.Boolean)">
             <summary>
             Indico Client config constructor
             </summary>
