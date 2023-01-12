@@ -23,16 +23,16 @@ namespace IndicoV2.Extensions.SubmissionResult
         }
 
         public async Task<JObject> WaitReady(int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
-            => await WaitReady(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED, submissionId, checkInterval, cancellationToken);
+            => await WaitReady(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED && s != SubmissionStatus.POST_PROCESSING, submissionId, checkInterval, cancellationToken);
 
         public async Task<JObject> WaitReady(int submissionId, SubmissionStatus awaitedStatus, TimeSpan checkInterval = default, CancellationToken cancellationToken = default)
             => await WaitReady(s => s == awaitedStatus, submissionId, checkInterval, cancellationToken);
 
         private async Task<JObject> WaitReady(Predicate<SubmissionStatus> isAwaitedStatus, int submissionId, TimeSpan checkInterval, CancellationToken cancellationToken)
         {
-            if (isAwaitedStatus(SubmissionStatus.PROCESSING) || isAwaitedStatus(SubmissionStatus.FAILED))
+            if (isAwaitedStatus(SubmissionStatus.PROCESSING) || isAwaitedStatus(SubmissionStatus.FAILED) || isAwaitedStatus(SubmissionStatus.POST_PROCESSING))
             {
-                throw new ArgumentException($"Wrong awaited status. Cannot get the result when submission status is {SubmissionStatus.PROCESSING} or {SubmissionStatus.FAILED}.");
+                throw new ArgumentException($"Wrong awaited status. Cannot get the result when submission status is {SubmissionStatus.PROCESSING} or {SubmissionStatus.FAILED} or {SubmissionStatus.POST_PROCESSING}.");
             }
 
             ISubmission submission;
