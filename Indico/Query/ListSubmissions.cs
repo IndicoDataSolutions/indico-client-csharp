@@ -71,6 +71,11 @@ namespace Indico.Query
                                 workflowId
                                 status
                                 inputFile
+                                inputFiles{
+                                    id
+                                    filename
+                                    numPages
+                                }
                                 inputFilename
                                 resultFile
                                 retrieved

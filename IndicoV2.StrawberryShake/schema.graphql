@@ -1322,6 +1322,7 @@ type SubmissionFile {
   "Name of original file"
   filename: String
   submissionId: Int
+  numPages: Int
 }
 
 type Review {

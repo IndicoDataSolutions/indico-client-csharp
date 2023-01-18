@@ -39,6 +39,11 @@ query ListSubmissions(
                     workflowId
                     status
                     inputFile
+                    inputFiles{
+                        id
+                        filename
+                        numPages
+                    }
                     inputFilename
                     resultFile
                     deleted

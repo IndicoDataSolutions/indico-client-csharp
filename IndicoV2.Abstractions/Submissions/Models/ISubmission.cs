@@ -1,4 +1,6 @@
 ﻿
+using System.Collections;
+using System.Collections.Generic;
 using IndicoV2.CommonModels.Pagination;
 
 namespace IndicoV2.Submissions.Models
@@ -32,6 +34,11 @@ namespace IndicoV2.Submissions.Models
         /// Submission input file.
         /// </summary>
         string InputFile { get; }
+
+        /// <summary>
+        /// Information about input files.
+        /// </summary>
+        IList<SubmissionFiles> InputFiles {get; }
 
         /// <summary>
         /// Submission name of input file.
