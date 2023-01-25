@@ -1,4 +1,5 @@
-﻿using Indico.Types;
+﻿using System.Collections.Generic;
+using Indico.Types;
 
 namespace Indico.Entity
 {
@@ -13,5 +14,6 @@ namespace Indico.Entity
         public string ResultFile { get; set; }
         public bool Retrieved { get; set; } = false;
         public string Errors { get; set; }
+        public IEnumerable<SubmissionFiles> SubmissionFiles {get; set;} 
     }
 }

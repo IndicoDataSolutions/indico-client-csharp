@@ -1,4 +1,5 @@
-﻿using IndicoV2.Submissions.Models;
+﻿using System.Collections.Generic;
+using IndicoV2.Submissions.Models;
 using IndicoV2.V1Adapters.Converters;
 
 namespace IndicoV2.V1Adapters.Submissions.Models
@@ -26,5 +27,7 @@ namespace IndicoV2.V1Adapters.Submissions.Models
         public bool Retrieved => _submissionLegacy.Retrieved;
 
         public string Errors => _submissionLegacy.Errors;
+
+        public IEnumerable<SubmissionFiles> SubmissionFiles => new List<SubmissionFiles>();
     }
 }

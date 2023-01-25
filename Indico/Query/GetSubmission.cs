@@ -4,6 +4,7 @@ using Indico.Exception;
 using Indico.Types;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -55,6 +56,11 @@ namespace Indico.Query
                             workflowId
                             status
                             inputFile
+                            inputFiles{
+                            id
+                            filename
+                            numPages
+                            }
                             inputFilename
                             resultFile
                             retrieved
@@ -88,8 +94,23 @@ namespace Indico.Query
                 InputFilename = submission.Value<string>("inputFilename"),
                 ResultFile = submission.Value<string>("resultFile"),
                 Retrieved = submission.Value<bool>("retrieved"),
-                Errors = submission.Value<string>("errors")
+                Errors = submission.Value<string>("errors"),
+                SubmissionFiles = GetSubmissionFiles(submission)
             };
+        }
+
+        private IEnumerable<SubmissionFiles> GetSubmissionFiles(JObject submission)
+        {
+            var files = new List<SubmissionFiles>();
+            foreach (var submissionFile in (JArray)submission.GetValue("inputFiles")){
+                files.Add(new SubmissionFiles()
+                {
+                    Filename = submissionFile.Value<string>("filename"),
+                    Id = submissionFile.Value<int>("id"),
+                    NumPages = submissionFile.Value<int>("numPages")
+                });
+            }
+            return files;
         }
     }
 }

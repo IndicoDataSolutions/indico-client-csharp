@@ -1,4 +1,6 @@
-﻿namespace IndicoV2.Submissions.Models
+﻿using System.Collections.Generic;
+
+namespace IndicoV2.Submissions.Models
 {
     /// <summary>
     /// Submission interface.
@@ -49,5 +51,7 @@
         /// Submission errors.
         /// </summary>
         string Errors { get; }
+
+        IEnumerable<SubmissionFiles> SubmissionFiles { get;}
     }
 }
