@@ -16,7 +16,7 @@ namespace IndicoV2.Tests
                 .Should().Throw<ArgumentNullException>()
                 .WithMessage("*apiToken*");
 
-        [TestCase("https://dev.indico.io")]
+        [TestCase("https://dev-ci.us-east-2.indico-dev.indico.io")]
         public void IndicoClient_ShouldPointToUri_WhenPassedAsParam(string uri) =>
             new IndicoClient("testToken", new Uri(uri)).BaseUri.Should().Be(uri);
 
