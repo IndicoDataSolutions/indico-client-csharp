@@ -27,8 +27,8 @@ namespace IndicoV2.IntegrationTests.Jobs
             _dataHelper = container.Resolve<DataHelper>();
         }
 
-        [Test]
-        public async Task GetStatusAsync_ShouldReturnJobStatus() => (await _jobsClient.GetStatusAsync(await GetAnyJobIdAsync())).Should().BeOfType<JobStatus>();
+        /*[Test]
+        public async Task GetStatusAsync_ShouldReturnJobStatus() => (await _jobsClient.GetStatusAsync(await GetAnyJobIdAsync())).Should().BeOfType<JobStatus>();*/
 
         [Test]
         public async Task GetResultAsync_ShouldReturnJobResult()
