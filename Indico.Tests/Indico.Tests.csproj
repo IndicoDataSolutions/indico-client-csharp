@@ -19,14 +19,5 @@
     <Folder Include="Jobs\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="coverlet.collector" Version="3.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Update="JunitXml.TestLogger" Version="3.0.114">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+ 
 </Project>
