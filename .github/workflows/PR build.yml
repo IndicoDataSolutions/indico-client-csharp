@@ -24,7 +24,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity debug --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
     - name: Generate report
       uses: danielpalme/ReportGenerator-GitHub-Action@5.1.16
       with:
