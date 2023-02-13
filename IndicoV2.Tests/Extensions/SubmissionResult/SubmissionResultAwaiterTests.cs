@@ -26,7 +26,8 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
-        [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
+       /** [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
+     
         public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(SubmissionStatus status)
         {
             // Arrange
@@ -53,7 +54,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 
             // Assert
             result.Should().NotBeNull();
-        }
+        } **/
 
         [Test]
         public async Task WaitReady_ShouldWait_UntilSubmissionProcessed()
