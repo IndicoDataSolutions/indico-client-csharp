@@ -20,13 +20,13 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
     public class SubmissionResultAwaiterTests
     {
         private static readonly SubmissionStatus[] _submissionStatusesExceptProcessingAndFailed =
-            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED).ToArray();
+            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED && s != SubmissionStatus.POST_PROCESSING).ToArray();
         private IFixture _fixture;
 
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
-       /** [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
+        [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
      
         public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(SubmissionStatus status)
         {
@@ -50,11 +50,11 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 
             // Act
-            var result = await sut.WaitReady(submissionId, checkInterval, default);
+            var result = await sut.WaitReady(submissionId, status, checkInterval, default);
 
             // Assert
             result.Should().NotBeNull();
-        } **/
+        }
 
         [Test]
         public async Task WaitReady_ShouldWait_UntilSubmissionProcessed()
