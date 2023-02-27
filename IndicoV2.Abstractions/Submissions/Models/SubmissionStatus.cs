@@ -7,6 +7,7 @@
         COMPLETE,
         PENDING_ADMIN_REVIEW,
         PENDING_REVIEW,
-        PENDING_AUTO_REVIEW
+        PENDING_AUTO_REVIEW,
+        POST_PROCESSING
     }
 }

@@ -149,6 +149,11 @@
             </summary>
             <value>The host.</value>
         </member>
+        <member name="P:Indico.IndicoConfig.Port">
+            <summary>
+            The port of the url.
+            </summary>
+        </member>
         <member name="P:Indico.IndicoConfig.Protocol">
             <summary>
             Gets the protocol.
