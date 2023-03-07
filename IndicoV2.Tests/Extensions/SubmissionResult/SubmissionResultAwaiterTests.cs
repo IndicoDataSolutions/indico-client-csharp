@@ -20,7 +20,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
     public class SubmissionResultAwaiterTests
     {
         private static readonly SubmissionStatus[] _submissionStatusesExceptProcessingAndFailed =
-            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED && s != SubmissionStatus.POST_PROCESSING).ToArray();
+            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s is not SubmissionStatus.PROCESSING and not SubmissionStatus.FAILED).ToArray();
         private IFixture _fixture;
 
         [SetUp]
