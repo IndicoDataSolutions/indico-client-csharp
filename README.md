@@ -4,7 +4,7 @@
 
 Install the indico-client-csharp package via the NuGet package manager GUI or command line.
 ```
-PM> Install-Package indico-client
+PM> Install-Package IndicoClient
 ```
 
 ## Authentication
