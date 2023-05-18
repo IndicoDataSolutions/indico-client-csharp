@@ -23,7 +23,22 @@ namespace IndicoV2.IntegrationTests.Utils
         private string BaseUrl => Environment.GetEnvironmentVariable("INDICO_HOST");
         private string ApiToken => Environment.GetEnvironmentVariable("INDICO_TOKEN");
 
+        public int WorkflowId => ParseEnvVar("INDICO_TEST_WORKFLOW_ID");
 
+        public int DatasetId => ParseEnvVar("INDICO_TEST_DATASET_ID");
+
+        public int ModelGroupId => ParseEnvVar("INDICO_TEST_MODELGROUP_ID");
+
+        public static int ParseEnvVar(string varName)
+        {
+            string rawValue = Environment.GetEnvironmentVariable(varName);
+            if (!string.IsNullOrEmpty(rawValue))
+            {
+                int.TryParse(rawValue, out int _intId);
+                return _intId;
+            }
+            return 0;
+        }
         public IndicoTestContainerBuilder() => _container = new UnityContainer();
 
 
@@ -37,7 +52,7 @@ namespace IndicoV2.IntegrationTests.Utils
             }
 
             _container.RegisterType<IIndicoClient, IndicoClient>();
-            
+
             _container.RegisterFactory<IDataSetClient>(c => c.Resolve<IndicoClient>().DataSets());
             _container.RegisterFactory<IWorkflowsClient>(c => c.Resolve<IndicoClient>().Workflows());
             _container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<IndicoClient>().Submissions());
