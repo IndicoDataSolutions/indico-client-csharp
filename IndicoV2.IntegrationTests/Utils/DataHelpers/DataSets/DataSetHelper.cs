@@ -11,6 +11,5 @@ namespace IndicoV2.IntegrationTests.Utils.DataHelpers.DataSets
 
         public DataSetHelper(IDataSetClient dataSetClient) => _dataSetClient = dataSetClient;
         public async Task<IDataSet> GetAny() => (await _dataSetClient.ListFullAsync(1)).Single();
-
     }
 }

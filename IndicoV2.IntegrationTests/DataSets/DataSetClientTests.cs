@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.IntegrationTests.Utils;
+using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.StrawberryShake;
 using NUnit.Framework;
@@ -14,16 +15,27 @@ namespace IndicoV2.IntegrationTests.DataSets
     {
         private IDataSetClient _dataSetClient;
         private DataHelper _dataHelper;
+        private IndicoConfigs _indicoConfigs;
         private int _dataSetId;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var containerBuilder = new IndicoTestContainerBuilder();
             var container = containerBuilder.Build();
             _dataSetClient = container.Resolve<IDataSetClient>();
             _dataHelper = container.Resolve<DataHelper>();
-            var _dataSetId = containerBuilder.DatasetId;      
+            _indicoConfigs = new IndicoConfigs();
+            var _rawDataSetId = _indicoConfigs.DatasetId;
+            if (_rawDataSetId == 0)
+            {
+                var dataset = (await _dataHelper.DataSets().GetAny());
+                _dataSetId = dataset.Id;
+            }
+            else
+            {
+                _dataSetId = _rawDataSetId;
+            }
         }
 
         [Test]
@@ -64,13 +76,8 @@ namespace IndicoV2.IntegrationTests.DataSets
         [Test]
         public async Task AddFiles_ShouldAddFiles()
         {
-            if (_dataSetId == 0)
-            {
-                var dataset = (await _dataHelper.DataSets().GetAny());
-                _dataSetId = dataset.Id;
-            }
             var files = new[] {_dataHelper.Files().GetSampleFilePath()};
-
+            
             var result = await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
 
             result.AddDatasetFiles.Id.Should().Be(_dataSetId);
@@ -80,11 +87,6 @@ namespace IndicoV2.IntegrationTests.DataSets
         public async Task ProcessFiles_ShouldStartProcessing()
         {
             // Arrange
-            if (_dataSetId == 0)
-            {
-                var dataset = (await _dataHelper.DataSets().GetAny());
-                _dataSetId = dataset.Id;
-            }
             var files = new[] {_dataHelper.Files().GetSampleFilePath()};
             await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
             var downloadedFiles =
@@ -104,11 +106,6 @@ namespace IndicoV2.IntegrationTests.DataSets
         public async Task ProcessCsv_ShouldStartProcessing()
         {
             // Arrange
-            if (_dataSetId == 0)
-            {
-                var dataset = (await _dataHelper.DataSets().GetAny());
-                _dataSetId = dataset.Id;
-            }
             var files = new[] { _dataHelper.Files().GetSampleCsvPath() };
             await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
             var downloadedFiles =
