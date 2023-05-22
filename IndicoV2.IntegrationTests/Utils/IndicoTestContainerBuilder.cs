@@ -37,7 +37,7 @@ namespace IndicoV2.IntegrationTests.Utils
             }
 
             _container.RegisterType<IIndicoClient, IndicoClient>();
-            
+
             _container.RegisterFactory<IDataSetClient>(c => c.Resolve<IndicoClient>().DataSets());
             _container.RegisterFactory<IWorkflowsClient>(c => c.Resolve<IndicoClient>().Workflows());
             _container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<IndicoClient>().Submissions());

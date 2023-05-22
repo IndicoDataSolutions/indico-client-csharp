@@ -5,6 +5,7 @@ using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
+using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Models;
 using NUnit.Framework;
 using Unity;
@@ -18,15 +19,27 @@ namespace IndicoV2.IntegrationTests.Models
         private int _modelGroupId;
         private IJobAwaiter _jobAwaiter;
         private int _modelId;
+        private IndicoConfigs _indicoConfigs;
 
         [OneTimeSetUp]
         public async Task SetUp()
         {
-            var container = new IndicoTestContainerBuilder().Build();
+            var containerBuilder = new IndicoTestContainerBuilder();
+            var container = containerBuilder.Build();
 
             _modelClient = container.Resolve<IModelClient>();
+            _indicoConfigs = new IndicoConfigs();
             var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync(1);
-            _modelGroupId = dataSets.First().ModelGroups.First().Id;
+            _indicoConfigs = new IndicoConfigs();
+            var _rawModelGroupId = _indicoConfigs.ModelGroupId;
+            if (_rawModelGroupId == 0)
+            {
+                _modelGroupId = dataSets.First().ModelGroups.First().Id;
+            }
+            else
+            {
+                _modelGroupId = _rawModelGroupId;
+            }
             _modelId = (await _modelClient.GetGroup(_modelGroupId, default)).Id;
             _jobAwaiter = container.Resolve<IJobAwaiter>();
         }

@@ -71,3 +71,19 @@ The examples are setup as console apps in the repo's Visual Studio project.
 IndicoConfig config = new IndicoConfig(host: "app.indico.io");
 IndicoClient indico = new IndicoClient(config);
 ```
+
+## Integration Test Setup
+
+### Setting Environment Variables
+It is highly recommended that developers set the following environment variables before
+running the integration tests. 
+
+`INDICO_HOST`: the host of the Indico instance you are testing against. Must include `https://`
+`INDICO_TOKEN`: api token associated with the Indico host
+`INDICO_TEST_WORKFLOW_ID`: Workflow id you are testing against
+`INDICO_TEST_DATASET_ID`: Dataset id you are testing against
+`INDICO_TEST_MODELGROUP_ID`: model group id you are testing against (NOT selected model id)
+
+Notes for ID configs:
+* You will want to ensure that all IDs come from the same dataset, eg the workflow id belongs to the dataset id provided.  
+* If these IDs are not provided, the integration tests will infer them by selecting the first dataset ID available to the user testing. 
