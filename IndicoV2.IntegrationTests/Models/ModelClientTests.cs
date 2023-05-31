@@ -26,7 +26,6 @@ namespace IndicoV2.IntegrationTests.Models
         {
             var containerBuilder = new IndicoTestContainerBuilder();
             var container = containerBuilder.Build();
-
             _modelClient = container.Resolve<IModelClient>();
             _indicoConfigs = new IndicoConfigs();
             var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync(1);

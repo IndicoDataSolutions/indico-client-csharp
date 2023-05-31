@@ -25,6 +25,7 @@ namespace IndicoV2.IntegrationTests.Workflows
         {
             var container = new IndicoTestContainerBuilder().Build();
             _dataSetClient = container.Resolve<IDataSetClient>();
+            _indicoConfigs = new IndicoConfigs();
             var _rawDataSetId = _indicoConfigs.DatasetId;
             if (_rawDataSetId == 0)
             {
@@ -49,7 +50,6 @@ namespace IndicoV2.IntegrationTests.Workflows
             }
             _workflowsClient = container.Resolve<IWorkflowsClient>();
             _dataHelper = container.Resolve<DataHelper>();
-            _indicoConfigs = new IndicoConfigs();
         }
 
         [Test]

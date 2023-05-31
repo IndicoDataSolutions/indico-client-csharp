@@ -5,6 +5,7 @@ using FluentAssertions;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.Workflows;
 using IndicoV2.IntegrationTests.Utils;
+using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Workflows;
@@ -19,9 +20,12 @@ namespace IndicoV2.IntegrationTests.Extensions.Workflows
         private DataHelper _dataHelper;
         private IWorkflowsClient _workflowsClient;
         private WorkflowAwaiter _workflowAwaiter;
+        private IndicoConfigs _indicoConfigs;
+        private int _workflowId;
+        private int _dataSetId;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
             var client = container.Resolve<IndicoClient>();
@@ -29,21 +33,42 @@ namespace IndicoV2.IntegrationTests.Extensions.Workflows
             _workflowsClient = client.Workflows();
             _workflowAwaiter = client.WorkflowAwaiter();
             _dataHelper = container.Resolve<DataHelper>();
+            _indicoConfigs = new IndicoConfigs();
+            var _rawDataSetId = _indicoConfigs.DatasetId;
+            if (_rawDataSetId == 0)
+            {
+                var dataset = (await _dataHelper.DataSets().GetAny());
+                _dataSetId = dataset.Id;
+                var workflows = await _workflowsClient.ListAsync(_dataSetId, default);
+                _workflowId = workflows.First().Id;
+            }
+            else
+            {
+                _dataSetId = _rawDataSetId;
+                int _rawWorkflowID = _indicoConfigs.WorkflowId;
+                if (_rawWorkflowID == 0)
+                {
+                    var workflows = await _workflowsClient.ListAsync(_dataSetId, default);
+                    _workflowId = workflows.First().Id;
+                }
+                else
+                {
+                    _workflowId = _rawWorkflowID;
+                }
+            }
+
         }
 
         [Test]
         public async Task WaitComplete_ShouldWaitForTheStatus()
         {
-            var dataSet = await _dataHelper.DataSets().GetAny();
-            var workflows = await _workflowsClient.ListAsync(dataSet.Id, default);
-            var workflow = workflows.First();
 
-            await _dataSetsClient.AddFilesAsync(dataSet.Id, new[] {_dataHelper.Files().GetSampleFilePath()}, default);
-            await _workflowsClient.AddDataAsync(workflow.Id, default);
+            await _dataSetsClient.AddFilesAsync(_dataSetId, new[] {_dataHelper.Files().GetSampleFilePath()}, default);
+            await _workflowsClient.AddDataAsync(_workflowId, default);
 
-            await _workflowAwaiter.WaitWorkflowCompleteAsync(workflow.Id, TimeSpan.FromSeconds(0.5), default);
+            await _workflowAwaiter.WaitWorkflowCompleteAsync(_workflowId, TimeSpan.FromSeconds(0.5), default);
 
-            (await _workflowsClient.GetStatusAsync(workflow.Id, default)).Should().Be(WorkflowStatus.Complete);
+            (await _workflowsClient.GetStatusAsync(_workflowId, default)).Should().Be(WorkflowStatus.Complete);
         }
     }
 }
