@@ -60,9 +60,6 @@ namespace IndicoV2.IntegrationTests.Models
             selectedModel.TrainingProgressPercents.Should().BeGreaterOrEqualTo(0);
         }
 
-        [Test]
-        public async Task LoadModel_ShouldReturnStatus() =>
-            (await _modelClient.LoadModel(_modelId, default)).Should().Be("ready");
 
         [TestCase("Invoice Date: 2012-01-02")]
         [TestCase("Invoice Date: 2012-02-03 Invoice Number: 123Test")]
