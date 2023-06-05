@@ -87,3 +87,7 @@ running the integration tests.
 Notes for ID configs:
 * You will want to ensure that all IDs come from the same dataset, eg the workflow id belongs to the dataset id provided.  
 * If these IDs are not provided, the integration tests will infer them by selecting the first dataset ID available to the user testing. 
+
+Further Notes retlated to failing tests:
+https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2685894671/C+Integration+Test+Enhancements
+https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2682748947/C+SDK+Integration+Tests+IPA+5.10
