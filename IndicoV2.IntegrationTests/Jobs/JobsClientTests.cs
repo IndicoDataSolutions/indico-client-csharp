@@ -2,6 +2,7 @@
 using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
+using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Jobs;
 using IndicoV2.Jobs.Models;
 using IndicoV2.Submissions;
@@ -17,14 +18,27 @@ namespace IndicoV2.IntegrationTests.Jobs
         private DataHelper _dataHelper;
         private IJobsClient _jobsClient;
         private ISubmissionsClient _submissionsClient;
+        private IndicoConfigs _indicoConfigs;
+        private int _workflowId;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
             _jobsClient = container.Resolve<IJobsClient>();
             _submissionsClient = container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
+            _indicoConfigs = new IndicoConfigs();
+            var _rawWorkflowId = _indicoConfigs.WorkflowId;
+            if (_rawWorkflowId == 0)
+            {
+                var _workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+                _workflowId = _workflow.Id;
+            }
+            else
+            {
+                _workflowId = _rawWorkflowId;
+            }
         }
 
         [Test]
@@ -46,7 +60,7 @@ namespace IndicoV2.IntegrationTests.Jobs
 
         private async Task<string> GetAnyJobIdAsync()
         {
-            var submission = await _dataHelper.Submissions().GetAnyAsync();
+            var submission = await _dataHelper.Submissions().GetAnyAsync(_workflowId);
             while ((await _submissionsClient.GetAsync(submission.Id)).Status == SubmissionStatus.PROCESSING)
             {
                 await Task.Delay(100);

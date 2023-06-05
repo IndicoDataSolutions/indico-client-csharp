@@ -5,6 +5,7 @@ using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
+using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Reviews;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -18,9 +19,11 @@ namespace IndicoV2.IntegrationTests.Reviews
         private DataHelper _dataHelper;
         private ISubmissionResultAwaiter _submissionResultAwaiter;
         private JobAwaiter _jobAwaiter;
+        private IndicoConfigs _indicoConfigs;
+        private int _workflowId;
 
         [SetUp]
-        public void SetUp()
+        public async Task SetUp()
         {
             var container = new IndicoTestContainerBuilder()
                 .ForAutoReviewWorkflow()
@@ -29,13 +32,24 @@ namespace IndicoV2.IntegrationTests.Reviews
             _reviewsClient = container.Resolve<IReviewsClient>();
             _submissionResultAwaiter = container.Resolve<ISubmissionResultAwaiter>();
             _jobAwaiter = container.Resolve<JobAwaiter>();
+            _indicoConfigs = new IndicoConfigs();
+            var _rawWorkflowId = _indicoConfigs.WorkflowId;
+            if (_rawWorkflowId == 0)
+            {
+                var _workflow = await _dataHelper.Workflows().GetAnyWorkflow();
+                _workflowId = _workflow.Id;
+            }
+            else
+            {
+                _workflowId = _rawWorkflowId;
+            }
         }
 
         [Test]
         public async Task SubmitReviewAsync_ShouldSucceed()
         {
             // Arrange
-            var submission = await _dataHelper.Submissions().GetAnyAsync();
+            var submission = await _dataHelper.Submissions().GetAnyAsync(_workflowId);
             var result = await _submissionResultAwaiter.WaitReady(submission.Id);
             var changes = (JObject)result["results"]["document"]["results"];
 
