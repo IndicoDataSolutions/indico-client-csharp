@@ -28,11 +28,12 @@ namespace IndicoV2.IntegrationTests.Models
             var container = containerBuilder.Build();
             _modelClient = container.Resolve<IModelClient>();
             _indicoConfigs = new IndicoConfigs();
-            var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync(1);
+            
             _indicoConfigs = new IndicoConfigs();
             var _rawModelGroupId = _indicoConfigs.ModelGroupId;
             if (_rawModelGroupId == 0)
             {
+                var dataSets = await container.Resolve<IDataSetClient>().ListFullAsync(1);
                 _modelGroupId = dataSets.First().ModelGroups.First().Id;
             }
             else

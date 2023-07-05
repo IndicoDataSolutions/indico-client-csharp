@@ -19,16 +19,15 @@ namespace Examples
         public static async Task Main()
         {
             var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
-
             var submissionClient = client.Submissions();
-
+            Console.WriteLine(GetToken());
             var storageClient = client.Storage();
 
-            int submissionId = 152070;
+            int submissionId = 153904;
             var submission = await submissionClient.GetAsync(submissionId);
-
+            Console.WriteLine("here");
             string resultFileUrl = submission.ResultFile;
-            var storageResult = await storageClient.GetAsync(new Uri(resultFileUrl), default);
+            var storageResult = await storageClient.GetAsync(new Uri("indico-file://" + resultFileUrl), default);
             using (var reader = new StreamReader(storageResult))
             {
                 string resultAsString = reader.ReadToEnd();
