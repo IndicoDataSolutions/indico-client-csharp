@@ -1,47 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-	</PropertyGroup>
-
-	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V1'" />
-
-	<PropertyGroup Condition="'$(BuildType)' == 'V1'">
-        <AssemblyVersion>0.9.1</AssemblyVersion>
-        <Version>0.9.1</Version>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>Indico.xml</DocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DocumentationFile>Indico.xml</DocumentationFile>
-    </PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.3" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-	</ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="GraphQL.Client" Version="3.2.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Request\" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <None Include="..\LICENSE">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
-      <None Include="indico-square-icon.png">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+  </PropertyGroup>
+  <Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V1'" />
+  <PropertyGroup Condition="'$(BuildType)' == 'V1'">
+    <AssemblyVersion>0.9.1</AssemblyVersion>
+    <Version>0.9.1</Version>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Indico.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Indico.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.3" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GraphQL.Client" Version="3.2.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Request\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>
+      </PackagePath>
+    </None>
+    <None Include="indico-square-icon.png">
+      <Pack>True</Pack>
+      <PackagePath>
+      </PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

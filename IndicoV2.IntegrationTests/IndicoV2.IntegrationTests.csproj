@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp5.0</TargetFramework>
-
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="NUnit" Version="3.13.1" />
@@ -13,24 +10,20 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" />
     <ProjectReference Include="..\IndicoV2\IndicoV2.csproj" />
     <ProjectReference Include="..\Indico\Indico.csproj" />
     <PackageReference Include="MimeKit" Version="2.11.0" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\Examples\WorkflowSubmission\workflow-sample.pdf" Link="Utils\DataHelpers\Files\workflow-sample.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Utils\DataHelpers\Files\TooSmall.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -32,15 +32,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkflowSubmission", "Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSQS", "Examples\AmazonSQS\AmazonSQS.csproj", "{03B569AD-FD4A-4C81-9513-06BFAF72636C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndicoV2.IntegrationTests", "IndicoV2.IntegrationTests\IndicoV2.IntegrationTests.csproj", "{09FAFD16-6EB4-4F0C-BCFA-0B1911FE2A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.IntegrationTests", "IndicoV2.IntegrationTests\IndicoV2.IntegrationTests.csproj", "{09FAFD16-6EB4-4F0C-BCFA-0B1911FE2A8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphqlCall", "Examples\GraphqlCall\GraphqlCall.csproj", "{D574D7CE-7810-4EA4-9A30-CF04F0F9498B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndicoV2", "IndicoV2\IndicoV2.csproj", "{415CC133-8266-43CE-A684-315E0A03D9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2", "IndicoV2\IndicoV2.csproj", "{415CC133-8266-43CE-A684-315E0A03D9E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndicoV2.Abstractions", "IndicoV2.Abstractions\IndicoV2.Abstractions.csproj", "{372C5822-1561-4F56-B11D-410F2653081F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.Abstractions", "IndicoV2.Abstractions\IndicoV2.Abstractions.csproj", "{372C5822-1561-4F56-B11D-410F2653081F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndicoV2.V1Adapters", "IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj", "{5ECBB2F8-14EF-427E-9136-2458C9A0860E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndicoV2.V1Adapters", "IndicoV2.V1Adapters\IndicoV2.V1Adapters.csproj", "{5ECBB2F8-14EF-427E-9136-2458C9A0860E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetPredictionsBasic", "Examples\GetPredictionsBasic\GetPredictionsBasic.csproj", "{CC46C9DC-5259-4738-9D35-EE3B5985BAF8}"
 EndProject
