@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -52,8 +53,10 @@ namespace IndicoV2.StrawberryShake.HttpClient
             }
 
             var responseStream = await responseMessage.Content.ReadAsStreamAsync();
+            JsonSerializerOptions options = null;
             var response =
-                await JsonSerializer.DeserializeAsync<RefreshTokenResponse>(responseStream, null, cancellationToken);
+                await JsonSerializer.DeserializeAsync<RefreshTokenResponse>(responseStream, options, cancellationToken);
+            ;
 
             _token = response.AuthToken ?? throw new AuthenticationException($"Cannot find {nameof(response.AuthToken)}.");
         }
