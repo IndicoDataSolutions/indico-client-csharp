@@ -6,6 +6,7 @@ using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.Workflows;
+using IndicoV2.Workflows.Models;
 using NUnit.Framework;
 using Unity;
 
@@ -60,6 +61,18 @@ namespace IndicoV2.IntegrationTests.Workflows
             var result = await _workflowsClient.AddDataAsync(_workflowId, default);
 
             result.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task ListWorkflows_ShouldReturnResult()
+        {
+            var result = await _workflowsClient.ListAsync(_dataSetId);
+            result.Should().NotBeNull();
+            foreach (WorkflowSs wf in result)
+            {
+                wf.Id.Should().BeGreaterThan(0);
+                wf.Name.Should().NotBeNull();
+            }
         }
     }
 }

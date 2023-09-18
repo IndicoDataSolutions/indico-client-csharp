@@ -1,8 +1,12 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using IndicoV2.StrawberryShake.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Data;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.StrawberryShake.Workflows
 {
@@ -23,5 +27,22 @@ namespace IndicoV2.StrawberryShake.Workflows
 
             return response.Workflows.Workflows.Single().Status.Value;
         }
+
+        public async Task<IListWorkflows_Workflows> ListAsync(int datasetId, CancellationToken cancellationToken)
+        {
+            int?[] datasetIds =  { datasetId };
+            var response = await ExecuteAsync(() =>
+                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(datasetIds), cancellationToken));
+            return response.Workflows;
+        }
+
+        public async Task<IListWorkflows_Workflows> ListAsync(int[] datasetIds, CancellationToken cancellationToken)
+        {
+            var nullableDatasetIds = datasetIds.Cast<int?>().ToArray();
+            var response = await ExecuteAsync(() =>
+                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(nullableDatasetIds), cancellationToken));
+            return response.Workflows;
+        }
+
     }
 }
