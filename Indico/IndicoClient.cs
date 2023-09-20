@@ -125,19 +125,8 @@ namespace Indico
         /// <returns>WorkflowSubmission</returns>
         public WorkflowSubmission WorkflowSubmission() => new WorkflowSubmission(this);
 
-        /// <summary>
-        /// Create a new request to load a ModelGroup.
-        /// </summary>
-        /// <returns>ModelGroupLoad</returns>
-        public ModelGroupLoad ModelGroupLoad(ModelGroup mg=null)
-        {
-            var mgLoad = new ModelGroupLoad(GraphQLHttpClient);
-            if (mg != null)
-            {
-                mgLoad.ModelId = mg.SelectedModel.Id;
-            }
-            return mgLoad;
-        }
+  
+        
 
         /// <summary>
         /// Create a new request to fetch model predictions.

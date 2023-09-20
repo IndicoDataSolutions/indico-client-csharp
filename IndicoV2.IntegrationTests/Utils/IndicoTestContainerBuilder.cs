@@ -29,6 +29,8 @@ namespace IndicoV2.IntegrationTests.Utils
 
         public IUnityContainer Build()
         {
+            Console.WriteLine(BaseUrl);
+            Console.WriteLine(ApiToken);
             var isClientRegistered = _container.Registrations.Any(r => typeof(IndicoClient).IsAssignableFrom(r.RegisteredType));
 
             if (!isClientRegistered)

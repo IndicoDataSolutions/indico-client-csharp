@@ -22,9 +22,6 @@ namespace IndicoV2.V1Adapters.Models
                     MgId = modelGroupId
                 }.Exec(cancellationToken));
 
-        public Task<string> LoadModel(int modelId, CancellationToken cancellationToken) =>
-            new ModelGroupLoad(_clientLegacy.GraphQLHttpClient) {ModelId = modelId}.Exec(cancellationToken);
-
         public async Task<string> Predict(int modelId, List<string> data, CancellationToken cancellationToken) =>
             (await
                 new ModelGroupPredict(_clientLegacy.GraphQLHttpClient) { ModelId = modelId }

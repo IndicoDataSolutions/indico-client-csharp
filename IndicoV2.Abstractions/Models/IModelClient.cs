@@ -15,13 +15,6 @@ namespace IndicoV2.Models
         /// <returns></returns>
         Task<IModelGroup> GetGroup(int modelGroupId, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Loads Model
-        /// </summary>
-        /// <param name="modelId"><seealso cref="IModel"/>'s Id</param>
-        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
-        /// <returns>Status</returns>
-        Task<string> LoadModel(int modelId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Predicts on a Model Group.

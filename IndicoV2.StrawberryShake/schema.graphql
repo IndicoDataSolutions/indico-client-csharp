@@ -1767,7 +1767,6 @@ type SuperMutation {
   deleteModelGroup(modelGroupId: Int!): DeleteModelGroup
   optimizeModelGroup(makePredictions: Boolean modelGroupId: Int!): ModelGroup
   modelPredict(data: [String] modelId: Int! predictOptions: JSONString): ModelPredict
-  modelLoad(modelId: Int!): ModelLoad
   updateLabelsetTargetPositions(labelsetId: Int! targetNames: [String]): LabelSet
   addLabelsetTarget(labelsetId: Int! targetName: String!): LabelSet
   createFireGroup(datacolumnId: Int datasetId: Int filters: [FiltersInput] name: String processors: [InputProcessor]): FireGroup
@@ -1936,10 +1935,6 @@ type DeleteModelGroup {
 
 type ModelPredict {
   jobId: String
-}
-
-type ModelLoad {
-  status: String
 }
 
 input FiltersInput {

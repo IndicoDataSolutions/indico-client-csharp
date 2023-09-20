@@ -97,12 +97,6 @@
             </summary>
             <returns>WorkflowSubmission</returns>
         </member>
-        <member name="M:Indico.IndicoClient.ModelGroupLoad(Indico.Entity.ModelGroup)">
-            <summary>
-            Create a new request to load a ModelGroup.
-            </summary>
-            <returns>ModelGroupLoad</returns>
-        </member>
         <member name="M:Indico.IndicoClient.ModelGroupPredict(Indico.Entity.ModelGroup)">
             <summary>
             Create a new request to fetch model predictions.
@@ -293,29 +287,6 @@
             </summary>
             <param name="cancellationToken">Token to abort operations.</param>
             <returns><c><see cref="T:Indico.Jobs.Job"/></c></returns>
-        </member>
-        <member name="P:Indico.Mutation.ModelGroupLoad.ModelId">
-            <summary>
-            Model Id.
-            </summary>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.#ctor(GraphQL.Client.Http.GraphQLHttpClient)">
-            <summary>
-            Model Group Load Constructor.
-            </summary>
-            <param name="graphQLHttpClient">Client used to send API requests.</param>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.ModelGroup(Indico.Entity.ModelGroup)">
-            <summary>
-            Used to load ModelGroup.
-            </summary>
-            <param name="modelGroup">Model group.</param>
-        </member>
-        <member name="M:Indico.Mutation.ModelGroupLoad.Exec(System.Threading.CancellationToken)">
-            <summary>
-            Executes request and returns load status.  
-            </summary>
-            <returns>Load status.</returns>
         </member>
         <member name="P:Indico.Mutation.ModelGroupPredict.ModelId">
             <summary>

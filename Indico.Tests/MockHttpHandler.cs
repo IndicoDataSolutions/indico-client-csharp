@@ -27,9 +27,6 @@ namespace Indico.Tests
                     case "ModelGroupQuery":
                         json = GetModelGroupQuery();
                         break;
-                    case "LoadModel":
-                        json = GetModelGroupLoad();
-                        break;
                     case "PredictModel":
                         json = GetModelGroupPredict();
                         break;
@@ -78,16 +75,6 @@ namespace Indico.Tests
                                 }
                             }
                         ]
-                    }
-                }
-            }";
-
-        private string GetModelGroupLoad() => @"
-            {
-                data: {
-                    modelLoad: {
-                        __typename: ""modelLoad"",
-                        status: ""loading""
                     }
                 }
             }";
