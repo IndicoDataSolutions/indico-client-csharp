@@ -37,8 +37,8 @@ namespace IndicoV2.Workflows
             _strawberryShake.Workflows().GetStatus(workflowId, cancellationToken);
 
         private Workflow ToWorkflow(IListWorkflows_Workflows_Workflows workflow) => new Workflow {
-            Id = workflow.Id,
-            ReviewEnabled = workflow.ReviewEnabled,
+            Id = workflow.Id ?? 0,
+            ReviewEnabled = workflow.ReviewEnabled ?? false,
             Name = workflow.Name,
         };
     }
