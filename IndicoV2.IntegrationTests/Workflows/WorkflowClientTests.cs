@@ -68,7 +68,7 @@ namespace IndicoV2.IntegrationTests.Workflows
         {
             var result = await _workflowsClient.ListAsync(_dataSetId);
             result.Should().NotBeNull();
-            foreach (WorkflowSs wf in result)
+            foreach (Workflow wf in result)
             {
                 wf.Id.Should().BeGreaterThan(0);
                 wf.Name.Should().NotBeNull();

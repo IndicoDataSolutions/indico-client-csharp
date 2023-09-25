@@ -21,13 +21,13 @@ namespace IndicoV2.Workflows
         public async Task<IEnumerable<IWorkflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default) 
         {
             var result = await _strawberryShake.Workflows().ListAsync(dataSetId, cancellationToken);
-            return result.Workflows.Select(x => ToWorkflowFromSs(x)).ToList();
+            return result.Workflows.Select(x => ToWorkflow(x)).ToList();
         }
 
         public async Task<IEnumerable<IWorkflow>>ListAsync(int[] dataSetIds, CancellationToken cancellationToken = default)
         {
             var result = await _strawberryShake.Workflows().ListAsync(dataSetIds, cancellationToken);
-            return result.Workflows.Select(x => ToWorkflowFromSs(x)).ToList();
+            return result.Workflows.Select(x => ToWorkflow(x)).ToList();
         }
 
         public Task<IWorkflowAddDataResult> AddDataAsync(int workflowId, CancellationToken cancellationToken) =>
@@ -36,6 +36,10 @@ namespace IndicoV2.Workflows
         public Task<WorkflowStatus> GetStatusAsync(int workflowId, CancellationToken cancellationToken) =>
             _strawberryShake.Workflows().GetStatus(workflowId, cancellationToken);
 
-        private IWorkflow ToWorkflowFromSs(IListWorkflows_Workflows_Workflows workflow) => new WorkflowSs(workflow);
+        private Workflow ToWorkflow(IListWorkflows_Workflows_Workflows workflow) => new Workflow {
+            Id = workflow.Id,
+            ReviewEnabled = workflow.ReviewEnabled,
+            Name = workflow.Name,
+        };
     }
 }
