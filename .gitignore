@@ -47,3 +47,4 @@ IndicoV2.StrawberryShake/Generated/
 user.runsettings
 /IndicoV2/Properties/PublishProfiles
 /Indico/Properties/PublishProfiles
+/.graphqlrc.json

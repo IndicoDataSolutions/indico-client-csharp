@@ -8,5 +8,7 @@
         int Id { get; }
 
         bool ReviewEnabled { get; }
+
+        string Name { get;  }
     }
 }
