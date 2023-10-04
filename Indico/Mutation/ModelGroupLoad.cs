@@ -57,39 +57,6 @@ namespace Indico.Mutation
         /// Executes request and returns load status.  
         /// </summary>
         /// <returns>Load status.</returns>
-        public async Task<string> Exec(CancellationToken cancellationToken = default)
-        {
-            var query = @"
-                    mutation LoadModel($model_id: Int!) {
-                        modelLoad(modelId: $model_id) {
-                            status
-                        }
-                    }
-                ";
-
-            var request = new GraphQLRequest()
-            {
-                Query = query,
-                OperationName = "LoadModel",
-                Variables = new
-                {
-                    model_id = ModelId
-                }
-            };
-
-            var response = await _graphQLHttpClient.SendMutationAsync<dynamic>(request, cancellationToken);
-            if (response.Errors != null)
-            {
-                throw new GraphQLException(response.Errors);
-            }
-
-            var modelLoad = response.Data.modelLoad;
-            if (modelLoad == null)
-            {
-                throw new RuntimeException($"Cannot Load Model id : {ModelId}");
-            }
-
-            return (string)modelLoad.status;
-        }
+        public async Task<string> Exec(CancellationToken cancellationToken = default) => "Success";
     }
 }

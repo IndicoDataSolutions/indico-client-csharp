@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Models.Models;
@@ -21,6 +22,7 @@ namespace IndicoV2.Models
         /// <param name="modelId"><seealso cref="IModel"/>'s Id</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Status</returns>
+        [Obsolete("Models are now automatically loaded by IPA")]
         Task<string> LoadModel(int modelId, CancellationToken cancellationToken);
 
         /// <summary>

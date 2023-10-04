@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Indico.Mutation;
@@ -21,7 +22,8 @@ namespace IndicoV2.V1Adapters.Models
                 {
                     MgId = modelGroupId
                 }.Exec(cancellationToken));
-
+       
+        [Obsolete("Models are now automatically loaded by IPA")]
         public Task<string> LoadModel(int modelId, CancellationToken cancellationToken) =>
             new ModelGroupLoad(_clientLegacy.GraphQLHttpClient) {ModelId = modelId}.Exec(cancellationToken);
 
