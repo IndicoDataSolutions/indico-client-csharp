@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>indico-client-csharp </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="indico-client-csharp ">
+    <meta name="generator" content="docfx 2.56.7.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="indico-client-csharp">indico-client-csharp</h1>
+
+<h2 id="installation">Installation</h2>
+<p>Install the indico-client-csharp package via the NuGet package manager GUI or command line.</p>
+<pre><code>PM&gt; Install-Package IndicoClient
+</code></pre>
+<h2 id="authentication">Authentication</h2>
+<p>The Indico Platform and Client Libraries use JSON Web Tokens (JWT) for user authentication. You can download a token
+from your <a href="https://app.indico.io/auth/account">user dashboard</a> by clicking the large, blue “Download new API Token” button.
+Most browsers will download the API token as indico_api_token.txt and place it in your Downloads directory. You should move
+the token file from Downloads to either your user profile <code>(C:\Users\my-user)</code> or another location in your development
+environment. The C# Client Library will look in your user profile directory by default.</p>
+<h2 id="configuration">Configuration</h2>
+<h3 id="indicoconfig-class">IndicoConfig Class</h3>
+<p>The IndicoConfig class gives you the maximum control over C# Client Library configuration. Here’s how you might instantiate
+an IndicoConfig object and set the host:</p>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+</code></pre>
+<p>You will most often provide a <code>host</code> argument to IndicoConfig. The class constructor also accepts tokenPath (path to a token file),
+apiToken (the actual token string) and protocol (https).</p>
+<h2 id="api-client">API Client</h2>
+<p>The Indico Platform uses GraphQL to communicate with ALL clients including the company’s own web application and also the
+Indico Python Client. You’ll use an IndicoClient object to pass GraphQL queries to the Indico Platform. Here’s a simple way
+to create a client:</p>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+
+IndicoClient indico = new IndicoClient(config);
+</code></pre>
+<p>The default config for IndicoClient sets the host to <code>app.indico.io</code> and will look for the Token File in your user profile directory.</p>
+<p>If you want to learn more about GraphQL, the <a href="https://www.howtographql.com/">How to GraphQL</a> tutorial is a great place to start.</p>
+<h2 id="indico-graphql-schema">Indico GraphQL Schema</h2>
+<p>The Indico Platform ships with a built-in sandbox environment that both documents and allows you to interactively explore
+the Platform’s GraphQL schema. You can find the sandbox at <code>/graph/api/graphql</code> on your Indico Platform installation. If your
+Platform’s host is <code>indico.my_company.com</code> then the full sandbox URL would be <code>https://indico.my_company.com/graph/api/graphql</code>.</p>
+<h2 id="pre-built-graphql-queries">Pre-Built GraphQL Queries</h2>
+<p>GraphQL is extremely powerful, flexible and efficient but can be a bit verbose. To make things easier for day-to-day use of the
+Platform and Client Library, the developers at Indico created a collection of Python Classes to generate the most often used
+queries for you. You can find the collection documented in the Reference section of the Client Libreary Docs.</p>
+<h2 id="examples">Examples</h2>
+<p>Several examples are provided in this repo:</p>
+<p><strong>SubmitWorkflows</strong> - How to submit a document to an Indico Workflow and retrieve results
+<strong>AddDataSetFiles</strong> - How to add new documents to an existing Dataset
+<strong>AmazonSQS</strong> - Sample code to listen to a workflow SQS and handle notifications</p>
+<p>The examples are setup as console apps in the repo's Visual Studio project.</p>
+<h2 id="example-snippets">Example Snippets</h2>
+<h4 id="create-a-client">Create a Client</h4>
+<pre><code>IndicoConfig config = new IndicoConfig(host: &quot;app.indico.io&quot;);
+IndicoClient indico = new IndicoClient(config);
+</code></pre>
+<h2 id="integration-test-setup">Integration Test Setup</h2>
+<h3 id="setting-environment-variables">Setting Environment Variables</h3>
+<p>It is highly recommended that developers set the following environment variables before
+running the integration tests.</p>
+<p><code>INDICO_HOST</code>: the host of the Indico instance you are testing against. Must include <code>https://</code>
+<code>INDICO_TOKEN</code>: api token associated with the Indico host
+<code>INDICO_TEST_WORKFLOW_ID</code>: Workflow id you are testing against
+<code>INDICO_TEST_DATASET_ID</code>: Dataset id you are testing against
+<code>INDICO_TEST_MODELGROUP_ID</code>: model group id you are testing against (NOT selected model id)</p>
+<p>Notes for ID configs:</p>
+<ul>
+<li>You will want to ensure that all IDs come from the same dataset, eg the workflow id belongs to the dataset id provided.</li>
+<li>If these IDs are not provided, the integration tests will infer them by selecting the first dataset ID available to the user testing.</li>
+</ul>
+<p>Further Notes retlated to failing tests:
+<a href="https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2685894671/C+Integration+Test+Enhancements">https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2685894671/C+Integration+Test+Enhancements</a>
+<a href="https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2682748947/C+SDK+Integration+Tests+IPA+5.10">https://indicodata.atlassian.net/wiki/spaces/CATCE/pages/2682748947/C+SDK+Integration+Tests+IPA+5.10</a></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/IndicoDataSolutions/indico-client-csharp/blob/master/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
