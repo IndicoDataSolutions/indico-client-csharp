@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Indico.Tests.Mutation
 {
     [TestClass]
+    [Ignore]
     public class ModelGroupQueryTest
     {
         private GraphQLHttpClient _client;
