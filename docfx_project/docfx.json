@@ -17,7 +17,8 @@
       ],
       "dest": "api",
       "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "disableDefaultFilter": false,
+      "outputFormat": "markdown"
     },
     {
       "src": [
@@ -35,7 +36,8 @@
       ],
       "dest": "apiV2",
       "disableGitFeatures": false,
-      "disableDefaultFilter": false
+      "disableDefaultFilter": false,
+      "outputFormat": "markdown"
     }
   ],
   "build": {
