@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 
 COPY . /indico-client-csharp
 WORKDIR /indico-client-csharp
-RUN dotnet tool install docfx
-RUN dotnet tool run docfx docfx_project/docfx.json 
+RUN chmod +x ./scripts/build_docs.sh
+CMD ["sleep", "infinity"]
 
 # ARG COMMIT_MSG=${git log -1 --pretty=%B}
 # # use devops sa github pat to interact with readme docs repo
