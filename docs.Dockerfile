@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 
+FROM mcr.microsoft.com/dotnet/sdk:7.0 
 COPY . /indico-client-csharp
 WORKDIR /indico-client-csharp
 RUN chmod +x ./scripts/build_docs.sh
