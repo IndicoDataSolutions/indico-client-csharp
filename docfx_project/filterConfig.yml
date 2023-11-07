@@ -1,0 +1,11 @@
+apiRules: 
+  - exclude:
+      uidRegex: IndicoV2\.Workflows\.Models\.Workflow
+  - exclude:
+      uidRegex: IndicoV2\.Submissions\.Models\.SubmissionSs
+  - exclude:
+      uidRegex: IndicoV2\.Submissions\.Models\.FilterConverter
+  - exclude:
+      uidRegex: IndicoV2\.Ocr\.Models\.ExtractionJobResult
+  - exclude:
+      uidRegex: IndicoV2\.CommonModels\.Pagination\.HasCursor

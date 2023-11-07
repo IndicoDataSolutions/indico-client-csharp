@@ -5,19 +5,14 @@
         {
           "src": "../",
           "files": [
-            "IndicoV2*/**.csproj"
-          ],
-          "exclude": [
-            "docfx_project/**",
-            "*Tests/**",
-            "IndicoV2.V1Adapters/**",
-            "IndicoV2.StrawberryShake/**"
+            "IndicoV2.Abstractions/**.csproj"
           ]
         }
       ],
       "dest": "apiV2",
       "disableGitFeatures": false,
-      "outputFormat": "markdown"
+      "outputFormat": "markdown",
+      "filter": "filterConfig.yml"
     }
   ]
 }
