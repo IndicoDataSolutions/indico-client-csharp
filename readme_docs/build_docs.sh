@@ -20,5 +20,5 @@ mv ../readme_docs/CommonModels.md ./apiV2/IndicoV2-CommonModels.md
 mv ../readme_docs/Extensions.md ./apiV2/IndicoV2-Extensions.md
 
 # fix links
-find apiV2 -type f -name '*.md' -print0 | xargs -0 sed -i -r 's|IHasCursor\\-1|IHasCursor-1|; s|(.+)\.md|\1|; s|\.|-|g'
+find apiV2 -type f -name '*.md' -print0 | xargs -0 sed -i -r 's|IHasCursor\\-1|IHasCursor-1|; s|(\(.+)\.md|\L\1|; s|\.|-|g'
 cd ..
