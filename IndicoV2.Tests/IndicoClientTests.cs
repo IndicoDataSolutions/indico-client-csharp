@@ -8,7 +8,7 @@ namespace IndicoV2.Tests
     {
         [Test]
         public void IndicoClient_ShouldPointToProd_WhenNoUriPassed() =>
-            new IndicoClient("testToken").BaseUri.Should().Be("https://app.indico.io");
+            new IndicoClient("testToken").BaseUri.Should().Be("https://try.indico.io");
 
         [Test]
         public void IndicoClient_ShouldThrowWhenNullToken() =>

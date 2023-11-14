@@ -42,13 +42,13 @@ namespace Indico
         /// </summary>
         /// <param name="apiToken">The actual text of the API Token</param>
         /// <param name="tokenPath">Path to the API Token file</param>
-        /// <param name="host">Indico Platform host. Defaults to app.indico.io</param>
+        /// <param name="host">Indico Platform host. Defaults to try.indico.io</param>
         /// <param name="protocol">Defaults to https</param>
         public IndicoConfig(
             [Optional] string apiToken,
             [Optional] string tokenPath,
             [Optional] int port,
-            string host = "app.indico.io",
+            string host = "try.indico.io",
             string protocol = "https",
             bool verify = true
         )
@@ -102,6 +102,6 @@ namespace Indico
         /// Get the base URL for the Indico Platform host, including protocol
         /// </summary>
         /// <returns>base URL string</returns>
-        public string GetAppBaseUrl() => Protocol + "://" + Host + (Port.HasValue? $":{Port.Value}" : "");
+        public string GetAppBaseUrl() => Protocol + "://" + Host + (Port.HasValue ? $":{Port.Value}" : "");
     }
 }

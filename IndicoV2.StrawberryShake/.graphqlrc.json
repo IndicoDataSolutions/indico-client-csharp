@@ -4,7 +4,7 @@
   "extensions": {
     "strawberryShake": {
       "name": "IndicoGqlClient",
-      "url": "https://app.indico.io/graph/api/graphql",
+      "url": "https://try.indico.io/graph/api/graphql",
       "dependencyInjection": true
     }
   }

@@ -9,8 +9,8 @@ namespace IndicoV2
     /// </summary>
     public class IndicoClient : IIndicoClient
     {
-        /// <summary>https://app.indico.io</summary>
-        private const string _defaultUrl = "https://app.indico.io";
+        /// <summary>https://try.indico.io</summary>
+        private const string _defaultUrl = "https://try.indico.io";
 
         internal readonly string _apiToken;
 
@@ -34,15 +34,15 @@ namespace IndicoV2
         /// <summary>
         /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
         /// </summary>
-        /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
+        /// <param name="apiToken">Authentication token (You can generate one at <c>https://try.indico.io/auth/account</c>)</param>
         public IndicoClient(string apiToken, bool verify = true) : this(apiToken, new Uri(_defaultUrl), verify)
         { }
 
         /// <summary>
         /// Creates IndicoClient
         /// </summary>
-        /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
-        /// <param name="baseUri">indico.io base address (Default values is <c>https://app.indico.io</c>)</param>
+        /// <param name="apiToken">Authentication token (You can generate one at <c>https://try.indico.io/auth/account</c>)</param>
+        /// <param name="baseUri">indico.io base address (Default values is <c>https://try.indico.io</c>)</param>
         /// <param name="verify">verify the host's SSL certificate (Default value is <c>true</c>)</param>
         public IndicoClient(string apiToken, Uri baseUri, bool verify = true)
         {

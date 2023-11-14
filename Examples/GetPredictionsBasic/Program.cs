@@ -18,7 +18,7 @@ namespace Examples
 
         public static async Task Main()
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
 
             var submissionClient = client.Submissions();
 

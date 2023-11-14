@@ -14,7 +14,7 @@ namespace Examples
 
         public static async Task Main()
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
 
             var dataSets = await client.DataSets().ListAsync();
 
@@ -22,7 +22,7 @@ namespace Examples
 
             var submissionClient = client.Submissions();
 
-            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf"});
+            var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] { "workflow-sample.pdf" });
             int submissionId = submissionIds.Single();
             var submission = await submissionClient.GetAsync(submissionId);
             var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);
