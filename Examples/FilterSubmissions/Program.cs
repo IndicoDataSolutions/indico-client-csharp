@@ -19,12 +19,16 @@ namespace Examples
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 "indico_api_token.txt"));
 
-        public static async Task Main()
+        public static async Task GetCompleteSubmissions(dynamic submissionClient)
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
+            // Filters for just submissions with a COMPLETE status
+            var justCompleteFilter = new SubmissionFilter { Status = SubmissionStatus.COMPLETE };
+            var submissions = new List<ISubmission> (await submissionClient.ListAsync(null, new[] { 2802 }, justCompleteFilter));
+            Console.WriteLine(submissions.Count);
+        }
 
-            var submissionClient = client.Submissions();
-
+        public static async Task GetCompleteAndFailedSubmissions(dynamic submissionClient)
+        {
             // Filters for submissions that have a COMPLETE status and are not retrieved
             var completeFilter = new AndFilter
             {
@@ -46,8 +50,18 @@ namespace Examples
             {
                 Or = new List<IFilter>() { completeFilter, failedFilter }
             };
-            var submissions = await submissionClient.ListAsync(null, new[] { 2802 }, filters);
-            Console.WriteLine(submissions.ToList().Count);
+            var submissions = new List<ISubmission> (await submissionClient.ListAsync(null, new[] { 2802 }, filters));
+            Console.WriteLine(submissions.Count);
+        }
+
+        public static async Task Main()
+        {
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
+
+            var submissionClient = client.Submissions();
+
+            await GetCompleteSubmissions(submissionClient);
+            await GetCompleteAndFailedSubmissions(submissionClient);
         }
     }
 }
