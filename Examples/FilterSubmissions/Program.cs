@@ -30,6 +30,7 @@ namespace Examples
         public static async Task GetCompleteAndFailedSubmissions(dynamic submissionClient)
         {
             // Filters for submissions that have a COMPLETE status and are not retrieved
+            // Because there are two conditions, they need to be combined in an AND filter
             var completeFilter = new AndFilter
             {
                 And = new List<IFilter>() {
@@ -38,6 +39,7 @@ namespace Examples
                 }
             };
             // Filters for submissions that have a FAILED status and are not retrieved
+            // Because there are two conditions, they need to be combined in an AND filter
             var failedFilter = new AndFilter
             {
                 And = new List<IFilter>() {
