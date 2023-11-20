@@ -4,7 +4,7 @@ using IndicoV2.Submissions.Models;
 namespace IndicoV2.Extensions.SubmissionResult.Exceptions
 {
     /// <summary>
-    /// Thrown when trying to get submission result and because of wrong status result cannot be downloaded.
+    /// Thrown when trying to get submission result and, because of wrong status, result cannot be downloaded.
     /// </summary>
     public class WrongSubmissionStatusException : Exception
     {
