@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using IndicoV2;
 using Newtonsoft.Json.Linq;
@@ -18,7 +17,7 @@ namespace Examples
 
         public static async Task Main()
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
 
             var submissionClient = client.Submissions();
 
@@ -26,8 +25,7 @@ namespace Examples
 
             var storageClient = client.Storage();
 
-            int submissionId = 152070;
-            var submission = await submissionClient.GetAsync(submissionId);
+            int submissionId = 91345;
 
             string jobId = await submissionClient.GenerateSubmissionResultAsync(submissionId);
             JToken jobResult = await jobClient.GetResultAsync<JToken>(jobId);
