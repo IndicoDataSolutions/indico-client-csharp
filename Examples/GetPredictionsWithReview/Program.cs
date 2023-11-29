@@ -18,18 +18,17 @@ namespace Examples
         public static async Task Main()
         {
             var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
-
             int submissionId = 91345;
 
             string jobId = await client.Submissions().GenerateSubmissionResultAsync(submissionId);
-            JToken jobResult = await client.JobAwaiter().WaitReadyAsync<JToken>(jobId, default, default);
+            var jobResult = await client.JobAwaiter().WaitReadyAsync<JToken>(jobId, default, default);
             string jobResultUrl = jobResult.Value<string>("url");
 
             var storageResult = await client.Storage().GetAsync(new Uri(jobResultUrl), default);
             using (var reader = new StreamReader(storageResult))
             {
                 string resultAsString = reader.ReadToEnd();
-                JObject resultObject = JObject.Parse(resultAsString);
+                var resultObject = JObject.Parse(resultAsString);
                 Console.WriteLine(resultObject);
             }
         }
