@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using IndicoV2;
 using Newtonsoft.Json.Linq;
@@ -18,26 +17,18 @@ namespace Examples
 
         public static async Task Main()
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
+            int submissionId = 91345;
 
-            var submissionClient = client.Submissions();
-
-            var jobClient = client.Jobs();
-
-            var storageClient = client.Storage();
-
-            int submissionId = 152070;
-            var submission = await submissionClient.GetAsync(submissionId);
-
-            string jobId = await submissionClient.GenerateSubmissionResultAsync(submissionId);
-            JToken jobResult = await jobClient.GetResultAsync<JToken>(jobId);
+            string jobId = await client.Submissions().GenerateSubmissionResultAsync(submissionId);
+            var jobResult = await client.JobAwaiter().WaitReadyAsync<JToken>(jobId, default, default);
             string jobResultUrl = jobResult.Value<string>("url");
 
-            var storageResult = await storageClient.GetAsync(new Uri(jobResultUrl), default);
+            var storageResult = await client.Storage().GetAsync(new Uri(jobResultUrl), default);
             using (var reader = new StreamReader(storageResult))
             {
                 string resultAsString = reader.ReadToEnd();
-                JObject resultObject = JObject.Parse(resultAsString);
+                var resultObject = JObject.Parse(resultAsString);
                 Console.WriteLine(resultObject);
             }
         }
