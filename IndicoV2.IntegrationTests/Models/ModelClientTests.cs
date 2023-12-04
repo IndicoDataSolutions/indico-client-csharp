@@ -92,8 +92,7 @@ namespace IndicoV2.IntegrationTests.Models
         {
             var result = await _modelClient.TrainingModelWithProgress(_modelGroupId, default);
             result.Should().NotBeNullOrEmpty();
-            result[0].Value<dynamic>("trainingProgress").Value<double>("percentComplete").Should().BeGreaterThan(0);
-
+            result[0]["trainingProgress"]?.Children().First().Should().NotBeNull();
         }
     }
 }

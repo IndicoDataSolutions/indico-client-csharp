@@ -38,9 +38,9 @@ namespace IndicoV2.Models
         /// <summary>
         /// Find the % complete of a training Model Group
         /// </summary>
-        /// <param name="modelId"><see cref="IModel"/>'s Id</param>
+        /// <param name="modelGroupId"><see cref="IModelGroup"/>'s Id</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>JObject with % training complete</returns>
-        Task<JArray> TrainingModelWithProgress(int modelId, CancellationToken cancellationToken);
+        Task<JArray> TrainingModelWithProgress(int modelGroupId, CancellationToken cancellationToken);
     }
 }

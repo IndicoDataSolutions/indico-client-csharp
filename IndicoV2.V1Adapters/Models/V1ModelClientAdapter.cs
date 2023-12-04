@@ -35,7 +35,7 @@ namespace IndicoV2.V1Adapters.Models
                 .Exec(cancellationToken))
             .Id;
 
-        public async Task<JArray> TrainingModelWithProgress(int modelId, CancellationToken cancellationToken) =>
-            await new TrainingModelWithProgressQuery(_clientLegacy) { ModelId = modelId }.Exec(cancellationToken);
+        public async Task<JArray> TrainingModelWithProgress(int modelGroupId, CancellationToken cancellationToken) =>
+            await new TrainingModelWithProgressQuery(_clientLegacy) { ModelId = modelGroupId }.Exec(cancellationToken);
     }
 }
