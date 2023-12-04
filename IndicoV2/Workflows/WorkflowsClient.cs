@@ -18,7 +18,13 @@ namespace IndicoV2.Workflows
             _strawberryShake = indicoClient.IndicoStrawberryShakeClient;
         }
 
-        public async Task<IEnumerable<IWorkflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default) 
+        public async Task<IWorkflow> GetWorkflowAsync(int workflowId, CancellationToken cancellationToken = default)
+        {
+            var result = await _strawberryShake.Workflows().GetWorkflowAsync(workflowId, cancellationToken);
+            return result.Workflows.Select(x => ToWorkflow(x)).ToList()[0];
+        }
+
+        public async Task<IEnumerable<IWorkflow>> ListAsync(int dataSetId, CancellationToken cancellationToken = default)
         {
             var result = await _strawberryShake.Workflows().ListAsync(dataSetId, cancellationToken);
             return result.Workflows.Select(x => ToWorkflow(x)).ToList();

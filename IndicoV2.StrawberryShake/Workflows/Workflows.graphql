@@ -16,8 +16,8 @@ mutation WorkflowAddData($workflowId: Int!) {
   }
 }
 
-query ListWorkflows($datasetIds: [Int]){
-  workflows(datasetIds: $datasetIds){
+query ListWorkflows($datasetIds: [Int], $workflowIds: [Int]){
+  workflows(datasetIds: $datasetIds, workflowIds: $workflowIds){
     workflows {
       id
       name
