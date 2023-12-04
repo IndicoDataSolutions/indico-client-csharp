@@ -7,6 +7,7 @@ using Indico.Query;
 using IndicoV2.Models;
 using IndicoV2.Models.Models;
 using IndicoV2.V1Adapters.Models.Models;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.V1Adapters.Models
 {
@@ -22,7 +23,7 @@ namespace IndicoV2.V1Adapters.Models
                 {
                     MgId = modelGroupId
                 }.Exec(cancellationToken));
-       
+
         [Obsolete("Models are now automatically loaded by IPA")]
         public Task<string> LoadModel(int modelId, CancellationToken cancellationToken) =>
             new ModelGroupLoad(_clientLegacy.GraphQLHttpClient) {ModelId = modelId}.Exec(cancellationToken);
@@ -33,5 +34,8 @@ namespace IndicoV2.V1Adapters.Models
                 .Data(data)
                 .Exec(cancellationToken))
             .Id;
+
+        public async Task<JArray> TrainingModelWithProgress(int modelId, CancellationToken cancellationToken) =>
+            await new TrainingModelWithProgressQuery(_clientLegacy) { ModelId = modelId }.Exec(cancellationToken);
     }
 }

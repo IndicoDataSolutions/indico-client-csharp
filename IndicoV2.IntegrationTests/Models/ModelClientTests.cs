@@ -86,5 +86,14 @@ namespace IndicoV2.IntegrationTests.Models
             firstPrediction.Confidence.Should().NotBeEmpty();
             firstPrediction.Confidence.First().Value.Should().BeGreaterThan(0);
         }
+
+        [Test]
+        public async Task TrainingModelWithProgress_ShouldReturnResult()
+        {
+            var result = await _modelClient.TrainingModelWithProgress(_modelGroupId, default);
+            result.Should().NotBeNullOrEmpty();
+            result[0].Value<dynamic>("trainingProgress").Value<double>("percentComplete").Should().BeGreaterThan(0);
+
+        }
     }
 }

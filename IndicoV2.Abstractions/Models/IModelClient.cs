@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Models.Models;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Models
 {
@@ -33,5 +34,13 @@ namespace IndicoV2.Models
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Job's Id</returns>
         Task<string> Predict(int modelId, List<string> data, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Find the % complete of a training Model Group
+        /// </summary>
+        /// <param name="modelId"><see cref="IModel"/>'s Id</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <returns>JObject with % training complete</returns>
+        Task<JArray> TrainingModelWithProgress(int modelId, CancellationToken cancellationToken);
     }
 }
