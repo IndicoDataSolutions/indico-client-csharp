@@ -20,8 +20,8 @@ namespace IndicoV2.IntegrationTests.Utils
     {
         private readonly UnityContainer _container;
 
-        private string BaseUrl => "https://dev-ci.us-east-2.indico-dev.indico.io";
-        private string ApiToken => "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTAzMiwidXNlcl9pZCI6MjY1LCJ1c2VyX2VtYWlsIjoibmF0ZS5zaGltQGluZGljby5pbyIsImlhdCI6MTY5ODE1ODU2OCwiYXVkIjpbImluZGljbzpyZWZyZXNoX3Rva2VuIl19.RJHgXtT3rIad5v1ijJBX9rV7syh7Y9QCualLal3AC4I";
+        private string BaseUrl => Environment.GetEnvironmentVariable("INDICO_HOST");
+        private string ApiToken => Environment.GetEnvironmentVariable("INDICO_TOKEN");
 
 
         public IndicoTestContainerBuilder() => _container = new UnityContainer();
