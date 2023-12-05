@@ -41,6 +41,6 @@ namespace IndicoV2.Models
         /// <param name="modelGroupId"><see cref="IModelGroup"/>'s Id</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>JObject with % training complete</returns>
-        Task<JArray> TrainingModelWithProgress(int modelGroupId, CancellationToken cancellationToken);
+        Task<IEnumerable<IModel>> TrainingModelWithProgress(int modelGroupId, CancellationToken cancellationToken);
     }
 }

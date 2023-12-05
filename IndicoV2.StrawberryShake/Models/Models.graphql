@@ -1,3 +1,29 @@
+query ModelGroupQuery($modelGroupIds: [Int]!) {
+    modelGroups(modelGroupIds: $modelGroupIds) {
+        modelGroups {
+            id
+            name
+            status
+            selectedModel {
+                id
+                status
+            }
+        }
+    }
+}
+
+mutation ModelLoad($modelId: Int!) {
+    modelLoad(modelId: $modelId) {
+        status
+    }
+}
+
+mutation PredictModel($modelId: Int!, $data: [String]!) {
+    modelPredict(modelId: $modelId, data: $data) {
+        jobId
+    }
+}
+
 query ModelGroupProgressQuery($id: Int) {
     modelGroups(modelGroupIds: [$id]) {
         modelGroups {

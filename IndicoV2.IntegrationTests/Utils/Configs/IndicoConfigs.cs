@@ -4,11 +4,10 @@ namespace IndicoV2.IntegrationTests.Utils.Configs
 {
     internal class IndicoConfigs
     {
-        public int WorkflowId => ParseEnvVar("INDICO_TEST_WORKFLOW_ID");
+        public int WorkflowId => 10473;
+        public int DatasetId => 11848;
 
-        public int DatasetId => ParseEnvVar("INDICO_TEST_DATASET_ID");
-
-        public int ModelGroupId => ParseEnvVar("INDICO_TEST_MODELGROUP_ID");
+        public int ModelGroupId => 8321;
 
         public static int ParseEnvVar(string varName)
         {

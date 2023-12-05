@@ -9,7 +9,6 @@ using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Models;
 using NUnit.Framework;
 using Unity;
-using ModelStatus = Indico.Types.ModelStatus;
 
 namespace IndicoV2.IntegrationTests.Models
 {
@@ -50,7 +49,7 @@ namespace IndicoV2.IntegrationTests.Models
 
             modelGroup.Id.Should().Be(_modelGroupId);
             modelGroup.Name.Should().NotBeEmpty();
-            modelGroup.Status.Should().NotBe(ModelStatus.CREATING);
+            modelGroup.Status.Should().NotBe("CREATING");
 
             var selectedModel = modelGroup.SelectedModel;
             selectedModel.Should().NotBeNull();
@@ -92,7 +91,10 @@ namespace IndicoV2.IntegrationTests.Models
         {
             var result = await _modelClient.TrainingModelWithProgress(_modelGroupId, default);
             result.Should().NotBeNullOrEmpty();
-            result[0]["trainingProgress"]?.Children().First().Should().NotBeNull();
+            var firstResult = result.First();
+            firstResult.Id.Should().BeGreaterThan(0);
+            firstResult.Status.Should().NotBeNull();
+            firstResult.TrainingProgressPercents.Should().BeGreaterThan(0);
         }
     }
 }

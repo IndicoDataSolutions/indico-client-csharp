@@ -58,7 +58,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Indico client</param>
         /// <returns>Instance of <seealso cref="IJobsClient"/> /></returns>
-        public static IModelClient Models(this IndicoClient indicoClient) => new V1ModelClientAdapter(indicoClient.LegacyClient);
+        public static IModelClient Models(this IndicoClient indicoClient) => new ModelsClient(indicoClient);
 
         /// <summary>
         /// Gets <seealso cref="IJobsClient"/>
