@@ -6,6 +6,8 @@ using IndicoV2.StrawberryShake;
 using IndicoV2.Models.Models;
 using System.Linq;
 
+using ModelStatus = IndicoV2.Models.Models.ModelStatus;
+
 namespace IndicoV2.Models
 {
     public class ModelsClient : IModelClient
@@ -59,7 +61,7 @@ namespace IndicoV2.Models
         {
             Id = modelGroup.Id ?? 0,
             Name = modelGroup.Name,
-            Status = modelGroup.Status.ToString(),
+            Status = (ModelStatus)modelGroup.Status,
             SelectedModel = ToModel(modelGroup.SelectedModel)
         };
     }

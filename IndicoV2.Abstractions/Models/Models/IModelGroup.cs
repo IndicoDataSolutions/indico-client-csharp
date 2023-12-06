@@ -21,7 +21,7 @@
         /// Gets the ModelGroup status.
         /// </summary>
         /// <value>The status.</value>
-        string Status { get; }
+        ModelStatus Status { get; }
 
         /// <summary>
         /// Gets the selected model.

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Indico.Types;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
@@ -49,7 +50,7 @@ namespace IndicoV2.IntegrationTests.Models
 
             modelGroup.Id.Should().Be(_modelGroupId);
             modelGroup.Name.Should().NotBeEmpty();
-            modelGroup.Status.Should().NotBe("CREATING");
+            modelGroup.Status.Should().NotBe(ModelStatus.CREATING);
 
             var selectedModel = modelGroup.SelectedModel;
             selectedModel.Should().NotBeNull();
