@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Indico.Types;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
@@ -9,7 +10,6 @@ using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Models;
 using NUnit.Framework;
 using Unity;
-using ModelStatus = Indico.Types.ModelStatus;
 
 namespace IndicoV2.IntegrationTests.Models
 {
@@ -56,7 +56,7 @@ namespace IndicoV2.IntegrationTests.Models
             selectedModel.Should().NotBeNull();
 
             selectedModel.Id.Should().BeGreaterThan(0);
-            selectedModel.Status.Should().NotBeEmpty();
+            selectedModel.Status.Should().NotBeNull();
             selectedModel.TrainingProgressPercents.Should().BeGreaterOrEqualTo(0);
         }
 
@@ -85,6 +85,17 @@ namespace IndicoV2.IntegrationTests.Models
 
             firstPrediction.Confidence.Should().NotBeEmpty();
             firstPrediction.Confidence.First().Value.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public async Task TrainingModelWithProgress_ShouldReturnResult()
+        {
+            var result = await _modelClient.TrainingModelWithProgress(_modelGroupId, default);
+            result.Should().NotBeNullOrEmpty();
+            var firstResult = result.First();
+            firstResult.Id.Should().BeGreaterThan(0);
+            firstResult.Status.Should().NotBeNull();
+            firstResult.TrainingProgressPercents.Should().BeGreaterThan(0);
         }
     }
 }

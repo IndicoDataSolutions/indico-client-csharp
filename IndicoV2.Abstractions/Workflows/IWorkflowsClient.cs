@@ -9,6 +9,14 @@ namespace IndicoV2.Workflows
 {
     public interface IWorkflowsClient
     {
+
+        /// <summary>
+        /// Get <seealso cref="IWorkflow"/> for a given workflowId
+        /// </summary>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="workflowId"><see cref="IWorkflow"/>'s Id></param>
+        Task<IWorkflow> GetWorkflowAsync(int workflowId, CancellationToken cancellationToken = default);
+
         /// <summary>
         /// Lists <seealso cref="IWorkflow"/> for a given <seealso cref="IDataSet"/>
         /// </summary>

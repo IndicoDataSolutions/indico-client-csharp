@@ -30,7 +30,7 @@ namespace IndicoV2.IntegrationTests.Workflows
             var _rawDataSetId = _indicoConfigs.DatasetId;
             if (_rawDataSetId == 0)
             {
-                var dataset = (await _dataHelper.DataSets().GetAny());
+                var dataset = await _dataHelper.DataSets().GetAny();
                 _dataSetId = dataset.Id;
                 var workflows = await _workflowsClient.ListAsync(_dataSetId, default);
                 _workflowId = workflows.First().Id;
@@ -57,7 +57,7 @@ namespace IndicoV2.IntegrationTests.Workflows
         public async Task AddData_ShouldReturnResult()
         {
 
-            await _dataSetClient.AddFilesAsync(_dataSetId, new[] {_dataHelper.Files().GetSampleFilePath()}, default);
+            await _dataSetClient.AddFilesAsync(_dataSetId, new[] { _dataHelper.Files().GetSampleFilePath() }, default);
             var result = await _workflowsClient.AddDataAsync(_workflowId, default);
 
             result.Should().NotBeNull();
@@ -73,6 +73,15 @@ namespace IndicoV2.IntegrationTests.Workflows
                 wf.Id.Should().BeGreaterThan(0);
                 wf.Name.Should().NotBeNull();
             }
+        }
+
+        [Test]
+        public async Task GetWorkflow_ShouldReturnResult()
+        {
+            var result = await _workflowsClient.GetWorkflowAsync(_workflowId);
+            result.Should().NotBeNull();
+            result.Id.Should().BeGreaterThan(0);
+            result.Name.Should().NotBeNull();
         }
     }
 }

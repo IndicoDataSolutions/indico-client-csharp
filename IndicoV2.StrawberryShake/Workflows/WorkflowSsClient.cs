@@ -16,7 +16,7 @@ namespace IndicoV2.StrawberryShake.Workflows
 
         public WorkflowSsClient(ServiceProvider services) => _services = services;
 
-        public Task<IWorkflowAddDataResult> AddData(int workflowId, CancellationToken cancellationToken) => 
+        public Task<IWorkflowAddDataResult> AddData(int workflowId, CancellationToken cancellationToken) =>
             ExecuteAsync(async () => await _services
             .GetRequiredService<WorkflowAddDataMutation>().ExecuteAsync(workflowId, cancellationToken));
 
@@ -28,11 +28,19 @@ namespace IndicoV2.StrawberryShake.Workflows
             return response.Workflows.Workflows.Single().Status.Value;
         }
 
+        public async Task<IListWorkflows_Workflows> GetWorkflowAsync(int workflowId, CancellationToken cancellationToken)
+        {
+            int?[] workflowIds = { workflowId };
+            var response = await ExecuteAsync(() =>
+            _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(null, Array.AsReadOnly(workflowIds), cancellationToken));
+            return response.Workflows;
+        }
+
         public async Task<IListWorkflows_Workflows> ListAsync(int datasetId, CancellationToken cancellationToken)
         {
             int?[] datasetIds =  { datasetId };
             var response = await ExecuteAsync(() =>
-                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(datasetIds), cancellationToken));
+                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(datasetIds), null, cancellationToken));
             return response.Workflows;
         }
 
@@ -40,7 +48,7 @@ namespace IndicoV2.StrawberryShake.Workflows
         {
             var nullableDatasetIds = datasetIds.Cast<int?>().ToArray();
             var response = await ExecuteAsync(() =>
-                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(nullableDatasetIds), cancellationToken));
+                _services.GetRequiredService<ListWorkflowsQuery>().ExecuteAsync(Array.AsReadOnly(nullableDatasetIds), null, cancellationToken));
             return response.Workflows;
         }
 
