@@ -12,7 +12,7 @@
         /// Gets the Model status.
         /// </summary>
         /// <value>The model status.</value>
-        string Status { get; }
+        ModelStatus Status { get; }
 
         /// <summary>
         /// Gets training progress.

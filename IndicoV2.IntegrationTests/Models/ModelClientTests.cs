@@ -56,7 +56,7 @@ namespace IndicoV2.IntegrationTests.Models
             selectedModel.Should().NotBeNull();
 
             selectedModel.Id.Should().BeGreaterThan(0);
-            selectedModel.Status.Should().NotBeEmpty();
+            selectedModel.Status.Should().NotBeNull();
             selectedModel.TrainingProgressPercents.Should().BeGreaterOrEqualTo(0);
         }
 

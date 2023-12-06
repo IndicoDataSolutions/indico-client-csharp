@@ -53,7 +53,7 @@ namespace IndicoV2.Models
         private Model ToModel(dynamic model) => new Model
         {
             Id = model.Id ?? 0,
-            Status = model.Status.ToString(),
+            Status = (ModelStatus)model.Status,
             TrainingProgressPercents = model.GetType().GetProperty("TrainingProgress") != null ? (float)model.TrainingProgress?.PercentComplete : 0f,
         };
 
