@@ -43,7 +43,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IStorageClient"/></returns>
-        public static IStorageClient Storage(this IndicoClient indicoClient) => new V1StorageClientAdapter(indicoClient.LegacyClient);
+        public static IStorageClient Storage(this IndicoClient indicoClient) => new StorageClient(indicoClient);
 
         /// <summary>
         /// Gets <seealso cref="IReviewsClient"/>
