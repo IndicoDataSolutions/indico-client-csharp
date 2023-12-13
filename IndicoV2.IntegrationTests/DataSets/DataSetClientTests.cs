@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.DataSets;
@@ -77,7 +78,7 @@ namespace IndicoV2.IntegrationTests.DataSets
         public async Task AddFiles_ShouldAddFiles()
         {
             var files = new[] {_dataHelper.Files().GetSampleFilePath()};
-            
+
             var result = await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
 
             result.AddDatasetFiles.Id.Should().Be(_dataSetId);
@@ -94,7 +95,7 @@ namespace IndicoV2.IntegrationTests.DataSets
                 .Dataset.Files
                 .Where(f => f.Status == FileStatus.Downloaded)
                 .Select(f => f.Id.Value);
-            
+
             // Act
             var result = await _dataSetClient.ProcessFileAsync(_dataSetId, downloadedFiles, default);
 

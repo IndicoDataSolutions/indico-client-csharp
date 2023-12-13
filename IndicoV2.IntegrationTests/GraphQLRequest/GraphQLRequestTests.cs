@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.GraphQLRequest;
 using NUnit.Framework;
 using Unity;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.IntegrationTests.GraphQLRequest
 {
@@ -34,8 +34,7 @@ namespace IndicoV2.IntegrationTests.GraphQLRequest
             }";
             string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-            var result = await _graphQLRequestClient.Call(query, operationName, variables);
-
+            JObject result = await _graphQLRequestClient.Call(query, operationName, variables);
             result.Should().NotBeNull();
         }
     }
