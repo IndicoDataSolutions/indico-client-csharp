@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,21 +7,18 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Indico.Storage;
-using IndicoV2.Storage;
 using IndicoV2.Storage.Models;
 using IndicoV2.V1Adapters.Storage.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using IndicoClient = Indico.IndicoClient;
 
-namespace IndicoV2.V1Adapters.Storage
+namespace IndicoV2.Storage
 {
-    public class V1StorageClientAdapter : IStorageClient
+    public class StorageClient : IStorageClient
     {
-        private readonly IndicoClient _clientLegacy;
-        
+        private readonly IndicoClient _indicoClient;
+
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new DefaultContractResolver
@@ -30,13 +27,13 @@ namespace IndicoV2.V1Adapters.Storage
             },
         };
 
-        private Uri UploadUri => new Uri(new Uri(_clientLegacy.Config.GetAppBaseUrl()), "/storage/files/store");
+        private Uri UploadUri => new Uri(_indicoClient.BaseUri, "/storage/files/store");
 
-        public V1StorageClientAdapter(IndicoClient clientLegacy) => _clientLegacy = clientLegacy;
+        public StorageClient(IndicoClient indicoClient) => _indicoClient = indicoClient;
 
         public async Task<Stream> GetAsync(Uri uri, CancellationToken cancellationToken)
         {
-            var blob = await new RetrieveBlob(_clientLegacy) { Url = uri.ToString() }.Exec();
+            var blob = await new RetrieveBlob(_indicoClient) { Url = uri.ToString() }.Exec();
             var result = blob.AsStream();
 
             return result;
@@ -44,7 +41,7 @@ namespace IndicoV2.V1Adapters.Storage
 
         public async Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken)
         {
-            var metadata = await new UploadFile(_clientLegacy) {Files = filePaths.ToList()}.Call(cancellationToken);
+            var metadata = await new UploadFile(_indicoClient) {Files = filePaths.ToList()}.Call(cancellationToken);
 
             return DeserializeMetadata(metadata);
         }
@@ -74,7 +71,7 @@ namespace IndicoV2.V1Adapters.Storage
             CancellationToken cancellationToken)
         {
             var content = await CreateRequest(files, cancellationToken);
-            var response = await _clientLegacy.HttpClient.PostAsync(UploadUri, content, cancellationToken);
+            var response = await _indicoClient.HttpClient.PostAsync(UploadUri, content, cancellationToken);
 
             using (var reader = new JsonTextReader(new StreamReader(await response.Content.ReadAsStreamAsync())))
             {
@@ -132,5 +129,6 @@ namespace IndicoV2.V1Adapters.Storage
 
             return httpContent;
         }
+
     }
 }

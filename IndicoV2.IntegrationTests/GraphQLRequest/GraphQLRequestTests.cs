@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.GraphQLRequest;
 using NUnit.Framework;
@@ -35,7 +33,6 @@ namespace IndicoV2.IntegrationTests.GraphQLRequest
             string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
             var result = await _graphQLRequestClient.Call(query, operationName, variables);
-
             result.Should().NotBeNull();
         }
     }
