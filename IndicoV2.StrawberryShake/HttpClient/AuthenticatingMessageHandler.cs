@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IndicoV2.StrawberryShake.HttpClient
 {
-    internal class AuthenticatingMessageHandler : HttpClientHandler
+    public class AuthenticatingMessageHandler : HttpClientHandler
     {
         private readonly Uri _refreshUri;
         private readonly string _refreshToken;

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Indico;
 using IndicoV2.StrawberryShake;
+using IndicoV2.StrawberryShake.HttpClient;
 
 namespace IndicoV2
 {
@@ -10,8 +11,8 @@ namespace IndicoV2
     /// </summary>
     public class IndicoClient : IIndicoClient
     {
-        /// <summary>https://app.indico.io</summary>
-        private const string _defaultUrl = "https://app.indico.io";
+        /// <summary>https://try.indico.io</summary>
+        private const string _defaultUrl = "https://try.indico.io";
 
         internal readonly string _apiToken;
 
@@ -55,17 +56,7 @@ namespace IndicoV2
             _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
             _verifySsl = verify;
-
-            var handler = GetHandler();
-            HttpClient = new HttpClient(handler);
-        }
-
-        private HttpMessageHandler GetHandler()
-        {
-            var innerHandler = new HttpClientHandler();
-
-            var tokenHandler = new TokenHandler(_apiToken, innerHandler);
-            return tokenHandler;
+            HttpClient = new HttpClient(new AuthenticatingMessageHandler(baseUri, apiToken));
         }
     }
 }
