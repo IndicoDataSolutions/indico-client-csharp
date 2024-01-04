@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
-using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.GraphQLRequest;
 using NUnit.Framework;
 using Unity;
-using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.IntegrationTests.GraphQLRequest
 {

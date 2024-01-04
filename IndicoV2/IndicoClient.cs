@@ -11,8 +11,8 @@ namespace IndicoV2
     /// </summary>
     public class IndicoClient : IIndicoClient
     {
-        /// <summary>https://try.indico.io</summary>
-        private const string _defaultUrl = "https://try.indico.io";
+        /// <summary>https://app.indico.io</summary>
+        private const string _defaultUrl = "https://app.indico.io";
 
         internal readonly string _apiToken;
 
