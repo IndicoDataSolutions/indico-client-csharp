@@ -33,5 +33,6 @@ namespace IndicoV2.StrawberryShake
         public WorkflowSsClient Workflows() => new WorkflowSsClient(_services);
         public SubmissionSsClient Submissions() => new SubmissionSsClient(_services);
         public UserReportingSsClient UserReporting() => new UserReportingSsClient(_services);
+
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using IndicoV2.Exception;
 
 namespace IndicoV2.Storage
 {
@@ -52,7 +53,7 @@ namespace IndicoV2.Storage
                 {
                     string fname = (string)uploadMeta.GetValue("name");
                     string ferror = (string)uploadMeta.GetValue("error");
-                    throw new Exception($"File upload failed on {fname} with status {ferror}");
+                    throw new FileUploadException($"File upload failed on {fname} with status {ferror}");
                 }
             }
 
