@@ -77,7 +77,7 @@ namespace IndicoV2
         /// Create a new GraphQL request
         /// </summary>
         /// <returns>GraphQLRequest</returns>
-        public GraphQLRequest.GraphQLRequest GraphQLRequest(string query=null, string operationName=null)
+        public GraphQLRequest.GraphQLRequest GraphQLRequest(string query=null, string operationName=null, object variables = null)
         {
             var request = new GraphQLRequest.GraphQLRequest(GraphQLHttpClient);
             if (query != null)
@@ -88,6 +88,11 @@ namespace IndicoV2
             if (operationName != null)
             {
                 request.OperationName = operationName;
+            }
+
+            if (variables != null)
+            {
+                request.Variables = variables;
             }
             return request;
         }

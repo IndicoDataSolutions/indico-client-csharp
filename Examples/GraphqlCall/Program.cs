@@ -17,9 +17,7 @@ namespace Examples
 
         public static async Task Main()
         {
-            var client = new IndicoClient(GetToken(), new Uri("https://app.indico.io"));
-
-            var graphQLRequestClient = client.GraphQLRequest();
+            var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
 
             string query = @"
             query ListDatasets($limit: Int){
@@ -34,8 +32,8 @@ namespace Examples
             ";
             string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-
-            JObject response = await graphQLRequestClient.Call(query, operationName, variables);
+            var graphQLRequestClient = client.GraphQLRequest(query, operationName, variables);
+            JObject response = await graphQLRequestClient.Call();
             Console.WriteLine(response);
         }
     }
