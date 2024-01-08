@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.Jobs.Models;
-using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Jobs
 {
@@ -22,16 +20,7 @@ namespace IndicoV2.Jobs
         /// <param name="jobId">Job's Id</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Job result</returns>
-        [Obsolete("Use generic version of this method.")]
-        Task<JToken> GetResultAsync(string jobId, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Gets Job's result
-        /// </summary>
-        /// <param name="jobId">Job's Id</param>
-        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
-        /// <returns>Job result</returns>
-        Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default);
+        Task<string> GetResultAsync(string jobId, CancellationToken cancellationToken = default);
 
         Task<string> GetFailureReasonAsync(string jobId);
     }

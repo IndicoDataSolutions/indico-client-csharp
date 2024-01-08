@@ -21,8 +21,8 @@ namespace Examples
             int submissionId = 91345;
 
             string jobId = await client.Submissions().GenerateSubmissionResultAsync(submissionId);
-            var jobResult = await client.JobAwaiter().WaitReadyAsync<JToken>(jobId, default, default);
-            string jobResultUrl = jobResult.Value<string>("url");
+            var jobResult = await client.Jobs().GetResultAsync(jobId, default);
+            string jobResultUrl = JToken.Parse(jobResult).Value<string>("url");
 
             var storageResult = await client.Storage().GetAsync(new Uri(jobResultUrl), default);
             using (var reader = new StreamReader(storageResult))

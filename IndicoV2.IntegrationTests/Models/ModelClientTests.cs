@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Indico.Jobs;
 using Indico.Types;
 using IndicoV2.DataSets;
-using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.Configs;
+using IndicoV2.Jobs;
 using IndicoV2.Models;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
 
@@ -17,7 +19,7 @@ namespace IndicoV2.IntegrationTests.Models
     {
         private IModelClient _modelClient;
         private int _modelGroupId;
-        private IJobAwaiter _jobAwaiter;
+        private IJobsClient _jobsClient;
         private int _modelId;
         private IndicoConfigs _indicoConfigs;
 
@@ -40,7 +42,7 @@ namespace IndicoV2.IntegrationTests.Models
                 _modelGroupId = _rawModelGroupId;
             }
             _modelId = (await _modelClient.GetGroup(_modelGroupId, default)).Id;
-            _jobAwaiter = container.Resolve<IJobAwaiter>();
+            _jobsClient = container.Resolve<IJobsClient>();
         }
 
         [Test]
@@ -71,20 +73,20 @@ namespace IndicoV2.IntegrationTests.Models
             // Act
             var jobId = await _modelClient.Predict(modelGroup.SelectedModel.Id, data.ToList(), default);
             var predictionResults =
-                await _jobAwaiter.WaitPredictionReadyAsync(jobId, TimeSpan.FromMilliseconds(300), default);
+                JArray.Parse(await _jobsClient.GetResultAsync(jobId, default));
 
             // Assert
             predictionResults.Count.Should().Be(data.Length);
 
             var firstPrediction = predictionResults.First().First();
-            firstPrediction.Label.Should().NotBeNullOrEmpty();
-            firstPrediction.Text.Should().NotBeNullOrEmpty();
+            firstPrediction.Value<string>("label").Should().NotBeNullOrEmpty();
+            firstPrediction.Value<string>("text").Should().NotBeNullOrEmpty();
 
-            firstPrediction.Start.Should().BeGreaterThan(0);
-            firstPrediction.End.Should().BeGreaterThan(0);
+            firstPrediction.Value<int>("start").Should().BeGreaterThan(0);
+            firstPrediction.Value<int>("end").Should().BeGreaterThan(0);
 
-            firstPrediction.Confidence.Should().NotBeEmpty();
-            firstPrediction.Confidence.First().Value.Should().BeGreaterThan(0);
+            firstPrediction.Value<dynamic>("confidence").Should().NotBeEmpty();
+            firstPrediction.Value<dynamic>("confidence").First().Value.Should().BeGreaterThan(0);
         }
 
         [Test]

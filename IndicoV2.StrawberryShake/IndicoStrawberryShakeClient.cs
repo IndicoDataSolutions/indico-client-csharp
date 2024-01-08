@@ -6,6 +6,7 @@ using IndicoV2.StrawberryShake.Submissions;
 using IndicoV2.StrawberryShake.Workflows;
 using IndicoV2.StrawberryShake.Models;
 using Microsoft.Extensions.DependencyInjection;
+using IndicoV2.StrawberryShake.Jobs;
 
 namespace IndicoV2.StrawberryShake
 {
@@ -31,6 +32,7 @@ namespace IndicoV2.StrawberryShake
         public DataSetSsClient DataSets() => new DataSetSsClient(_services);
         public ModelSsClient Models() => new ModelSsClient(_services);
         public WorkflowSsClient Workflows() => new WorkflowSsClient(_services);
+        public JobSsClient Jobs() => new JobSsClient(_services);
         public SubmissionSsClient Submissions() => new SubmissionSsClient(_services);
         public UserReportingSsClient UserReporting() => new UserReportingSsClient(_services);
     }

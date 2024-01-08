@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.Jobs;
 using IndicoV2.Reporting;
@@ -16,7 +15,7 @@ namespace IndicoV2.IntegrationTests.Reporting
     public class ReportingClientTests
     {
         private IUserReportingClient _userReportingClient;
-        private IJobAwaiter _jobAwaiter;
+        private IJobsClient _jobsClient;
         private IStorageClient _storage;
 
         [OneTimeSetUp]
@@ -25,7 +24,7 @@ namespace IndicoV2.IntegrationTests.Reporting
             var container = new IndicoTestContainerBuilder().Build();
             _userReportingClient = container.Resolve<IUserReportingClient>();
             container.Resolve<IJobsClient>();
-            _jobAwaiter = container.Resolve<IJobAwaiter>();
+            _jobsClient = container.Resolve<IJobsClient>();
             _storage = container.Resolve<IStorageClient>();
         }
 
@@ -71,7 +70,7 @@ namespace IndicoV2.IntegrationTests.Reporting
         {
             jobId.Should().NotBeNullOrWhiteSpace();
 
-            var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(jobId, TimeSpan.FromMilliseconds(500), default);
+            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(jobId, default));
             var reportStream = await _storage.GetAsync(new Uri(jobResult.Value<string>("url")), default);
             using var reader = new StreamReader(reportStream);
             var report = await reader.ReadToEndAsync();

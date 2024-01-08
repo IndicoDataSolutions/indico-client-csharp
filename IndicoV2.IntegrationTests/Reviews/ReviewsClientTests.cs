@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
@@ -10,6 +9,7 @@ using IndicoV2.Reviews;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
+using IndicoV2.Jobs;
 
 namespace IndicoV2.IntegrationTests.Reviews
 {
@@ -18,7 +18,7 @@ namespace IndicoV2.IntegrationTests.Reviews
         private IReviewsClient _reviewsClient;
         private DataHelper _dataHelper;
         private ISubmissionResultAwaiter _submissionResultAwaiter;
-        private JobAwaiter _jobAwaiter;
+        private IJobsClient _jobsClient;
         private IndicoConfigs _indicoConfigs;
         private int _workflowId;
 
@@ -31,7 +31,7 @@ namespace IndicoV2.IntegrationTests.Reviews
             _dataHelper = container.Resolve<DataHelper>();
             _reviewsClient = container.Resolve<IReviewsClient>();
             _submissionResultAwaiter = container.Resolve<ISubmissionResultAwaiter>();
-            _jobAwaiter = container.Resolve<JobAwaiter>();
+            _jobsClient = container.Resolve<IJobsClient>();
             _indicoConfigs = new IndicoConfigs();
             var _rawWorkflowId = _indicoConfigs.WorkflowId;
             if (_rawWorkflowId == 0)
@@ -55,7 +55,7 @@ namespace IndicoV2.IntegrationTests.Reviews
 
             // Act
             var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
-            var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(submitReviewJobId, TimeSpan.FromSeconds(1));
+            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(submitReviewJobId));
 
             // Assert
             jobResult.Should().NotBeNull();

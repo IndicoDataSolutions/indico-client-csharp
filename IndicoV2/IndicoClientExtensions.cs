@@ -1,6 +1,5 @@
 ﻿using IndicoV2.DataSets;
 using IndicoV2.Extensions.DataSets;
-using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Extensions.Workflows;
 using IndicoV2.Jobs;
@@ -12,7 +11,6 @@ using IndicoV2.Storage;
 using IndicoV2.GraphQLRequest;
 using IndicoV2.Submissions;
 using IndicoV2.V1Adapters.DataSets;
-using IndicoV2.V1Adapters.Jobs;
 using IndicoV2.V1Adapters.Models;
 using IndicoV2.V1Adapters.Ocr;
 using IndicoV2.V1Adapters.Reviews;
@@ -65,7 +63,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Indico client</param>
         /// <returns>Instance of <seealso cref="IJobsClient"/> /></returns>
-        public static IJobsClient Jobs(this IndicoClient indicoClient) => new V1JobsClientAdapter(indicoClient.LegacyClient, new JobStatusConverter());
+        public static IJobsClient Jobs(this IndicoClient indicoClient) => new JobsClient(indicoClient);
 
         /// <summary>
         /// Gets <seealso cref="IOcrClient"/>
@@ -84,8 +82,6 @@ namespace IndicoV2
         /// <returns></returns>
         public static ISubmissionResultAwaiter GetSubmissionResultAwaiter(this IndicoClient indicoClient) =>
             new SubmissionResultAwaiter(indicoClient.Submissions(), indicoClient.Storage());
-
-        public static IJobAwaiter JobAwaiter(this IndicoClient indicoClient) => new JobAwaiter(indicoClient.Jobs());
 
         public static IDataSetAwaiter DataSetAwaiter(this IndicoClient indicoClient) =>
             new DataSetAwaiter(indicoClient.DataSets());

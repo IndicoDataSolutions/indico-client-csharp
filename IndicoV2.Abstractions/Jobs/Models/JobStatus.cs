@@ -37,6 +37,10 @@
         /// <summary>
         /// Job Status IGNORED
         /// </summary>
-        IGNORED
+        IGNORED,
+        /// <summary>
+        /// Job Status TRAILED
+        /// </summary>
+        TRAILED
     }
 }
