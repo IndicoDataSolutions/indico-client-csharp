@@ -70,7 +70,7 @@ namespace IndicoV2.IntegrationTests.Reporting
         {
             jobId.Should().NotBeNullOrWhiteSpace();
 
-            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(jobId, default));
+            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(jobId, default, default));
             var reportStream = await _storage.GetAsync(new Uri(jobResult.Value<string>("url")), default);
             using var reader = new StreamReader(reportStream);
             var report = await reader.ReadToEndAsync();

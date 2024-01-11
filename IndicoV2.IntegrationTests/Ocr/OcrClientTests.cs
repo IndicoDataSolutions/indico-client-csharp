@@ -39,14 +39,13 @@ namespace IndicoV2.IntegrationTests.Ocr
         {
             // Arrange
             var jobId = await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset);
-            var jobResult = await _jobsClient.GetResultAsync(jobId);
+            var jobResult = await _jobsClient.GetResultAsync(jobId, default, default);
             var jobResultUri = new Uri(JToken.Parse(jobResult).Value<string>("url"));
 
             if (preset != DocumentExtractionPreset.OnDocument)
             {
                 // Act
                 var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResultUri, default);
-
                 // Assert
                 extractionResult.Should().NotBeNullOrEmpty();
             }

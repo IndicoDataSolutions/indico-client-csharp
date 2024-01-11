@@ -73,7 +73,7 @@ namespace IndicoV2.IntegrationTests.Models
             // Act
             var jobId = await _modelClient.Predict(modelGroup.SelectedModel.Id, data.ToList(), default);
             var predictionResults =
-                JArray.Parse(await _jobsClient.GetResultAsync(jobId, default));
+                JArray.Parse(await _jobsClient.GetResultAsync(jobId, default, default));
 
             // Assert
             predictionResults.Count.Should().Be(data.Length);

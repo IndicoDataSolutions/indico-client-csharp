@@ -55,7 +55,7 @@ namespace IndicoV2.IntegrationTests.Reviews
 
             // Act
             var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, changes);
-            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(submitReviewJobId));
+            var jobResult = JObject.Parse(await _jobsClient.GetResultAsync(submitReviewJobId, default, default));
 
             // Assert
             jobResult.Should().NotBeNull();
