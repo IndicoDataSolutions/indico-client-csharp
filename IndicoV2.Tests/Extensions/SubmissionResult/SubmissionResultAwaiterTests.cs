@@ -41,7 +41,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
             _fixture.Freeze<Mock<IJobsClient>>()
-                .Setup(cli => cli.GetResultAsync(jobId, It.IsAny<CancellationToken>()))
+                .Setup(cli => cli.GetResultAsync(jobId, default, It.IsAny<CancellationToken>()))
                 .ReturnsAsync("{\"url\": \"test\"}");
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
@@ -160,7 +160,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
 
             _fixture.Freeze<Mock<IJobsClient>>()
                 .Setup(cli =>
-                    cli.GetResultAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    cli.GetResultAsync(It.IsAny<string>(), default, It.IsAny<CancellationToken>()))
                 .ReturnsAsync("{ \"url\": \"test\"}");
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))

@@ -21,7 +21,7 @@ namespace Examples
             int submissionId = 91345;
 
             string jobId = await client.Submissions().GenerateSubmissionResultAsync(submissionId);
-            var jobResult = await client.Jobs().GetResultAsync(jobId, default);
+            var jobResult = await client.Jobs().GetResultAsync(jobId, default, default);
             string jobResultUrl = JToken.Parse(jobResult).Value<string>("url");
 
             var storageResult = await client.Storage().GetAsync(new Uri(jobResultUrl), default);
