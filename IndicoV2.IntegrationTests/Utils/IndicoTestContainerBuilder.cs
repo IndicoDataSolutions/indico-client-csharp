@@ -2,6 +2,7 @@
 using System.Linq;
 using GraphQL.Client.Abstractions;
 using IndicoV2.DataSets;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Jobs;
 using IndicoV2.Models;
@@ -45,6 +46,7 @@ namespace IndicoV2.IntegrationTests.Utils
             _container.RegisterFactory<IGraphQLRequestClient>(c => c.Resolve<IndicoClient>().GraphQLRequest());
             _container.RegisterFactory<IReviewsClient>(c => c.Resolve<IndicoClient>().Reviews());
             _container.RegisterFactory<IJobsClient>(c => c.Resolve<IndicoClient>().Jobs());
+            _container.RegisterFactory<IJobAwaiter>(c => c.Resolve<IndicoClient>().JobAwaiter());
             _container.RegisterFactory<IStorageClient>(c => c.Resolve<IndicoClient>().Storage());
             _container.RegisterFactory<ISubmissionResultAwaiter>(c =>
                 c.Resolve<IndicoClient>().GetSubmissionResultAwaiter());

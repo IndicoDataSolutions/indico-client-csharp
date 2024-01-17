@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
-using IndicoV2.Jobs;
 using IndicoV2.Ocr;
 using IndicoV2.Ocr.Models;
 using Newtonsoft.Json.Linq;
@@ -15,7 +15,7 @@ namespace IndicoV2.IntegrationTests.Ocr
     public class OcrClientTests
     {
         private DataHelper _dataHelper;
-        private IJobsClient _jobsClient;
+        private JobAwaiter _jobAwaiter;
         private IOcrClient _ocrClient;
 
         [SetUp]
@@ -25,7 +25,7 @@ namespace IndicoV2.IntegrationTests.Ocr
                 .ForAutoReviewWorkflow()
                 .Build();
             _dataHelper = container.Resolve<DataHelper>();
-            _jobsClient = container.Resolve<IJobsClient>();
+            _jobAwaiter = container.Resolve<JobAwaiter>();
             _ocrClient = container.Resolve<IOcrClient>();
         }
 
@@ -39,20 +39,19 @@ namespace IndicoV2.IntegrationTests.Ocr
         {
             // Arrange
             var jobId = await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset);
-            var jobResult = await _jobsClient.GetResultAsync(jobId, default, default);
-            var jobResultUri = new Uri(JToken.Parse(jobResult).Value<string>("url"));
+            var jobResult = await _jobAwaiter.WaitReadyAsync<ExtractionJobResult>(jobId, TimeSpan.FromMilliseconds(300));
 
             if (preset != DocumentExtractionPreset.OnDocument)
             {
                 // Act
-                var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResultUri, default);
+                var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url, default);
                 // Assert
                 extractionResult.Should().NotBeNullOrEmpty();
             }
             else
             {
                 // Act
-                var extractionResult = await _ocrClient.GetExtractionResultAsync<JArray>(jobResultUri, default);
+                var extractionResult = await _ocrClient.GetExtractionResultAsync<JArray>(jobResult.Url, default);
 
                 // Assert
                 extractionResult.Count.Should().Be(1);

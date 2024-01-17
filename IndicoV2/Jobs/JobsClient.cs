@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IndicoV2.StrawberryShake;
-using IndicoV2.Jobs.Exceptions;
 using Newtonsoft.Json.Linq;
 using JobStatus = IndicoV2.Jobs.Models.JobStatus;
+using Newtonsoft.Json;
 
 namespace IndicoV2.Jobs
 {
@@ -13,12 +13,6 @@ namespace IndicoV2.Jobs
     {
         private readonly IndicoStrawberryShakeClient _strawberryShake;
         private readonly IndicoClient _indicoClient;
-
-        private readonly JobStatus[] _waitingForResult = {
-            JobStatus.PENDING,
-            JobStatus.RECEIVED,
-            JobStatus.STARTED,
-        };
 
         public JobsClient(IndicoClient indicoClient)
         {
@@ -32,22 +26,11 @@ namespace IndicoV2.Jobs
             return (JobStatus)result.Job.Status.Value;
         }
 
-        public async Task<string> GetResultAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default)
+        public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
         {
-            JobStatus status;
-            while (_waitingForResult.Contains(status = await GetStatusAsync(jobId, cancellationToken)))
-            {
-                await Task.Delay(checkInterval, cancellationToken);
-            }
-
-            if (status != JobStatus.SUCCESS)
-            {
-                var failReason = await GetFailureReasonAsync(jobId);
-                throw new JobNotSuccessfulException(status, failReason);
-            }
-
             var result = await _strawberryShake.Jobs().GetResultAsync(jobId, cancellationToken);
-            return result.Job.Result;
+            // use json decoder to decode result into whatever tresult would be
+            return JsonConvert.DeserializeObject<TResult>(result.Job.Result);
         }
 
         public async Task<string> GetFailureReasonAsync(string jobId)

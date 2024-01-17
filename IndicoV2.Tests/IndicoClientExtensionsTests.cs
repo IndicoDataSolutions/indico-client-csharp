@@ -16,6 +16,9 @@ namespace IndicoV2.Tests
             Client.GetSubmissionResultAwaiter().Should().NotBeNull();
 
         [Test()]
+        public void JobAwaiter_ShouldCreateInstance() => Client.JobAwaiter().Should().NotBeNull();
+
+        [Test()]
         public void DataSets_ShouldCreateInstance() => Client.DataSets().Should().NotBeNull();
 
         [Test()]

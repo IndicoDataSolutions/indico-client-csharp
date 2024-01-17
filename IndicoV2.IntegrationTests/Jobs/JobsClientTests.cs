@@ -51,7 +51,7 @@ namespace IndicoV2.IntegrationTests.Jobs
             var jobId = await GetAnyJobIdAsync();
 
             // Act
-            var jobResult = JToken.Parse(await _jobsClient.GetResultAsync(jobId, default, default));
+            var jobResult = await _jobsClient.GetResultAsync<JToken>(jobId);
 
             // Assert
             jobResult.Should().NotBeNull();

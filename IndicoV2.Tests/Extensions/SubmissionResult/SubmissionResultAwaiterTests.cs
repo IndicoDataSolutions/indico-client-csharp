@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.Extensions.SubmissionResult;
 using IndicoV2.Extensions.SubmissionResult.Exceptions;
-using IndicoV2.Jobs;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
 using IndicoV2.Submissions.Models;
@@ -40,9 +40,9 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             _fixture.Freeze<Mock<ISubmissionsClient>>()
                 .Setup(cli => cli.GenerateSubmissionResultAsync(submissionId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(jobId);
-            _fixture.Freeze<Mock<IJobsClient>>()
-                .Setup(cli => cli.GetResultAsync(jobId, default, It.IsAny<CancellationToken>()))
-                .ReturnsAsync("{\"url\": \"test\"}");
+            _fixture.Freeze<Mock<IJobAwaiter>>()
+                .Setup(cli => cli.WaitReadyAsync(jobId, checkInterval, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse(@"{""url"": ""test"" }"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
                 .ReturnsJsonStream("{}");
@@ -158,10 +158,10 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
                 getSubmissionSequenceSetup.ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));
             }
 
-            _fixture.Freeze<Mock<IJobsClient>>()
+            _fixture.Freeze<Mock<IJobAwaiter>>()
                 .Setup(cli =>
-                    cli.GetResultAsync(It.IsAny<string>(), default, It.IsAny<CancellationToken>()))
-                .ReturnsAsync("{ \"url\": \"test\"}");
+                    cli.WaitReadyAsync(It.IsAny<string>(), It.IsAny<TimeSpan>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JObject.Parse(@"{ ""url"": ""test""}"));
             _fixture.Freeze<Mock<IStorageClient>>()
                 .Setup(cli => cli.GetAsync(It.IsAny<Uri>(), default))
                 .ReturnsJsonStream("{}");
