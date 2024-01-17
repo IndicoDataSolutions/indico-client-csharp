@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using Indico;
+using IndicoV2.Exception;
 using IndicoV2.StrawberryShake;
 using IndicoV2.StrawberryShake.HttpClient;
 using GraphQL.Client.Http;
@@ -76,18 +77,19 @@ namespace IndicoV2
         /// <summary>
         /// Create a new GraphQL request
         /// </summary>
+        /// <param name="query">The GraphQL query or mutation</param>
+        /// <param name="variables">variables defined in query or mutation</param>
         /// <returns>GraphQLRequest</returns>
-        public GraphQLRequest.GraphQLRequest GraphQLRequest(string query=null, string operationName=null, object variables = null)
+        public GraphQLRequest.GraphQLRequest GraphQLRequest(string query=null, object variables = null)
         {
             var request = new GraphQLRequest.GraphQLRequest(GraphQLHttpClient);
-            if (query != null)
+            if (query == null)
+            {
+                throw new GraphQLException("A query or mutation must be defined.");
+            }
+            else
             {
                 request.Query = query;
-            }
-
-            if (operationName != null)
-            {
-                request.OperationName = operationName;
             }
 
             if (variables != null)

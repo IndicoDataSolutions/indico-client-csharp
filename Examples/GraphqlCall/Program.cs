@@ -30,9 +30,8 @@ namespace Examples
                 }
             }
             ";
-            string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-            var graphQLRequestClient = client.GraphQLRequest(query, operationName, variables);
+            var graphQLRequestClient = client.GraphQLRequest(query, variables);
             JObject response = await graphQLRequestClient.Call();
             Console.WriteLine(response);
         }

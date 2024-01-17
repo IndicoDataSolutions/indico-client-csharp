@@ -19,11 +19,6 @@ namespace IndicoV2.GraphQLRequest
         public string Query { get; set; }
 
         /// <summary>
-        /// Get/Set the Operation Name
-        /// </summary>
-        public string OperationName { get; set; }
-
-        /// <summary>
         /// Get/Set the GraphQL Query Variables
         /// </summary>
         public dynamic Variables { get; set; }
@@ -39,7 +34,6 @@ namespace IndicoV2.GraphQLRequest
             var request = new GraphQLHttpRequest()
             {
                 Query = Query,
-                OperationName = OperationName,
                 Variables = Variables
             };
 
