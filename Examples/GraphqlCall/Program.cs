@@ -19,6 +19,8 @@ namespace Examples
         {
             var client = new IndicoClient(GetToken(), new Uri("https://try.indico.io"));
 
+            var graphQLRequestClient = client.GraphQLRequest();
+
             string query = @"
             query ListDatasets($limit: Int){
                 datasetsPage(limit: $limit) {
@@ -30,9 +32,10 @@ namespace Examples
                 }
             }
             ";
+            string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-            var graphQLRequestClient = client.GraphQLRequest(query, variables);
-            JObject response = await graphQLRequestClient.Call();
+
+            JObject response = await graphQLRequestClient.Call(query, operationName, variables);
             Console.WriteLine(response);
         }
     }

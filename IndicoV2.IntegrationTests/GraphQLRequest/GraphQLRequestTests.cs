@@ -31,9 +31,10 @@ namespace IndicoV2.IntegrationTests.GraphQLRequest
                     }
                 }
             }";
+            string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-            var request = _indicoClient.GraphQLRequest(query, variables);
-            var result = await request.Call();
+            var request = _indicoClient.GraphQLRequest();
+            var result = await request.Call(query, operationName, variables);
             result.Should().NotBeNull();
         }
     }

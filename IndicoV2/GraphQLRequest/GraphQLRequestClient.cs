@@ -9,32 +9,26 @@ namespace IndicoV2.GraphQLRequest
     /// <summary>
     /// Class to send GraphQL Queries to the Indico Platform
     /// </summary>
-    public class GraphQLRequest : IRestRequest<JObject>
+    public class GraphQLRequestClient : IGraphQLRequestClient
     {
         private readonly GraphQLHttpClient _client;
 
-        /// <summary>
-        /// Get/Set the GraphQL Query String
-        /// </summary>
-        public string Query { get; set; }
-
-        /// <summary>
-        /// Get/Set the GraphQL Query Variables
-        /// </summary>
-        public dynamic Variables { get; set; }
-
-        public GraphQLRequest(GraphQLHttpClient client) => _client = client;
+        public GraphQLRequestClient(GraphQLHttpClient client) => _client = client;
 
         /// <summary>
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
-        public async Task<JObject> Call(CancellationToken cancellationToken = default)
+        public async Task<JObject> Call(string query = null, string operationName = null, dynamic variables = null, CancellationToken cancellationToken = default)
         {
+            if (query == null)
+            {
+                throw new GraphQLException("A query or mutation must be defined.");
+            }
             var request = new GraphQLHttpRequest()
             {
-                Query = Query,
-                Variables = Variables
+                Query = query,
+                Variables = variables
             };
 
             var response = await _client.SendQueryAsync<dynamic>(request, cancellationToken);

@@ -11,7 +11,7 @@ namespace IndicoV2.GraphQLRequest
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
-        Task<JObject> Call(string query, dynamic variables, CancellationToken cancellationToken = default);
+        Task<JObject> Call(string query, string operationName, dynamic variables, CancellationToken cancellationToken = default);
     }
 }
 
