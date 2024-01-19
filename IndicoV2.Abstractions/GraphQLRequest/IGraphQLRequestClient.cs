@@ -11,7 +11,14 @@ namespace IndicoV2.GraphQLRequest
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
+        [Obsolete("operationName is deprecated. Use call without operationName.")]
         Task<JObject> Call(string query, string operationName, dynamic variables, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Run the GraphQL Query
+        /// </summary>
+        /// <returns></returns>
+        Task<JObject> Call(string query, dynamic variables, CancellationToken cancellationToken = default);
     }
 }
 

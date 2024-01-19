@@ -23,7 +23,7 @@ namespace IndicoV2.V1Adapters.Jobs
 
         public async Task<JToken> GetResultAsync(string jobId, CancellationToken cancellationToken) =>
             await GetResultAsync<JObject>(jobId, cancellationToken);
-        
+
         public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
         {
             var jobQuery = new Job(_indicoClient.GraphQLHttpClient, jobId);
@@ -45,14 +45,13 @@ namespace IndicoV2.V1Adapters.Jobs
             var query = new GraphQL.GraphQLRequest()
             {
                 Query = queryString,
-                OperationName = "GetJob",
                 Variables = new { id = jobId },
             };
             var jobResponse = await _indicoClient.GraphQLHttpClient.SendQueryAsync<dynamic>(query);
             var job = (JObject)jobResponse.Data.job;
 
             var jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), job.Value<string>("status"));
-            
+
             if (jobStatus != JobStatus.FAILURE)
             {
                 throw new InvalidOperationException(
