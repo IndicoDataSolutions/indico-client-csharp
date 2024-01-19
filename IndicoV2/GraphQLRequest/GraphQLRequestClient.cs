@@ -1,3 +1,4 @@
+using System;
 using GraphQL.Client.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +20,14 @@ namespace IndicoV2.GraphQLRequest
         /// Run the GraphQL Query
         /// </summary>
         /// <returns></returns>
-        public async Task<JObject> Call(string query = null, string operationName = null, dynamic variables = null, CancellationToken cancellationToken = default)
+        [Obsolete("operationName is deprecated. Use call without operationName.")]
+        public async Task<JObject> Call(string query, string operationName, dynamic variables = null, CancellationToken cancellationToken = default) => await Call(query, variables, cancellationToken);
+
+        /// <summary>
+        /// Run the GraphQL Query
+        /// </summary>
+        /// <returns></returns>
+        public async Task<JObject> Call(string query, dynamic variables = null, CancellationToken cancellationToken = default)
         {
             if (query == null)
             {
@@ -41,4 +49,6 @@ namespace IndicoV2.GraphQLRequest
             return data;
         }
     }
+
+
 }
