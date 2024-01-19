@@ -37,3 +37,25 @@ mutation DataSetProcessCsv($datasetId: Int!, $datafileIds: [Int]) {
     name
   }
 }
+
+query DataSetGetDatasets {
+  datasets {
+    id
+    name
+  }
+}
+
+query DataSetGetDatasetsFull($limit: Int) {
+  datasetsPage(limit: $limit) {
+    datasets {
+      id
+      name
+      status
+      rowCount
+      numModelGroups
+      modelGroups {
+          id
+      }
+    }
+  }
+}

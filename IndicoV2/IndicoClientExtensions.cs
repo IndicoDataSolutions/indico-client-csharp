@@ -99,8 +99,7 @@ namespace IndicoV2
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IDataSetClient"/></returns>
         public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
-            new DataSetClient(new DataSetsV1ClientAdapter(indicoClient.LegacyClient),
-                indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
+            new DataSetClient(indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
 
         /// <summary>
         /// Gets <seealso cref="IGraphQLRequestClient"/>

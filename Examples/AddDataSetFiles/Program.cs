@@ -18,11 +18,11 @@ namespace Examples
             var client = new IndicoClient(token);
             var dataSetsClient = client.DataSets();
             var dataSetAwaiter = client.DataSetAwaiter();
-            
+
             var dataSets = await dataSetsClient.ListFullAsync(1);
             var dataSetId = dataSets.Single().Id;
-            
-            await dataSetsClient.AddFilesAsync(dataSetId, new[] {"workflow-sample.pdf"}, default);
+
+            await dataSetsClient.AddFilesAsync(dataSetId, new[] { "workflow-sample.pdf" }, default);
             await dataSetAwaiter.WaitFilesDownloadedOrFailedAsync(dataSetId, TimeSpan.FromSeconds(0.5), default);
 
             var statusesResult = await dataSetsClient.FileUploadStatusAsync(dataSetId, default);
