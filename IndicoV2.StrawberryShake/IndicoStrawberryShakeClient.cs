@@ -21,7 +21,7 @@ namespace IndicoV2.StrawberryShake
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection
-                .AddSingleton(new AuthenticatingMessageHandler(baseUri, token, proxy))
+                .AddSingleton(new AuthenticatingMessageHandler(baseUri, token, verify, proxy))
                 .AddIndicoGqlClient()
                 .ConfigureHttpClient(
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),
