@@ -71,6 +71,9 @@ namespace IndicoV2
 
             var handler = new AuthenticatingMessageHandler(baseUri, apiToken);
 
+            if (!verify)
+                handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;
+
             if (proxy != null)
                 handler.Proxy = proxy;
 
