@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using IndicoV2.StrawberryShake.DataSets;
 using IndicoV2.StrawberryShake.HttpClient;
 using IndicoV2.StrawberryShake.Reporting;
@@ -16,11 +17,11 @@ namespace IndicoV2.StrawberryShake
     {
         private readonly ServiceProvider _services;
 
-        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token, bool verify)
+        public IndicoStrawberryShakeClient(Uri baseUri, Uri graphQlEndpoint, string token, bool verify, WebProxy proxy = null)
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection
-                .AddSingleton(new AuthenticatingMessageHandler(baseUri, token))
+                .AddSingleton(new AuthenticatingMessageHandler(baseUri, token, proxy))
                 .AddIndicoGqlClient()
                 .ConfigureHttpClient(
                     (sp, c) => c.BaseAddress = new Uri(baseUri, graphQlEndpoint),

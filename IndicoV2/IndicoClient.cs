@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using IndicoV2.Exception;
 using IndicoV2.StrawberryShake;
@@ -33,12 +34,13 @@ namespace IndicoV2
         private readonly Uri _graphQl = new Uri("graph/api/graphql", UriKind.Relative);
 
         internal readonly bool _verifySsl;
+        internal readonly WebProxy _proxy;
 
         private IndicoStrawberryShakeClient _indicoStrawberryShakeClient;
 
         internal IndicoStrawberryShakeClient IndicoStrawberryShakeClient =>
             _indicoStrawberryShakeClient
-            ?? (_indicoStrawberryShakeClient = new IndicoStrawberryShakeClient(BaseUri, _graphQl, _apiToken, _verifySsl));
+            ?? (_indicoStrawberryShakeClient = new IndicoStrawberryShakeClient(BaseUri, _graphQl, _apiToken, _verifySsl, _proxy));
 
         /// <summary>
         /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
@@ -53,12 +55,13 @@ namespace IndicoV2
         /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
         /// <param name="baseUri">indico.io base address (Default values is <c>https://app.indico.io</c>)</param>
         /// <param name="verify">verify the host's SSL certificate (Default value is <c>true</c>)</param>
-        public IndicoClient(string apiToken, Uri baseUri, bool verify = true)
+        public IndicoClient(string apiToken, Uri baseUri, bool verify = true, WebProxy proxy = null)
         {
             _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
             _verifySsl = verify;
-            var handler = new AuthenticatingMessageHandler(baseUri, apiToken);
+            _proxy = proxy;
+            var handler = new AuthenticatingMessageHandler(baseUri, apiToken, proxy);
             HttpClient = new HttpClient(handler);
             var options = new GraphQLHttpClientOptions
             {
