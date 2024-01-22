@@ -5,6 +5,7 @@ using Indico.Query;
 using Indico.Entity;
 using Indico.Request;
 using Indico.Storage;
+using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using GraphQL.Client.Serializer.Newtonsoft;
@@ -39,7 +40,7 @@ namespace Indico
         /// IndicoClient constructor
         /// </summary>
         /// <param name="indicoConfig">Client configuration with platform hostname, etc</param>
-        public IndicoClient(IndicoConfig indicoConfig=null)
+        public IndicoClient(IndicoConfig indicoConfig=null, WebProxy proxy = null)
         {
             if (indicoConfig != null)
             {
@@ -50,7 +51,7 @@ namespace Indico
                 Config = new IndicoConfig();
             }
 
-            var handler = GetHandler();
+            var handler = GetHandler(proxy);
             HttpClient = new HttpClient(handler);
             string endpoint = Config.GetAppBaseUrl();
             var options = new GraphQLHttpClientOptions
@@ -61,9 +62,13 @@ namespace Indico
             GraphQLHttpClient = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), HttpClient);
         }
 
-        private HttpMessageHandler GetHandler()
+        private HttpMessageHandler GetHandler(WebProxy proxy = null)
         {
             var innerHandler = new HttpClientHandler();
+
+            if (proxy != null)
+                innerHandler.Proxy = proxy;
+
             if (!Config.Verify)
             {
                 innerHandler.ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;

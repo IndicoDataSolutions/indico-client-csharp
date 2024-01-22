@@ -15,10 +15,13 @@ namespace IndicoV2.StrawberryShake.HttpClient
         private readonly string _refreshToken;
         private string _token;
 
-        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken)
+        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken, WebProxy proxy = null)
         {
             _refreshUri = new Uri(baseUri, "/auth/users/refresh_token");
             _refreshToken = refreshToken;
+
+            if (proxy != null)
+                Proxy = proxy;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
