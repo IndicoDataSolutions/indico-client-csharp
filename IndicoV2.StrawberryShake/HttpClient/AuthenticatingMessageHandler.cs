@@ -15,10 +15,13 @@ namespace IndicoV2.StrawberryShake.HttpClient
         private readonly string _refreshToken;
         private string _token;
 
-        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken, WebProxy proxy = null)
+        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken, bool verify = true, WebProxy proxy = null)
         {
             _refreshUri = new Uri(baseUri, "/auth/users/refresh_token");
             _refreshToken = refreshToken;
+
+            if (!verify)
+                ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;
 
             if (proxy != null)
                 Proxy = proxy;

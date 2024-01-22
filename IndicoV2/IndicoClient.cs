@@ -61,7 +61,7 @@ namespace IndicoV2
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
             _verifySsl = verify;
             _proxy = proxy;
-            var handler = new AuthenticatingMessageHandler(baseUri, apiToken, proxy);
+            var handler = new AuthenticatingMessageHandler(baseUri, apiToken, verify, proxy);
             HttpClient = new HttpClient(handler);
             var options = new GraphQLHttpClientOptions
             {
