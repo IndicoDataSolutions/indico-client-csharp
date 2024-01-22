@@ -1,8 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.301 as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0
 
-# TODO copy .csproj files separately before running docker restore to take advantage of docker build cache
+WORKDIR indico-client-csharp
 COPY . ./
-RUN dotnet restore 
-RUN dotnet build --no-restore
+RUN dotnet restore
+RUN dotnet build --no-restore -c Release
+RUN dotnet pack --no-build -c Release ./IndicoV2/IndicoV2.csproj
 
-CMD ["sleep","infinity"]
+CMD ["sleep", "infinity"]
