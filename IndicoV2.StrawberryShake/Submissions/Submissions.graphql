@@ -13,56 +13,90 @@
   }
 }
 
+mutation WorkflowUrlSubmission(
+  $workflowId: Int!
+  $urls: [String]!
+  $resultVersion: SubmissionResultVersion
+) {
+  workflowUrlSubmission(
+    workflowId: $workflowId,
+    urls: $urls
+    resultVersion: $resultVersion
+  ) {
+    jobIds
+    submissionIds
+  }
+}
+
 query ListSubmissions(
-            $submissionIds: [Int],
-            $workflowIds: [Int],
-            $filters: SubmissionFilter,
-            $limit: Int,
-            $orderBy: SUBMISSION_COLUMN_ENUM,
-            $desc: Boolean,
-            $after: Int
-            
-        ){
-            submissions(
-                submissionIds: $submissionIds,
-                workflowIds: $workflowIds,
-                filters: $filters,
-                limit: $limit
-                orderBy: $orderBy,
-                desc: $desc,
-                after: $after
-                
-            ){
-                submissions {
-                    id
-                    datasetId
-                    workflowId
-                    status
-                    inputFile
-                    inputFilename
-                    resultFile
-                    deleted
-                    retrieved
-                    errors
-                },
-                pageInfo{
-                    startCursor
-                    endCursor
-                    hasNextPage
-                    aggregateCount
-                    }
-            }
-        }
+  $submissionIds: [Int]
+  $workflowIds: [Int]
+  $filters: SubmissionFilter
+  $limit: Int
+  $orderBy: SUBMISSION_COLUMN_ENUM
+  $desc: Boolean
+  $after: Int
+) {
+  submissions(
+    submissionIds: $submissionIds
+    workflowIds: $workflowIds
+    filters: $filters
+    limit: $limit
+    orderBy: $orderBy
+    desc: $desc
+    after: $after
+  ) {
+    submissions {
+      id
+      datasetId
+      workflowId
+      status
+      inputFile
+      inputFilename
+      resultFile
+      deleted
+      retrieved
+      errors
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      aggregateCount
+    }
+  }
+}
 
 mutation UpdateSubmission($submissionId: Int!, $retrieved: Boolean) {
-    updateSubmission(submissionId: $submissionId, retrieved: $retrieved) {
-        id
-        datasetId
-        workflowId
-        status
-        inputFile
-        inputFilename
-        resultFile
-        retrieved
-    }
+  updateSubmission(submissionId: $submissionId, retrieved: $retrieved) {
+    id
+    datasetId
+    workflowId
+    status
+    inputFile
+    inputFilename
+    resultFile
+    retrieved
+  }
+}
+
+query GetSubmission($submissionId: Int!) {
+  submission(id: $submissionId) {
+    id
+    datasetId
+    workflowId
+    status
+    inputFile
+    inputFilename
+    resultFile
+    deleted
+    retrieved
+    errors
+  }
+}
+
+mutation CreateSubmissionResults($submissionId: Int!) {
+  submissionResults(submissionId: $submissionId) {
+    jobId
+  }
 }
