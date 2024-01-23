@@ -46,6 +46,9 @@ namespace IndicoV2.StrawberryShake.Submissions
         public async Task<IGetSubmission_Submission> Get(int submissionId, CancellationToken cancellationToken) => (
             await ExecuteAsync(async () => await _services.GetRequiredService<GetSubmissionQuery>().ExecuteAsync(submissionId, cancellationToken))).Submission;
 
+        public async Task<string> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken) => (
+            await ExecuteAsync(async () => await _services.GetRequiredService<CreateSubmissionResultsMutation>().ExecuteAsync(submissionId, cancellationToken))).SubmissionResults.JobId;
+
         private string RemovePropsCausingErrors(string metaString)
         {
             var acceptableMetaProps = new[] { "name", "path", "upload_type" };

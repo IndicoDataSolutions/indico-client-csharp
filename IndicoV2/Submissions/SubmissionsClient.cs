@@ -8,21 +8,18 @@ using IndicoV2.CommonModels.Pagination;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Submissions.Models;
 using IndicoV2.Storage;
-using IndicoV2.V1Adapters.Submissions;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Submissions
 {
     public class SubmissionsClient : ISubmissionsClient
     {
-        private readonly SubmissionsV1ClientAdapter _legacy;
         private readonly IndicoStrawberryShakeClient _strawberryShakeClient;
         private readonly IndicoClient _indicoClient;
 
         public SubmissionsClient(IndicoClient indicoClient)
         {
             _indicoClient = indicoClient;
-            _legacy = new SubmissionsV1ClientAdapter(indicoClient.LegacyClient);
             _strawberryShakeClient = indicoClient.IndicoStrawberryShakeClient;
         }
 
@@ -90,8 +87,8 @@ namespace IndicoV2.Submissions
         }
 
         [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]
-        public Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
-            CancellationToken cancellationToken = default) => _legacy.ListAsync(submissionIds, workflowIds, filters, limit, cancellationToken);
+        public async Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
+            CancellationToken cancellationToken = default) => (IEnumerable<ISubmission>)await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken);
 
 
         public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
@@ -138,8 +135,8 @@ namespace IndicoV2.Submissions
         }
 
 
-        public Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
-            _legacy.GenerateSubmissionResultAsync(submissionId, cancellationToken);
+        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
+            await _strawberryShakeClient.Submissions().GenerateSubmissionResult(submissionId, cancellationToken);
 
         public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
         {
