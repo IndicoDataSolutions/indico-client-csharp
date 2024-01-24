@@ -4,54 +4,75 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Indico.Entity;
 using IndicoV2.CommonModels.Pagination;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Submissions.Models;
-using IndicoV2.V1Adapters.Submissions;
+using IndicoV2.Storage;
+using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Submissions
 {
     public class SubmissionsClient : ISubmissionsClient
     {
-        private readonly SubmissionsV1ClientAdapter _legacy;
         private readonly IndicoStrawberryShakeClient _strawberryShakeClient;
         private readonly IndicoClient _indicoClient;
 
         public SubmissionsClient(IndicoClient indicoClient)
         {
             _indicoClient = indicoClient;
-            _legacy = new SubmissionsV1ClientAdapter(indicoClient.LegacyClient);
             _strawberryShakeClient = indicoClient.IndicoStrawberryShakeClient;
         }
 
-       
-        public Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams,
-            CancellationToken cancellationToken = default) =>
-            _legacy.CreateAsync(workflowId, streams, cancellationToken);
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default)
+        {
+            var uploadRequest = new UploadStream(_indicoClient)
+            {
+                Streams = streams.ToList()
+            };
+            var fileMetadata = await uploadRequest.Call();
+            var files = new List<object>();
+            foreach (JObject uploadMeta in fileMetadata)
+            {
+                var meta = new JObject
+                    {
+                        { "name", uploadMeta.Value<string>("name") },
+                        { "path", uploadMeta.Value<string>("path") },
+                        { "upload_type", uploadMeta.Value<string>("upload_type") }
+                    };
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload,  CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null)
+                var file = new
+                {
+                    filename = uploadMeta.Value<string>("name"),
+                    filemeta = meta.ToString()
+                };
+
+                files.Add(file);
+            }
+            return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)files, cancellationToken);
+        }
+
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null)
         {
             var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken);
             return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
         }
 
 
-     
+        [Obsolete("This is the Legacy version and will be deprecated. Please use CreateAsync instead.")]
         public Task<IEnumerable<int>> CreateAsyncLegacy(int workflowId, IEnumerable<string> paths,
-          CancellationToken cancellationToken) =>          
-          _legacy.CreateAsync(workflowId, paths, cancellationToken);
-        
-        public Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris,
-            CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null) =>
-            _legacy.CreateAsync(workflowId, uris, cancellationToken);
+          CancellationToken cancellationToken) =>
+          CreateAsync(workflowId, paths, cancellationToken);
 
-         Task<IEnumerable<int>> ISubmissionsClient.CreateAsync(int workflowId, IEnumerable<string> paths,
-           CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null) {
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris,
+            CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null) =>
+            await _strawberryShakeClient.Submissions().CreateUri(workflowId, uris, cancellationToken);
+
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths,
+          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null) {
             var filesToUpload = new List<(string Name, Stream content)>();
-            foreach(var path in paths)
+            foreach (var path in paths)
             {
-                if(File.Exists(path))
+                if (File.Exists(path))
                 {
                     var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
                     filesToUpload.Add((path, fileStream));
@@ -59,15 +80,15 @@ namespace IndicoV2.Submissions
                 else
                 {
                     throw new ArgumentException($"Cannot find a file at path {path}");
-                } 
+                }
 
             }
-             return CreateAsync(workflowId, filesToUpload, cancellationToken, resultsFileVersion);
+            return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)filesToUpload, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
         }
 
-
-        public Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
-            CancellationToken cancellationToken = default) => _legacy.ListAsync(submissionIds, workflowIds, filters, limit, cancellationToken);
+        [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]
+        public async Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
+            CancellationToken cancellationToken = default) => (IEnumerable<ISubmission>)await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken);
 
 
         public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
@@ -92,16 +113,39 @@ namespace IndicoV2.Submissions
             };
         }
 
+        public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
+        {
+            var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
+            if (!Enum.TryParse(result.Status.ToString().ToUpper(),out Models.SubmissionStatus parsed))
+            {
+                throw new NotSupportedException($"Cannot read submission status: {result.Status}");
+            }
+            return new Submission
+            {
+                Id = result.Id ?? 0,
+                Status = parsed,
+                DatasetId = result.DatasetId ?? 0,
+                WorkflowId = result.WorkflowId ?? 0,
+                InputFile = result.InputFile,
+                InputFilename = result.InputFilename,
+                ResultFile = result.ResultFile,
+                Retrieved = result.Retrieved ?? throw new ArgumentException("Invalid value for retrieved received from call"),
+                Errors = result.Errors ?? null
+            };
+        }
 
-        public Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default) =>
-            _legacy.GetAsync(submissionId, cancellationToken);
 
-        public Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
-            _legacy.GenerateSubmissionResultAsync(submissionId, cancellationToken);
+        public async Task<string> GenerateSubmissionResultAsync(int submissionId, CancellationToken cancellationToken = default) =>
+            await _strawberryShakeClient.Submissions().GenerateSubmissionResult(submissionId, cancellationToken);
 
-        public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default) => await _legacy.UpdateSubmissionAsync(submissionId, retrieved, cancellationToken);
+        public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
+        {
+            var resultId = await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
+            var result = await _strawberryShakeClient.Submissions().List((IReadOnlyList<int?>)new List<int>(submissionId).AsReadOnly(), default, default, default, default, cancellationToken);
+            return new SubmissionSs(result?.Submissions?[0]);
+        }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
-       
+
     }
 }
