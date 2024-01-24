@@ -8,7 +8,6 @@ using IndicoV2.Jobs;
 using IndicoV2.Models;
 using IndicoV2.Ocr;
 using IndicoV2.Reporting;
-using IndicoV2.GraphQLRequest;
 using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.Submissions;
@@ -43,7 +42,6 @@ namespace IndicoV2.IntegrationTests.Utils
             _container.RegisterFactory<IDataSetClient>(c => c.Resolve<IndicoClient>().DataSets());
             _container.RegisterFactory<IWorkflowsClient>(c => c.Resolve<IndicoClient>().Workflows());
             _container.RegisterFactory<ISubmissionsClient>(c => c.Resolve<IndicoClient>().Submissions());
-            _container.RegisterFactory<IGraphQLRequestClient>(c => c.Resolve<IndicoClient>().GraphQLRequest());
             _container.RegisterFactory<IReviewsClient>(c => c.Resolve<IndicoClient>().Reviews());
             _container.RegisterFactory<IJobsClient>(c => c.Resolve<IndicoClient>().Jobs());
             _container.RegisterFactory<IJobAwaiter>(c => c.Resolve<IndicoClient>().JobAwaiter());

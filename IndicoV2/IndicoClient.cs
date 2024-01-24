@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Net.Http;
 using Indico;
+using IndicoV2.Exception;
 using IndicoV2.StrawberryShake;
 using IndicoV2.StrawberryShake.HttpClient;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
+using IndicoV2.GraphQLRequest;
 
 namespace IndicoV2
 {
@@ -22,6 +26,11 @@ namespace IndicoV2
         /// Gets the underlying http client.
         /// </summary>
         public HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// Gets the underlying GraphQL client.
+        /// </summary>
+        public GraphQLHttpClient GraphQLHttpClient { get; }
 
         internal Uri BaseUri { get; }
         private readonly Uri _graphQl = new Uri("graph/api/graphql", UriKind.Relative);
@@ -56,7 +65,26 @@ namespace IndicoV2
             _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
             _verifySsl = verify;
-            HttpClient = new HttpClient(new AuthenticatingMessageHandler(baseUri, apiToken));
+            var handler = new AuthenticatingMessageHandler(baseUri, apiToken);
+            HttpClient = new HttpClient(handler);
+            var options = new GraphQLHttpClientOptions
+            {
+                EndPoint = new Uri($"{baseUri}/graph/api/graphql"),
+                HttpMessageHandler = handler
+            };
+            GraphQLHttpClient = new GraphQLHttpClient(options, new NewtonsoftJsonSerializer(), HttpClient);
+        }
+
+        /// <summary>
+        /// Create a new GraphQL request
+        /// </summary>
+        /// <param name="query">The GraphQL query or mutation</param>
+        /// <param name="variables">variables defined in query or mutation</param>
+        /// <returns>GraphQLRequest</returns>
+        public GraphQLRequestClient GraphQLRequest()
+        {
+            var request = new GraphQLRequestClient(GraphQLHttpClient);
+            return request;
         }
     }
 }

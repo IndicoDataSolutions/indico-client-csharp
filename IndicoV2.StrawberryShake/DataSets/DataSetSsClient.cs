@@ -24,14 +24,23 @@ namespace IndicoV2.StrawberryShake.DataSets
 
         public Task<IDataSetProcessFilesResult> ProcessFilesAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) =>
             ExecuteAsync(() => _services.GetRequiredService<DataSetProcessFilesMutation>().ExecuteAsync(
-                dataSetId, 
-                fileIds.Cast<int?>().ToList(), 
+                dataSetId,
+                fileIds.Cast<int?>().ToList(),
                 cancellationToken));
 
         public Task<IDataSetProcessCsvResult> ProcessCsvAsync(int dataSetId, IEnumerable<int> fileIds, CancellationToken cancellationToken) =>
             ExecuteAsync(() => _services.GetRequiredService<DataSetProcessCsvMutation>().ExecuteAsync(
                 dataSetId,
                 fileIds.Cast<int?>().ToList(),
+                cancellationToken));
+
+        public Task<IDataSetGetDatasetsResult> ListAsync(CancellationToken cancellationToken) =>
+            ExecuteAsync(() => _services.GetRequiredService<DataSetGetDatasetsQuery>().ExecuteAsync(
+                cancellationToken));
+
+        public Task<IDataSetGetDatasetsFullResult> ListFullAsync(int? limit, CancellationToken cancellationToken) =>
+            ExecuteAsync(() => _services.GetRequiredService<DataSetGetDatasetsFullQuery>().ExecuteAsync(
+                limit,
                 cancellationToken));
     }
 }

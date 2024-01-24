@@ -16,7 +16,6 @@ using IndicoV2.V1Adapters.Models;
 using IndicoV2.V1Adapters.Ocr;
 using IndicoV2.V1Adapters.Reviews;
 using IndicoV2.V1Adapters.Storage;
-using IndicoV2.V1Adapters.GraphQLRequest;
 using IndicoV2.Workflows;
 
 namespace IndicoV2
@@ -97,15 +96,7 @@ namespace IndicoV2
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IDataSetClient"/></returns>
         public static IDataSetClient DataSets(this IndicoClient indicoClient) =>
-            new DataSetClient(new DataSetsV1ClientAdapter(indicoClient.LegacyClient),
-                indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
+            new DataSetClient(indicoClient.IndicoStrawberryShakeClient.DataSets(), indicoClient.Storage());
 
-        /// <summary>
-        /// Gets <seealso cref="IGraphQLRequestClient"/>
-        /// </summary>
-        /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
-        /// <returns>Instance of <seealso cref="IGraphQLRequestClient"/></returns>
-        public static IGraphQLRequestClient GraphQLRequest(this IndicoClient indicoClient) =>
-            new GraphQLRequestClient(new GraphQLRequestV1Adapter(indicoClient.LegacyClient));
     }
 }

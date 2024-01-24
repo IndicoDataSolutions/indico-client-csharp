@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using FluentAssertions;
 using IndicoV2.IntegrationTests.Utils;
-using IndicoV2.GraphQLRequest;
 using NUnit.Framework;
 using Unity;
 
@@ -8,13 +9,13 @@ namespace IndicoV2.IntegrationTests.GraphQLRequest
 {
     public class GraphQLRequestTests
     {
-        private IGraphQLRequestClient _graphQLRequestClient;
+        private IndicoClient _indicoClient;
 
         [SetUp]
         public void SetUp()
         {
             var container = new IndicoTestContainerBuilder().Build();
-            _graphQLRequestClient = container.Resolve<IGraphQLRequestClient>();
+            _indicoClient = container.Resolve<IndicoClient>();
         }
 
         [Test]
@@ -32,7 +33,8 @@ namespace IndicoV2.IntegrationTests.GraphQLRequest
             }";
             string operationName = "ListDatasets";
             dynamic variables = new { limit = 1 };
-            var result = await _graphQLRequestClient.Call(query, operationName, variables);
+            var request = _indicoClient.GraphQLRequest();
+            var result = await request.Call(query, operationName, variables);
             result.Should().NotBeNull();
         }
     }
