@@ -1,0 +1,5 @@
+mutation DocumentExtraction($files: [FileInput]!, $jsonConfig: JSONString) {
+    documentExtraction(files: $files, jsonConfig: $jsonConfig) {
+        jobIds
+    }
+}
