@@ -1,0 +1,11 @@
+mutation SubmitReview($submissionId: Int!, $changes: JSONString, $rejected: Boolean) {
+    submitAutoReview(submissionId: $submissionId, changes: $changes, rejected: $rejected){
+        jobId
+    }
+}
+
+mutation SubmitReviewForceComplete($submissionId: Int!, $changes: JSONString, $rejected: Boolean, $forceComplete: Boolean) {
+    submitAutoReview(submissionId: $submissionId, changes: $changes, rejected: $rejected, forceComplete: $forceComplete){
+        jobId
+    }
+}
