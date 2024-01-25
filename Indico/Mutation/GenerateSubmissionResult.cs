@@ -18,7 +18,7 @@ namespace Indico.Mutation
         private readonly IndicoClient _client;
 
         private int? _submissionId;
-        
+
         /// <summary>
         /// Submission Id.
         /// </summary>

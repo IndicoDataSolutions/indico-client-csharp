@@ -45,7 +45,6 @@ namespace IndicoV2.IntegrationTests.Ocr
             {
                 // Act
                 var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url, default);
-
                 // Assert
                 extractionResult.Should().NotBeNullOrEmpty();
             }

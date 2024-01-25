@@ -65,7 +65,7 @@ namespace IndicoV2.IntegrationTests.Jobs
             {
                 await Task.Delay(100);
             }
-            
+
             var jobId = await _submissionsClient.GenerateSubmissionResultAsync(submission.Id);
 
             return jobId;

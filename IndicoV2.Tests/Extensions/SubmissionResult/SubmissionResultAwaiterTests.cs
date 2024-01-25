@@ -20,14 +20,14 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
     public class SubmissionResultAwaiterTests
     {
         private static readonly SubmissionStatus[] _submissionStatusesExceptProcessingAndFailed =
-            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s != SubmissionStatus.PROCESSING && s != SubmissionStatus.FAILED).ToArray();
+            Enum.GetValues(typeof(SubmissionStatus)).Cast<SubmissionStatus>().Where(s => s is not SubmissionStatus.PROCESSING and not SubmissionStatus.FAILED).ToArray();
         private IFixture _fixture;
 
         [SetUp]
         public void CreateAutoMockFixture() => _fixture = new IndicoAutoMockingFixture();
 
         [TestCaseSource(nameof(_submissionStatusesExceptProcessingAndFailed))]
-     
+
         public async Task WaitReady_ShouldReturnJobResult_WhenCorrectStatuses(SubmissionStatus status)
         {
             // Arrange
@@ -152,7 +152,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
             const int submissionId = 1;
             var submissionsClientMock = _fixture.Freeze<Mock<ISubmissionsClient>>();
             var getSubmissionSequenceSetup = submissionsClientMock.SetupSequence(cli => cli.GetAsync(submissionId, It.IsAny<CancellationToken>()));
-            
+
             foreach (var status in statusChanges)
             {
                 getSubmissionSequenceSetup.ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == status));

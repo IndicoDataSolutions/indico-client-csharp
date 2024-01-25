@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace IndicoV2.Extensions.Jobs
 
 
         public JobAwaiter(IJobsClient jobsClient) => _jobsClient = jobsClient;
-        
+
         [Obsolete("Use generic version")]
         public async Task<JToken> WaitReadyAsync(string jobId, TimeSpan checkInterval, CancellationToken cancellationToken = default) =>
             await WaitReadyAsync<JToken>(jobId, checkInterval, cancellationToken);

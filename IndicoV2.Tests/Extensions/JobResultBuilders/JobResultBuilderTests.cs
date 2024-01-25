@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using IndicoV2.Extensions.JobResultBuilders;
 using IndicoV2.Extensions.JobResultBuilders.Submission.Exceptions;
