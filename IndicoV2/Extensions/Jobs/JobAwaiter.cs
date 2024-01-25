@@ -6,7 +6,6 @@ using IndicoV2.Jobs;
 using IndicoV2.Jobs.Exceptions;
 using IndicoV2.Jobs.Models;
 using IndicoV2.Models.Models;
-using IndicoV2.V1Adapters.Models.Models;
 using Newtonsoft.Json.Linq;
 
 namespace IndicoV2.Extensions.Jobs

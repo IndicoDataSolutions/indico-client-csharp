@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using Indico;
 using IndicoV2.Exception;
 using IndicoV2.StrawberryShake;
 using IndicoV2.StrawberryShake.HttpClient;
@@ -20,8 +19,6 @@ namespace IndicoV2
 
         internal readonly string _apiToken;
 
-        private Indico.IndicoClient _legacyClient;
-
         /// <summary>
         /// Gets the underlying http client.
         /// </summary>
@@ -36,10 +33,6 @@ namespace IndicoV2
         private readonly Uri _graphQl = new Uri("graph/api/graphql", UriKind.Relative);
 
         internal readonly bool _verifySsl;
-
-        internal Indico.IndicoClient LegacyClient =>
-            _legacyClient ?? (_legacyClient =
-                new Indico.IndicoClient(new IndicoConfig(host: BaseUri.Host, port: BaseUri.Port, apiToken: _apiToken, verify: _verifySsl)));
 
         private IndicoStrawberryShakeClient _indicoStrawberryShakeClient;
 
