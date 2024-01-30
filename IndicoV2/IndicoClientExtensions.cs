@@ -11,11 +11,6 @@ using IndicoV2.Reviews;
 using IndicoV2.Storage;
 using IndicoV2.GraphQLRequest;
 using IndicoV2.Submissions;
-using IndicoV2.V1Adapters.DataSets;
-using IndicoV2.V1Adapters.Models;
-using IndicoV2.V1Adapters.Ocr;
-using IndicoV2.V1Adapters.Reviews;
-using IndicoV2.V1Adapters.Storage;
 using IndicoV2.Workflows;
 
 namespace IndicoV2
@@ -49,7 +44,7 @@ namespace IndicoV2
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IReviewsClient"/></returns>
         public static IReviewsClient Reviews(this IndicoClient indicoClient) =>
-            new ReviewsV1ClientAdapter(indicoClient.LegacyClient);
+            new ReviewsClient(indicoClient);
 
         /// <summary>
         /// Gets <seealso cref="IJobsClient"/>
@@ -70,8 +65,7 @@ namespace IndicoV2
         /// </summary>
         /// <param name="indicoClient">Instance of <seealso cref="IndicoClient"/></param>
         /// <returns>Instance of <seealso cref="IOcrClient"/></returns>
-        public static IOcrClient Ocr(this IndicoClient indicoClient) =>
-            new OcrV1ClientAdapter(indicoClient.LegacyClient, indicoClient.Storage());
+        public static IOcrClient Ocr(this IndicoClient indicoClient) => new OcrClient(indicoClient);
 
         public static WorkflowAwaiter WorkflowAwaiter(this IndicoClient client) => new WorkflowAwaiter(client.Workflows());
 

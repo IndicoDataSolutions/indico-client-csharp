@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Indico.Types;
+using IndicoV2.Models.Models;
 using IndicoV2.DataSets;
 using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
