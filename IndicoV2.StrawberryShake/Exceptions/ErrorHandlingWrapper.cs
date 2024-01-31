@@ -11,7 +11,6 @@ namespace IndicoV2.StrawberryShake.Exceptions
             where TResult : class
         {
             var result = await executeAsync();
-
             if (result.Errors != null && result.Errors.Any())
             {
                 throw new GraphQlException(result);

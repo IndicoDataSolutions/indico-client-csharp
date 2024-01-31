@@ -17,6 +17,8 @@ namespace IndicoV2.IntegrationTests.DataSets
         private DataHelper _dataHelper;
         private IndicoConfigs _indicoConfigs;
         private int _dataSetId;
+        private int _documentDataSetId;
+        private int _csvDataSetId;
 
         [SetUp]
         public async Task SetUp()
@@ -29,12 +31,16 @@ namespace IndicoV2.IntegrationTests.DataSets
             var _rawDataSetId = _indicoConfigs.DatasetId;
             if (_rawDataSetId == 0)
             {
-                var dataset = (await _dataHelper.DataSets().GetAny());
+                var dataset = await _dataHelper.DataSets().GetAny();
                 _dataSetId = dataset.Id;
+                _documentDataSetId = _dataSetId;
+                _csvDataSetId = _dataSetId;
             }
             else
             {
                 _dataSetId = _rawDataSetId;
+                _documentDataSetId = _indicoConfigs.DocumentDatasetId;
+                _csvDataSetId = _indicoConfigs.CsvDatasetId;
             }
         }
 
@@ -88,15 +94,14 @@ namespace IndicoV2.IntegrationTests.DataSets
         {
             // Arrange
             var files = new[] {_dataHelper.Files().GetSampleFilePath()};
-            await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
+            await _dataSetClient.AddFilesAsync(_documentDataSetId, files, default);
             var downloadedFiles =
-                (await _dataSetClient.FileUploadStatusAsync(_dataSetId, default))
+                (await _dataSetClient.FileUploadStatusAsync(_documentDataSetId, default))
                 .Dataset.Files
                 .Where(f => f.Status == FileStatus.Downloaded)
                 .Select(f => f.Id.Value);
-
             // Act
-            var result = await _dataSetClient.ProcessFileAsync(_dataSetId, downloadedFiles, default);
+            var result = await _dataSetClient.ProcessFileAsync(_documentDataSetId, downloadedFiles, default);
 
             // Assert
             result.Should().NotBeNull();
@@ -107,15 +112,14 @@ namespace IndicoV2.IntegrationTests.DataSets
         {
             // Arrange
             var files = new[] { _dataHelper.Files().GetSampleCsvPath() };
-            await _dataSetClient.AddFilesAsync(_dataSetId, files, default);
+            await _dataSetClient.AddFilesAsync(_csvDataSetId, files, default);
             var downloadedFiles =
-                (await _dataSetClient.FileUploadStatusAsync(_dataSetId, default))
+                (await _dataSetClient.FileUploadStatusAsync(_csvDataSetId, default))
                 .Dataset.Files
                 .Where(f => f.Status == FileStatus.Downloaded)
                 .Select(f => f.Id.Value);
-
             // Act
-            var result = await _dataSetClient.ProcessCsvAsync(_dataSetId, downloadedFiles, default);
+            var result = await _dataSetClient.ProcessCsvAsync(_csvDataSetId, downloadedFiles, default);
 
             // Assert
             result.Should().NotBeNull();

@@ -21,6 +21,7 @@ namespace IndicoV2.StrawberryShake.Reviews
             if (forceComplete == null)
             {
                 var response = await _services.GetRequiredService<SubmitReviewMutation>().ExecuteAsync(submissionId, changes.ToString(), rejected, cancellationToken);
+                Console.WriteLine(response?.Data?.SubmitAutoReview?.JobId);
                 return response.Data.SubmitAutoReview.JobId;
             }
             else

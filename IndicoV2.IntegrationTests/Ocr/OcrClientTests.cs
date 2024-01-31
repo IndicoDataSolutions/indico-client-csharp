@@ -40,11 +40,12 @@ namespace IndicoV2.IntegrationTests.Ocr
             // Arrange
             var jobId = await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset);
             var jobResult = await _jobAwaiter.WaitReadyAsync<ExtractionJobResult>(jobId, TimeSpan.FromMilliseconds(300));
-
+            Console.WriteLine(jobResult.Url);
             if (preset != DocumentExtractionPreset.OnDocument)
             {
                 // Act
                 var extractionResult = await _ocrClient.GetExtractionResultAsync(jobResult.Url, default);
+                Console.WriteLine(extractionResult);
                 // Assert
                 extractionResult.Should().NotBeNullOrEmpty();
             }

@@ -8,6 +8,9 @@ namespace IndicoV2.IntegrationTests.Utils.Configs
 
         public int DatasetId => ParseEnvVar("INDICO_TEST_DATASET_ID");
 
+        public int DocumentDatasetId => ParseEnvVar("INDICO_TEST_DOCUMENT_DATASET_ID");
+        public int CsvDatasetId => ParseEnvVar("INDICO_TEST_CSV_DATASET_ID");
+
         public int ModelGroupId => ParseEnvVar("INDICO_TEST_MODELGROUP_ID");
 
         public static int ParseEnvVar(string varName)
