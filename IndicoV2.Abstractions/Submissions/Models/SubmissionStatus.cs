@@ -3,10 +3,10 @@
     public enum SubmissionStatus
     {
         PROCESSING,
-        FAILED,
+        PENDING_AUTO_REVIEW,
+        PENDING_REVIEW,
+        PENDING_ADMIN_REVIEW,
         COMPLETE,
-        PENDINGADMINREVIEW,
-        PENDINGREVIEW,
-        PENDINGAUTOREVIEW
+        FAILED
     }
 }

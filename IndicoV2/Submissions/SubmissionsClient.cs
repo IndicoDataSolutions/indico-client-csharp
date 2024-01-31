@@ -121,14 +121,14 @@ namespace IndicoV2.Submissions
         public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
         {
             var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
-            if (!Enum.TryParse(result.Status.ToString().ToUpper(), out Models.SubmissionStatus parsed))
+            if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), result.Status))
             {
                 throw new NotSupportedException($"Cannot read submission status: {result.Status}");
             }
             return new Submission
             {
                 Id = result.Id ?? 0,
-                Status = parsed,
+                Status = (Models.SubmissionStatus) result.Status,
                 DatasetId = result.DatasetId ?? 0,
                 WorkflowId = result.WorkflowId ?? 0,
                 InputFile = result.InputFile,
