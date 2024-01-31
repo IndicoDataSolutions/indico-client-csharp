@@ -68,7 +68,8 @@ namespace IndicoV2.Submissions
             await _strawberryShakeClient.Submissions().CreateUri(workflowId, uris, cancellationToken);
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths,
-          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null) {
+          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null)
+        {
             var filesToUpload = new List<(string Name, Stream content)>();
             foreach (var path in paths)
             {
@@ -83,12 +84,16 @@ namespace IndicoV2.Submissions
                 }
 
             }
-            return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)filesToUpload, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
+            return await CreateAsync(workflowId, filesToUpload: filesToUpload, cancellationToken, resultsFileVersion);
         }
 
         [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]
         public async Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
-            CancellationToken cancellationToken = default) => (IEnumerable<ISubmission>)await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken);
+            CancellationToken cancellationToken = default)
+        {
+            var result = await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken);
+            return result.Data;
+        }
 
 
         public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
@@ -116,14 +121,14 @@ namespace IndicoV2.Submissions
         public async Task<ISubmission> GetAsync(int submissionId, CancellationToken cancellationToken = default)
         {
             var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
-            if (!Enum.TryParse(result.Status.ToString().ToUpper(),out Models.SubmissionStatus parsed))
+            if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), result.Status))
             {
                 throw new NotSupportedException($"Cannot read submission status: {result.Status}");
             }
             return new Submission
             {
                 Id = result.Id ?? 0,
-                Status = parsed,
+                Status = (Models.SubmissionStatus) result.Status,
                 DatasetId = result.DatasetId ?? 0,
                 WorkflowId = result.WorkflowId ?? 0,
                 InputFile = result.InputFile,
@@ -141,7 +146,7 @@ namespace IndicoV2.Submissions
         public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
         {
             var resultId = await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
-            var result = await _strawberryShakeClient.Submissions().List((IReadOnlyList<int?>)new List<int>(submissionId).AsReadOnly(), default, default, default, default, cancellationToken);
+            var result = await _strawberryShakeClient.Submissions().List(new List<int?>(submissionId).AsReadOnly(), default, default, default, default, cancellationToken);
             return new SubmissionSs(result?.Submissions?[0]);
         }
 

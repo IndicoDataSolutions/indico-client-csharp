@@ -77,7 +77,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             var filePath = _dataHelper.Files().GetSampleFilePath();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, new[] { filePath });
+            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, paths: new[] { filePath });
 
             // Assert
             var submissionId = submissionIds.Single();
@@ -91,13 +91,13 @@ namespace IndicoV2.IntegrationTests.Submissions
             var uri = _dataHelper.Uris().GetSampleUri();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, new[] { uri });
+            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, uris: new[] { uri });
 
             // Assert
             var submissionId = submissionIds.Single();
             submissionId.Should().BeGreaterThan(0);
         }
-        
+
         [Test]
         public async Task GetAsync_ShouldFetchSubmission()
         {

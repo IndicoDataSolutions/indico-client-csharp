@@ -20,7 +20,7 @@ namespace IndicoV2.StrawberryShake.Submissions
             CancellationToken cancellationToken = default, SubmissionResultVersion? resultsFileVersion = null) =>
             (await ExecuteAsync(async () => await _services.GetRequiredService<WorkflowUrlSubmissionMutation>().ExecuteAsync(
                 workflowId,
-                (IReadOnlyList<string>)uris,
+                uris.Select(s => s.ToString()).ToList(),
                 resultsFileVersion,
                 cancellationToken
             )))

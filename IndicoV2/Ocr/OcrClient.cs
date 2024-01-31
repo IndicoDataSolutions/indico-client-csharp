@@ -33,7 +33,7 @@ namespace IndicoV2.Ocr
         public async Task<string> ExtractDocumentAsync(string filePath, DocumentExtractionPreset preset, CancellationToken cancellationToken)
         {
             JArray fileMetadata;
-            var files = new List<object>();
+            var files = new List<FileInput>();
             fileMetadata = await Upload(new List<string> { filePath });
             foreach (JObject uploadMeta in fileMetadata)
             {
@@ -44,10 +44,10 @@ namespace IndicoV2.Ocr
                     { "upload_type", (string)uploadMeta.GetValue("upload_type") }
                 };
 
-                var file = new
+                var file = new FileInput
                 {
-                    filename = (string)uploadMeta.GetValue("name"),
-                    filemeta = meta.ToString()
+                    Filename = (string)uploadMeta.GetValue("name"),
+                    Filemeta = meta.ToString()
                 };
 
                 files.Add(file);
@@ -62,7 +62,7 @@ namespace IndicoV2.Ocr
             return job.DocumentExtraction.JobIds.First();
         }
         public async Task<string> GetExtractionResultAsync(Uri documentUri, CancellationToken cancellationToken) =>
-            (await GetExtractionResultAsync<JToken>(documentUri, cancellationToken)).Value<string>("text");
+            (await GetExtractionResultAsync<JToken>(documentUri, cancellationToken)).ToString();
 
         public async Task<TResult> GetExtractionResultAsync<TResult>(Uri documentUri, CancellationToken cancellationToken)
         {

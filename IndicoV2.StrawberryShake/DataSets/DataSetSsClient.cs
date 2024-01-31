@@ -40,7 +40,7 @@ namespace IndicoV2.StrawberryShake.DataSets
 
         public Task<IDataSetGetDatasetsFullResult> ListFullAsync(int? limit, CancellationToken cancellationToken) =>
             ExecuteAsync(() => _services.GetRequiredService<DataSetGetDatasetsFullQuery>().ExecuteAsync(
-                limit,
+                limit == null ? 100 : limit,
                 cancellationToken));
     }
 }
