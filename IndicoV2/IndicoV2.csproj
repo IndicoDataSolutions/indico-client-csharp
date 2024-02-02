@@ -15,7 +15,6 @@
 
 	<Target Name="IncludeP2POutput">
 		<ItemGroup>
-			<BuildOutputInPackage Include="$(OutputPath)Indico.dll" />
 			<BuildOutputInPackage Include="$(OutputPath)IndicoV2.*.dll" />
 		</ItemGroup>
 	</Target>
@@ -25,7 +24,7 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-		<None Include="..\Indico\indico-square-icon.png">
+		<None Include="..\IndicoV2\indico-square-icon.png">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
