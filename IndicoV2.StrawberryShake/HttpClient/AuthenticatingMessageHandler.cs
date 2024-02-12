@@ -9,22 +9,17 @@ using System.Threading.Tasks;
 
 namespace IndicoV2.StrawberryShake.HttpClient
 {
-    public class AuthenticatingMessageHandler : HttpClientHandler
+    public class AuthenticatingMessageHandler : DelegatingHandler
     {
         private readonly Uri _refreshUri;
         private readonly string _refreshToken;
         private string _token;
 
-        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken, bool verify = true, WebProxy proxy = null)
+        public AuthenticatingMessageHandler(Uri baseUri, string refreshToken)
         {
             _refreshUri = new Uri(baseUri, "/auth/users/refresh_token");
             _refreshToken = refreshToken;
 
-            if (!verify)
-                ServerCertificateCustomValidationCallback = (httpRequestMessage, x509Certificate2, x509Chain, sslPolicyError) => true;
-
-            if (proxy != null)
-                Proxy = proxy;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
