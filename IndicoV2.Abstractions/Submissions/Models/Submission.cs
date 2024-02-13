@@ -72,12 +72,14 @@ namespace IndicoV2.Submissions.Models
 
         private SubmissionStatus ConvertFromSs()
         {
-                if (!Enum.TryParse(_ssSubmission.Status.ToString().ToUpper(),out SubmissionStatus parsed))
-                {
-                    throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");
-                }
+            var serializer = new SubmissionStatusSerializer();
+            string status = serializer.Format(_ssSubmission.Status).ToString();
+            if (!Enum.TryParse(status,out SubmissionStatus parsed))
+            {
+                throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");
+            }
 
-                return parsed;
+            return parsed;
 
         }
     }
