@@ -70,10 +70,23 @@ namespace IndicoV2.Submissions.Models
             Errors = _ssSubmission.Errors;
         }
 
+        private string ParseStatus(StrawberryShake.SubmissionStatus? status)
+        {
+            switch (status)
+            {
+                case StrawberryShake.SubmissionStatus.Processing : return "PROCESSING";
+                case StrawberryShake.SubmissionStatus.PendingAutoReview : return "PENDING_AUTO_REVIEW";
+                case StrawberryShake.SubmissionStatus.PendingReview : return "PENDING_REVIEW";
+                case StrawberryShake.SubmissionStatus.PendingAdminReview : return "PENDING_ADMIN_REVIEW";
+                case StrawberryShake.SubmissionStatus.Complete : return "COMPLETE";
+                case StrawberryShake.SubmissionStatus.Failed : return "FAILED";
+                default: return null;
+            }
+        }
+
         private SubmissionStatus ConvertFromSs()
         {
-            var serializer = new SubmissionStatusSerializer();
-            string status = serializer.Format(_ssSubmission.Status).ToString();
+            string status = ParseStatus(_ssSubmission.Status);
             if (!Enum.TryParse(status,out SubmissionStatus parsed))
             {
                 throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");

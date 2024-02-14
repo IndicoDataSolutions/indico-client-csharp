@@ -16,7 +16,7 @@ namespace Examples
 
         public static async Task Main()
         {
-            var filters = new OrFilter
+            var filters = new OrFilter //https://developer.indicodata.ai/docs/filter-submissions
             {
                 Or = new List<IFilter>
                 {
