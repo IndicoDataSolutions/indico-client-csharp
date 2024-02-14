@@ -80,7 +80,7 @@ namespace IndicoV2.Submissions.Models
                 case StrawberryShake.SubmissionStatus.PendingAdminReview : return "PENDING_ADMIN_REVIEW";
                 case StrawberryShake.SubmissionStatus.Complete : return "COMPLETE";
                 case StrawberryShake.SubmissionStatus.Failed : return "FAILED";
-                default: return null;
+                default: return "";
             }
         }
 
