@@ -7,7 +7,7 @@ namespace IndicoV2.Submissions.Models
 {
     public class Submission : ISubmission
     {
-         /// <summary>
+        /// <summary>
         /// Submission id.
         /// </summary>
         public int Id { get; set; }
@@ -70,30 +70,27 @@ namespace IndicoV2.Submissions.Models
             Errors = _ssSubmission.Errors;
         }
 
-        private string ParseStatus(StrawberryShake.SubmissionStatus? status)
-        {
-            switch (status)
-            {
-                case StrawberryShake.SubmissionStatus.Processing : return "PROCESSING";
-                case StrawberryShake.SubmissionStatus.PendingAutoReview : return "PENDING_AUTO_REVIEW";
-                case StrawberryShake.SubmissionStatus.PendingReview : return "PENDING_REVIEW";
-                case StrawberryShake.SubmissionStatus.PendingAdminReview : return "PENDING_ADMIN_REVIEW";
-                case StrawberryShake.SubmissionStatus.Complete : return "COMPLETE";
-                case StrawberryShake.SubmissionStatus.Failed : return "FAILED";
-                default: return "";
-            }
-        }
 
         private SubmissionStatus ConvertFromSs()
         {
-            string status = ParseStatus(_ssSubmission.Status);
-            if (!Enum.TryParse(status,out SubmissionStatus parsed))
+            switch (_ssSubmission.Status)
             {
-                throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");
+                case StrawberryShake.SubmissionStatus.Processing:
+                    return SubmissionStatus.PROCESSING;
+                case StrawberryShake.SubmissionStatus.PendingAutoReview:
+                    return SubmissionStatus.PENDING_AUTO_REVIEW;
+                case StrawberryShake.SubmissionStatus.PendingReview:
+                    return SubmissionStatus.PENDING_REVIEW;
+                case StrawberryShake.SubmissionStatus.PendingAdminReview:
+                    return SubmissionStatus.PENDING_ADMIN_REVIEW;
+                case StrawberryShake.SubmissionStatus.Complete:
+                    return SubmissionStatus.COMPLETE;
+                case StrawberryShake.SubmissionStatus.Failed:
+                    return SubmissionStatus.FAILED;
+                default:
+                    throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");
+                    ;
             }
-
-            return parsed;
-
         }
     }
 }
