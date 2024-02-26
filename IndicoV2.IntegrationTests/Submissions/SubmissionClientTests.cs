@@ -99,6 +99,20 @@ namespace IndicoV2.IntegrationTests.Submissions
         }
 
         [Test]
+        public async Task CreateAsync_ShouldCreateMultiFileSubmission_FromFilePath()
+        {
+            // Arrange
+            var filePath = _dataHelper.Files().GetSampleFilePath();
+
+            // Act
+            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, paths: new[] { filePath, filePath }, bundle: true, resultsFileVersion: SubmissionResultsFileVersion.Three);
+
+            // Assert
+            var submissionId = submissionIds.Single();
+            submissionId.Should().BeGreaterThan(0);
+        }
+
+        [Test]
         public async Task GetAsync_ShouldFetchSubmission()
         {
             // Arrange
