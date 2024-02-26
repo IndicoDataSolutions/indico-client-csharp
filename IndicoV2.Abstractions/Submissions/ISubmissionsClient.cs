@@ -21,7 +21,7 @@ namespace IndicoV2.Submissions
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
         [Obsolete("Please provide file name for each stream.", true)]
-        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
         /// <summary>
         /// Method creates <c><see cref="ISubmission"/></c>.
@@ -31,7 +31,7 @@ namespace IndicoV2.Submissions
         /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
-        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> files, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> files, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
         /// <summary>
         /// Method creates <c><see cref="ISubmission"/></c>.
@@ -40,7 +40,7 @@ namespace IndicoV2.Submissions
         /// <param name="uris"><c><see cref="Uri">Uri collection</see></c> to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
-        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
         /// <summary>
         /// Method creates <c><see cref="ISubmission"/></c>.
@@ -49,7 +49,7 @@ namespace IndicoV2.Submissions
         /// <param name="paths">Filepaths collection to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns><c><see cref="IEnumerable{T}"/></c> of submissions ids.</returns>
-        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null);
+        Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
         /// <summary>
         /// Method lists <c><see cref="ISubmission"/></c>.
