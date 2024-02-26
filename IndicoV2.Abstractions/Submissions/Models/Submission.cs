@@ -7,7 +7,7 @@ namespace IndicoV2.Submissions.Models
 {
     public class Submission : ISubmission
     {
-         /// <summary>
+        /// <summary>
         /// Submission id.
         /// </summary>
         public int Id { get; set; }
@@ -70,15 +70,27 @@ namespace IndicoV2.Submissions.Models
             Errors = _ssSubmission.Errors;
         }
 
+
         private SubmissionStatus ConvertFromSs()
         {
-                if (!Enum.TryParse(_ssSubmission.Status.ToString().ToUpper(),out SubmissionStatus parsed))
-                {
+            switch (_ssSubmission.Status)
+            {
+                case StrawberryShake.SubmissionStatus.Processing:
+                    return SubmissionStatus.PROCESSING;
+                case StrawberryShake.SubmissionStatus.PendingAutoReview:
+                    return SubmissionStatus.PENDING_AUTO_REVIEW;
+                case StrawberryShake.SubmissionStatus.PendingReview:
+                    return SubmissionStatus.PENDING_REVIEW;
+                case StrawberryShake.SubmissionStatus.PendingAdminReview:
+                    return SubmissionStatus.PENDING_ADMIN_REVIEW;
+                case StrawberryShake.SubmissionStatus.Complete:
+                    return SubmissionStatus.COMPLETE;
+                case StrawberryShake.SubmissionStatus.Failed:
+                    return SubmissionStatus.FAILED;
+                default:
                     throw new NotSupportedException($"Cannot read submission status: {_ssSubmission.Status}");
-                }
-
-                return parsed;
-
+                    ;
+            }
         }
     }
 }
