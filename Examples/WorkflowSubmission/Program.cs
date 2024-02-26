@@ -25,8 +25,13 @@ namespace Examples
 
             var submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] { "workflow-sample.pdf" });
             int submissionId = submissionIds.Single();
-            var submission = await submissionClient.GetAsync(submissionId);
             var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);
+            Console.WriteLine(jobResult);
+
+            // Example of making a multi-file submission to a workflow
+            submissionIds = await submissionClient.CreateAsync(workflows.Single().Id, new[] {"workflow-sample.pdf", "workflow-sample.pdf"}, bundle: true, resultsFileVersion: SubmissionResultsFileVersion.Three);
+            submissionId = submissionIds.Single();
+            jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);
             Console.WriteLine(jobResult);
         }
     }
