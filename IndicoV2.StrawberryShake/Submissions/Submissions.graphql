@@ -1,11 +1,13 @@
 ﻿mutation WorkflowSubmission(
   $workflowId: Int!
   $files: [FileInput!]!
+  $bundle: Boolean
   $resultVersion: SubmissionResultVersion
 ) {
   workflowSubmission(
     workflowId: $workflowId
     files: $files
+    bundle: $bundle
     resultVersion: $resultVersion
   ) {
     jobIds

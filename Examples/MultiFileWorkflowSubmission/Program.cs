@@ -7,7 +7,7 @@ using IndicoV2.Submissions.Models;
 
 namespace Examples
 {
-    public class SubmitWorkflows
+    public class SubmitMultiFileToWorkflow
     {
         private static string GetToken() =>
             File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -23,7 +23,7 @@ namespace Examples
 
             var submissionClient = client.Submissions();
 
-            var submissionIds = await submissionClient.CreateAsync(73, new[] { "workflow-sample.pdf" });
+            var submissionIds = await submissionClient.CreateAsync(73, new[] {"workflow-sample.pdf", "workflow-sample.pdf"}, bundle: true, resultsFileVersion: SubmissionResultsFileVersion.Three);
             int submissionId = submissionIds.Single();
             var submission = await submissionClient.GetAsync(submissionId);
             var jobResult = await client.GetSubmissionResultAwaiter().WaitReady(submissionId);

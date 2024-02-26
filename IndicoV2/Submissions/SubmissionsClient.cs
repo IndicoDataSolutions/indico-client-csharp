@@ -23,7 +23,7 @@ namespace IndicoV2.Submissions
             _strawberryShakeClient = indicoClient.IndicoStrawberryShakeClient;
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null)
         {
             var uploadRequest = new UploadStream(_indicoClient)
             {
@@ -51,10 +51,10 @@ namespace IndicoV2.Submissions
             return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)files, cancellationToken);
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null)
         {
             var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken);
-            return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion);
+            return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, bundle, (SubmissionResultVersion?)resultsFileVersion);
         }
 
 
@@ -64,11 +64,11 @@ namespace IndicoV2.Submissions
           CreateAsync(workflowId, paths, cancellationToken);
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris,
-            CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null) =>
+            CancellationToken cancellationToken = default, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null) =>
             await _strawberryShakeClient.Submissions().CreateUri(workflowId, uris, cancellationToken);
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths,
-          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null)
+          CancellationToken cancellationToken, bool bundle = false, SubmissionResultsFileVersion? resultsFileVersion = null)
         {
             var filesToUpload = new List<(string Name, Stream content)>();
             foreach (var path in paths)
@@ -84,7 +84,7 @@ namespace IndicoV2.Submissions
                 }
 
             }
-            return await CreateAsync(workflowId, filesToUpload: filesToUpload, cancellationToken, resultsFileVersion);
+            return await CreateAsync(workflowId, filesToUpload: filesToUpload, cancellationToken, bundle, resultsFileVersion);
         }
 
         [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]
