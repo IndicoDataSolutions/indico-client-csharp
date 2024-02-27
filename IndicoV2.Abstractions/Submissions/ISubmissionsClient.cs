@@ -19,6 +19,8 @@ namespace IndicoV2.Submissions
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="streams"><c><see cref="Stream">Stream collection</see></c> to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
+        /// <param name="bundle">Optional. Flag to batch all files under a single submission id.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
         [Obsolete("Please provide file name for each stream.", true)]
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Stream> streams, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
@@ -28,8 +30,9 @@ namespace IndicoV2.Submissions
         /// </summary>
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="streams"><c><see cref="Stream">Stream collection</see></c> to create submissions from.</param>
-        /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
+        /// <param name="bundle">Optional. Flag to batch all files under a single submission id.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> files, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
@@ -39,6 +42,8 @@ namespace IndicoV2.Submissions
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="uris"><c><see cref="Uri">Uri collection</see></c> to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
+        /// <param name="bundle">Optional. Flag to batch all files under a single submission id.</param>
         /// <returns><c><see cref="IEnumerable{T}">IEnumerable</see></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<Uri> uris, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 
@@ -48,6 +53,8 @@ namespace IndicoV2.Submissions
         /// <param name="workflowId">Workflow Id.</param>
         /// <param name="paths">Filepaths collection to create submissions from.</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <param name="resultsFileVersion">Optional. Specifies version to use for the results file.</param>
+        /// <param name="bundle">Optional. Flag to batch all files under a single submission id.</param>
         /// <returns><c><see cref="IEnumerable{T}"/></c> of submissions ids.</returns>
         Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false);
 

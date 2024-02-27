@@ -105,7 +105,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             var filePath = _dataHelper.Files().GetSampleFilePath();
 
             // Act
-            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, paths: new[] { filePath, filePath }, bundle: true, resultsFileVersion: SubmissionResultsFileVersion.Three);
+            var submissionIds = await _submissionsClient.CreateAsync(_workflowId, paths: new[] { filePath, filePath }, default, SubmissionResultsFileVersion.Three, true);
 
             // Assert
             var submissionId = submissionIds.Single();
