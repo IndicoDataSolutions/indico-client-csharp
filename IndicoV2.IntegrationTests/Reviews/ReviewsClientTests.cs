@@ -7,9 +7,14 @@ using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.IntegrationTests.Utils.Configs;
 using IndicoV2.Reviews;
+using IndicoV2.Submissions.Models;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using Unity;
+using System.Text.Json;
+using IndicoV2.Submissions;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace IndicoV2.IntegrationTests.Reviews
 {
@@ -46,10 +51,10 @@ namespace IndicoV2.IntegrationTests.Reviews
         }
 
         [Test]
-        public async Task SubmitReviewAsync_ShouldSucceed()
+        public async Task SubmitReviewAsyncV1Result_ShouldSucceed()
         {
             // Arrange
-            var submission = await _dataHelper.Submissions().GetAnyAsync(_workflowId);
+            var submission = await _dataHelper.Submissions().Get(_workflowId, resultsFileVersion: SubmissionResultsFileVersion.One);
             var result = await _submissionResultAwaiter.WaitReady(submission.Id);
             var changes = (JObject)result["results"]["document"]["results"];
 
@@ -61,6 +66,38 @@ namespace IndicoV2.IntegrationTests.Reviews
             jobResult.Should().NotBeNull();
             jobResult.Value<string>("submission_status").Should().Be("pending_review");
             jobResult.Value<bool>("success").Should().Be(true);
+        }
+
+
+        [Test]
+        public async Task SubmitReviewAsyncV3Result_ShouldSucceed()
+        {
+            // Arrange
+            var submission = await _dataHelper.Submissions().Get(_workflowId, resultsFileVersion: SubmissionResultsFileVersion.Three);
+            var result = await _submissionResultAwaiter.WaitReady(submission.Id);
+            submission = (await _dataHelper.Submissions().ListAsync(submissionIds: new List<int>() { submission.Id })).First();
+            if (submission.Status.ToString() == "PENDING_AUTO_REVIEW")
+            {
+                var changes = result["submission_results"];
+                foreach (JObject change in changes)
+                {
+                    change["model_results"] = change["model_results"]["ORIGINAL"];
+                    change["component_results"] = change["component_results"]["ORIGINAL"];
+                }
+                // Act
+                var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, (JArray)changes);
+                var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(submitReviewJobId, TimeSpan.FromSeconds(1));
+
+                // Assert
+                jobResult.Should().NotBeNull();
+                jobResult.Value<string>("submission_status").Should().Be("pending_review");
+                jobResult.Value<bool>("success").Should().Be(true);
+            }
+            else
+            {
+                // multi-file submissions are not enabled and submission status should default to complete
+                submission.Status.ToString().Should().Be("COMPLETE");
+            }
         }
     }
 }

@@ -19,8 +19,10 @@ namespace IndicoV2.Reviews
         }
 
         public async Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default) =>
-            await _strawberryShake.Reviews().SubmitReview(submissionId, changes, rejected, forceComplete, cancellationToken);
+            await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
 
+        public async Task<string> SubmitReviewAsync(int submissionId, JArray changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default) =>
+            await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
 
     }
 }
