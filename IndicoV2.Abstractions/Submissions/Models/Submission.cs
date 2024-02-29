@@ -1,21 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using IndicoV2.StrawberryShake;
 
 namespace IndicoV2.Submissions.Models
 {
+    public class SubmissionFile
+    {
+        public int? Id { get; set; }
+
+        public string FilePath { get; set; }
+
+        public string FileName { get; set; }
+
+        public FileType? FileType { get; set; }
+
+        public int? SubmissionId { get; set; }
+
+        public int? FileSize { get; set; }
+
+        public int? NumPages { get; set; }
+    }
+
+    public class SubmissionOutput
+    {
+        public int? Id { get; set; }
+
+        public string FilePath { get; set; }
+
+        public int? SubmissionId { get; set; }
+
+        public int? ComponentId { get; set; }
+
+        public DateTimeOffset? CreatedAt { get; set; }
+    }
+
+    public class Review
+    {
+        public int? Id { get; set; }
+
+        public int? SubmissionId { get; set; }
+
+        public string CreatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public string StartedAt { get; set; }
+
+        public string CompletedAt { get; set; }
+
+        public bool? Rejected { get; set; }
+
+        public ReviewType? ReviewType { get; set; }
+
+        public string Notes { get; set; }
+
+        public string Changes { get; set; }
+    }
+
+    public class SubmissionRetry
+    {
+        public int? Id { get; set; }
+
+        public int? SubmissionId { get; set; }
+
+        public string PreviousErrors { get; set; }
+
+        public SubmissionStatus? PreviousStatus { get; set; }
+
+        public string RetryErrors { get; set; }
+    }
+
     public class Submission : ISubmission
     {
         /// <summary>
         /// Submission id.
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
-        /// </summary>
-        public SubmissionStatus Status { get; set; }
 
         /// <summary>
         /// Dataset id.
@@ -26,6 +86,33 @@ namespace IndicoV2.Submissions.Models
         /// Workflow id.
         /// </summary>
         public int WorkflowId { get; set; }
+
+        /// <summary>
+        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
+        /// </summary>
+        public SubmissionStatus Status { get; set; }
+
+        public DateTimeOffset? CreatedAt { get; set; }
+
+        public DateTimeOffset? UpdatedAt { get; set; }
+
+        public int? CreatedBy { get; set; }
+
+        public int? UpdatedBy { get; set; }
+
+        public DateTimeOffset? CompletedAt { get; set; }
+
+        /// <summary>
+        /// Submission errors.
+        /// </summary>
+        public string Errors { get; set; }
+
+        /// <summary>
+        /// Is submission deleted.
+        /// </summary>
+        public bool? FilesDeleted { get; set; }
+
+        public SubmissionFile[] InputFiles { get; set; }
 
         /// <summary>
         /// Submission input file.
@@ -42,15 +129,24 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         public string ResultFile { get; set; }
 
+        public SubmissionOutput[] OutputFiles { get; set; }
+
         /// <summary>
         /// Is submission retrieved.
         /// </summary>
         public bool Retrieved { get; set; }
 
-        /// <summary>
-        /// Submission errors.
-        /// </summary>
-        public string Errors { get; set; }
+        public Review AutoReview { get; set; }
+
+        public SubmissionRetry[] Retries { get; set; }
+
+        public bool? AutoReviewLoaded { get; set; }
+
+        public string OcrEngine { get; set; }
+
+        public Review[] Reviews { get; set; }
+
+        public bool? ReviewInProgress { get; set; }
     }
 
     public class SubmissionSs : Submission
@@ -60,14 +156,68 @@ namespace IndicoV2.Submissions.Models
         {
             _ssSubmission = submission;
             Id = _ssSubmission.Id ?? 0;
-            Status = ConvertFromSs();
             DatasetId = _ssSubmission.DatasetId ?? 0;
             WorkflowId = _ssSubmission.WorkflowId ?? 0;
+            Status = ConvertFromSs();
+            CreatedAt = _ssSubmission.CreatedAt;
+            UpdatedAt = _ssSubmission.UpdatedAt;
+            CreatedBy = _ssSubmission.CreatedBy;
+            UpdatedBy = _ssSubmission.UpdatedBy;
+            CompletedAt = _ssSubmission.CompletedAt;
+            Errors = _ssSubmission.Errors;
+            FilesDeleted = _ssSubmission.FilesDeleted;
+            InputFiles = _ssSubmission.InputFiles.Select(inputFile => new SubmissionFile
+            {
+                Id = inputFile.Id,
+                FilePath = inputFile.Filepath,
+                FileName = inputFile.Filename,
+                FileType = (FileType)inputFile.Filetype,
+                SubmissionId = inputFile.SubmissionId,
+                FileSize = inputFile.FileSize,
+                NumPages = inputFile.NumPages
+            }).ToArray();
             InputFile = _ssSubmission.InputFile;
             InputFilename = _ssSubmission.InputFilename;
             ResultFile = _ssSubmission.ResultFile;
+            OutputFiles = _ssSubmission.OutputFiles.Select(x => new SubmissionOutput() { }).ToArray();
             Retrieved = _ssSubmission.Retrieved ?? throw new ArgumentException("Invalid value for retrieved received from call");
-            Errors = _ssSubmission.Errors;
+            AutoReview = _ssSubmission.AutoReview != null ? new Review
+            {
+                Id = _ssSubmission.AutoReview.Id,
+                SubmissionId = _ssSubmission.AutoReview.SubmissionId,
+                CreatedAt = _ssSubmission.AutoReview.CreatedAt,
+                CreatedBy = _ssSubmission.AutoReview.CreatedBy,
+                StartedAt = _ssSubmission.AutoReview.StartedAt,
+                CompletedAt = _ssSubmission.AutoReview.CompletedAt,
+                Rejected = _ssSubmission.AutoReview.Rejected,
+                ReviewType = (ReviewType)_ssSubmission.AutoReview.ReviewType,
+                Notes = _ssSubmission.AutoReview.Notes,
+                Changes = _ssSubmission.AutoReview.Changes
+            } : new Review() { };
+            Retries = _ssSubmission.Retries.Select(submissionRetry => new SubmissionRetry
+            {
+                Id = submissionRetry.Id,
+                SubmissionId = submissionRetry.SubmissionId,
+                PreviousErrors = submissionRetry.PreviousErrors,
+                PreviousStatus = (SubmissionStatus)submissionRetry.PreviousStatus,
+                RetryErrors = submissionRetry.RetryErrors
+            }).ToArray();
+            AutoReviewLoaded = _ssSubmission.AutoReviewLoaded;
+            OcrEngine = _ssSubmission.OcrEngine;
+            Reviews = _ssSubmission.Reviews.Select(review => new Review
+            {
+                Id = review.Id,
+                SubmissionId = review.SubmissionId,
+                CreatedAt = review.CreatedAt,
+                CreatedBy = review.CreatedBy,
+                StartedAt = review.StartedAt,
+                CompletedAt = review.CompletedAt,
+                Rejected = review.Rejected,
+                ReviewType = (ReviewType)review.ReviewType,
+                Notes = review.Notes,
+                Changes = review.Changes
+            }).ToArray();
+            ReviewInProgress = _ssSubmission.ReviewInProgress;
         }
 
 

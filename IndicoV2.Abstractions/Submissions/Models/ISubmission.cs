@@ -1,4 +1,5 @@
 ﻿
+using System;
 using IndicoV2.CommonModels.Pagination;
 
 namespace IndicoV2.Submissions.Models
@@ -14,11 +15,6 @@ namespace IndicoV2.Submissions.Models
         int Id { get; }
 
         /// <summary>
-        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
-        /// </summary>
-        SubmissionStatus Status { get; }
-
-        /// <summary>
         /// Dataset id.
         /// </summary>
         int DatasetId { get; }
@@ -27,6 +23,31 @@ namespace IndicoV2.Submissions.Models
         /// Workflow id.
         /// </summary>
         int WorkflowId { get; }
+
+        /// <summary>
+        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
+        /// </summary>
+        SubmissionStatus Status { get; }
+
+        DateTimeOffset? CreatedAt { get; }
+
+        DateTimeOffset? UpdatedAt { get; }
+
+        int? CreatedBy { get; }
+
+        int? UpdatedBy { get; }
+
+        DateTimeOffset? CompletedAt { get; }
+
+
+        /// <summary>
+        /// Submission errors.
+        /// </summary>
+        string Errors { get; }
+
+        bool? FilesDeleted { get; }
+
+        SubmissionFile[] InputFiles { get; }
 
         /// <summary>
         /// Submission input file.
@@ -43,14 +64,24 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         string ResultFile { get; }
 
+        SubmissionOutput[] OutputFiles { get; }
+
         /// <summary>
         /// Is submission retrieved.
         /// </summary>
         bool Retrieved { get; }
 
-        /// <summary>
-        /// Submission errors.
-        /// </summary>
-        string Errors { get; }
+        Review AutoReview { get; }
+
+        SubmissionRetry[] Retries { get; }
+
+        bool? AutoReviewLoaded { get; }
+
+        string OcrEngine { get; }
+
+        Review[] Reviews { get; }
+
+        bool? ReviewInProgress { get; }
+
     }
 }

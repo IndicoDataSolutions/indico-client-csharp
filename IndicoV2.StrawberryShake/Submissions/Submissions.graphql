@@ -21,7 +21,7 @@ mutation WorkflowUrlSubmission(
   $resultVersion: SubmissionResultVersion
 ) {
   workflowUrlSubmission(
-    workflowId: $workflowId,
+    workflowId: $workflowId
     urls: $urls
     resultVersion: $resultVersion
   ) {
@@ -53,12 +53,67 @@ query ListSubmissions(
       datasetId
       workflowId
       status
+      createdAt
+      updatedAt
+      createdBy
+      updatedBy
+      completedAt
+      errors
+      filesDeleted
+      inputFiles {
+        id
+        filepath
+        filename
+        filetype
+        submissionId
+        fileSize
+        numPages
+      }
       inputFile
       inputFilename
       resultFile
-      deleted
+      outputFiles {
+        id
+        filepath
+        submissionId
+        componentId
+        createdAt
+      }
       retrieved
-      errors
+      autoReview {
+        id
+        submissionId
+        createdAt
+        createdBy
+        startedAt
+        completedAt
+        rejected
+        reviewType
+        notes
+        changes
+      }
+      retries {
+        id
+        submissionId
+        previousErrors
+        previousStatus
+        retryErrors
+      }
+      AutoReviewLoaded
+      ocrEngine
+      reviews {
+        id
+        submissionId
+        createdAt
+        createdBy
+        startedAt
+        completedAt
+        rejected
+        reviewType
+        notes
+        changes
+      }
+      reviewInProgress
     }
     pageInfo {
       startCursor
