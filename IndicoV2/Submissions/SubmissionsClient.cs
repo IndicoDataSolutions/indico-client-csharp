@@ -10,6 +10,7 @@ using IndicoV2.Submissions.Models;
 using IndicoV2.Reviews.Models;
 using IndicoV2.Storage;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace IndicoV2.Submissions
 {
@@ -54,8 +55,12 @@ namespace IndicoV2.Submissions
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false, int batchSize = 20)
         {
+            _indicoClient.Logger.LogDebug($"IndicoV2.Submission.SubmissionsClient.CreateAsync(): submitting streams to workflow {workflowId} (uploading files)");
             var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken, batchSize: batchSize);
-            return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion, bundle);
+            _indicoClient.Logger.LogDebug($"IndicoV2.Submission.SubmissionsClient.CreateAsync(): submitting streams to workflow {workflowId} (creating submission)");
+            var result =  await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion, bundle);
+            _indicoClient.Logger.LogDebug($"IndicoV2.Submission.SubmissionsClient.CreateAsync(): submitted streams to workflow {workflowId}");
+            return result;
         }
 
 
@@ -90,20 +95,17 @@ namespace IndicoV2.Submissions
 
         [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]
         public async Task<IEnumerable<ISubmission>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int limit = 1000,
-            CancellationToken cancellationToken = default)
-        {
-            var result = await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken);
-            return result.Data;
-        }
-
+            CancellationToken cancellationToken = default) => (await ListAsync(submissionIds, workflowIds, filters, null, limit, cancellationToken)).Data;
 
         public async Task<IHasCursor<IEnumerable<ISubmission>>> ListAsync(IEnumerable<int> submissionIds, IEnumerable<int> workflowIds, IFilter filters, int? after, int limit = 1000, CancellationToken cancellationToken = default)
         {
+            _indicoClient.Logger.LogDebug("IndicoV2.Submission.SubmissionsClient.ListAsync(): getting submissions list");
             var ssFilters = filters != null ? FilterConverter.ConvertToSs(filters) : null;
 
             var readonlyIds = submissionIds == null ? (IReadOnlyList<int?>)new List<int?>() : submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
             var readonlyWorkflowIds = workflowIds == null ? (IReadOnlyList<int?>)new List<int?>() : workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
             var result = await _strawberryShakeClient.Submissions().List(readonlyIds, readonlyWorkflowIds, ssFilters, limit, after, cancellationToken);
+            _indicoClient.Logger.LogDebug("IndicoV2.Submission.SubmissionsClient.ListAsync(): got submissions list");
 
             return new HasCursor<IEnumerable<ISubmission>>()
             {
@@ -135,8 +137,10 @@ namespace IndicoV2.Submissions
 
         public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
         {
+            _indicoClient.Logger.LogDebug($"IndicoV2.Submission.SubmissionsClient.MarkSubmissionAsRetrieved(): marking submission {submissionId} retrieved");
             await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
             var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
+            _indicoClient.Logger.LogDebug($"IndicoV2.Submission.SubmissionsClient.MarkSubmissionAsRetrieved(): marked submission {submissionId} retrieved");
             return GetSubmissionToSubmission(result);
         }
 

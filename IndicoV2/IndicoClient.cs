@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using IndicoV2.Exception;
+using Microsoft.Extensions.Logging;
 using IndicoV2.StrawberryShake;
 using IndicoV2.StrawberryShake.HttpClient;
 using GraphQL.Client.Http;
@@ -35,6 +36,7 @@ namespace IndicoV2
 
         internal readonly bool _verifySsl;
         internal readonly WebProxy _proxy;
+        public ILogger Logger;
 
         private IndicoStrawberryShakeClient _indicoStrawberryShakeClient;
 
@@ -46,7 +48,7 @@ namespace IndicoV2
         /// Creates IndicoClient for <inheritdoc cref="_defaultUrl"/>
         /// </summary>
         /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
-        public IndicoClient(string apiToken, bool verify = true) : this(apiToken, new Uri(_defaultUrl), verify)
+        public IndicoClient(string apiToken, bool verify = true) : this(apiToken, new Uri(_defaultUrl), null, verify)
         { }
 
         /// <summary>
@@ -55,12 +57,13 @@ namespace IndicoV2
         /// <param name="apiToken">Authentication token (You can generate one at <c>https://app.indico.io/auth/account</c>)</param>
         /// <param name="baseUri">indico.io base address (Default values is <c>https://app.indico.io</c>)</param>
         /// <param name="verify">verify the host's SSL certificate (Default value is <c>true</c>)</param>
-        public IndicoClient(string apiToken, Uri baseUri, bool verify = true, WebProxy proxy = null)
+        public IndicoClient(string apiToken, Uri baseUri, ILogger logger, bool verify = true, WebProxy proxy = null)
         {
             _apiToken = apiToken ?? throw new ArgumentNullException(nameof(apiToken));
             BaseUri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
             _verifySsl = verify;
             _proxy = proxy;
+            Logger = logger;
             var handler = new AuthenticatingMessageHandler(baseUri, apiToken, verify, proxy);
             HttpClient = new HttpClient(handler);
             var options = new GraphQLHttpClientOptions

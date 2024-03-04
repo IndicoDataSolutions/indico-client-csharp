@@ -11,6 +11,7 @@ using IndicoV2.Storage.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace IndicoV2.Storage
 {
@@ -32,8 +33,10 @@ namespace IndicoV2.Storage
 
         public async Task<Stream> GetAsync(Uri uri, CancellationToken cancellationToken)
         {
+            _indicoClient.Logger.LogDebug($"IndicoV2.Storage.StorageClient.GetAsync(): getting storage object {uri}");
             var blob = await new RetrieveBlob(_indicoClient) { Url = uri.ToString() }.Exec();
             var result = blob.AsStream();
+            _indicoClient.Logger.LogDebug($"IndicoV2.Storage.StorageClient.GetAsync(): got storage object {uri}");
 
             return result;
         }

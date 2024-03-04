@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IndicoV2.Reviews.Models;
 using IndicoV2.StrawberryShake;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace IndicoV2.Reviews
 {
@@ -19,11 +20,21 @@ namespace IndicoV2.Reviews
             _strawberryShake = indicoClient.IndicoStrawberryShakeClient;
         }
 
-        public async Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default) =>
-            await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
+        public async Task<string> SubmitReviewAsync(int submissionId, JObject changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default)
+        {
+            _indicoClient.Logger.LogDebug($"IndicoV2.Reviews.ReviewsClient.SubmitReviewAsync(): submitting v1 auto review for submission {submissionId}");
+            var result = await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
+            _indicoClient.Logger.LogDebug($"IndicoV2.Reviews.ReviewsClient.SubmitReviewAsync(): submitted v1 auto review for submission {submissionId}");
+            return result;
+        }
 
-        public async Task<string> SubmitReviewAsync(int submissionId, JArray changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default) =>
-            await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
+        public async Task<string> SubmitReviewAsync(int submissionId, JArray changes, bool rejected = false, bool? forceComplete = null, CancellationToken cancellationToken = default)
+        {
+            _indicoClient.Logger.LogDebug($"IndicoV2.Reviews.ReviewsClient.SubmitReviewAsync(): submitting v3 auto review for submission {submissionId}");
+            var result = await _strawberryShake.Reviews().SubmitReview(submissionId, changes.ToString(), rejected, forceComplete, cancellationToken);
+            _indicoClient.Logger.LogDebug($"IndicoV2.Reviews.ReviewsClient.SubmitReviewAsync(): submitted v3 auto review for submission {submissionId}");
+            return result;
+        }
 
         public async Task<IEnumerable<ReviewDetailed>> GetReviewsAsync(int submissionId, CancellationToken cancellationToken = default)
         {
