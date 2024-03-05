@@ -6,66 +6,145 @@ namespace IndicoV2.Submissions.Models
 {
     public class SubmissionFile
     {
+        /// <summary>
+        /// Unique Id of this file.
+        /// </summary>
         public int? Id { get; set; }
 
+        /// <summary>
+        /// Local URL to stored input.
+        /// </summary>
         public string FilePath { get; set; }
 
+        /// <summary>
+        /// Name of original file.
+        /// </summary>
         public string FileName { get; set; }
 
-        public string? FileType { get; set; }
+        /// <summary>
+        /// Type of file.
+        /// </summary>
+        public string FileType { get; set; }
 
+        /// <summary>
+        /// Id of the submission this file is associated with.
+        /// </summary>
         public int? SubmissionId { get; set; }
 
+        /// <summary>
+        /// Size of file in bytes.
+        /// </summary>
         public int? FileSize { get; set; }
 
+        /// <summary>
+        /// Number of pages in file.
+        /// </summary>
         public int? NumPages { get; set; }
     }
 
     public class SubmissionOutput
     {
+        /// <summary>
+        /// Unique Id of this output.
+        /// </summary>
         public int? Id { get; set; }
 
+        /// <summary>
+        /// Local URL to stored input.
+        /// </summary>
         public string FilePath { get; set; }
 
+        /// <summary>
+        /// Id of the submission this file is associated with.
+        /// </summary>
         public int? SubmissionId { get; set; }
 
+        /// <summary>
+        /// Id of the workflow component that made this file.
+        /// </summary>
         public int? ComponentId { get; set; }
 
+        /// <summary>
+        /// Datetime the output file was created.
+        /// </summary>
         public DateTimeOffset? CreatedAt { get; set; }
     }
 
     public class Review
     {
+        /// <summary>
+        /// Id of this review.
+        /// </summary>
         public int? Id { get; set; }
 
+        /// <summary>
+        /// Id of the submission this review is associated with.
+        /// </summary>
         public int? SubmissionId { get; set; }
 
+        /// <summary>
+        /// When this user first opened the file. See startedAt as well.
+        /// </summary>
         public string CreatedAt { get; set; }
 
+        /// <summary>
+        /// Reviewer id.
+        /// </summary>
         public int? CreatedBy { get; set; }
 
+        /// <summary>
+        /// When this review was started.
+        /// Differs from createdAt because a reviewer may restart their review at any time.
+        /// </summary>
         public string StartedAt { get; set; }
 
+        /// <summary>
+        /// When this review was completed by the reviewer.
+        /// </summary>
         public string CompletedAt { get; set; }
 
+        /// <summary>
+        /// Flag for whether the file was rejected (True) or not (False).
+        /// </summary>
         public bool? Rejected { get; set; }
 
+        /// <summary>
+        /// Type of review.
+        /// </summary>
         public ReviewType? ReviewType { get; set; }
 
+        /// <summary>
+        /// Reviewer notes.
+        /// </summary>
         public string Notes { get; set; }
 
     }
 
     public class SubmissionRetry
     {
+        /// <summary>
+        /// Unique Id of the submission retry.
+        /// </summary>
         public int? Id { get; set; }
 
+        /// <summary>
+        /// Unique Id of the associated submission.
+        /// </summary>
         public int? SubmissionId { get; set; }
 
+        /// <summary>
+        /// Errors from previous submission.
+        /// </summary>
         public string PreviousErrors { get; set; }
 
+        /// <summary>
+        /// Status of submission before it was retried.
+        /// </summary>
         public SubmissionStatus? PreviousStatus { get; set; }
 
+        /// <summary>
+        /// Errors that ocurred during the retrying of this submission.
+        /// </summary>
         public string RetryErrors { get; set; }
     }
 
@@ -91,14 +170,29 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         public SubmissionStatus Status { get; set; }
 
+        /// <summary>
+        /// Datetime the submission was created.
+        /// </summary>
         public DateTimeOffset? CreatedAt { get; set; }
 
+        /// <summary>
+        /// Datetime the submission was updated.
+        /// </summary>
         public DateTimeOffset? UpdatedAt { get; set; }
 
+        /// <summary>
+        /// Id of the user who created the submission.
+        /// </summary>
         public int? CreatedBy { get; set; }
 
+        /// <summary>
+        /// Id of the user who updated the submission.
+        /// </summary>
         public int? UpdatedBy { get; set; }
 
+        /// <summary>
+        /// Datetime the submission reached a completed state.
+        /// </summary>
         public DateTimeOffset? CompletedAt { get; set; }
 
         /// <summary>
@@ -111,6 +205,9 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         public bool? FilesDeleted { get; set; }
 
+        /// <summary>
+        /// Submission input files.
+        /// </summary>
         public SubmissionFile[] InputFiles { get; set; }
 
         /// <summary>
@@ -128,6 +225,9 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         public string ResultFile { get; set; }
 
+        /// <summary>
+        /// Output files of the submission.
+        /// </summary>
         public SubmissionOutput[] OutputFiles { get; set; }
 
         /// <summary>
@@ -135,14 +235,24 @@ namespace IndicoV2.Submissions.Models
         /// </summary>
         public bool Retrieved { get; set; }
 
+        /// <summary>
+        /// Latest auto review for submission.
+        /// </summary>
         public Review AutoReview { get; set; }
 
+        /// <summary>
+        /// List of retries for submission.
+        /// </summary>
         public SubmissionRetry[] Retries { get; set; }
 
-
-
+        /// <summary>
+        /// Completed review of this submission, without changes.
+        /// </summary>
         public Review[] Reviews { get; set; }
 
+        /// <summary>
+        /// True if the submission is being actively reviewed.
+        /// </summary>
         public bool? ReviewInProgress { get; set; }
     }
 

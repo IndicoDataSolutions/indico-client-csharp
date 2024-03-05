@@ -18,22 +18,25 @@ namespace IndicoV2.Submissions.Models
             {
                 return new ssSubmissionFilter()
                 {
-                    Filetype = submissionFilter.FileType.Select(x => (StrawberryShake.FileType)x).ToList(),
+                    Filetype = submissionFilter.FileType.Select(x => (StrawberryShake.FileType)Enum.Parse(typeof(StrawberryShake.FileType), x)).ToList(),
                     InputFilename = submissionFilter.InputFilename,
                     Retrieved = submissionFilter.Retrieved,
                     Status = (StrawberryShake.SubmissionStatus?)submissionFilter.Status,
-                    Reviews = new ReviewFilter() {
+                    Reviews = new ReviewFilter()
+                    {
                         Rejected = submissionFilter.Reviews.Rejected,
                         CreatedBy = submissionFilter.Reviews.CreatedBy,
-                        ReviewType = (StrawberryShake.ReviewType) submissionFilter.Reviews.ReviewType
+                        ReviewType = (StrawberryShake.ReviewType)submissionFilter.Reviews.ReviewType
                     },
                     ReviewInProgress = submissionFilter.ReviewInProgress,
                     FilesDeleted = submissionFilter.FilesDeleted,
-                    CreatedAt = new StrawberryShake.DateRangeFilter() {
+                    CreatedAt = new StrawberryShake.DateRangeFilter()
+                    {
                         From = submissionFilter.CreatedAt.From,
                         To = submissionFilter.CreatedAt.To,
                     },
-                    UpdatedAt = new StrawberryShake.DateRangeFilter() {
+                    UpdatedAt = new StrawberryShake.DateRangeFilter()
+                    {
                         From = submissionFilter.UpdatedAt.From,
                         To = submissionFilter.UpdatedAt.To
                     }
