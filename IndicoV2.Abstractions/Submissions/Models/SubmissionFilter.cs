@@ -1,26 +1,5 @@
 ﻿namespace IndicoV2.Submissions.Models
 {
-    public enum FileType
-    {
-        Csv,
-        Doc,
-        Docx,
-        Eml,
-        Excel,
-        Jpg,
-        Msg,
-        Pdf,
-        Png,
-        Ppt,
-        Pptx,
-        Rtf,
-        Tiff,
-        Txt,
-        Unknown,
-        Xls,
-        Xlsx
-    }
-
     public enum ReviewType
     {
         Admin,
@@ -43,7 +22,7 @@
 
     public class SubmissionFilter : IFilter
     {
-        public FileType[] FileType { get; set; }
+        public string[] FileType { get; set; }
         public string InputFilename { get; set; }
         public SubmissionStatus? Status { get; set; }
         public bool? Retrieved { get; set; }

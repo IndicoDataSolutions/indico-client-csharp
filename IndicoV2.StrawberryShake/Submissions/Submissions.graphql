@@ -90,7 +90,6 @@ query ListSubmissions(
         rejected
         reviewType
         notes
-        changes
       }
       retries {
         id
@@ -99,8 +98,6 @@ query ListSubmissions(
         previousStatus
         retryErrors
       }
-      AutoReviewLoaded
-      ocrEngine
       reviews {
         id
         submissionId
@@ -111,7 +108,6 @@ query ListSubmissions(
         rejected
         reviewType
         notes
-        changes
       }
       reviewInProgress
     }

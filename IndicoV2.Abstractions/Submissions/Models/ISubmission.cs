@@ -75,9 +75,7 @@ namespace IndicoV2.Submissions.Models
 
         SubmissionRetry[] Retries { get; }
 
-        bool? AutoReviewLoaded { get; }
 
-        string OcrEngine { get; }
 
         Review[] Reviews { get; }
 

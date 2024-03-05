@@ -12,7 +12,7 @@ namespace IndicoV2.Submissions.Models
 
         public string FileName { get; set; }
 
-        public FileType? FileType { get; set; }
+        public string? FileType { get; set; }
 
         public int? SubmissionId { get; set; }
 
@@ -54,7 +54,6 @@ namespace IndicoV2.Submissions.Models
 
         public string Notes { get; set; }
 
-        public string Changes { get; set; }
     }
 
     public class SubmissionRetry
@@ -140,9 +139,7 @@ namespace IndicoV2.Submissions.Models
 
         public SubmissionRetry[] Retries { get; set; }
 
-        public bool? AutoReviewLoaded { get; set; }
 
-        public string OcrEngine { get; set; }
 
         public Review[] Reviews { get; set; }
 
@@ -171,7 +168,7 @@ namespace IndicoV2.Submissions.Models
                 Id = inputFile.Id,
                 FilePath = inputFile.Filepath,
                 FileName = inputFile.Filename,
-                FileType = (FileType)inputFile.Filetype,
+                FileType = inputFile.Filetype.ToString(),
                 SubmissionId = inputFile.SubmissionId,
                 FileSize = inputFile.FileSize,
                 NumPages = inputFile.NumPages
@@ -192,7 +189,6 @@ namespace IndicoV2.Submissions.Models
                 Rejected = _ssSubmission.AutoReview.Rejected,
                 ReviewType = (ReviewType)_ssSubmission.AutoReview.ReviewType,
                 Notes = _ssSubmission.AutoReview.Notes,
-                Changes = _ssSubmission.AutoReview.Changes
             } : new Review() { };
             Retries = _ssSubmission.Retries.Select(submissionRetry => new SubmissionRetry
             {
@@ -202,8 +198,6 @@ namespace IndicoV2.Submissions.Models
                 PreviousStatus = (SubmissionStatus)submissionRetry.PreviousStatus,
                 RetryErrors = submissionRetry.RetryErrors
             }).ToArray();
-            AutoReviewLoaded = _ssSubmission.AutoReviewLoaded;
-            OcrEngine = _ssSubmission.OcrEngine;
             Reviews = _ssSubmission.Reviews.Select(review => new Review
             {
                 Id = review.Id,
@@ -215,7 +209,6 @@ namespace IndicoV2.Submissions.Models
                 Rejected = review.Rejected,
                 ReviewType = (ReviewType)review.ReviewType,
                 Notes = review.Notes,
-                Changes = review.Changes
             }).ToArray();
             ReviewInProgress = _ssSubmission.ReviewInProgress;
         }
