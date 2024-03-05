@@ -38,9 +38,9 @@ namespace IndicoV2.Storage
             return result;
         }
 
-        public async Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken, int batchSize = 20)
         {
-            var metadata = await new UploadFile(_indicoClient) {Files = filePaths.ToList()}.Call(cancellationToken);
+            var metadata = await new UploadFile(_indicoClient) {Files = filePaths.ToList()}.CallBatched(batchSize, cancellationToken);
 
             return DeserializeMetadata(metadata);
         }

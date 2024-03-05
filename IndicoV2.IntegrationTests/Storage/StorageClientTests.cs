@@ -29,10 +29,10 @@ namespace IndicoV2.IntegrationTests.Storage
         {
             // Arrange
             var filePath = _dataHelper.Files().GetSampleFilePath();
-            
+
             // Act
-            var uploadedFiles = (await _storageClient.UploadAsync(new[] {filePath}, default)).ToArray();
-            
+            var uploadedFiles = (await _storageClient.UploadAsync(new[] {filePath}, default, batchSize: 20)).ToArray();
+
             // Assert
             uploadedFiles.Should().HaveCount(1);
             var uploadedFile = uploadedFiles.Single();

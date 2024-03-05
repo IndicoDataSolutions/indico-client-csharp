@@ -38,7 +38,7 @@ namespace IndicoV2.DataSets
         public async Task<IDataSetAddFilesResult> AddFilesAsync(int dataSetId, IEnumerable<string> filePaths,
             CancellationToken cancellationToken)
         {
-            var uploadedFiles = await _storage.UploadAsync(filePaths, cancellationToken);
+            var uploadedFiles = await _storage.UploadAsync(filePaths, cancellationToken, batchSize: 20);
             var metadata = _storage.Serialize(uploadedFiles);
             var result = await _dataSetSsClient.AddFiles(dataSetId, metadata.ToString(), cancellationToken);
 

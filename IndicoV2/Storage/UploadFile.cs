@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using IndicoV2.Exception;
+using System.Linq;
 
 namespace IndicoV2.Storage
 {
@@ -92,6 +93,18 @@ namespace IndicoV2.Storage
             }
 
             return uploadResult;
+        }
+
+        public async Task<JArray> CallBatched(int batchSize, CancellationToken cancellationToken = default)
+        {
+            var results = new JArray();
+            var batches = Files.Chunk(batchSize);
+            foreach (var batch in batches)
+            {
+                var result = await new UploadFile(_client) {Files = batch.ToList()}.Call(cancellationToken);
+                results.Merge(result);
+            }
+            return results;
         }
     }
 }

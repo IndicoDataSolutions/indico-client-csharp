@@ -13,7 +13,7 @@ namespace IndicoV2.Storage
         Task<Stream> GetAsync(Uri uri, CancellationToken cancellationToken);
 
         [Obsolete("On this level it's preferable to use streams instead of paths")]
-        Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken);
+        Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken, int batchSize);
 
         Task<(string Name, string Meta)[]> UploadAsync(IEnumerable<(string Path, Stream Content)> files,
             CancellationToken cancellationToken);
