@@ -22,13 +22,11 @@ namespace Examples
                 {
                     new SubmissionFilter
                     {
-                        InputFilename = "",
                         Status = SubmissionStatus.COMPLETE,
                         Retrieved = false
                     },
                     new SubmissionFilter
                     {
-                        InputFilename = "",
                         Status = SubmissionStatus.FAILED,
                         Retrieved = false
                     }

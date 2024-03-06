@@ -11,6 +11,7 @@ using IndicoV2.Workflows.Models;
 using IndicoV2.IntegrationTests.Utils.Configs;
 using NUnit.Framework;
 using Unity;
+using System;
 
 namespace IndicoV2.IntegrationTests.Submissions
 {
@@ -175,13 +176,11 @@ namespace IndicoV2.IntegrationTests.Submissions
                 {
                     new SubmissionFilter
                     {
-                        InputFilename = "",
                         Status = SubmissionStatus.COMPLETE,
                         Retrieved = false
                     },
                     new SubmissionFilter
                     {
-                        InputFilename = "",
                         Status = SubmissionStatus.FAILED,
                         Retrieved = false
                     }
@@ -211,13 +210,11 @@ namespace IndicoV2.IntegrationTests.Submissions
 
             var filters = new SubmissionFilter
             {
-                InputFilename = "",
-                Status = SubmissionStatus.COMPLETE,
-                Retrieved = false
+                ReviewInProgress = null
             };
 
             // Act
-            var submissions = await _submissionsClient.ListAsync(new List<int> { listData.submissionId }, new List<int> { listData.workflowId }, filters, 0, 1000);
+            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
 
             submissions.Should().NotBeNull();
             submissions.PageInfo.Should().NotBeNull();
@@ -229,6 +226,65 @@ namespace IndicoV2.IntegrationTests.Submissions
             submission.Id.Should().BeGreaterThan(0);
             submission.Status.Should().BeOfType<SubmissionStatus>();
         }
+
+
+        [Test]
+        public async Task ListSubmissions_SubmissionFilterCreatedAt_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+
+            var filters = new SubmissionFilter
+            {
+                CreatedAt = new DateRangeFilter(){
+                    From = "2022-01-01",
+                    To = DateTime.Now.ToString("yyyy-MM-dd")
+                }
+            };
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            var submission = submissions.Data.First();
+
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            submission.Id.Should().BeGreaterThan(0);
+            submission.Status.Should().BeOfType<SubmissionStatus>();
+        }
+
+
+        [Test]
+        public async Task ListSubmissions_SubmissionFilterUpdatedAt_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+
+            var filters = new SubmissionFilter
+            {
+                UpdatedAt = new DateRangeFilter(){
+                    From = "2022-01-01",
+                    To = DateTime.Now.ToString("yyyy-MM-dd")
+                }
+            };
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            var submission = submissions.Data.First();
+
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            submission.Id.Should().BeGreaterThan(0);
+            submission.Status.Should().BeOfType<SubmissionStatus>();
+        }
+
 
 
         [Test]

@@ -102,7 +102,6 @@ namespace IndicoV2.Submissions
 
             var readonlyIds = (IReadOnlyList<int?>)submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
             var readonlyWorkflowIds = (IReadOnlyList<int?>)workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
-            Console.WriteLine("asdfsafasffddfdfdfddfd");
             var result = await _strawberryShakeClient.Submissions().List(readonlyIds, readonlyWorkflowIds, ssFilters, limit, after, cancellationToken);
 
             return new HasCursor<IEnumerable<ISubmission>>()
