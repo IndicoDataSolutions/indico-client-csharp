@@ -16,20 +16,21 @@ namespace IndicoV2.Submissions.Models
         {
             if (filter is v2SubmissionFilter submissionFilter)
             {
+                // Note: you have to not reference or set a field at all for StrawberryShake Code Generator to decide to not serialize it
                 var ssFilter = new ssSubmissionFilter();
                 if (submissionFilter.FileType != null)
                 {
                     ssFilter.Filetype = submissionFilter.FileType.Select(x => (FileType)Enum.Parse(typeof(FileType), x)).ToList();
                 }
-                if (submissionFilter.InputFilename != null)
+                if (string.IsNullOrEmpty(submissionFilter.InputFilename))
                 {
                     ssFilter.InputFilename = submissionFilter.InputFilename;
                 }
-                if (submissionFilter.Retrieved != null)
+                if (submissionFilter.Retrieved.HasValue)
                 {
                     ssFilter.Retrieved = submissionFilter.Retrieved;
                 }
-                if (submissionFilter.Status != null)
+                if (submissionFilter.Status.HasValue)
                 {
                     ssFilter.Status = (StrawberryShake.SubmissionStatus?)submissionFilter.Status;
                 }
@@ -42,11 +43,11 @@ namespace IndicoV2.Submissions.Models
                         ReviewType = (StrawberryShake.ReviewType)submissionFilter.Reviews.ReviewType
                     };
                 }
-                if (submissionFilter.ReviewInProgress != null)
+                if (submissionFilter.ReviewInProgress.HasValue)
                 {
                     ssFilter.ReviewInProgress = submissionFilter.ReviewInProgress;
                 }
-                if (submissionFilter.FilesDeleted != null)
+                if (submissionFilter.FilesDeleted.HasValue)
                 {
                     ssFilter.FilesDeleted = submissionFilter.FilesDeleted;
                 }
