@@ -16,31 +16,57 @@ namespace IndicoV2.Submissions.Models
         {
             if (filter is v2SubmissionFilter submissionFilter)
             {
-                return new ssSubmissionFilter()
+                var ssFilter = new ssSubmissionFilter();
+                if (submissionFilter.FileType != null)
                 {
-                    Filetype = submissionFilter.FileType != null ? submissionFilter.FileType.Select(x => (FileType)Enum.Parse(typeof(FileType), x)).ToList() : new List<FileType>(),
-                    InputFilename = submissionFilter.InputFilename,
-                    Retrieved = submissionFilter.Retrieved,
-                    Status = (StrawberryShake.SubmissionStatus?)submissionFilter.Status,
-                    Reviews = submissionFilter.Reviews != null ? new ReviewFilter()
+                    ssFilter.Filetype = submissionFilter.FileType.Select(x => (FileType)Enum.Parse(typeof(FileType), x)).ToList();
+                }
+                if (submissionFilter.InputFilename != null)
+                {
+                    ssFilter.InputFilename = submissionFilter.InputFilename;
+                }
+                if (submissionFilter.Retrieved != null)
+                {
+                    ssFilter.Retrieved = submissionFilter.Retrieved;
+                }
+                if (submissionFilter.Status != null)
+                {
+                    ssFilter.Status = (StrawberryShake.SubmissionStatus?)submissionFilter.Status;
+                }
+                if (submissionFilter.Reviews != null)
+                {
+                    ssFilter.Reviews = new ReviewFilter()
                     {
                         Rejected = submissionFilter.Reviews.Rejected,
                         CreatedBy = submissionFilter.Reviews.CreatedBy,
                         ReviewType = (StrawberryShake.ReviewType)submissionFilter.Reviews.ReviewType
-                    } : null,
-                    ReviewInProgress = submissionFilter.ReviewInProgress,
-                    FilesDeleted = submissionFilter.FilesDeleted,
-                    CreatedAt = submissionFilter.CreatedAt != null ? new StrawberryShake.DateRangeFilter()
+                    };
+                }
+                if (submissionFilter.ReviewInProgress != null)
+                {
+                    ssFilter.ReviewInProgress = submissionFilter.ReviewInProgress;
+                }
+                if (submissionFilter.FilesDeleted != null)
+                {
+                    ssFilter.FilesDeleted = submissionFilter.FilesDeleted;
+                }
+                if (submissionFilter.CreatedAt != null)
+                {
+                    ssFilter.CreatedAt = new StrawberryShake.DateRangeFilter()
                     {
                         From = submissionFilter.CreatedAt.From,
                         To = submissionFilter.CreatedAt.To,
-                    } : null,
-                    UpdatedAt = submissionFilter.UpdatedAt != null ? new StrawberryShake.DateRangeFilter()
+                    };
+                }
+                if (submissionFilter.UpdatedAt != null)
+                {
+                    ssFilter.UpdatedAt = new StrawberryShake.DateRangeFilter()
                     {
                         From = submissionFilter.UpdatedAt.From,
                         To = submissionFilter.UpdatedAt.To
-                    } : null
-                };
+                    };
+                }
+                return ssFilter;
             }
             else if (filter is AndFilter andfilter)
             {
