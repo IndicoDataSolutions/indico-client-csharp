@@ -1,4 +1,6 @@
-﻿namespace IndicoV2.Submissions.Models
+﻿using Newtonsoft.Json;
+
+namespace IndicoV2.Submissions.Models
 {
     public enum ReviewType
     {
@@ -24,12 +26,19 @@
     {
         public string[] FileType { get; set; }
         public string InputFilename { get; set; }
+
         public SubmissionStatus? Status { get; set; }
+
         public bool? Retrieved { get; set; }
+
         public SubmissionReviewFilter Reviews { get; set; }
+
         public bool? ReviewInProgress { get; set; }
+
         public bool? FilesDeleted { get; set; }
+
         public DateRangeFilter CreatedAt { get; set; }
+
         public DateRangeFilter UpdatedAt { get; set; }
     }
 }

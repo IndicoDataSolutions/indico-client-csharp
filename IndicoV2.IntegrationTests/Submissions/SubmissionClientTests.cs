@@ -164,6 +164,74 @@ namespace IndicoV2.IntegrationTests.Submissions
 
 
         [Test]
+        public async Task ListAsync_SubmissionFilter_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+
+            var filters = new OrFilter
+            {
+                Or = new List<IFilter>
+                {
+                    new SubmissionFilter
+                    {
+                        InputFilename = "",
+                        Status = SubmissionStatus.COMPLETE,
+                        Retrieved = false
+                    },
+                    new SubmissionFilter
+                    {
+                        InputFilename = "",
+                        Status = SubmissionStatus.FAILED,
+                        Retrieved = false
+                    }
+                }
+            };
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(new List<int> { listData.submissionId }, new List<int> { listData.workflowId }, filters, 0, 1000);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            var submission = submissions.Data.First();
+
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            submission.Id.Should().BeGreaterThan(0);
+            submission.Status.Should().BeOfType<SubmissionStatus>();
+        }
+
+
+        [Test]
+        public async Task ListSubmissions_SubmissionFilterReviewInProgress_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+
+            var filters = new SubmissionFilter
+            {
+                InputFilename = "",
+                Status = SubmissionStatus.COMPLETE,
+                Retrieved = false
+            };
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(new List<int> { listData.submissionId }, new List<int> { listData.workflowId }, filters, 0, 1000);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            var submission = submissions.Data.First();
+
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            submission.Id.Should().BeGreaterThan(0);
+            submission.Status.Should().BeOfType<SubmissionStatus>();
+        }
+
+
+        [Test]
         public async Task GenerateSubmissionResultAsync_ShouldReturnJob()
         {
             // Arrange
