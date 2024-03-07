@@ -1,5 +1,5 @@
 ﻿
-using IndicoV2.CommonModels.Pagination;
+using System;
 
 namespace IndicoV2.Submissions.Models
 {
@@ -14,11 +14,6 @@ namespace IndicoV2.Submissions.Models
         int Id { get; }
 
         /// <summary>
-        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
-        /// </summary>
-        SubmissionStatus Status { get; }
-
-        /// <summary>
         /// Dataset id.
         /// </summary>
         int DatasetId { get; }
@@ -29,19 +24,69 @@ namespace IndicoV2.Submissions.Models
         int WorkflowId { get; }
 
         /// <summary>
-        /// Submission input file.
+        /// Submission status. See <c><see cref="SubmissionStatus"/></c>.
+        /// </summary>
+        SubmissionStatus Status { get; }
+
+        /// <summary>
+        /// Datetime the submission was created.
+        /// </summary>
+        DateTimeOffset? CreatedAt { get; }
+
+        /// <summary>
+        /// Datetime the submission was updated.
+        /// </summary>
+        DateTimeOffset? UpdatedAt { get; }
+
+        /// <summary>
+        /// Id of the user who created the submission.
+        /// </summary>
+        int? CreatedBy { get; }
+
+        /// <summary>
+        /// Id of the user who updated the submission.
+        /// </summary>
+        int? UpdatedBy { get; }
+
+        /// <summary>
+        /// Datetime the submission reached a completed state.
+        /// </summary>
+        DateTimeOffset? CompletedAt { get; }
+
+        /// <summary>
+        /// Submission errors.
+        /// </summary>
+        string Errors { get; }
+
+        /// <summary>
+        /// Submission files have been deleted from file store.
+        /// </summary>
+        bool? FilesDeleted { get; }
+
+        /// <summary>
+        /// List of submission input files.
+        /// </summary>
+        SubmissionFile[] InputFiles { get; }
+
+        /// <summary>
+        /// Local URL to first stored input.
         /// </summary>
         string InputFile { get; }
 
         /// <summary>
-        /// Submission name of input file.
+        /// Original name of first file.
         /// </summary>
         string InputFilename { get; }
 
         /// <summary>
-        /// Submission result file.
+        /// Local URL to most recently stored output.
         /// </summary>
         string ResultFile { get; }
+
+        /// <summary>
+        /// List of submission output files.
+        /// </summary>
+        SubmissionOutput[] OutputFiles { get; }
 
         /// <summary>
         /// Is submission retrieved.
@@ -49,8 +94,24 @@ namespace IndicoV2.Submissions.Models
         bool Retrieved { get; }
 
         /// <summary>
-        /// Submission errors.
+        /// Latest auto review for submission.
         /// </summary>
-        string Errors { get; }
+        Review AutoReview { get; }
+
+        /// <summary>
+        /// List of submission retries.
+        /// </summary>
+        SubmissionRetry[] Retries { get; }
+
+        /// <summary>
+        /// Completed reviews of this submission, without changes.
+        /// </summary>
+        Review[] Reviews { get; }
+
+        /// <summary>
+        /// True if the submission is being actively reviewed.
+        /// </summary>
+        bool? ReviewInProgress { get; }
+
     }
 }
