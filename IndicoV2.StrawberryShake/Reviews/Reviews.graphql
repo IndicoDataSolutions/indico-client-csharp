@@ -9,3 +9,22 @@ mutation SubmitReviewForceComplete($submissionId: Int!, $changes: JSONString, $r
         jobId
     }
 }
+
+query GetReviews($submissionId: Int!)
+{
+  submission(id: $submissionId) {
+    id
+    reviews {
+     	id
+      submissionId
+      createdAt
+      createdBy
+      startedAt
+      completedAt
+      rejected
+      reviewType
+      notes
+      changes
+    }
+  }
+}

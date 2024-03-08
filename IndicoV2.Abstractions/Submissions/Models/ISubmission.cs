@@ -1,5 +1,6 @@
 ﻿
 using System;
+using IndicoV2.Reviews.Models;
 
 namespace IndicoV2.Submissions.Models
 {

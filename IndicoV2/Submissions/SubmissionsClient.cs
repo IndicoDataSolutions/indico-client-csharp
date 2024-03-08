@@ -48,7 +48,7 @@ namespace IndicoV2.Submissions
 
                 files.Add(file);
             }
-            return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)files, cancellationToken, (SubmissionResultVersion?) resultsFileVersion, bundle);
+            return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)files, cancellationToken, (SubmissionResultVersion?)resultsFileVersion, bundle);
         }
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false)
@@ -100,8 +100,8 @@ namespace IndicoV2.Submissions
         {
             var ssFilters = filters != null ? FilterConverter.ConvertToSs(filters) : null;
 
-            var readonlyIds = (IReadOnlyList<int?>)submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
-            var readonlyWorkflowIds = (IReadOnlyList<int?>)workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var readonlyIds = submissionIds == null ? (IReadOnlyList<int?>)new List<int?>() : submissionIds.Select(x => (int?)x).ToList().AsReadOnly();
+            var readonlyWorkflowIds = workflowIds == null ? (IReadOnlyList<int?>)new List<int?>() : workflowIds.Select(x => (int?)x).ToList().AsReadOnly();
             var result = await _strawberryShakeClient.Submissions().List(readonlyIds, readonlyWorkflowIds, ssFilters, limit, after, cancellationToken);
 
             return new HasCursor<IEnumerable<ISubmission>>()
@@ -128,7 +128,7 @@ namespace IndicoV2.Submissions
             return new Submission
             {
                 Id = result.Id ?? 0,
-                Status = (Models.SubmissionStatus) result.Status,
+                Status = (Models.SubmissionStatus)result.Status,
                 DatasetId = result.DatasetId ?? 0,
                 WorkflowId = result.WorkflowId ?? 0,
                 InputFile = result.InputFile,
