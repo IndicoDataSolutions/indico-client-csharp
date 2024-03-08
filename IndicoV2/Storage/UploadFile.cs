@@ -94,17 +94,5 @@ namespace IndicoV2.Storage
 
             return uploadResult;
         }
-
-        public async Task<JArray> CallBatched(int batchSize, CancellationToken cancellationToken = default)
-        {
-            var results = new JArray();
-            var batches = Files.Chunk(batchSize);
-            foreach (var batch in batches)
-            {
-                var result = await new UploadFile(_client) {Files = batch.ToList()}.Call(cancellationToken);
-                results.Merge(result);
-            }
-            return results;
-        }
     }
 }

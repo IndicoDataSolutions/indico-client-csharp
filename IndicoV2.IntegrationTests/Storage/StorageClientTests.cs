@@ -31,7 +31,7 @@ namespace IndicoV2.IntegrationTests.Storage
             var filePath = _dataHelper.Files().GetSampleFilePath();
 
             // Act
-            var uploadedFiles = (await _storageClient.UploadAsync(new[] {filePath}, default, batchSize: 20)).ToArray();
+            var uploadedFiles = (await _storageClient.UploadAsync(new[] {filePath}, default)).ToArray();
 
             // Assert
             uploadedFiles.Should().HaveCount(1);
