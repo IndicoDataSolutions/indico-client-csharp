@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using IndicoV2.Exception;
-using System.Linq;
 
 namespace IndicoV2.Storage
 {
