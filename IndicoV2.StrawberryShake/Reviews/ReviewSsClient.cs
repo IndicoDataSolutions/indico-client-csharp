@@ -29,5 +29,11 @@ namespace IndicoV2.StrawberryShake.Reviews
                 return response.Data.SubmitAutoReview.JobId;
             }
         }
+
+        public async Task<IEnumerable<IGetReviews_Submission_Reviews>> GetReviews(int submissionId, CancellationToken cancellationToken)
+        {
+            var response = await _services.GetRequiredService<GetReviewsQuery>().ExecuteAsync(submissionId, cancellationToken);
+            return response.Data.Submission.Reviews;
+        }
     }
 }

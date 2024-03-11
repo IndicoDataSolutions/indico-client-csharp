@@ -6,10 +6,10 @@ namespace IndicoV2.Submissions.Models
 {
     public enum SubmissionResultsFileVersion
     {
-        One,
-        Two,
-        Three,
+        Latest,
         OldestSupported,
-        Latest
+        One,
+        Three,
+        Two
     }
 }

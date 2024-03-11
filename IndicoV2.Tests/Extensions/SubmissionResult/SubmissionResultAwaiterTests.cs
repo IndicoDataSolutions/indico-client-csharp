@@ -117,7 +117,7 @@ namespace IndicoV2.Tests.Extensions.SubmissionResult
         {
             // Arrange
             _fixture.Freeze<Mock<ISubmissionsClient>>()
-                .Setup(cli => cli.GetAsync(It.IsAny<int>(), default))
+                .Setup(cli => cli.GetAsync(It.IsAny<int>(), new CancellationToken(true)))
                 .ReturnsAsync(Mock.Of<ISubmission>(s => s.Status == SubmissionStatus.PROCESSING));
             var sut = _fixture.Create<SubmissionResultAwaiter>();
 

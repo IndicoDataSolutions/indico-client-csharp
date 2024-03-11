@@ -2,14 +2,10 @@
 {
     public enum ModelStatus
     {
-        CREATING,
-
-        TRAINING,
-
-        FAILED,
-
         COMPLETE,
-
-        NOT_ENOUGH_DATA
+        CREATING,
+        FAILED,
+        NOT_ENOUGH_DATA,
+        TRAINING,
     }
 }

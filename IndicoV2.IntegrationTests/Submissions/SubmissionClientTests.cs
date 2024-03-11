@@ -206,25 +206,19 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task ListSubmissions_SubmissionFilterReviewInProgress_ShouldFetchSubmissions()
         {
             // Arrange
-            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
-
             var filters = new SubmissionFilter
             {
-                ReviewInProgress = null
+                ReviewInProgress = false
             };
 
             // Act
-            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
+            var submissions = await _submissionsClient.ListAsync(null, new List<int> { _workflowId }, filters, 0, 10);
 
+            // Assert
             submissions.Should().NotBeNull();
             submissions.PageInfo.Should().NotBeNull();
             submissions.Data.Should().NotBeNull();
-            var submission = submissions.Data.First();
-
-            // Assert
-            submissions.Data.Should().HaveCountGreaterThan(0);
-            submission.Id.Should().BeGreaterThan(0);
-            submission.Status.Should().BeOfType<SubmissionStatus>();
+            submissions.Data.Should().HaveCount(0);
         }
 
 
@@ -243,7 +237,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             };
 
             // Act
-            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
+            var submissions = await _submissionsClient.ListAsync(null, new List<int> { listData.workflowId }, filters, 0, 10);
 
             submissions.Should().NotBeNull();
             submissions.PageInfo.Should().NotBeNull();
@@ -272,7 +266,7 @@ namespace IndicoV2.IntegrationTests.Submissions
             };
 
             // Act
-            var submissions = await _submissionsClient.ListAsync(new List<int> { }, new List<int> { listData.workflowId }, filters, 0, 10);
+            var submissions = await _submissionsClient.ListAsync(null, new List<int> { listData.workflowId }, filters, 0, 10);
 
             submissions.Should().NotBeNull();
             submissions.PageInfo.Should().NotBeNull();

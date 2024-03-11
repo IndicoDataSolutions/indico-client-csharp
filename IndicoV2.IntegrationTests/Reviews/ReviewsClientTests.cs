@@ -15,6 +15,7 @@ using System.Text.Json;
 using IndicoV2.Submissions;
 using System.Linq;
 using System.Collections.Generic;
+using IndicoV2.Reviews.Models;
 
 namespace IndicoV2.IntegrationTests.Reviews
 {
@@ -97,6 +98,20 @@ namespace IndicoV2.IntegrationTests.Reviews
             {
                 // multi-file submissions are not enabled and submission status should default to complete
                 submission.Status.ToString().Should().Be("COMPLETE");
+            }
+        }
+
+
+        [Test]
+        public async Task GetReviewsAsync_ShouldSucceed()
+        {
+            var submission = await _dataHelper.Submissions().Get(_workflowId);
+            var reviews = await _reviewsClient.GetReviewsAsync(submission.Id);
+
+            foreach (var review in reviews)
+            {
+                review.Id.Should().NotBeNull();
+                review.Changes.Should().BeOfType<JObject>();
             }
         }
     }

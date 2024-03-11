@@ -2,11 +2,11 @@
 {
     public enum SubmissionStatus
     {
-        PROCESSING,
+        COMPLETE,
+        FAILED,
+        PENDING_ADMIN_REVIEW,
         PENDING_AUTO_REVIEW,
         PENDING_REVIEW,
-        PENDING_ADMIN_REVIEW,
-        COMPLETE,
-        FAILED
+        PROCESSING,
     }
 }
