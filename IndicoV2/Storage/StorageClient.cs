@@ -69,6 +69,10 @@ namespace IndicoV2.Storage
         public async Task<(string Name, string Meta)[]> UploadAsync(IEnumerable<(string Path, Stream Content)> files,
             CancellationToken cancellationToken, int batchSize = 20)
         {
+            if (batchSize <= 0)
+            {
+                throw new ArgumentException("Batch size must be greater than 0.");
+            }
             var results = new (string Name, string Meta)[] { };
             var batches = files.Chunk(batchSize);
             foreach (var batch in batches)
