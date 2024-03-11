@@ -51,9 +51,9 @@ namespace IndicoV2.Submissions
             return await _strawberryShakeClient.Submissions().Create(workflowId, (IEnumerable<(string Name, string Meta)>)files, cancellationToken, (SubmissionResultVersion?)resultsFileVersion, bundle);
         }
 
-        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false)
+        public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<(string Name, Stream Content)> filesToUpload, CancellationToken cancellationToken = default, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false, int batchSize = 20)
         {
-            var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken);
+            var filesUploaded = await _indicoClient.Storage().UploadAsync(filesToUpload, cancellationToken, batchSize: batchSize);
             return await _strawberryShakeClient.Submissions().Create(workflowId, filesUploaded, cancellationToken, (SubmissionResultVersion?)resultsFileVersion, bundle);
         }
 
@@ -68,7 +68,7 @@ namespace IndicoV2.Submissions
             await _strawberryShakeClient.Submissions().CreateUri(workflowId, uris, cancellationToken);
 
         public async Task<IEnumerable<int>> CreateAsync(int workflowId, IEnumerable<string> paths,
-          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false)
+          CancellationToken cancellationToken, SubmissionResultsFileVersion? resultsFileVersion = null, bool bundle = false, int batchSize = 20)
         {
             var filesToUpload = new List<(string Name, Stream content)>();
             foreach (var path in paths)
@@ -84,7 +84,7 @@ namespace IndicoV2.Submissions
                 }
 
             }
-            return await CreateAsync(workflowId, filesToUpload: filesToUpload, cancellationToken, resultsFileVersion, bundle);
+            return await CreateAsync(workflowId, filesToUpload: filesToUpload, cancellationToken, resultsFileVersion, bundle, batchSize);
         }
 
         [Obsolete("This is the Legacy version and will be deprecated. Please use ListAsync instead.")]

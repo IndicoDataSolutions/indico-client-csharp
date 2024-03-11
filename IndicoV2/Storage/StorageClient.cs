@@ -40,7 +40,7 @@ namespace IndicoV2.Storage
 
         public async Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken)
         {
-            var metadata = await new UploadFile(_indicoClient) {Files = filePaths.ToList()}.Call(cancellationToken);
+            var metadata = await new UploadFile(_indicoClient) { Files = filePaths.ToList() }.Call(cancellationToken);
 
             return DeserializeMetadata(metadata);
         }
@@ -63,25 +63,36 @@ namespace IndicoV2.Storage
 
         public async Task<(string Name, string Meta)> UploadAsync(Stream content,
             string filePath,
-            CancellationToken cancellationToken) =>
-            (await UploadAsync(new[] {(filePath, content)}, cancellationToken)).SingleOrDefault();
+            CancellationToken cancellationToken, int batchSize = 20) =>
+            (await UploadAsync(new[] { (filePath, content) }, cancellationToken, batchSize)).SingleOrDefault();
 
         public async Task<(string Name, string Meta)[]> UploadAsync(IEnumerable<(string Path, Stream Content)> files,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken, int batchSize = 20)
         {
-            var content = await CreateRequest(files, cancellationToken);
-            var response = await _indicoClient.HttpClient.PostAsync(UploadUri, content, cancellationToken);
-
-            using (var reader = new JsonTextReader(new StreamReader(await response.Content.ReadAsStreamAsync())))
+            if (batchSize <= 0)
             {
-                var uploadResult = await JArray.LoadAsync(reader, cancellationToken);
-
-                return uploadResult
-                    .Select(t => (
-                        Name: t.Value<string>("name"),
-                        Meta: t.ToString()))
-                    .ToArray();
+                throw new ArgumentException("Batch size must be greater than 0.");
             }
+            var results = new (string Name, string Meta)[] { };
+            var batches = files.Chunk(batchSize);
+            foreach (var batch in batches)
+            {
+                var content = await CreateRequest(files, cancellationToken);
+                var response = await _indicoClient.HttpClient.PostAsync(UploadUri, content, cancellationToken);
+
+                using (var reader = new JsonTextReader(new StreamReader(await response.Content.ReadAsStreamAsync())))
+                {
+                    var uploadResult = await JArray.LoadAsync(reader, cancellationToken);
+
+                    var result = uploadResult
+                        .Select(t => (
+                            Name: t.Value<string>("name"),
+                            Meta: t.ToString()))
+                        .ToArray();
+                    results = results.Concat(result).ToArray();
+                }
+            }
+            return results;
         }
 
         private async Task<HttpContent> CreateRequest(IEnumerable<(string Path, Stream Content)> files, CancellationToken cancellationToken)

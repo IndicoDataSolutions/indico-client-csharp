@@ -16,7 +16,7 @@ namespace IndicoV2.Storage
         Task<IEnumerable<IFileMetadata>> UploadAsync(IEnumerable<string> filePaths, CancellationToken cancellationToken);
 
         Task<(string Name, string Meta)[]> UploadAsync(IEnumerable<(string Path, Stream Content)> files,
-            CancellationToken cancellationToken);
+            CancellationToken cancellationToken, int batchSize = 20);
 
         JArray Serialize(IEnumerable<IFileMetadata> filesMetadata);
     }
