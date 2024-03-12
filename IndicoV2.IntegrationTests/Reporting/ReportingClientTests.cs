@@ -41,7 +41,7 @@ namespace IndicoV2.IntegrationTests.Reporting
         [Test]
         public async Task ChangeReportAsync_ShouldGenerateReport()
         {
-            var jobId = (await _userReportingClient.CreateChangelogReportAsync(null, null, null, default))
+            var jobId = (await _userReportingClient.CreateChangelogReportAsync(DateTime.Now, DateTime.Today, null, default))
                 .UserChangelogReport.JobId;
 
             await AssertJobGeneratesNonEmptyReport(jobId);

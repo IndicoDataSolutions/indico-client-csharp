@@ -29,7 +29,7 @@ namespace IndicoV2.Jobs
         public async Task<TResult> GetResultAsync<TResult>(string jobId, CancellationToken cancellationToken = default)
         {
             var result = await _strawberryShake.Jobs().GetResultAsync(jobId, cancellationToken);
-            // use json decoder to decode result into whatever tresult would be
+            // use json decoder to decode result into whatever TResult would be
             return JsonConvert.DeserializeObject<TResult>(result.Job.Result);
         }
 

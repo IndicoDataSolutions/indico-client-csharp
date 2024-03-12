@@ -51,22 +51,28 @@ namespace IndicoV2.IntegrationTests.Extensions.DataSets
         public async Task WaitFilesProcessedOrFailedAsync_ShouldWaitUntilAllFilesProcessedOrFailed()
         {
             // Arrange
-            var datasSet = await _dataHelper.DataSets().GetAny();
+            var dataSet = await _dataHelper.DataSets().GetAny();
             var filePaths = new[] {_dataHelper.Files().GetSampleFilePath()};
-            await _dataSetsClient.AddFilesAsync(datasSet.Id, filePaths, default);
-            await _dataSetAwaiter.WaitFilesDownloadedOrFailedAsync(datasSet.Id, TimeSpan.Zero, default);
+            await _dataSetsClient.AddFilesAsync(dataSet.Id, filePaths, default);
+            var container = new IndicoTestContainerBuilder().Build();
+            var client = container.Resolve<IndicoClient>();
+            _dataSetAwaiter = client.DataSetAwaiter();
+            await _dataSetAwaiter.WaitFilesDownloadedOrFailedAsync(dataSet.Id, TimeSpan.Zero, default);
 
-            var dataSetFileStatus = await _dataSetsClient.FileUploadStatusAsync(datasSet.Id, default);
+            var dataSetFileStatus = await _dataSetsClient.FileUploadStatusAsync(dataSet.Id, default);
             var downloadedFileIds = dataSetFileStatus.Dataset.Files.Where(f => f.Status == FileStatus.Downloaded).Select(f => f.Id.Value);
 
-            await _dataSetsClient.ProcessFileAsync(datasSet.Id, downloadedFileIds, default);
+            await _dataSetsClient.ProcessFileAsync(dataSet.Id, downloadedFileIds, default);
 
             // Act
-            await _dataSetAwaiter.WaitFilesProcessedOrFailedAsync(datasSet.Id, TimeSpan.Zero, default);
+            container = new IndicoTestContainerBuilder().Build();
+            client = container.Resolve<IndicoClient>();
+            _dataSetAwaiter = client.DataSetAwaiter();
+            await _dataSetAwaiter.WaitFilesProcessedOrFailedAsync(dataSet.Id, TimeSpan.Zero, default);
 
             // Assert
-            var dataSetWithStauses = await _dataSetsClient.FileUploadStatusAsync(datasSet.Id, default);
-            dataSetWithStauses.Dataset.Files
+            var dataSetWithStatuses = await _dataSetsClient.FileUploadStatusAsync(dataSet.Id, default);
+            dataSetWithStatuses.Dataset.Files
                 .All(f => f.Status is FileStatus.Processed or FileStatus.Failed)
                 .Should().BeTrue();
         }
