@@ -54,9 +54,6 @@ namespace IndicoV2.IntegrationTests.Extensions.DataSets
             var dataSet = await _dataHelper.DataSets().GetAny();
             var filePaths = new[] {_dataHelper.Files().GetSampleFilePath()};
             await _dataSetsClient.AddFilesAsync(dataSet.Id, filePaths, default);
-            var container = new IndicoTestContainerBuilder().Build();
-            var client = container.Resolve<IndicoClient>();
-            _dataSetAwaiter = client.DataSetAwaiter();
             await _dataSetAwaiter.WaitFilesDownloadedOrFailedAsync(dataSet.Id, TimeSpan.Zero, default);
 
             var dataSetFileStatus = await _dataSetsClient.FileUploadStatusAsync(dataSet.Id, default);
@@ -65,9 +62,6 @@ namespace IndicoV2.IntegrationTests.Extensions.DataSets
             await _dataSetsClient.ProcessFileAsync(dataSet.Id, downloadedFileIds, default);
 
             // Act
-            container = new IndicoTestContainerBuilder().Build();
-            client = container.Resolve<IndicoClient>();
-            _dataSetAwaiter = client.DataSetAwaiter();
             await _dataSetAwaiter.WaitFilesProcessedOrFailedAsync(dataSet.Id, TimeSpan.Zero, default);
 
             // Assert
