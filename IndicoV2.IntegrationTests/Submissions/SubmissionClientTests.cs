@@ -219,6 +219,12 @@ namespace IndicoV2.IntegrationTests.Submissions
             submissions.PageInfo.Should().NotBeNull();
             submissions.Data.Should().NotBeNull();
             submissions.Data.Should().HaveCount(0);
+
+            foreach (Submission submission in submissions.Data)
+            {
+                submission.Id.Should().BeGreaterThan(0);
+                submission.ReviewInProgress.Should().NotBeTrue();
+            }
         }
 
 
@@ -242,12 +248,41 @@ namespace IndicoV2.IntegrationTests.Submissions
             submissions.Should().NotBeNull();
             submissions.PageInfo.Should().NotBeNull();
             submissions.Data.Should().NotBeNull();
-            var submission = submissions.Data.First();
 
             // Assert
             submissions.Data.Should().HaveCountGreaterThan(0);
-            submission.Id.Should().BeGreaterThan(0);
-            submission.Status.Should().BeOfType<SubmissionStatus>();
+            foreach (Submission submission in submissions.Data)
+            {
+                submission.Id.Should().BeGreaterThan(0);
+                submission.CreatedAt.Value.Should().BeLessThan(TimeSpan.FromTicks(DateTime.Now.Ticks));
+            }
+        }
+
+
+        [Test]
+        public async Task ListSubmissions_SubmissionFilterStatus_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+            var filters = new SubmissionFilter
+            {
+                Status = SubmissionStatus.PENDING_AUTO_REVIEW
+            };
+
+            // Act
+            var submissions = await _submissionsClient.ListAsync(null, new List<int> { listData.workflowId }, filters, 0, 10);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            // Assert
+            submissions.Data.Should().HaveCountGreaterThan(0);
+            foreach (Submission submission in submissions.Data)
+            {
+                submission.Id.Should().BeGreaterThan(0);
+                submission.Status.Should().BeOfType<SubmissionStatus>();
+                submission.Status.Should().Be(SubmissionStatus.PENDING_AUTO_REVIEW);
+            }
         }
 
 

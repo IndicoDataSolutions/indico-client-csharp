@@ -61,8 +61,8 @@ namespace IndicoV2.IntegrationTests.Models
         }
 
 
-        [TestCase("Invoice Date: 2012-01-02")]
-        [TestCase("Invoice Date: 2012-02-03 Invoice Number: 123Test")]
+        [TestCase("AT&T")]
+        [TestCase("AT&T Xfinity T-Mobile")]
         public async Task Predict_ShouldReturnPrediction(params string[] data)
         {
             // Arrange
@@ -75,12 +75,11 @@ namespace IndicoV2.IntegrationTests.Models
 
             // Assert
             predictionResults.Count.Should().Be(data.Length);
-
             var firstPrediction = predictionResults.First().First();
             firstPrediction.Label.Should().NotBeNullOrEmpty();
             firstPrediction.Text.Should().NotBeNullOrEmpty();
 
-            firstPrediction.Start.Should().BeGreaterThan(0);
+            firstPrediction.Start.Should().BeGreaterOrEqualTo(0);
             firstPrediction.End.Should().BeGreaterThan(0);
 
             firstPrediction.Confidence.Should().NotBeEmpty();
