@@ -315,6 +315,62 @@ namespace IndicoV2.IntegrationTests.Submissions
         }
 
 
+        [Test]
+        public async Task ListSubmissions_SubmissionOrAndFilter_ShouldFetchSubmissions()
+        {
+            // Arrange
+            var listData = await _dataHelper.Submissions().ListAnyAsync(_workflowId);
+
+            var filters = new OrFilter
+            {
+                Or = new List<IFilter>
+                {
+                    new AndFilter
+                    {
+                        And = new List<IFilter>
+                        {
+                            new SubmissionFilter
+                            {
+                                Status = SubmissionStatus.COMPLETE,
+                            },
+                            new SubmissionFilter
+                            {
+                                Retrieved = false,
+                            }
+                        }
+                    },
+                    new AndFilter
+                    {
+                        And = new List<IFilter>
+                        {
+                            new SubmissionFilter
+                            {
+                                Status = SubmissionStatus.FAILED,
+                            },
+                            new SubmissionFilter
+                            {
+                                Retrieved = false,
+                            }
+                        }
+                    }
+                }
+            };
+            // Act
+            var submissions = await _submissionsClient.ListAsync(null, new List<int> { listData.workflowId }, filters, 0, 10);
+
+            submissions.Should().NotBeNull();
+            submissions.PageInfo.Should().NotBeNull();
+            submissions.Data.Should().NotBeNull();
+            foreach (var submission in submissions.Data)
+            {
+                submission.Id.Should().BeGreaterThan(0);
+                submission.Status.Should().BeOfType<SubmissionStatus>();
+                submission.Status.Should().Match<SubmissionStatus>(status => status == SubmissionStatus.COMPLETE || status == SubmissionStatus.FAILED);
+                submission.Retrieved.Should().BeFalse();
+            }
+        }
+
+
 
         [Test]
         public async Task GenerateSubmissionResultAsync_ShouldReturnJob()

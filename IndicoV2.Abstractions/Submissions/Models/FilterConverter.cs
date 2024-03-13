@@ -22,7 +22,7 @@ namespace IndicoV2.Submissions.Models
                 {
                     ssFilter.Filetype = submissionFilter.FileType.Select(x => (FileType)Enum.Parse(typeof(FileType), x)).ToList();
                 }
-                if (string.IsNullOrEmpty(submissionFilter.InputFilename))
+                if (!string.IsNullOrEmpty(submissionFilter.InputFilename))
                 {
                     ssFilter.InputFilename = submissionFilter.InputFilename;
                 }

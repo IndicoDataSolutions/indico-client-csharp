@@ -8,7 +8,7 @@
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
 
 	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
-		<AssemblyVersion>2.0.1</AssemblyVersion>
+		<AssemblyVersion>6.0.0</AssemblyVersion>
 		<Version Condition="'$(Version)' == ''">$(AssemblyVersion)-preview.$([System.DateTime]::UtcNow.ToString(yyMMddHHmm))</Version>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
