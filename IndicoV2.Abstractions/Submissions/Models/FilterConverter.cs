@@ -71,7 +71,6 @@ namespace IndicoV2.Submissions.Models
             }
             else if (filter is AndFilter andfilter)
             {
-                Console.WriteLine("and");
                 return new ssSubmissionFilter()
                 {
                     AND = andfilter.And.Select(a => a.ConvertToSs()).ToList()
@@ -80,7 +79,6 @@ namespace IndicoV2.Submissions.Models
             }
             else if (filter is OrFilter orFilter)
             {
-                Console.WriteLine("or");
                 return new ssSubmissionFilter()
                 {
                     OR = orFilter.Or.Select(a => a.ConvertToSs()).ToList()

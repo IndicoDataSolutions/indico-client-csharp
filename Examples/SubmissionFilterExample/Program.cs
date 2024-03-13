@@ -23,27 +23,7 @@ namespace Examples
             var workflowIds = new List<int>() { 3106 };
 
             // Example 1
-            // List all submissions that are complete or failed
-            var orFilter = new OrFilter
-            {
-                Or = new List<IFilter>
-                {
-                    new SubmissionFilter
-                    {
-                        Status = SubmissionStatus.COMPLETE,
-                    },
-                    new SubmissionFilter
-                    {
-                        Status = SubmissionStatus.FAILED,
-                    }
-                }
-            };
-
-            var submissions = await submissionClient.ListAsync(submissionIds, workflowIds, orFilter, limit: 10);
-            Console.WriteLine(submissions);
-
-            // Example 2
-            // List all submissions that are COMPLETE and FAILED
+            // List all submissions that are COMPLETE and not retrieved
             var andFilter = new AndFilter
             {
                 And = new List<IFilter>
@@ -54,7 +34,7 @@ namespace Examples
                     },
                     new SubmissionFilter
                     {
-                        Status = SubmissionStatus.FAILED,
+                        Retrieved = false,
                     }
                 }
             };
@@ -62,12 +42,61 @@ namespace Examples
             submissions = await submissionClient.ListAsync(submissionIds, workflowIds, andFilter, limit: 10);
             Console.WriteLine(submissions);
 
+            // Example 2
+            // List all submissions that are complete and not retrieved or failed and not retrieved
+            var orFilter = new OrFilter
+            {
+                Or = new List<IFilter>
+                {
+                    new AndFilter
+                    {
+                        And = new List<IFilter>
+                        {
+                            new SubmissionFilter
+                            {
+                                Status = SubmissionStatus.COMPLETE,
+                            },
+                            new SubmissionFilter
+                            {
+                                Retrieved = false,
+                            }
+                        }
+                    },
+                    new AndFilter
+                    {
+                        And = new List<IFilter>
+                        {
+                            new SubmissionFilter
+                            {
+                                Status = SubmissionStatus.FAILED,
+                            },
+                            new SubmissionFilter
+                            {
+                                Retrieved = false,
+                            }
+                        }
+                    }
+                }
+            };
+
+            var submissions = await submissionClient.ListAsync(submissionIds, workflowIds, orFilter, limit: 10);
+            Console.WriteLine(submissions);
+
             // Example 3
             // List all submissions that are retrieved and have a filename that contains 'property'
-            var subFilter = new SubmissionFilter
+            var subFilter = new AndFilter
             {
-                Retrieved = true,
-                InputFilename = "property"
+                And = new List<IFilter>
+                {
+                    new SubmissionFilter
+                    {
+                        Retrieved = true,
+                    },
+                    new SubmissionFilter
+                    {
+                        InputFilename = "property",
+                    }
+                }
             };
 
             submissions = await submissionClient.ListAsync(submissionIds, workflowIds, subFilter, limit: 10);
@@ -80,10 +109,19 @@ namespace Examples
                 From = "2022-01-01",
                 To = DateTime.Now.ToString("yyyy-MM-dd")
             };
-            subFilter = new SubmissionFilter
+            subFilter = new AndFilter
             {
-                CreatedAt = dateRangeFilter,
-                UpdatedAt = dateRangeFilter
+                And = new List<IFilter>
+                {
+                    new SubmissionFilter
+                    {
+                        CreatedAt = dateRangeFilter,
+                    },
+                    new SubmissionFilter
+                    {
+                        UpdatedAt = dateRangeFilter,
+                    },
+                }
             };
 
             submissions = await submissionClient.ListAsync(submissionIds, workflowIds, subFilter, limit: 10);
@@ -91,10 +129,19 @@ namespace Examples
 
             // Example 5
             // List all submissions that are not in progress of being reviewed and are completed
-            subFilter = new SubmissionFilter
+            subFilter = new AndFilter
             {
-                Status = SubmissionStatus.COMPLETE,
-                ReviewInProgress = false
+                And = new List<IFilter>
+                {
+                    new SubmissionFilter
+                    {
+                        Status = SubmissionStatus.COMPLETE,
+                    },
+                    new SubmissionFilter
+                    {
+                        ReviewInProgress = false,
+                    }
+                }
             };
 
             submissions = await submissionClient.ListAsync(submissionIds, workflowIds, subFilter, limit: 10);
