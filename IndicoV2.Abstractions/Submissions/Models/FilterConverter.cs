@@ -22,7 +22,7 @@ namespace IndicoV2.Submissions.Models
                 {
                     ssFilter.Filetype = submissionFilter.FileType.Select(x => (FileType)Enum.Parse(typeof(FileType), x)).ToList();
                 }
-                if (string.IsNullOrEmpty(submissionFilter.InputFilename))
+                if (!string.IsNullOrEmpty(submissionFilter.InputFilename))
                 {
                     ssFilter.InputFilename = submissionFilter.InputFilename;
                 }
@@ -71,6 +71,7 @@ namespace IndicoV2.Submissions.Models
             }
             else if (filter is AndFilter andfilter)
             {
+                Console.WriteLine("and");
                 return new ssSubmissionFilter()
                 {
                     AND = andfilter.And.Select(a => a.ConvertToSs()).ToList()
@@ -79,6 +80,7 @@ namespace IndicoV2.Submissions.Models
             }
             else if (filter is OrFilter orFilter)
             {
+                Console.WriteLine("or");
                 return new ssSubmissionFilter()
                 {
                     OR = orFilter.Or.Select(a => a.ConvertToSs()).ToList()
