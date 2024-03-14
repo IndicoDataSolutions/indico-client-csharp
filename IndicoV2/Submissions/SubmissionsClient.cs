@@ -145,12 +145,22 @@ namespace IndicoV2.Submissions
 
         public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
         {
-            var resultId = await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
-            var result = await _strawberryShakeClient.Submissions().List(new List<int?>(submissionId).AsReadOnly(), default, default, default, default, cancellationToken);
-            return new SubmissionSs(result?.Submissions?[0]);
+            await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
+            var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
+            return new Submission
+            {
+                Id = result.Id ?? 0,
+                Status = (Models.SubmissionStatus)result.Status,
+                DatasetId = result.DatasetId ?? 0,
+                WorkflowId = result.WorkflowId ?? 0,
+                InputFile = result.InputFile,
+                InputFilename = result.InputFilename,
+                ResultFile = result.ResultFile,
+                Retrieved = result.Retrieved ?? throw new ArgumentException("Invalid value for retrieved received from call"),
+                Errors = result.Errors ?? null
+            };
         }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
-
     }
 }
