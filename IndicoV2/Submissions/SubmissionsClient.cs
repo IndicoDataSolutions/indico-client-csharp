@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IndicoV2.CommonModels.Pagination;
 using IndicoV2.StrawberryShake;
 using IndicoV2.Submissions.Models;
+using IndicoV2.Reviews.Models;
 using IndicoV2.Storage;
 using Newtonsoft.Json.Linq;
 
@@ -125,18 +126,7 @@ namespace IndicoV2.Submissions
             {
                 throw new NotSupportedException($"Cannot read submission status: {result.Status}");
             }
-            return new Submission
-            {
-                Id = result.Id ?? 0,
-                Status = (Models.SubmissionStatus)result.Status,
-                DatasetId = result.DatasetId ?? 0,
-                WorkflowId = result.WorkflowId ?? 0,
-                InputFile = result.InputFile,
-                InputFilename = result.InputFilename,
-                ResultFile = result.ResultFile,
-                Retrieved = result.Retrieved ?? throw new ArgumentException("Invalid value for retrieved received from call"),
-                Errors = result.Errors ?? null
-            };
+            return GetSubmissionToSubmission(result);
         }
 
 
@@ -145,12 +135,72 @@ namespace IndicoV2.Submissions
 
         public async Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default)
         {
-            var resultId = await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
-            var result = await _strawberryShakeClient.Submissions().List(new List<int?>(submissionId).AsReadOnly(), default, default, default, default, cancellationToken);
-            return new SubmissionSs(result?.Submissions?[0]);
+            await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
+            var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
+            return GetSubmissionToSubmission(result);
         }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
 
+        private ISubmission GetSubmissionToSubmission(IGetSubmission_Submission result) => new Submission
+        {
+            Id = result.Id ?? 0,
+            Status = (Models.SubmissionStatus)result.Status,
+            DatasetId = result.DatasetId ?? 0,
+            WorkflowId = result.WorkflowId ?? 0,
+            CreatedAt = result.CreatedAt,
+            UpdatedAt = result.UpdatedAt,
+            CompletedAt = result.CompletedAt,
+            FilesDeleted = result.FilesDeleted,
+            InputFiles = result.InputFiles.Select(inputFile => new SubmissionFile
+            {
+                Id = inputFile.Id,
+                FilePath = inputFile.Filepath,
+                FileName = inputFile.Filename,
+                FileType = inputFile.Filetype.ToString(),
+                SubmissionId = inputFile.SubmissionId,
+                FileSize = inputFile.FileSize,
+                NumPages = inputFile.NumPages
+            }).ToArray(),
+            InputFile = result.InputFile,
+            InputFilename = result.InputFilename,
+            ResultFile = result.ResultFile,
+            OutputFiles = result.OutputFiles.Select(x => new SubmissionOutput() { }).ToArray(),
+            Retrieved = result.Retrieved ?? throw new ArgumentException("Invalid value for retrieved received from call"),
+            AutoReview = result.AutoReview != null ? new Review
+            {
+                Id = result.AutoReview.Id,
+                SubmissionId = result.AutoReview.SubmissionId,
+                CreatedAt = result.AutoReview.CreatedAt,
+                CreatedBy = result.AutoReview.CreatedBy,
+                StartedAt = result.AutoReview.StartedAt,
+                CompletedAt = result.AutoReview.CompletedAt,
+                Rejected = result.AutoReview.Rejected,
+                ReviewType = (Models.ReviewType)result.AutoReview.ReviewType,
+                Notes = result.AutoReview.Notes,
+            } : new Review() { },
+            Retries = result.Retries.Select(submissionRetry => new SubmissionRetry
+            {
+                Id = submissionRetry.Id,
+                SubmissionId = submissionRetry.SubmissionId,
+                PreviousErrors = submissionRetry.PreviousErrors,
+                PreviousStatus = (Models.SubmissionStatus)submissionRetry.PreviousStatus,
+                RetryErrors = submissionRetry.RetryErrors
+            }).ToArray(),
+            Reviews = result.Reviews.Select(review => new Review
+            {
+                Id = review.Id,
+                SubmissionId = review.SubmissionId,
+                CreatedAt = review.CreatedAt,
+                CreatedBy = review.CreatedBy,
+                StartedAt = review.StartedAt,
+                CompletedAt = review.CompletedAt,
+                Rejected = review.Rejected,
+                ReviewType = (Models.ReviewType)review.ReviewType,
+                Notes = review.Notes,
+            }).ToArray(),
+            ReviewInProgress = result.ReviewInProgress,
+            Errors = result.Errors ?? null
+        };
     }
 }
