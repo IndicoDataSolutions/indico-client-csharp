@@ -9,7 +9,7 @@
 
 	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
 		<AssemblyVersion>6.6.0</AssemblyVersion>
-		<Version Condition="'$(Version)' == ''">$(AssemblyVersion)-mawelborn-proxy-8fcdcb7dec51954781d5862424838dd5aad634bd</Version>
+		<Version Condition="'$(Version)' == ''">$(AssemblyVersion)-mawelborn-proxy-e49f9dc863434d37f9f3dd366a4bb55050bb3e02</Version>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
 
