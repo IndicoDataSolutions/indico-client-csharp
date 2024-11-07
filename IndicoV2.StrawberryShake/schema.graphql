@@ -4177,23 +4177,25 @@ enum FileStatus {
 
 "Enum for file types"
 enum FileType {
-  CSV
-  DOC
-  DOCX
-  EML
-  EXCEL
-  JPG
-  MSG
-  PDF
-  PNG
-  PPT
-  PPTX
-  RTF
-  TIFF
-  TXT
-  UNKNOWN
-  XLS
-  XLSX
+    CSV
+    PDF
+    EXCEL
+    DOC
+    DOCX
+    PPT
+    PPTX
+    PNG
+    JPG
+    TIFF
+    TXT
+    RTF
+    XLS
+    XLSX
+    UNKNOWN
+    MSG
+    EML
+    ZIP
+    HTML
 }
 
 "An enumeration."
