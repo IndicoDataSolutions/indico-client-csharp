@@ -4191,6 +4191,8 @@ enum FileType {
     RTF
     XLS
     XLSX
+    XLSB
+    XLSM
     UNKNOWN
     MSG
     EML
