@@ -14,8 +14,6 @@ namespace IndicoV2.StrawberryShake.HttpClient
         private readonly Uri _refreshUri;
         private readonly string _refreshToken;
         private string _token;
-        private bool _isRefreshing = true;
-
         public AuthenticatingMessageHandler(Uri baseUri, string refreshToken)
         {
             _refreshUri = new Uri(baseUri, "/auth/users/refresh_token");
@@ -25,6 +23,7 @@ namespace IndicoV2.StrawberryShake.HttpClient
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
+            request.Headers.Authorization = GetAuthHeader(_token);
             var response = await base.SendAsync(request, cancellationToken);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
@@ -44,7 +43,6 @@ namespace IndicoV2.StrawberryShake.HttpClient
 
         private async Task RefreshTokenAsync(CancellationToken cancellationToken)
         {
-            _isRefreshing = true;
             var refreshTokenRequest = new HttpRequestMessage(HttpMethod.Post, _refreshUri);
             refreshTokenRequest.Headers.Authorization = GetAuthHeader(_refreshToken);
             var responseMessage = await base.SendAsync(refreshTokenRequest, cancellationToken);
@@ -57,7 +55,6 @@ namespace IndicoV2.StrawberryShake.HttpClient
             var responseStream = await responseMessage.Content.ReadAsStreamAsync();
             var response =
                 await JsonSerializer.DeserializeAsync<RefreshTokenResponse>(responseStream, null, cancellationToken);
-            _isRefreshing = false;
             _token = response.AuthToken ?? throw new AuthenticationException($"Cannot find {nameof(response.AuthToken)}.");
         }
 
