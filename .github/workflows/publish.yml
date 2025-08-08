@@ -25,7 +25,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.412
+          dotnet-version: 8.0.119
       - name: Pack
         run: dotnet pack ./IndicoV2/IndicoV2.csproj
       # - name: 'Upload Artifact'
