@@ -19,7 +19,7 @@ jobs:
         id: tagName
       - name: Set Version
         run: |
-          $version=${{ env.GIT_TAG_NAME }}.TrimStart('v')
+          $version='${{ env.GIT_TAG_NAME }}'.TrimStart('v')
           Add-Content -Path $env:GITHUB_ENV -Value "Version=$version"
       - name: Set NugetFile
         run: Add-Content -Path $env:GITHUB_ENV -Value "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg"
