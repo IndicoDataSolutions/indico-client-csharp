@@ -18,7 +18,9 @@ jobs:
       - uses: olegtarasov/get-tag@v2.1
         id: tagName
       - name: Set Version
-        run: Add-Content -Path $env:GITHUB_ENV -Value "Version=${{ env.GIT_TAG_NAME }}"
+        run: |
+          $version=${{ env.GIT_TAG_NAME }}.TrimStart('v')
+          Add-Content -Path $env:GITHUB_ENV -Value "Version=$version"
       - name: Set NugetFile
         run: Add-Content -Path $env:GITHUB_ENV -Value "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg"
       - uses: actions/checkout@v2
