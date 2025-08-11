@@ -23,19 +23,12 @@ jobs:
           Add-Content -Path $env:GITHUB_ENV -Value "Version=$version"
       - name: Set NugetFile
         run: Add-Content -Path $env:GITHUB_ENV -Value "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.119
+          dotnet-version: '8.0.119'
       - name: Pack
         run: dotnet pack ./IndicoV2/IndicoV2.csproj
-      # - name: 'Upload Artifact'
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: Nuget Package
-      #     path: ${{ env.NugetFile }}
-      #     retention-days: 1
-      #     if-no-files-found: error
       - name: Push
         run: dotnet nuget push ${{ env.NugetFile }} -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
