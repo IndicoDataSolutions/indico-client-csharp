@@ -18,9 +18,9 @@ jobs:
       - uses: olegtarasov/get-tag@v2.1
         id: tagName
       - name: Set Version
-        run: echo "Version=${{ env.GIT_TAG_NAME }}" | cut -c1-8,10- >> $GITHUB_ENV
+        run: Add-Content -Path $env:GITHUB_ENV -Value "Version=${{ env.GIT_TAG_NAME }}"
       - name: Set NugetFile
-        run: echo "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg" >> $GITHUB_ENV
+        run: Add-Content -Path $env:GITHUB_ENV -Value "NugetFile=./IndicoV2/bin/Release/IndicoClient.${{ env.Version }}.nupkg"
       - uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
