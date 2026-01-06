@@ -204,3 +204,18 @@ mutation CreateSubmissionResults($submissionId: Int!) {
     jobId
   }
 }
+
+mutation RetrySubmissions($submissionIds: [Int]!) {
+  retrySubmissions(submissionIds: $submissionIds) {
+    id
+    status
+    errors
+    retries {
+      id
+      submissionId
+      previousErrors
+      previousStatus
+      retryErrors
+    }
+  }
+}

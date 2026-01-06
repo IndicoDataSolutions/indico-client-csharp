@@ -50,6 +50,9 @@ namespace IndicoV2.StrawberryShake.Submissions
         public async Task<string> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken) => (
             await ExecuteAsync(async () => await _services.GetRequiredService<CreateSubmissionResultsMutation>().ExecuteAsync(submissionId, cancellationToken))).SubmissionResults.JobId;
 
+        public async Task<IReadOnlyList<IRetrySubmissions_RetrySubmissions>> Retry(IReadOnlyList<int> submissionIds, CancellationToken cancellationToken = default) => (
+            await ExecuteAsync(async () => await _services.GetRequiredService<RetrySubmissionsMutation>().ExecuteAsync(submissionIds.Select(id => (int?)id).ToList(), cancellationToken))).RetrySubmissions;
+
         private string RemovePropsCausingErrors(string metaString)
         {
             var acceptableMetaProps = new[] { "name", "path", "upload_type" };

@@ -140,6 +140,30 @@ namespace IndicoV2.Submissions
             return GetSubmissionToSubmission(result);
         }
 
+        public async Task<IEnumerable<ISubmission>> RetrySubmissionsAsync(IEnumerable<int> submissionIds, CancellationToken cancellationToken = default)
+        {
+            if (submissionIds == null || !submissionIds.Any())
+            {
+                throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
+            }
+
+            var result = await _strawberryShakeClient.Submissions().Retry(submissionIds.ToList(), cancellationToken);
+            return result.Select(r => new Submission
+            {
+                Id = r.Id ?? 0,
+                Status = (Models.SubmissionStatus)r.Status,
+                Errors = r.Errors ?? null,
+                Retries = r.Retries.Select(retry => new SubmissionRetry
+                {
+                    Id = retry.Id,
+                    SubmissionId = retry.SubmissionId,
+                    PreviousErrors = retry.PreviousErrors,
+                    PreviousStatus = (Models.SubmissionStatus)retry.PreviousStatus,
+                    RetryErrors = retry.RetryErrors
+                }).ToArray()
+            }).ToList();
+        }
+
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
 
         private ISubmission GetSubmissionToSubmission(IGetSubmission_Submission result) => new Submission
