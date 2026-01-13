@@ -414,29 +414,29 @@ namespace IndicoV2.IntegrationTests.Submissions
         }
 
         [Test]
-        public void RetrySubmissionsAsync_ShouldThrowArgumentException_WhenSubmissionIdsIsNull()
+        public async Task RetrySubmissionsAsync_ShouldThrowArgumentException_WhenSubmissionIdsIsNull()
         {
             // Arrange
             IEnumerable<int> submissionIds = null;
 
             // Act & Assert
             Func<Task> act = async () => await _submissionsClient.RetrySubmissionsAsync(submissionIds);
-            act.Should().ThrowAsync<ArgumentException>()
-                .WithMessage("You must specify submission ids*")
-                .Where(e => e.ParamName == "submissionIds");
+            var exceptionAssertions = await act.Should().ThrowAsync<ArgumentException>();
+            exceptionAssertions.Which.Message.Should().Contain("You must specify submission ids");
+            exceptionAssertions.Which.ParamName.Should().Be("submissionIds");
         }
 
         [Test]
-        public void RetrySubmissionsAsync_ShouldThrowArgumentException_WhenSubmissionIdsIsEmpty()
+        public async Task RetrySubmissionsAsync_ShouldThrowArgumentException_WhenSubmissionIdsIsEmpty()
         {
             // Arrange
             var submissionIds = new List<int>();
 
             // Act & Assert
             Func<Task> act = async () => await _submissionsClient.RetrySubmissionsAsync(submissionIds);
-            act.Should().ThrowAsync<ArgumentException>()
-                .WithMessage("You must specify submission ids*")
-                .Where(e => e.ParamName == "submissionIds");
+            var exceptionAssertions = await act.Should().ThrowAsync<ArgumentException>();
+            exceptionAssertions.Which.Message.Should().Contain("You must specify submission ids");
+            exceptionAssertions.Which.ParamName.Should().Be("submissionIds");
         }
 
         [Test]
