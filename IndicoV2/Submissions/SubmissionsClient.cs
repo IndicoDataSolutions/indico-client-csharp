@@ -142,26 +142,25 @@ namespace IndicoV2.Submissions
 
         public async Task<IEnumerable<ISubmission>> RetrySubmissionsAsync(IEnumerable<int> submissionIds, CancellationToken cancellationToken = default)
         {
-            if (submissionIds == null || !submissionIds.Any())
-            {
+            var submissionIdsList = submissionIds?.ToList() ?? throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
+            if (submissionIdsList.Count == 0)
                 throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
-            }
 
-            var result = await _strawberryShakeClient.Submissions().Retry(submissionIds.ToList(), cancellationToken);
-            return result.Select(r => new Submission
+            var result = await _strawberryShakeClient.Submissions().Retry(submissionIdsList, cancellationToken);
+            return result?.Select(r => new Submission
             {
                 Id = r.Id ?? 0,
                 Status = (Models.SubmissionStatus)r.Status,
                 Errors = r.Errors ?? null,
-                Retries = r.Retries.Select(retry => new SubmissionRetry
+                Retries = r.Retries?.Select(retry => new SubmissionRetry
                 {
                     Id = retry.Id,
                     SubmissionId = retry.SubmissionId,
                     PreviousErrors = retry.PreviousErrors,
                     PreviousStatus = (Models.SubmissionStatus)retry.PreviousStatus,
                     RetryErrors = retry.RetryErrors
-                }).ToArray()
-            }).ToList();
+                }).ToArray() ?? Array.Empty<SubmissionRetry>()
+            }).ToList() ?? new List<ISubmission>();
         }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);

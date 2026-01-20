@@ -443,12 +443,11 @@ namespace IndicoV2.IntegrationTests.Submissions
         public async Task RetrySubmissionsAsync_ShouldReturnSubmissions_WithRetryInformation()
         {
             // Arrange
-            var submissionId = (await _dataHelper.Submissions().GetAnyAsync(_workflowId)).Id;
             var filters = new SubmissionFilter
             {
                 Status = SubmissionStatus.FAILED
             };
-            var failedSubmissions = await _submissionsClient.ListAsync(new List<int> { submissionId }, new List<int> { _workflowId }, filters, 0, 10);
+            var failedSubmissions = await _submissionsClient.ListAsync(null, new List<int> { _workflowId }, filters, 0, 10);
 
             if (!failedSubmissions.Data.Any())
             {
