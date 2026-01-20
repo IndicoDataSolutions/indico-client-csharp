@@ -147,19 +147,35 @@ namespace IndicoV2.Submissions
                 throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
 
             var result = await _strawberryShakeClient.Submissions().Retry(submissionIdsList, cancellationToken);
-            return result?.Select(r => new Submission
+            return result?.Select(r =>
             {
-                Id = r.Id ?? 0,
-                Status = (Models.SubmissionStatus)r.Status,
-                Errors = r.Errors ?? null,
-                Retries = r.Retries?.Select(retry => new SubmissionRetry
+                if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), r.Status))
                 {
-                    Id = retry.Id,
-                    SubmissionId = retry.SubmissionId,
-                    PreviousErrors = retry.PreviousErrors,
-                    PreviousStatus = (Models.SubmissionStatus)retry.PreviousStatus,
-                    RetryErrors = retry.RetryErrors
-                }).ToArray() ?? Array.Empty<SubmissionRetry>()
+                    throw new NotSupportedException($"Cannot read submission status: {r.Status}");
+                }
+
+                return new Submission
+                {
+                    Id = r.Id ?? 0,
+                    Status = (Models.SubmissionStatus)r.Status,
+                    Errors = r.Errors ?? null,
+                    Retries = r.Retries?.Select(retry =>
+                    {
+                        if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), retry.PreviousStatus))
+                        {
+                            throw new NotSupportedException($"Cannot read submission retry previous status: {retry.PreviousStatus}");
+                        }
+
+                        return new SubmissionRetry
+                        {
+                            Id = retry.Id ?? 0,
+                            SubmissionId = retry.SubmissionId ?? 0,
+                            PreviousErrors = retry.PreviousErrors,
+                            PreviousStatus = (Models.SubmissionStatus)retry.PreviousStatus,
+                            RetryErrors = retry.RetryErrors
+                        };
+                    }).ToArray() ?? Array.Empty<SubmissionRetry>()
+                };
             }).ToList() ?? new List<ISubmission>();
         }
 
