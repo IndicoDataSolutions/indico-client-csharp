@@ -48,3 +48,7 @@ user.runsettings
 /IndicoV2/Properties/PublishProfiles
 /Indico/Properties/PublishProfiles
 /.graphqlrc.json
+
+# Coverage
+coverage/
+.coverage/

@@ -30,6 +30,8 @@ jobs:
         reporttypes: lcov
         reports: ./coverage/*/coverage.*
         assemblyFilters: -Indico
+    - name: Filter lcov to reduce comment size
+      run: bash scripts/filter-lcov.sh ./coverage/lcov.info
     - name: Post code coverage report
       uses: romeovs/lcov-reporter-action@v0.2.16
       with:
