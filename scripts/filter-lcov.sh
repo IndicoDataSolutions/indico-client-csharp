@@ -7,6 +7,7 @@ if [[ ! -f "$LCOV_FILE" ]]; then
 fi
 awk '
 /^SF:/ { path = substr($0, 4); block = $0 "\n"; next }
+/^DA:/ { next }
 { block = block $0 "\n" }
 /^end_of_record$/ {
   if (path !~ /\\Generated\\|\\obj\\|\\bin\\|\/Generated\/|\/obj\/|\/bin\//) print block
