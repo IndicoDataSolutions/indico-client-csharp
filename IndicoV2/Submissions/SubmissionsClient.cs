@@ -176,7 +176,7 @@ namespace IndicoV2.Submissions
                         };
                     }).ToArray() ?? Array.Empty<SubmissionRetry>()
                 };
-            }).ToList() ?? new List<ISubmission>();
+            }).Cast<ISubmission>().ToList() ?? new List<ISubmission>();
         }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
