@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -147,7 +147,7 @@ namespace IndicoV2.Submissions
                 throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
 
             var result = await _strawberryShakeClient.Submissions().Retry(submissionIdsList, cancellationToken);
-            return result?.Select(r =>
+            return result?.Where(r => r != null).Select(r =>
             {
                 if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), r.Status))
                 {
@@ -159,7 +159,7 @@ namespace IndicoV2.Submissions
                     Id = r.Id ?? 0,
                     Status = (Models.SubmissionStatus)r.Status,
                     Errors = r.Errors ?? null,
-                    Retries = r.Retries?.Select(retry =>
+                    Retries = r.Retries?.Where(retry => retry != null).Select(retry =>
                     {
                         if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), retry.PreviousStatus))
                         {
