@@ -40,7 +40,7 @@ namespace IndicoV2.StrawberryShake.Submissions
             .Select(id => id.Value);
 
         public async Task<IListSubmissions_Submissions> List(IReadOnlyList<int?> ids, IReadOnlyList<int?> workflowIds, SubmissionFilter? filter, int? limit, int? after, CancellationToken cancellationToken) => (
-            await ExecuteAsync(async () => await _services.GetRequiredService<ListSubmissionsQuery>().ExecuteAsync(ids, workflowIds, filter, limit, null, null, after, cancellationToken))).Submissions;
+            await ExecuteAsync(async () => await _services.GetRequiredService<ListSubmissionsQuery>().ExecuteAsync(ids, workflowIds, filter, limit, SUBMISSION_COLUMN_ENUM.Id, null, after, cancellationToken))).Submissions;
 
         public async Task<int?> MarkRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default) => (await ExecuteAsync(async () => await _services.GetRequiredService<UpdateSubmissionMutation>().ExecuteAsync(submissionId, retrieved, cancellationToken))).UpdateSubmission.Id;
 
@@ -49,6 +49,9 @@ namespace IndicoV2.StrawberryShake.Submissions
 
         public async Task<string> GenerateSubmissionResult(int submissionId, CancellationToken cancellationToken) => (
             await ExecuteAsync(async () => await _services.GetRequiredService<CreateSubmissionResultsMutation>().ExecuteAsync(submissionId, cancellationToken))).SubmissionResults.JobId;
+
+        public async Task<IReadOnlyList<IRetrySubmissions_RetrySubmissions>> Retry(IReadOnlyList<int> submissionIds, CancellationToken cancellationToken = default) => (
+            await ExecuteAsync(async () => await _services.GetRequiredService<RetrySubmissionsMutation>().ExecuteAsync(submissionIds.Select(id => (int?)id).ToList(), cancellationToken))).RetrySubmissions;
 
         private string RemovePropsCausingErrors(string metaString)
         {

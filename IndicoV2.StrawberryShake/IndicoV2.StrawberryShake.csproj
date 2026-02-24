@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -7,6 +7,7 @@
 
 	<PropertyGroup>
 		<LangVersion>8.0</LangVersion>
+		<StrawberryShake_State>$(MSBuildProjectExtensionsPath)berry</StrawberryShake_State>
 	</PropertyGroup>
 
 	<ItemGroup>

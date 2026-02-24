@@ -108,6 +108,14 @@ namespace IndicoV2.Submissions
         Task<ISubmission> MarkSubmissionAsRetrieved(int submissionId, bool retrieved = true, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Retries failed submissions. Submissions must be in a failed state and cannot be requested before the cool-off period (typically 180ms).
+        /// </summary>
+        /// <param name="submissionIds">The submission ids to retry.</param>
+        /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
+        /// <returns><c><see cref="IEnumerable{T}"/></c> of <c><see cref="ISubmission"/></c></returns>
+        Task<IEnumerable<ISubmission>> RetrySubmissionsAsync(IEnumerable<int> submissionIds, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Uses the legacy C# client for older frameworks.
         /// </summary>
         /// <param name="workflowId"></param>

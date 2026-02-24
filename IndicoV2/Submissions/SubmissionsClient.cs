@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -138,6 +138,45 @@ namespace IndicoV2.Submissions
             await _strawberryShakeClient.Submissions().MarkRetrieved(submissionId, retrieved, cancellationToken);
             var result = await _strawberryShakeClient.Submissions().Get(submissionId, cancellationToken);
             return GetSubmissionToSubmission(result);
+        }
+
+        public async Task<IEnumerable<ISubmission>> RetrySubmissionsAsync(IEnumerable<int> submissionIds, CancellationToken cancellationToken = default)
+        {
+            var submissionIdsList = submissionIds?.ToList() ?? throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
+            if (submissionIdsList.Count == 0)
+                throw new ArgumentException("You must specify submission ids", nameof(submissionIds));
+
+            var result = await _strawberryShakeClient.Submissions().Retry(submissionIdsList, cancellationToken);
+            return result?.Where(r => r != null).Select(r =>
+            {
+                if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), r.Status))
+                {
+                    throw new NotSupportedException($"Cannot read submission status: {r.Status}");
+                }
+
+                return new Submission
+                {
+                    Id = r.Id ?? 0,
+                    Status = (Models.SubmissionStatus)r.Status,
+                    Errors = r.Errors ?? null,
+                    Retries = r.Retries?.Where(retry => retry != null).Select(retry =>
+                    {
+                        if (!Enum.IsDefined(typeof(StrawberryShake.SubmissionStatus), retry.PreviousStatus))
+                        {
+                            throw new NotSupportedException($"Cannot read submission retry previous status: {retry.PreviousStatus}");
+                        }
+
+                        return new SubmissionRetry
+                        {
+                            Id = retry.Id ?? 0,
+                            SubmissionId = retry.SubmissionId ?? 0,
+                            PreviousErrors = retry.PreviousErrors,
+                            PreviousStatus = (Models.SubmissionStatus)retry.PreviousStatus,
+                            RetryErrors = retry.RetryErrors
+                        };
+                    }).ToArray() ?? Array.Empty<SubmissionRetry>()
+                };
+            }).Cast<ISubmission>().ToList() ?? new List<ISubmission>();
         }
 
         private ISubmission ToSubmissionFromSs(IListSubmissions_Submissions_Submissions submission) => new SubmissionSs(submission);
