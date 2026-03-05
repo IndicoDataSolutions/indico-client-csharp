@@ -49,7 +49,7 @@
 		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.3" />
 		<PackageReference Include="GraphQL.Client" Version="3.2.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="MimeKit" Version="2.11.0" />
+		<PackageReference Include="MimeKit" Version="4.15.1" />
 		<PackageReference Include="StrawberryShake.Transport.Http" Version="12.2.2" />
 	</ItemGroup>
 
