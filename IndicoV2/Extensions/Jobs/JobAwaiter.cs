@@ -34,7 +34,8 @@ namespace IndicoV2.Extensions.Jobs
         {
             JobStatus status;
 
-            while (_waitingForResult.Contains(status = await _jobsClient.GetStatusAsync(jobId, cancellationToken)))
+            // Enumerable.Contains: since C# 14 the array overload binds to the span one, which can't cross the await
+            while (Enumerable.Contains(_waitingForResult, status = await _jobsClient.GetStatusAsync(jobId, cancellationToken)))
             {
                 await Task.Delay(checkInterval, cancellationToken);
             }
