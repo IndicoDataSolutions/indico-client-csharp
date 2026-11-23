@@ -29,11 +29,13 @@ namespace IndicoV2.IntegrationTests.Ocr
             _ocrClient = container.Resolve<IOcrClient>();
         }
 
+        [Ignore("Intake no longer supports direct document extraction (fog#771)")]
         [Theory]
         public async Task ExtractDocument_ShouldReturnJobNumber(DocumentExtractionPreset preset)
             => (await _ocrClient.ExtractDocumentAsync(_dataHelper.Files().GetSampleFilePath(), preset, default))
                 .Should().NotBeEmpty();
 
+        [Ignore("Intake no longer supports direct document extraction (fog#771)")]
         [Theory]
         public async Task GetExtractionResult_ShouldReturnDocument(DocumentExtractionPreset preset)
         {
