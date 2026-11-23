@@ -23,18 +23,3 @@ jobs:
       run: dotnet build
     - name: Test
       run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-    - name: Generate report
-      uses: danielpalme/ReportGenerator-GitHub-Action@2487f212a1db1c6b190912faea77b26f850537b1 # 4.8.5
-      with:
-        targetdir: ./coverage/
-        reporttypes: lcov
-        reports: ./coverage/*/coverage.*
-        assemblyFilters: -Indico
-    - name: Filter lcov to reduce comment size
-      run: bash scripts/filter-lcov.sh ./coverage/lcov.info
-    - name: Post code coverage report
-      uses: romeovs/lcov-reporter-action@5f20a0bee24993af3b153eed0c999329187079f1 # v0.2.16
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        lcov-file: ./coverage/lcov.info
-        filter-changed-files: true
