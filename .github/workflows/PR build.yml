@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build
     - name: Test
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~IntegrationTests"
