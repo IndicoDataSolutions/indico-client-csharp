@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
+using IndicoV2.Extensions.Jobs;
 using IndicoV2.IntegrationTests.Utils;
 using IndicoV2.IntegrationTests.Utils.DataHelpers;
 using IndicoV2.IntegrationTests.Utils.Configs;
@@ -17,6 +19,7 @@ namespace IndicoV2.IntegrationTests.Jobs
     {
         private DataHelper _dataHelper;
         private IJobsClient _jobsClient;
+        private IJobAwaiter _jobAwaiter;
         private ISubmissionsClient _submissionsClient;
         private IndicoConfigs _indicoConfigs;
         private int _workflowId;
@@ -26,6 +29,7 @@ namespace IndicoV2.IntegrationTests.Jobs
         {
             var container = new IndicoTestContainerBuilder().Build();
             _jobsClient = container.Resolve<IJobsClient>();
+            _jobAwaiter = container.Resolve<IJobAwaiter>();
             _submissionsClient = container.Resolve<ISubmissionsClient>();
             _dataHelper = container.Resolve<DataHelper>();
             _indicoConfigs = new IndicoConfigs();
@@ -49,6 +53,8 @@ namespace IndicoV2.IntegrationTests.Jobs
         {
             // Arrange
             var jobId = await GetAnyJobIdAsync();
+            // The result is only set once the job finishes
+            await _jobAwaiter.WaitReadyAsync<JToken>(jobId, TimeSpan.FromMilliseconds(300));
 
             // Act
             var jobResult = await _jobsClient.GetResultAsync<JToken>(jobId);

@@ -57,6 +57,7 @@ namespace IndicoV2.IntegrationTests.Reviews
             // Arrange
             var submission = await _dataHelper.Submissions().Get(_workflowId, resultsFileVersion: SubmissionResultsFileVersion.One);
             var result = await _submissionResultAwaiter.WaitReady(submission.Id);
+            await RequirePendingAutoReview(submission.Id);
             var changes = (JObject)result["results"]["document"]["results"];
 
             // Act
@@ -76,28 +77,32 @@ namespace IndicoV2.IntegrationTests.Reviews
             // Arrange
             var submission = await _dataHelper.Submissions().Get(_workflowId, resultsFileVersion: SubmissionResultsFileVersion.Three);
             var result = await _submissionResultAwaiter.WaitReady(submission.Id);
-            submission = (await _dataHelper.Submissions().ListAsync(submissionIds: new List<int>() { submission.Id })).First();
-            if (submission.Status.ToString() == "PENDING_AUTO_REVIEW")
+            await RequirePendingAutoReview(submission.Id);
+            var changes = result["submission_results"];
+            foreach (JObject change in changes)
             {
-                var changes = result["submission_results"];
-                foreach (JObject change in changes)
-                {
-                    change["model_results"] = change["model_results"]["ORIGINAL"];
-                    change["component_results"] = change["component_results"]["ORIGINAL"];
-                }
-                // Act
-                var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, (JArray)changes);
-                var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(submitReviewJobId, TimeSpan.FromSeconds(1));
-
-                // Assert
-                jobResult.Should().NotBeNull();
-                jobResult.Value<string>("submission_status").Should().Be("pending_review");
-                jobResult.Value<bool>("success").Should().Be(true);
+                change["model_results"] = change["model_results"]["ORIGINAL"];
+                change["component_results"] = change["component_results"]["ORIGINAL"];
             }
-            else
+
+            // Act
+            var submitReviewJobId = await _reviewsClient.SubmitReviewAsync(submission.Id, (JArray)changes);
+            var jobResult = await _jobAwaiter.WaitReadyAsync<JObject>(submitReviewJobId, TimeSpan.FromSeconds(1));
+
+            // Assert
+            jobResult.Should().NotBeNull();
+            jobResult.Value<string>("submission_status").Should().Be("pending_review");
+            jobResult.Value<bool>("success").Should().Be(true);
+        }
+
+        // Auto review is only accepted while the submission is PENDING_AUTO_REVIEW,
+        // which needs a workflow with auto review enabled (INDICO_TEST_WORKFLOW_ID)
+        private async Task RequirePendingAutoReview(int submissionId)
+        {
+            var submission = (await _dataHelper.Submissions().ListAsync(submissionIds: new List<int>() { submissionId })).First();
+            if (submission.Status.ToString() != "PENDING_AUTO_REVIEW")
             {
-                // multi-file submissions are not enabled and submission status should default to complete
-                submission.Status.ToString().Should().Be("COMPLETE");
+                Assert.Ignore($"Workflow {_workflowId} doesn't have auto review enabled (submission status {submission.Status})");
             }
         }
 

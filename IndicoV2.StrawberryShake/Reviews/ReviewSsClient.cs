@@ -20,20 +20,20 @@ namespace IndicoV2.StrawberryShake.Reviews
         {
             if (forceComplete == null)
             {
-                var response = await _services.GetRequiredService<SubmitReviewMutation>().ExecuteAsync(submissionId, changes, rejected, cancellationToken);
-                return response.Data.SubmitAutoReview.JobId;
+                var response = await ExecuteAsync(() => _services.GetRequiredService<SubmitReviewMutation>().ExecuteAsync(submissionId, changes, rejected, cancellationToken));
+                return response.SubmitAutoReview.JobId;
             }
             else
             {
-                var response = await _services.GetRequiredService<SubmitReviewForceCompleteMutation>().ExecuteAsync(submissionId, changes, rejected, forceComplete, cancellationToken);
-                return response.Data.SubmitAutoReview.JobId;
+                var response = await ExecuteAsync(() => _services.GetRequiredService<SubmitReviewForceCompleteMutation>().ExecuteAsync(submissionId, changes, rejected, forceComplete, cancellationToken));
+                return response.SubmitAutoReview.JobId;
             }
         }
 
         public async Task<IEnumerable<IGetReviews_Submission_Reviews>> GetReviews(int submissionId, CancellationToken cancellationToken)
         {
-            var response = await _services.GetRequiredService<GetReviewsQuery>().ExecuteAsync(submissionId, cancellationToken);
-            return response.Data.Submission.Reviews;
+            var response = await ExecuteAsync(() => _services.GetRequiredService<GetReviewsQuery>().ExecuteAsync(submissionId, cancellationToken));
+            return response.Submission.Reviews;
         }
     }
 }
