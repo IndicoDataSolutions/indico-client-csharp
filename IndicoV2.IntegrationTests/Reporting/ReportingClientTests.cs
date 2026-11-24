@@ -13,6 +13,7 @@ using Unity;
 
 namespace IndicoV2.IntegrationTests.Reporting
 {
+    [Ignore("Meteor build without the user report routes; re-enable once it's back on the regular meteor")]
     public class ReportingClientTests
     {
         private IUserReportingClient _userReportingClient;

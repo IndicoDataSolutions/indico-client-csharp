@@ -14,6 +14,7 @@ namespace IndicoV2.Ocr
         /// <param name="filePath">Path to the document</param>
         /// <param name="cancellationToken"><c><see cref="CancellationToken"/></c> for handling cancellation of asynchronous operations.</param>
         /// <returns>Job's Is</returns>
+        [Obsolete("Direct document extraction is no longer supported by Intake (removed in fog#771). Use a workflow submission instead.")]
         Task<string> ExtractDocumentAsync(string filePath, DocumentExtractionPreset preset = DocumentExtractionPreset.Standard, CancellationToken cancellationToken = default);
 
         /// <summary>

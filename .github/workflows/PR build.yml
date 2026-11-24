@@ -14,27 +14,12 @@ jobs:
       BuildNumber: ${{ github.run_number }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
       with:
-        dotnet-version: '8.0.119'
+        dotnet-version: '10.0.404'
     - name: Build
       run: dotnet build
     - name: Test
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory:"./coverage/" --filter FullyQualifiedName\!~IntegrationTests -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-    - name: Generate report
-      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.5
-      with:
-        targetdir: ./coverage/
-        reporttypes: lcov
-        reports: ./coverage/*/coverage.*
-        assemblyFilters: -Indico
-    - name: Filter lcov to reduce comment size
-      run: bash scripts/filter-lcov.sh ./coverage/lcov.info
-    - name: Post code coverage report
-      uses: romeovs/lcov-reporter-action@v0.2.16
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        lcov-file: ./coverage/lcov.info
-        filter-changed-files: true
+      run: dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~IntegrationTests"

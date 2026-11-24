@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
 	  <BuildType>V2</BuildType>
   </PropertyGroup>
 
 	<Import Project="../Nuget.props" Condition="'$(BuildType)' == 'V2'" />
 
 	<PropertyGroup Condition="'$(BuildType)' == 'V2'">
-		<AssemblyVersion>7.0.2</AssemblyVersion>
+		<AssemblyVersion>7.14.0</AssemblyVersion>
 		<Version Condition="'$(Version)' == ''">$(AssemblyVersion)-preview.$([System.DateTime]::UtcNow.ToString(yyMMddHHmm))</Version>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
 	</PropertyGroup>
@@ -40,7 +40,6 @@
 		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.16" />
 		<PackageReference Include="Microsoft.Extensions.Primitives" Version="3.1.16" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<ProjectReference Include="..\IndicoV2.Abstractions\IndicoV2.Abstractions.csproj" PrivateAssets="All" />
 	</ItemGroup>
 

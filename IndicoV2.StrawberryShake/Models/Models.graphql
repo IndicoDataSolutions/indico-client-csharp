@@ -18,7 +18,7 @@ mutation ModelLoad($modelId: Int!) {
     }
 }
 
-mutation PredictModel($modelId: Int!, $data: [String]!) {
+mutation PredictModel($modelId: Int!, $data: [String!]!) {
     modelPredict(modelId: $modelId, data: $data) {
         jobId
     }

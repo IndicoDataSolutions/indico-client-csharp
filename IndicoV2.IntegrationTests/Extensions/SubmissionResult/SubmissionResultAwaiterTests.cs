@@ -47,8 +47,10 @@ namespace IndicoV2.IntegrationTests.Extensions.SubmissionResult
             var jobResult = await _sut.WaitReady(submissionId, TimeSpan.FromMilliseconds(300), default);
 
             // Assert
+            // The submission uses the workflow's default result file version, so only check fields every version has
             jobResult.Should().NotBeNull();
-            jobResult["results"]["document"].Should().NotBeNull();
+            jobResult.Value<int>("submission_id").Should().Be(submissionId);
+            jobResult["file_version"].Should().NotBeNull();
         }
     }
 }

@@ -9860,8 +9860,8 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class FileInputInputValueFormatter : global::StrawberryShake.Serialization.IInputObjectFormatter
     {
-        private global::StrawberryShake.Serialization.IInputValueFormatter _jSONStringFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default !;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _jSONStringFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default!;
         public global::System.String TypeName => "FileInput";
 
         public void Initialize(global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
@@ -10019,9 +10019,9 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserReportFilterInputValueFormatter : global::StrawberryShake.Serialization.IInputObjectFormatter
     {
-        private global::StrawberryShake.Serialization.IInputValueFormatter _userReportFilterFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _intFormatter = default !;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _userReportFilterFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _intFormatter = default!;
         public global::System.String TypeName => "UserReportFilter";
 
         public void Initialize(global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
@@ -10438,13 +10438,13 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionFilterInputValueFormatter : global::StrawberryShake.Serialization.IInputObjectFormatter
     {
-        private global::StrawberryShake.Serialization.IInputValueFormatter _submissionFilterFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _dateRangeFilterFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _booleanFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _fileTypeFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewFilterFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _submissionStatusFormatter = default !;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _submissionFilterFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _dateRangeFilterFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _booleanFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _fileTypeFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _stringFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewFilterFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _submissionStatusFormatter = default!;
         public global::System.String TypeName => "SubmissionFilter";
 
         public void Initialize(global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
@@ -11096,7 +11096,7 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DateRangeFilterInputValueFormatter : global::StrawberryShake.Serialization.IInputObjectFormatter
     {
-        private global::StrawberryShake.Serialization.IInputValueFormatter _inputDateFormatter = default !;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _inputDateFormatter = default!;
         public global::System.String TypeName => "DateRangeFilter";
 
         public void Initialize(global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
@@ -11253,10 +11253,10 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ReviewFilterInputValueFormatter : global::StrawberryShake.Serialization.IInputObjectFormatter
     {
-        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewFilterFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _intFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _booleanFormatter = default !;
-        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewTypeFormatter = default !;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewFilterFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _intFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _booleanFormatter = default!;
+        private global::StrawberryShake.Serialization.IInputValueFormatter _reviewTypeFormatter = default!;
         public global::System.String TypeName => "ReviewFilter";
 
         public void Initialize(global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
@@ -15192,7 +15192,7 @@ namespace IndicoV2.StrawberryShake
     /// <summary>
     /// Represents the operation service of the PredictModel GraphQL operation
     /// <code>
-    /// mutation PredictModel($modelId: Int!, $data: [String]!) {
+    /// mutation PredictModel($modelId: Int!, $data: [String!]!) {
     ///   modelPredict(modelId: $modelId, data: $data) {
     ///     __typename
     ///     jobId
@@ -15263,6 +15263,7 @@ namespace IndicoV2.StrawberryShake
             0x69,
             0x6e,
             0x67,
+            0x21,
             0x5d,
             0x21,
             0x29,
@@ -15337,7 +15338,7 @@ namespace IndicoV2.StrawberryShake
             0x20,
             0x7d
         };
-        public global::StrawberryShake.DocumentHash Hash { get; } = new global::StrawberryShake.DocumentHash("md5Hash", "b0ea425f3f97ef21e0ee7eca757c1da0");
+        public global::StrawberryShake.DocumentHash Hash { get; } = new global::StrawberryShake.DocumentHash("md5Hash", "ec541e06041a851ed0f6f61377b264cb");
 
         public override global::System.String ToString()
         {
@@ -15352,7 +15353,7 @@ namespace IndicoV2.StrawberryShake
     /// <summary>
     /// Represents the operation service of the PredictModel GraphQL operation
     /// <code>
-    /// mutation PredictModel($modelId: Int!, $data: [String]!) {
+    /// mutation PredictModel($modelId: Int!, $data: [String!]!) {
     ///   modelPredict(modelId: $modelId, data: $data) {
     ///     __typename
     ///     jobId
@@ -15375,19 +15376,19 @@ namespace IndicoV2.StrawberryShake
 
         global::System.Type global::StrawberryShake.IOperationRequestFactory.ResultType => typeof(IPredictModelResult);
 
-        public async global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<IPredictModelResult>> ExecuteAsync(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String?> data, global::System.Threading.CancellationToken cancellationToken = default)
+        public async global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<IPredictModelResult>> ExecuteAsync(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String> data, global::System.Threading.CancellationToken cancellationToken = default)
         {
             var request = CreateRequest(modelId, data);
             return await _operationExecutor.ExecuteAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
-        public global::System.IObservable<global::StrawberryShake.IOperationResult<IPredictModelResult>> Watch(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String?> data, global::StrawberryShake.ExecutionStrategy? strategy = null)
+        public global::System.IObservable<global::StrawberryShake.IOperationResult<IPredictModelResult>> Watch(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String> data, global::StrawberryShake.ExecutionStrategy? strategy = null)
         {
             var request = CreateRequest(modelId, data);
             return _operationExecutor.Watch(request, strategy);
         }
 
-        private global::StrawberryShake.OperationRequest CreateRequest(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String?> data)
+        private global::StrawberryShake.OperationRequest CreateRequest(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String> data)
         {
             var variables = new global::System.Collections.Generic.Dictionary<global::System.String, global::System.Object?>();
             variables.Add("modelId", FormatModelId(modelId));
@@ -15405,7 +15406,7 @@ namespace IndicoV2.StrawberryShake
             return _intFormatter.Format(value);
         }
 
-        private global::System.Object? FormatData(global::System.Collections.Generic.IReadOnlyList<global::System.String?> value)
+        private global::System.Object? FormatData(global::System.Collections.Generic.IReadOnlyList<global::System.String> value)
         {
             if (value is null)
             {
@@ -15417,12 +15418,10 @@ namespace IndicoV2.StrawberryShake
             {
                 if (value_elm is null)
                 {
-                    value_list.Add(value_elm);
+                    throw new global::System.ArgumentNullException(nameof(value_elm));
                 }
-                else
-                {
-                    value_list.Add(_stringFormatter.Format(value_elm));
-                }
+
+                value_list.Add(_stringFormatter.Format(value_elm));
             }
 
             return value_list;
@@ -15437,7 +15436,7 @@ namespace IndicoV2.StrawberryShake
     /// <summary>
     /// Represents the operation service of the PredictModel GraphQL operation
     /// <code>
-    /// mutation PredictModel($modelId: Int!, $data: [String]!) {
+    /// mutation PredictModel($modelId: Int!, $data: [String!]!) {
     ///   modelPredict(modelId: $modelId, data: $data) {
     ///     __typename
     ///     jobId
@@ -15448,8 +15447,8 @@ namespace IndicoV2.StrawberryShake
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public interface IPredictModelMutation : global::StrawberryShake.IOperationRequestFactory
     {
-        global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<IPredictModelResult>> ExecuteAsync(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String?> data, global::System.Threading.CancellationToken cancellationToken = default);
-        global::System.IObservable<global::StrawberryShake.IOperationResult<IPredictModelResult>> Watch(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String?> data, global::StrawberryShake.ExecutionStrategy? strategy = null);
+        global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<IPredictModelResult>> ExecuteAsync(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String> data, global::System.Threading.CancellationToken cancellationToken = default);
+        global::System.IObservable<global::StrawberryShake.IOperationResult<IPredictModelResult>> Watch(global::System.Int32 modelId, global::System.Collections.Generic.IReadOnlyList<global::System.String> data, global::StrawberryShake.ExecutionStrategy? strategy = null);
     }
 
     /// <summary>
@@ -25358,7 +25357,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DatasetEntity
     {
-        public DatasetEntity(global::System.Int32? id = default !, global::IndicoV2.StrawberryShake.DatasetStatus? status = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? files = default !, global::System.String? name = default !, global::System.Int32? rowCount = default !, global::System.Int32? numModelGroups = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? modelGroups = default !)
+        public DatasetEntity(global::System.Int32? id = default!, global::IndicoV2.StrawberryShake.DatasetStatus? status = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? files = default!, global::System.String? name = default!, global::System.Int32? rowCount = default!, global::System.Int32? numModelGroups = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? modelGroups = default!)
         {
             Id = id;
             Status = status;
@@ -25388,7 +25387,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DataFileEntity
     {
-        public DataFileEntity(global::System.Int32? id = default !, global::System.String? name = default !, global::System.Boolean? deleted = default !, global::System.Int32? fileSize = default !, global::System.String? rainbowUrl = default !, global::IndicoV2.StrawberryShake.FileType? fileType = default !, global::System.String? fileHash = default !, global::IndicoV2.StrawberryShake.FileStatus? status = default !, global::System.String? statusMeta = default !, global::IndicoV2.StrawberryShake.FileFailureType? failureType = default !)
+        public DataFileEntity(global::System.Int32? id = default!, global::System.String? name = default!, global::System.Boolean? deleted = default!, global::System.Int32? fileSize = default!, global::System.String? rainbowUrl = default!, global::IndicoV2.StrawberryShake.FileType? fileType = default!, global::System.String? fileHash = default!, global::IndicoV2.StrawberryShake.FileStatus? status = default!, global::System.String? statusMeta = default!, global::IndicoV2.StrawberryShake.FileFailureType? failureType = default!)
         {
             Id = id;
             Name = name;
@@ -25426,7 +25425,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ModelGroupEntity
     {
-        public ModelGroupEntity(global::System.Int32? id = default !, global::System.String? name = default !, global::IndicoV2.StrawberryShake.ModelStatus? status = default !, global::StrawberryShake.EntityId? selectedModel = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? models = default !)
+        public ModelGroupEntity(global::System.Int32? id = default!, global::System.String? name = default!, global::IndicoV2.StrawberryShake.ModelStatus? status = default!, global::StrawberryShake.EntityId? selectedModel = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? models = default!)
         {
             Id = id;
             Name = name;
@@ -25445,7 +25444,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class JobEntity
     {
-        public JobEntity(global::System.String? id = default !, global::System.Boolean? ready = default !, global::IndicoV2.StrawberryShake.JobStatus? status = default !, global::System.String? result = default !)
+        public JobEntity(global::System.String? id = default!, global::System.Boolean? ready = default!, global::IndicoV2.StrawberryShake.JobStatus? status = default!, global::System.String? result = default!)
         {
             Id = id;
             Ready = ready;
@@ -25462,7 +25461,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ModelEntity
     {
-        public ModelEntity(global::System.Int32? id = default !, global::IndicoV2.StrawberryShake.ModelStatus? status = default !, global::IndicoV2.StrawberryShake.State.TrainingProgressData? trainingProgress = default !)
+        public ModelEntity(global::System.Int32? id = default!, global::IndicoV2.StrawberryShake.ModelStatus? status = default!, global::IndicoV2.StrawberryShake.State.TrainingProgressData? trainingProgress = default!)
         {
             Id = id;
             Status = status;
@@ -25477,7 +25476,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserSnapshotEntity
     {
-        public UserSnapshotEntity(global::System.Int32? id = default !, global::System.String? name = default !, global::System.DateTimeOffset? createdAt = default !, global::System.Boolean? enabled = default !, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.AppRole?>? roles = default !, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.DatasetRoleData?>? datasets = default !)
+        public UserSnapshotEntity(global::System.Int32? id = default!, global::System.String? name = default!, global::System.DateTimeOffset? createdAt = default!, global::System.Boolean? enabled = default!, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.AppRole?>? roles = default!, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.DatasetRoleData?>? datasets = default!)
         {
             Id = id;
             Name = name;
@@ -25498,7 +25497,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserChangelogEntity
     {
-        public UserChangelogEntity(global::System.String? id = default !, global::System.DateTimeOffset? date = default !, global::System.String? userEmail = default !, global::System.String? updaterEmail = default !, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.DatasetRoleData?>? previousDatasets = default !, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.UserChangeType?>? changesMade = default !)
+        public UserChangelogEntity(global::System.String? id = default!, global::System.DateTimeOffset? date = default!, global::System.String? userEmail = default!, global::System.String? updaterEmail = default!, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.DatasetRoleData?>? previousDatasets = default!, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.UserChangeType?>? changesMade = default!)
         {
             Id = id;
             Date = date;
@@ -25521,7 +25520,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionEntity
     {
-        public SubmissionEntity(global::System.Int32? id = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? reviews = default !, global::System.Int32? datasetId = default !, global::System.Int32? workflowId = default !, global::IndicoV2.StrawberryShake.SubmissionStatus? status = default !, global::System.DateTimeOffset? createdAt = default !, global::System.DateTimeOffset? updatedAt = default !, global::System.Int32? createdBy = default !, global::System.Int32? updatedBy = default !, global::System.DateTimeOffset? completedAt = default !, global::System.String? errors = default !, global::System.Boolean? filesDeleted = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? inputFiles = default !, global::System.String? inputFile = default !, global::System.String? inputFilename = default !, global::System.String? resultFile = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? outputFiles = default !, global::System.Boolean? retrieved = default !, global::StrawberryShake.EntityId? autoReview = default !, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? retries = default !, global::System.Boolean? reviewInProgress = default !)
+        public SubmissionEntity(global::System.Int32? id = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? reviews = default!, global::System.Int32? datasetId = default!, global::System.Int32? workflowId = default!, global::IndicoV2.StrawberryShake.SubmissionStatus? status = default!, global::System.DateTimeOffset? createdAt = default!, global::System.DateTimeOffset? updatedAt = default!, global::System.Int32? createdBy = default!, global::System.Int32? updatedBy = default!, global::System.DateTimeOffset? completedAt = default!, global::System.String? errors = default!, global::System.Boolean? filesDeleted = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? inputFiles = default!, global::System.String? inputFile = default!, global::System.String? inputFilename = default!, global::System.String? resultFile = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? outputFiles = default!, global::System.Boolean? retrieved = default!, global::StrawberryShake.EntityId? autoReview = default!, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? retries = default!, global::System.Boolean? reviewInProgress = default!)
         {
             Id = id;
             Reviews = reviews;
@@ -25591,7 +25590,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ReviewEntity
     {
-        public ReviewEntity(global::System.Int32? id = default !, global::System.Int32? submissionId = default !, global::System.String? createdAt = default !, global::System.Int32? createdBy = default !, global::System.String? startedAt = default !, global::System.String? completedAt = default !, global::System.Boolean? rejected = default !, global::IndicoV2.StrawberryShake.ReviewType? reviewType = default !, global::System.String? notes = default !, global::System.String? changes = default !)
+        public ReviewEntity(global::System.Int32? id = default!, global::System.Int32? submissionId = default!, global::System.String? createdAt = default!, global::System.Int32? createdBy = default!, global::System.String? startedAt = default!, global::System.String? completedAt = default!, global::System.Boolean? rejected = default!, global::IndicoV2.StrawberryShake.ReviewType? reviewType = default!, global::System.String? notes = default!, global::System.String? changes = default!)
         {
             Id = id;
             SubmissionId = submissionId;
@@ -25626,7 +25625,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionFileEntity
     {
-        public SubmissionFileEntity(global::System.Int32? id = default !, global::System.String? filepath = default !, global::System.String? filename = default !, global::IndicoV2.StrawberryShake.FileType? filetype = default !, global::System.Int32? submissionId = default !, global::System.Int32? fileSize = default !, global::System.Int32? numPages = default !)
+        public SubmissionFileEntity(global::System.Int32? id = default!, global::System.String? filepath = default!, global::System.String? filename = default!, global::IndicoV2.StrawberryShake.FileType? filetype = default!, global::System.Int32? submissionId = default!, global::System.Int32? fileSize = default!, global::System.Int32? numPages = default!)
         {
             Id = id;
             Filepath = filepath;
@@ -25657,7 +25656,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionOutputEntity
     {
-        public SubmissionOutputEntity(global::System.Int32? id = default !, global::System.String? filepath = default !, global::System.Int32? submissionId = default !, global::System.Int32? componentId = default !, global::System.DateTimeOffset? createdAt = default !)
+        public SubmissionOutputEntity(global::System.Int32? id = default!, global::System.String? filepath = default!, global::System.Int32? submissionId = default!, global::System.Int32? componentId = default!, global::System.DateTimeOffset? createdAt = default!)
         {
             Id = id;
             Filepath = filepath;
@@ -25681,7 +25680,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionRetryEntity
     {
-        public SubmissionRetryEntity(global::System.Int32? id = default !, global::System.Int32? submissionId = default !, global::System.String? previousErrors = default !, global::IndicoV2.StrawberryShake.SubmissionStatus? previousStatus = default !, global::System.String? retryErrors = default !)
+        public SubmissionRetryEntity(global::System.Int32? id = default!, global::System.Int32? submissionId = default!, global::System.String? previousErrors = default!, global::IndicoV2.StrawberryShake.SubmissionStatus? previousStatus = default!, global::System.String? retryErrors = default!)
         {
             Id = id;
             SubmissionId = submissionId;
@@ -25705,7 +25704,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class WorkflowEntity
     {
-        public WorkflowEntity(global::IndicoV2.StrawberryShake.WorkflowStatus? status = default !, global::System.Int32? id = default !, global::System.String? name = default !, global::System.Boolean? reviewEnabled = default !)
+        public WorkflowEntity(global::IndicoV2.StrawberryShake.WorkflowStatus? status = default!, global::System.Int32? id = default!, global::System.String? name = default!, global::System.Boolean? reviewEnabled = default!)
         {
             Status = status;
             Id = id;
@@ -26298,7 +26297,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IDataSetGetDatasetsFull_DatasetsPage returnValue = default !;
+            IDataSetGetDatasetsFull_DatasetsPage returnValue = default!;
             if (data?.__typename.Equals("DatasetPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new DataSetGetDatasetsFull_DatasetsPage_DatasetPage(MapIDataSetGetDatasetsFull_DatasetsPage_DatasetsArray(data.Datasets, snapshot));
@@ -26602,7 +26601,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelGroupQuery_ModelGroups returnValue = default !;
+            IModelGroupQuery_ModelGroups returnValue = default!;
             if (data?.__typename.Equals("ModelGroupPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelGroupQuery_ModelGroups_ModelGroupPage(MapIModelGroupQuery_ModelGroups_ModelGroupsArray(data.ModelGroups, snapshot));
@@ -26779,7 +26778,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelLoad_ModelLoad returnValue = default !;
+            IModelLoad_ModelLoad returnValue = default!;
             if (data?.__typename.Equals("ModelLoad", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelLoad_ModelLoad_ModelLoad(data.Status);
@@ -26853,7 +26852,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IPredictModel_ModelPredict returnValue = default !;
+            IPredictModel_ModelPredict returnValue = default!;
             if (data?.__typename.Equals("ModelPredict", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new PredictModel_ModelPredict_ModelPredict(data.JobId);
@@ -26931,7 +26930,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelGroupProgressQuery_ModelGroups returnValue = default !;
+            IModelGroupProgressQuery_ModelGroups returnValue = default!;
             if (data?.__typename.Equals("ModelGroupPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelGroupProgressQuery_ModelGroups_ModelGroupPage(MapIModelGroupProgressQuery_ModelGroups_ModelGroupsArray(data.ModelGroups, snapshot));
@@ -27013,7 +27012,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default !;
+            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default!;
             if (data?.__typename.Equals("TrainingProgress", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress_TrainingProgress(data.PercentComplete);
@@ -27113,7 +27112,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default !;
+            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default!;
             if (data?.__typename.Equals("TrainingProgress", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress_TrainingProgress(data.PercentComplete);
@@ -27153,7 +27152,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default !;
+            IModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress returnValue = default!;
             if (data?.__typename.Equals("TrainingProgress", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ModelGroupProgressQuery_ModelGroups_ModelGroups_Models_TrainingProgress_TrainingProgress(data.PercentComplete);
@@ -27200,7 +27199,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IDocumentExtraction_DocumentExtraction returnValue = default !;
+            IDocumentExtraction_DocumentExtraction returnValue = default!;
             if (data?.__typename.Equals("DocumentExtraction", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new DocumentExtraction_DocumentExtraction_DocumentExtraction(data.JobIds);
@@ -27278,7 +27277,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSummary_UserSummary returnValue = default !;
+            IUserSummary_UserSummary returnValue = default!;
             if (data?.__typename.Equals("UserSummary", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSummary_UserSummary_UserSummary(MapIUserSummary_UserSummary_Users(data.Users, snapshot), MapIUserSummary_UserSummary_AppRolesArray(data.AppRoles, snapshot));
@@ -27298,7 +27297,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSummary_UserSummary_Users returnValue = default !;
+            IUserSummary_UserSummary_Users returnValue = default!;
             if (data?.__typename.Equals("EnabledCount", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSummary_UserSummary_Users_EnabledCount(data.Enabled, data.Disabled);
@@ -27334,7 +27333,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSummary_UserSummary_AppRoles returnValue = default !;
+            IUserSummary_UserSummary_AppRoles returnValue = default!;
             if (data?.__typename.Equals("AppRoleCount", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSummary_UserSummary_AppRoles_AppRoleCount(data.Role, data.Count);
@@ -27410,7 +27409,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSnapshot_UserSnapshot returnValue = default !;
+            IUserSnapshot_UserSnapshot returnValue = default!;
             if (data?.__typename.Equals("UserSnapshotPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSnapshot_UserSnapshot_UserSnapshotPage(MapIUserSnapshot_UserSnapshot_ResultsArray(data.Results, snapshot), MapIUserSnapshot_UserSnapshot_PageInfo(data.PageInfo, snapshot));
@@ -27477,7 +27476,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSnapshot_UserSnapshot_Results_Datasets returnValue = default !;
+            IUserSnapshot_UserSnapshot_Results_Datasets returnValue = default!;
             if (data?.__typename.Equals("DatasetRole", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSnapshot_UserSnapshot_Results_Datasets_DatasetRole(data.DatasetId, data.Role);
@@ -27497,7 +27496,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSnapshot_UserSnapshot_PageInfo returnValue = default !;
+            IUserSnapshot_UserSnapshot_PageInfo returnValue = default!;
             if (data?.__typename.Equals("PageInfo", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSnapshot_UserSnapshot_PageInfo_PageInfo(data.AggregateCount);
@@ -27580,7 +27579,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSnapshot_UserSnapshot_Results_Datasets returnValue = default !;
+            IUserSnapshot_UserSnapshot_Results_Datasets returnValue = default!;
             if (data?.__typename.Equals("DatasetRole", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSnapshot_UserSnapshot_Results_Datasets_DatasetRole(data.DatasetId, data.Role);
@@ -27629,7 +27628,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserChangelog_UserChangelog returnValue = default !;
+            IUserChangelog_UserChangelog returnValue = default!;
             if (data?.__typename.Equals("UserChangelogPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserChangelog_UserChangelog_UserChangelogPage(MapIUserChangelog_UserChangelog_ResultsArray(data.Results, snapshot), MapIUserChangelog_UserChangelog_PageInfo(data.PageInfo, snapshot));
@@ -27696,7 +27695,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserChangelog_UserChangelog_Results_PreviousDatasets returnValue = default !;
+            IUserChangelog_UserChangelog_Results_PreviousDatasets returnValue = default!;
             if (data?.__typename.Equals("DatasetRole", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserChangelog_UserChangelog_Results_PreviousDatasets_DatasetRole(data.DatasetId, data.Role);
@@ -27716,7 +27715,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserChangelog_UserChangelog_PageInfo returnValue = default !;
+            IUserChangelog_UserChangelog_PageInfo returnValue = default!;
             if (data?.__typename.Equals("PageInfo", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserChangelog_UserChangelog_PageInfo_PageInfo(data.AggregateCount);
@@ -27799,7 +27798,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserChangelog_UserChangelog_Results_PreviousDatasets returnValue = default !;
+            IUserChangelog_UserChangelog_Results_PreviousDatasets returnValue = default!;
             if (data?.__typename.Equals("DatasetRole", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserChangelog_UserChangelog_Results_PreviousDatasets_DatasetRole(data.DatasetId, data.Role);
@@ -27846,7 +27845,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserSnapshotReport_UserSnapshotReport returnValue = default !;
+            IUserSnapshotReport_UserSnapshotReport returnValue = default!;
             if (data?.__typename.Equals("GenerateUserSnapshotReport", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserSnapshotReport_UserSnapshotReport_GenerateUserSnapshotReport(data.JobId);
@@ -27920,7 +27919,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IUserChangelogReport_UserChangelogReport returnValue = default !;
+            IUserChangelogReport_UserChangelogReport returnValue = default!;
             if (data?.__typename.Equals("GenerateUserChangelogReport", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new UserChangelogReport_UserChangelogReport_GenerateUserChangelogReport(data.JobId);
@@ -27994,7 +27993,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            ISubmitReview_SubmitAutoReview returnValue = default !;
+            ISubmitReview_SubmitAutoReview returnValue = default!;
             if (data?.__typename.Equals("SubmitAutoReview", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new SubmitReview_SubmitAutoReview_SubmitAutoReview(data.JobId);
@@ -28068,7 +28067,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            ISubmitReviewForceComplete_SubmitAutoReview returnValue = default !;
+            ISubmitReviewForceComplete_SubmitAutoReview returnValue = default!;
             if (data?.__typename.Equals("SubmitAutoReview", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new SubmitReviewForceComplete_SubmitAutoReview_SubmitAutoReview(data.JobId);
@@ -28286,7 +28285,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IWorkflowSubmission_WorkflowSubmission returnValue = default !;
+            IWorkflowSubmission_WorkflowSubmission returnValue = default!;
             if (data?.__typename.Equals("SubmissionResult", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new WorkflowSubmission_WorkflowSubmission_SubmissionResult(data.JobIds, data.SubmissionIds);
@@ -28364,7 +28363,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IWorkflowUrlSubmission_WorkflowUrlSubmission returnValue = default !;
+            IWorkflowUrlSubmission_WorkflowUrlSubmission returnValue = default!;
             if (data?.__typename.Equals("SubmissionResult", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new WorkflowUrlSubmission_WorkflowUrlSubmission_SubmissionResult(data.JobIds, data.SubmissionIds);
@@ -28450,7 +28449,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IListSubmissions_Submissions returnValue = default !;
+            IListSubmissions_Submissions returnValue = default!;
             if (data?.__typename.Equals("SubmissionPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ListSubmissions_Submissions_SubmissionPage(MapIListSubmissions_Submissions_SubmissionsArray(data.Submissions, snapshot), MapIListSubmissions_Submissions_PageInfo(data.PageInfo, snapshot));
@@ -28640,7 +28639,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IListSubmissions_Submissions_PageInfo returnValue = default !;
+            IListSubmissions_Submissions_PageInfo returnValue = default!;
             if (data?.__typename.Equals("PageInfo", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ListSubmissions_Submissions_PageInfo_PageInfo(data.StartCursor, data.EndCursor, data.HasNextPage, data.AggregateCount);
@@ -29414,7 +29413,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            ICreateSubmissionResults_SubmissionResults returnValue = default !;
+            ICreateSubmissionResults_SubmissionResults returnValue = default!;
             if (data?.__typename.Equals("SubmissionResults", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new CreateSubmissionResults_SubmissionResults_SubmissionResults(data.JobId);
@@ -29650,7 +29649,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IWorkflowGetStatus_Workflows returnValue = default !;
+            IWorkflowGetStatus_Workflows returnValue = default!;
             if (data?.__typename.Equals("WorkflowPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new WorkflowGetStatus_Workflows_WorkflowPage(MapIWorkflowGetStatus_Workflows_WorkflowsArray(data.Workflows, snapshot));
@@ -29777,7 +29776,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IWorkflowAddData_AddDataToWorkflow returnValue = default !;
+            IWorkflowAddData_AddDataToWorkflow returnValue = default!;
             if (data?.__typename.Equals("AddDataToWorkflow", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new WorkflowAddData_AddDataToWorkflow_AddDataToWorkflow(MapIWorkflowAddData_AddDataToWorkflow_Workflow(data.Workflow, snapshot));
@@ -29888,7 +29887,7 @@ namespace IndicoV2.StrawberryShake.State
                 return null;
             }
 
-            IListWorkflows_Workflows returnValue = default !;
+            IListWorkflows_Workflows returnValue = default!;
             if (data?.__typename.Equals("WorkflowPage", global::System.StringComparison.Ordinal) ?? false)
             {
                 returnValue = new ListWorkflows_Workflows_WorkflowPage(MapIListWorkflows_Workflows_WorkflowsArray(data.Workflows, snapshot));
@@ -30132,8 +30131,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDatasetUploadStatusResult, DatasetUploadStatusResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? datasetId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? datasetId = default!;
             _entityStore.Update(session =>
             {
                 datasetId = UpdateIDatasetUploadStatus_DatasetEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "dataset"), entityIds);
@@ -30160,7 +30159,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), UpdateIDatasetUploadStatus_Dataset_FilesEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "files"), entityIds), default !, default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), UpdateIDatasetUploadStatus_Dataset_FilesEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "files"), entityIds), default!, default!, default!, default!));
                 }
 
                 return entityId;
@@ -30344,8 +30343,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDataSetAddFilesResult, DataSetAddFilesResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? addDatasetFilesId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? addDatasetFilesId = default!;
             _entityStore.Update(session =>
             {
                 addDatasetFilesId = UpdateIDataSetAddFiles_AddDatasetFilesEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "addDatasetFiles"), entityIds);
@@ -30372,7 +30371,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !, default !, default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!, default!, default!, default!, default!));
                 }
 
                 return entityId;
@@ -30462,8 +30461,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDataSetProcessFilesResult, DataSetProcessFilesResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? addDataFilesId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? addDataFilesId = default!;
             _entityStore.Update(session =>
             {
                 addDataFilesId = UpdateIDataSetProcessFiles_AddDataFilesEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "addDataFiles"), entityIds);
@@ -30490,7 +30489,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default!, default!, default!));
                 }
 
                 return entityId;
@@ -30580,8 +30579,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDataSetProcessCsvResult, DataSetProcessCsvResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? addDataCsvId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? addDataCsvId = default!;
             _entityStore.Update(session =>
             {
                 addDataCsvId = UpdateIDataSetProcessCsv_AddDataCsvEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "addDataCsv"), entityIds);
@@ -30608,7 +30607,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default!, default!, default!));
                 }
 
                 return entityId;
@@ -30698,8 +30697,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDataSetGetDatasetsResult, DataSetGetDatasetsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? datasetsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? datasetsId = default!;
             _entityStore.Update(session =>
             {
                 datasetsId = UpdateIDataSetGetDatasets_DatasetsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "datasets"), entityIds);
@@ -30742,7 +30741,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default!, default!, default!));
                 }
 
                 return entityId;
@@ -30834,8 +30833,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IDataSetGetDatasetsFullResult, DataSetGetDatasetsFullResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.DatasetPageData? datasetsPageId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.DatasetPageData? datasetsPageId = default!;
             _entityStore.Update(session =>
             {
                 datasetsPageId = DeserializeIDataSetGetDatasetsFull_DatasetsPage(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "datasetsPage"), entityIds);
@@ -30894,7 +30893,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rowCount")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "numModelGroups")), UpdateIDataSetGetDatasetsFull_DatasetsPage_Datasets_ModelGroupsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "modelGroups"), entityIds)));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.DatasetEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeDatasetStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rowCount")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "numModelGroups")), UpdateIDataSetGetDatasetsFull_DatasetsPage_Datasets_ModelGroupsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "modelGroups"), entityIds)));
                 }
 
                 return entityId;
@@ -30966,7 +30965,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, default!, default!, default!));
                 }
 
                 return entityId;
@@ -31040,8 +31039,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IJobStatusResult, JobStatus_1ResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? jobId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? jobId = default!;
             _entityStore.Update(session =>
             {
                 jobId = UpdateIJobStatus_JobEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "job"), entityIds);
@@ -31170,8 +31169,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IModelGroupQueryResult, ModelGroupQueryResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.ModelGroupPageData? modelGroupsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.ModelGroupPageData? modelGroupsId = default!;
             _entityStore.Update(session =>
             {
                 modelGroupsId = DeserializeIModelGroupQuery_ModelGroups(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "modelGroups"), entityIds);
@@ -31230,7 +31229,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeModelStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), UpdateIModelGroupQuery_ModelGroups_ModelGroups_SelectedModelEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "selectedModel"), entityIds), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeModelStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), UpdateIModelGroupQuery_ModelGroups_ModelGroups_SelectedModelEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "selectedModel"), entityIds), default!));
                 }
 
                 return entityId;
@@ -31286,7 +31285,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeModelStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeModelStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!));
                 }
 
                 return entityId;
@@ -31356,7 +31355,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IModelLoadResult, ModelLoadResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -31452,7 +31451,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IPredictModelResult, PredictModelResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -31550,8 +31549,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IModelGroupProgressQueryResult, ModelGroupProgressQueryResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.ModelGroupPageData? modelGroupsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.ModelGroupPageData? modelGroupsId = default!;
             _entityStore.Update(session =>
             {
                 modelGroupsId = DeserializeIModelGroupProgressQuery_ModelGroups(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "modelGroups"), entityIds);
@@ -31610,7 +31609,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(default !, default !, default !, default !, UpdateIModelGroupProgressQuery_ModelGroups_ModelGroups_ModelsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "models"), entityIds)));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ModelGroupEntity(default!, default!, default!, default!, UpdateIModelGroupProgressQuery_ModelGroups_ModelGroups_ModelsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "models"), entityIds)));
                 }
 
                 return entityId;
@@ -31768,7 +31767,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IDocumentExtractionResult, DocumentExtractionResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -31882,7 +31881,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IUserSummaryResult, UserSummaryResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -32046,8 +32045,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IUserSnapshotResult, UserSnapshotResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.UserSnapshotPageData? userSnapshotId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.UserSnapshotPageData? userSnapshotId = default!;
             _entityStore.Update(session =>
             {
                 userSnapshotId = DeserializeIUserSnapshot_UserSnapshot(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "userSnapshot"), entityIds);
@@ -32308,8 +32307,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IUserChangelogResult, UserChangelogResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.UserChangelogPageData? userChangelogId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.UserChangelogPageData? userChangelogId = default!;
             _entityStore.Update(session =>
             {
                 userChangelogId = DeserializeIUserChangelog_UserChangelog(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "userChangelog"), entityIds);
@@ -32554,7 +32553,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IUserSnapshotReportResult, UserSnapshotReportResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -32652,7 +32651,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IUserChangelogReportResult, UserChangelogReportResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -32752,7 +32751,7 @@ namespace IndicoV2.StrawberryShake.State
         private (ISubmitReviewResult, SubmitReviewResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -32852,7 +32851,7 @@ namespace IndicoV2.StrawberryShake.State
         private (ISubmitReviewForceCompleteResult, SubmitReviewForceCompleteResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -32954,8 +32953,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IGetReviewsResult, GetReviewsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? submissionId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? submissionId = default!;
             _entityStore.Update(session =>
             {
                 submissionId = UpdateIGetReviews_SubmissionEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submission"), entityIds);
@@ -32982,7 +32981,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), UpdateIGetReviews_Submission_ReviewsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviews"), entityIds), default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), UpdateIGetReviews_Submission_ReviewsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviews"), entityIds), default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!, default!));
                 }
 
                 return entityId;
@@ -33140,7 +33139,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IWorkflowSubmissionResult, WorkflowSubmissionResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -33280,7 +33279,7 @@ namespace IndicoV2.StrawberryShake.State
         private (IWorkflowUrlSubmissionResult, WorkflowUrlSubmissionResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -33432,8 +33431,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IListSubmissionsResult, ListSubmissionsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.SubmissionPageData? submissionsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.SubmissionPageData? submissionsId = default!;
             _entityStore.Update(session =>
             {
                 submissionsId = DeserializeIListSubmissions_Submissions(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissions"), entityIds);
@@ -33662,7 +33661,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default!));
                 }
 
                 return entityId;
@@ -33756,7 +33755,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default!));
                 }
 
                 return entityId;
@@ -33846,8 +33845,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IUpdateSubmissionResult, UpdateSubmissionResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? updateSubmissionId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? updateSubmissionId = default!;
             _entityStore.Update(session =>
             {
                 updateSubmissionId = UpdateIUpdateSubmission_UpdateSubmissionEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "updateSubmission"), entityIds);
@@ -33874,7 +33873,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "datasetId")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "workflowId")), DeserializeSubmissionStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !, default !, default !, default !, default !, default !, default !, default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "inputFile")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "inputFilename")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "resultFile")), default !, DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "retrieved")), default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "datasetId")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "workflowId")), DeserializeSubmissionStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!, default!, default!, default!, default!, default!, default!, default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "inputFile")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "inputFilename")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "resultFile")), default!, DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "retrieved")), default!, default!, default!));
                 }
 
                 return entityId;
@@ -33994,8 +33993,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IGetSubmissionResult, GetSubmissionResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::StrawberryShake.EntityId? submissionId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::StrawberryShake.EntityId? submissionId = default!;
             _entityStore.Update(session =>
             {
                 submissionId = UpdateIGetSubmission_SubmissionEntity(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submission"), entityIds);
@@ -34192,7 +34191,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default!));
                 }
 
                 return entityId;
@@ -34286,7 +34285,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.ReviewEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "submissionId")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdAt")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "createdBy")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "startedAt")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "completedAt")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rejected")), DeserializeReviewType(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewType")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "notes")), default!));
                 }
 
                 return entityId;
@@ -34356,7 +34355,7 @@ namespace IndicoV2.StrawberryShake.State
         private (ICreateSubmissionResultsResult, CreateSubmissionResultsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
             _entityStore.Update(session =>
             {
                 snapshot = session.CurrentSnapshot;
@@ -34454,8 +34453,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IRetrySubmissionsResult, RetrySubmissionsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? retrySubmissionsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? retrySubmissionsId = default!;
             _entityStore.Update(session =>
             {
                 retrySubmissionsId = UpdateIRetrySubmissions_RetrySubmissionsEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "retrySubmissions"), entityIds);
@@ -34498,7 +34497,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default !, default !, default !, DeserializeSubmissionStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !, default !, default !, default !, default !, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "errors")), default !, default !, default !, default !, default !, default !, default !, default !, UpdateIRetrySubmissions_RetrySubmissions_RetriesEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "retries"), entityIds), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.SubmissionEntity(DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), default!, default!, default!, DeserializeSubmissionStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!, default!, default!, default!, default!, DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "errors")), default!, default!, default!, default!, default!, default!, default!, default!, UpdateIRetrySubmissions_RetrySubmissions_RetriesEntityArray(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "retries"), entityIds), default!));
                 }
 
                 return entityId;
@@ -34640,8 +34639,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IWorkflowGetStatusResult, WorkflowGetStatusResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.WorkflowPageData? workflowsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.WorkflowPageData? workflowsId = default!;
             _entityStore.Update(session =>
             {
                 workflowsId = DeserializeIWorkflowGetStatus_Workflows(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "workflows"), entityIds);
@@ -34700,7 +34699,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(DeserializeWorkflowStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default !, default !, default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(DeserializeWorkflowStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), default!, default!, default!));
                 }
 
                 return entityId;
@@ -34782,8 +34781,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IWorkflowAddDataResult, WorkflowAddDataResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.AddDataToWorkflowData? addDataToWorkflowId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.AddDataToWorkflowData? addDataToWorkflowId = default!;
             _entityStore.Update(session =>
             {
                 addDataToWorkflowId = DeserializeIWorkflowAddData_AddDataToWorkflow(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "addDataToWorkflow"), entityIds);
@@ -34826,7 +34825,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(DeserializeWorkflowStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default !));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(DeserializeWorkflowStatus(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "status")), DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), default!));
                 }
 
                 return entityId;
@@ -34928,8 +34927,8 @@ namespace IndicoV2.StrawberryShake.State
         private (IListWorkflowsResult, ListWorkflowsResultInfo) BuildData(global::System.Text.Json.JsonElement obj)
         {
             var entityIds = new global::System.Collections.Generic.HashSet<global::StrawberryShake.EntityId>();
-            global::StrawberryShake.IEntityStoreSnapshot snapshot = default !;
-            global::IndicoV2.StrawberryShake.State.WorkflowPageData? workflowsId = default !;
+            global::StrawberryShake.IEntityStoreSnapshot snapshot = default!;
+            global::IndicoV2.StrawberryShake.State.WorkflowPageData? workflowsId = default!;
             _entityStore.Update(session =>
             {
                 workflowsId = DeserializeIListWorkflows_Workflows(session, global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "workflows"), entityIds);
@@ -34988,7 +34987,7 @@ namespace IndicoV2.StrawberryShake.State
                 }
                 else
                 {
-                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(default !, DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewEnabled"))));
+                    session.SetEntity(entityId, new global::IndicoV2.StrawberryShake.State.WorkflowEntity(default!, DeserializeInt32(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "id")), DeserializeString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), DeserializeBoolean(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "reviewEnabled"))));
                 }
 
                 return entityId;
@@ -35032,7 +35031,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DatasetPageData
     {
-        public DatasetPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? datasets = default !)
+        public DatasetPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? datasets = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Datasets = datasets;
@@ -35045,7 +35044,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ModelGroupPageData
     {
-        public ModelGroupPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? modelGroups = default !)
+        public ModelGroupPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? modelGroups = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             ModelGroups = modelGroups;
@@ -35058,7 +35057,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ModelLoadData
     {
-        public ModelLoadData(global::System.String __typename, global::System.String? status = default !)
+        public ModelLoadData(global::System.String __typename, global::System.String? status = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Status = status;
@@ -35071,7 +35070,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class ModelPredictData
     {
-        public ModelPredictData(global::System.String __typename, global::System.String? jobId = default !)
+        public ModelPredictData(global::System.String __typename, global::System.String? jobId = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobId = jobId;
@@ -35084,7 +35083,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class TrainingProgressData
     {
-        public TrainingProgressData(global::System.String __typename, global::System.Double? percentComplete = default !)
+        public TrainingProgressData(global::System.String __typename, global::System.Double? percentComplete = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             PercentComplete = percentComplete;
@@ -35098,7 +35097,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DocumentExtractionData
     {
-        public DocumentExtractionData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::System.String?>? jobIds = default !)
+        public DocumentExtractionData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::System.String?>? jobIds = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobIds = jobIds;
@@ -35111,7 +35110,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserSummaryData
     {
-        public UserSummaryData(global::System.String __typename, global::IndicoV2.StrawberryShake.State.EnabledCountData? users = default !, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.AppRoleCountData?>? appRoles = default !)
+        public UserSummaryData(global::System.String __typename, global::IndicoV2.StrawberryShake.State.EnabledCountData? users = default!, global::System.Collections.Generic.IReadOnlyList<global::IndicoV2.StrawberryShake.State.AppRoleCountData?>? appRoles = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Users = users;
@@ -35126,7 +35125,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class EnabledCountData
     {
-        public EnabledCountData(global::System.String __typename, global::System.Int32? enabled = default !, global::System.Int32? disabled = default !)
+        public EnabledCountData(global::System.String __typename, global::System.Int32? enabled = default!, global::System.Int32? disabled = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Enabled = enabled;
@@ -35143,7 +35142,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class AppRoleCountData
     {
-        public AppRoleCountData(global::System.String __typename, global::IndicoV2.StrawberryShake.AppRole? role = default !, global::System.Int32? count = default !)
+        public AppRoleCountData(global::System.String __typename, global::IndicoV2.StrawberryShake.AppRole? role = default!, global::System.Int32? count = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Role = role;
@@ -35158,7 +35157,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserSnapshotPageData
     {
-        public UserSnapshotPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? results = default !, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default !)
+        public UserSnapshotPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? results = default!, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Results = results;
@@ -35174,7 +35173,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class PageInfoData
     {
-        public PageInfoData(global::System.String __typename, global::System.Int32? aggregateCount = default !, global::System.Int32? startCursor = default !, global::System.Int32? endCursor = default !, global::System.Boolean? hasNextPage = default !)
+        public PageInfoData(global::System.String __typename, global::System.Int32? aggregateCount = default!, global::System.Int32? startCursor = default!, global::System.Int32? endCursor = default!, global::System.Boolean? hasNextPage = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             AggregateCount = aggregateCount;
@@ -35197,7 +35196,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class DatasetRoleData
     {
-        public DatasetRoleData(global::System.String __typename, global::System.Int32? datasetId = default !, global::IndicoV2.StrawberryShake.Roles? role = default !)
+        public DatasetRoleData(global::System.String __typename, global::System.Int32? datasetId = default!, global::IndicoV2.StrawberryShake.Roles? role = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             DatasetId = datasetId;
@@ -35212,7 +35211,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class UserChangelogPageData
     {
-        public UserChangelogPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? results = default !, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default !)
+        public UserChangelogPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? results = default!, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Results = results;
@@ -35227,7 +35226,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class GenerateUserSnapshotReportData
     {
-        public GenerateUserSnapshotReportData(global::System.String __typename, global::System.String? jobId = default !)
+        public GenerateUserSnapshotReportData(global::System.String __typename, global::System.String? jobId = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobId = jobId;
@@ -35240,7 +35239,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class GenerateUserChangelogReportData
     {
-        public GenerateUserChangelogReportData(global::System.String __typename, global::System.String? jobId = default !)
+        public GenerateUserChangelogReportData(global::System.String __typename, global::System.String? jobId = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobId = jobId;
@@ -35253,7 +35252,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmitAutoReviewData
     {
-        public SubmitAutoReviewData(global::System.String __typename, global::System.String? jobId = default !)
+        public SubmitAutoReviewData(global::System.String __typename, global::System.String? jobId = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobId = jobId;
@@ -35267,7 +35266,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionResultData
     {
-        public SubmissionResultData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::System.String?>? jobIds = default !, global::System.Collections.Generic.IReadOnlyList<global::System.Int32?>? submissionIds = default !)
+        public SubmissionResultData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::System.String?>? jobIds = default!, global::System.Collections.Generic.IReadOnlyList<global::System.Int32?>? submissionIds = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobIds = jobIds;
@@ -35284,7 +35283,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionPageData
     {
-        public SubmissionPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? submissions = default !, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default !)
+        public SubmissionPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? submissions = default!, global::IndicoV2.StrawberryShake.State.PageInfoData? pageInfo = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Submissions = submissions;
@@ -35299,7 +35298,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class SubmissionResultsData
     {
-        public SubmissionResultsData(global::System.String __typename, global::System.String? jobId = default !)
+        public SubmissionResultsData(global::System.String __typename, global::System.String? jobId = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             JobId = jobId;
@@ -35312,7 +35311,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class WorkflowPageData
     {
-        public WorkflowPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? workflows = default !)
+        public WorkflowPageData(global::System.String __typename, global::System.Collections.Generic.IReadOnlyList<global::StrawberryShake.EntityId?>? workflows = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Workflows = workflows;
@@ -35325,7 +35324,7 @@ namespace IndicoV2.StrawberryShake.State
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.2.2.0")]
     public partial class AddDataToWorkflowData
     {
-        public AddDataToWorkflowData(global::System.String __typename, global::StrawberryShake.EntityId? workflow = default !)
+        public AddDataToWorkflowData(global::System.String __typename, global::StrawberryShake.EntityId? workflow = default!)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
             Workflow = workflow;

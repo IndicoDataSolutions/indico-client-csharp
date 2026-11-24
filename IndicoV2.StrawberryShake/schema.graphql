@@ -2017,7 +2017,7 @@ type Mutation {
   modelLoad(modelId: Int!): ModelLoad
     @deprecated(reason: "Models are loaded automatically on first predict")
   modelPredict(
-    data: [String]
+    data: [String!]!
     modelId: Int!
     predictOptions: JSONString = null
   ): ModelPredict

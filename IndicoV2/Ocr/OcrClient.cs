@@ -30,6 +30,7 @@ namespace IndicoV2.Ocr
             return arr;
         }
 
+        [Obsolete("Direct document extraction is no longer supported by Intake (removed in fog#771). Use a workflow submission instead.")]
         public async Task<string> ExtractDocumentAsync(string filePath, DocumentExtractionPreset preset, CancellationToken cancellationToken)
         {
             JArray fileMetadata;
